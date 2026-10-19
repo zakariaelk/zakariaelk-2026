@@ -2,13 +2,16 @@
 // A measured outcome. Case template (v4): the text is one large line saying what the test showed,
 // note = one small line with the numbers and sample size. Older drafts: a large number with its label.
 // kind names the evidence: prototype tests, interviews, or the post-launch partner survey.
-interface Props { value?: string; label?: string; note?: string; kind?: '' | 'testing' | 'interviews' | 'partners' }
-const { value, label, note, kind = '' } = Astro.props;
+// figures (Simple version): a row of numbers, "value::descriptor|value::descriptor", between the line and the note.
+interface Props { value?: string; label?: string; note?: string; kind?: '' | 'testing' | 'interviews' | 'partners'; figures?: string }
+const { value, label, note, kind = '', figures } = Astro.props;
 const title = { '': 'Result', testing: 'What testing showed', interviews: 'What interviews showed', partners: 'What partners said' }[kind];
+const row = figures?.split('|').map((f) => f.split('::').map((s) => s.trim())) ?? [];
 ---
 <aside class="cs-callout cs-result" aria-label={title}>
   <p class="cs-callout__label" aria-hidden="true">{title}</p>
   {value && <p class="cs-result__figure"><span class="cs-stat__value">{value}</span> <span class="cs-stat__label">{label}</span></p>}
   <div class:list={['cs-result__body', note && 'cs-result__line']}><slot /></div>
+  {row.length > 0 && <dl class="cs-result__figures">{row.map(([v, d]) => <div><dt>{v}</dt><dd>{d}</dd></div>)}</dl>}
   {note && <p class="cs-result__note">{note}</p>}
 </aside>

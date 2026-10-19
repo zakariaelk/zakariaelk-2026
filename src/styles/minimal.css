@@ -1,0 +1,125 @@
+/* Minimal test pages (19 Oct 2026), after tinycomputer.co: the minimal home (/minimal/) and the Simple
+   version of the INSO case (/work/mitigating-risk-with-location-based-alerts-simple/,
+   docs/claude-code-instructions-simple-layout.md). Everything is scoped to .is-min (on <html>) and
+   .cs-simple (on <body>, the case), so the other pages don't change.
+   Two font setups, switched with ?fonts=current (data-fonts on <html>):
+     serif + mono (default): the serif for headlines only, IBM Plex Mono for everything else, at the
+       reference's sizes (18px text on a 37px line, headline 56px on phones to 108px from 810px);
+     current: the site's current fonts and sizes (serif text, sans labels). */
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-600.css';
+
+.is-min {
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --m-font: var(--mono);          /* body text */
+  --m-weight: 400;
+  --m-bold: 600;
+  --m-size: 18px;
+  --m-lh: 37px;                   /* one line: the spacing unit */
+  --m-small-font: var(--mono);    /* captions, labels, notes */
+  --m-small: 14px;
+  --m-say-bg: #ececec;
+}
+.is-min[data-fonts='current'] {
+  --m-font: var(--serif);
+  --m-weight: 470;
+  --m-bold: 500;
+  --m-size: var(--t-body);
+  --m-lh: calc(var(--t-body) * 1.5);
+  --m-small-font: var(--sans);
+  --m-small: 16px;
+}
+:root.is-min[data-theme='dark'] { --m-say-bg: #333; }
+
+/* nav: the mono font (logo and layout as on the site) */
+.is-min:not([data-fonts='current']) .n-nav a { font-family: var(--mono); font-weight: 400; letter-spacing: 0; }
+@media (min-width: 701px) { .is-min:not([data-fonts='current']) .n-nav { font-size: 18px; } }
+@media (max-width: 700px) { .is-min:not([data-fonts='current']) .n-nav { font-family: var(--mono); font-size: 26px; font-variant-caps: normal; } }
+
+/* the temporary bars: which font setup (and, on the case, which version) */
+.is-min .a-compare, .m-bar { font-family: var(--m-small-font); font-size: var(--m-small); }
+.m-bar { margin: 0; padding-top: 8px; color: var(--muted); }
+.m-bar a, .a-compare__fonts a { color: inherit; text-underline-offset: 0.2em; }
+.m-bar a[aria-current], .a-compare__fonts a[aria-current] { color: var(--ink); font-weight: var(--m-bold); text-decoration: none; }
+.a-compare__fonts { margin-left: 24px; white-space: nowrap; }
+
+/* ---------- Home: the site's layout (components/next/va/HomeA.astro, hero 'min') ---------- */
+.m-text { margin: 0; font-family: var(--m-font); font-weight: var(--m-weight); font-size: var(--m-size); line-height: var(--m-lh); }
+.m-hero .m-title {
+  max-width: 13em;
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 470;
+  font-size: clamp(56px, calc(56px + 52 * (100vw - 375px) / 435), 108px); /* 56px on phones, 108px from 810px */
+  line-height: 1.03;
+  letter-spacing: -0.02em;
+}
+.m-name { margin-top: calc(var(--m-lh) * 1.5); }
+.m-say { display: inline-grid; place-items: center; width: 1.7em; height: 1.7em; margin-left: 0.2em; padding: 0; border: 0; border-radius: 50%; vertical-align: middle; background: var(--m-say-bg); color: var(--ink); cursor: pointer; }
+.m-say svg { width: 1.05em; height: 1.05em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.m-say svg path:first-child { fill: currentColor; }
+/* serif + mono: headlines (hero, featured titles, the contact question) stay in the serif, the rest in mono */
+.is-min:not([data-fonts='current']) :is(.a-meta dt, .a-meta dd, .a-cta, .n-list__name, .n-list__desc, .n-list__year, .a-selected .n-tag, .a-contact__links, .a-status, .a-foot) { font-family: var(--mono); font-weight: 400; letter-spacing: 0; }
+.is-min:not([data-fonts='current']) :is(.a-meta dt, .a-meta dd, .n-list__name, .n-list__desc, .n-list__year) { font-size: var(--m-size); line-height: 1.6; }
+.is-min:not([data-fonts='current']) .n-list__name { font-weight: 600; }
+
+/* ---------- Case study: Simple version ---------- */
+/* serif + mono: the headline at the reference's page-title size, every other line in mono */
+.is-min:not([data-fonts='current']) .cs-simple .a-case__title { font-size: clamp(40px, calc(40px + 27 * (100vw - 375px) / 435), 67px); line-height: 1.1; letter-spacing: -0.02em; }
+.is-min:not([data-fonts='current']) .cs-simple :is(.a-case__label, .a-case__meta dt, .a-case__meta dd, .a-cta, .a-next .a-case__label, .a-contact__links, .a-status, .a-foot) { font-family: var(--mono); font-weight: 400; letter-spacing: 0; }
+.is-min:not([data-fonts='current']) .cs-simple :is(.a-case__meta dt, .a-case__meta dd) { font-size: var(--m-size); line-height: 1.6; }
+.cs-simple .a-case__lede { font-family: var(--m-font); font-weight: var(--m-weight); font-size: var(--m-size); line-height: var(--m-lh); }
+
+.cs-simple .a-story { font-family: var(--m-font); font-weight: var(--m-weight); font-size: var(--m-size); line-height: var(--m-lh); }
+.cs-simple .a-story strong { font-weight: var(--m-bold); }
+.cs-simple .a-story p { margin-top: 0; margin-bottom: var(--m-lh); }
+/* one space between paragraphs, one larger space between sections */
+.cs-simple .a-story h2 { margin: calc(var(--m-lh) * 4) auto calc(var(--m-lh) * 0.5); font-family: var(--m-small-font); font-size: var(--m-size); line-height: var(--m-lh); color: var(--muted); }
+:is(.cs-simple .a-story > article, .cs-simple .a-story) > h2:first-child { margin-top: 0; }
+.is-min[data-fonts='current'] .cs-simple .a-story h2 { font-size: var(--t-meta); }
+/* the section's one bold headline */
+.cs-simple .a-story h2 + .is-lead { margin: 0 auto var(--m-lh); font-family: var(--serif); font-weight: 470; line-height: 1.2; }
+.cs-simple .a-story h2 + .is-lead strong { font-weight: 470; }
+.is-min:not([data-fonts='current']) .cs-simple .a-story h2 + .is-lead { font-size: clamp(26px, calc(26px + 10 * (100vw - 768px) / 512), 36px); }
+/* any other bold-only line ("Still unsolved") is plain bold text, not a heading */
+.cs-simple .a-story .is-lead:not(h2 + .is-lead) { margin: 0 auto calc(var(--m-lh) * 0.5); font: inherit; letter-spacing: normal; }
+.cs-simple .a-story .is-lead:not(h2 + .is-lead) strong { font-weight: var(--m-bold); }
+/* the three map modes, at one small level: the question as the title */
+.cs-simple .a-story h3 { margin: calc(var(--m-lh) * 2) auto calc(var(--m-lh) * 0.5); font-family: var(--serif); font-weight: 470; font-size: clamp(22px, calc(22px + 6 * (100vw - 768px) / 512), 28px); line-height: 1.25; letter-spacing: -0.01em; text-wrap: balance; }
+/* lists: 12–16px between bullets */
+.cs-simple .a-story article > ul { margin: 0 auto var(--m-lh); padding-left: 1.2em; }
+.cs-simple .a-story article > ul > li { line-height: calc(var(--m-lh) * 0.8); }
+.cs-simple .a-story article > ul > li + li { margin-top: 14px; }
+/* a row of dashes between big parts (before Outcome) */
+.cs-simple .a-story hr { height: auto; margin: calc(var(--m-lh) * 4) auto 0; border: 0; color: var(--muted); }
+.cs-simple .a-story hr::before { content: '— — —'; font-family: var(--m-font); }
+.cs-simple .a-story hr + h2 { margin-top: calc(var(--m-lh) * 2); }
+
+/* Run-in labels (Friction, What I did): part of the paragraph, in the accent colour; on wide screens
+   in the right margin, small and uppercase (scripts/minimal.ts fades them in the middle of the screen) */
+.cs-simple .cs-runin { color: var(--c-blue-ink); font-weight: var(--m-bold); }
+@media (min-width: 1100px) {
+  .cs-simple .a-story p:has(> .cs-runin) { position: relative; }
+  .cs-simple .cs-runin { position: absolute; top: 0; left: calc(100% + 24px); max-width: 96px; font-family: var(--m-small-font); font-size: 12px; letter-spacing: 0.08em; line-height: var(--m-lh); text-transform: uppercase; }
+  .cs-simple .cs-runin__dot { display: none; }
+  .has-runin-fade .cs-simple .cs-runin { opacity: 0.4; transition: opacity 0.35s ease; }
+  .has-runin-fade .cs-simple .is-near > .cs-runin { opacity: 1; }
+}
+
+/* The one container: results only. A left accent bar, the finding in serif, the figures in a row,
+   the source in small grey */
+.cs-simple .a-story .cs-result { margin: calc(var(--m-lh) * 1.5) auto; padding: 4px 0 4px clamp(18px, 2vw, 24px); border-left: 3px solid var(--c-blue); background: none; }
+.cs-simple .a-story .cs-result .cs-callout__label { margin: 0 0 8px; font-family: var(--m-small-font); font-size: var(--m-small); color: var(--c-blue-ink); }
+.cs-simple .a-story .cs-result__line p { margin: 0; font-family: var(--serif); font-weight: 470; font-size: calc(var(--t-body) + 4px); line-height: 1.3; letter-spacing: -0.01em; }
+.is-min:not([data-fonts='current']) .cs-simple .a-story .cs-result__line p { font-size: clamp(22px, calc(22px + 8 * (100vw - 768px) / 512), 30px); }
+.cs-result__figures { display: flex; flex-wrap: wrap; gap: 16px clamp(24px, 4vw, 48px); margin: 20px 0 0; }
+.cs-result__figures dt { font-family: var(--m-font); font-weight: var(--m-bold); font-size: calc(var(--m-size) * 1.25); line-height: 1.2; font-variant-numeric: tabular-nums; }
+.cs-result__figures dd { max-width: 34ch; margin: 4px 0 0; font-family: var(--m-small-font); font-size: var(--m-small); line-height: 1.4; color: var(--muted); }
+.cs-simple .a-story .cs-result__note { margin-top: 16px; font-family: var(--m-small-font); font-size: var(--m-small); }
+
+/* visuals: no Before/After chips (the caption says it), captions in the small font, the chart centred */
+.cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels) { display: none; }
+.cs-simple .a-story :is(.cs-figure, .cs-pair) { margin-top: calc(var(--m-lh) * 2); margin-bottom: calc(var(--m-lh) * 2); }
+.cs-simple .a-story .cs-pair .cs-figure { margin: 0; }
+.cs-simple .a-story figcaption { font-family: var(--m-small-font); font-size: var(--m-small); line-height: 1.5; }
+.cs-simple .a-story .cs-chart { margin: calc(var(--m-lh) * 1.5) auto; font-family: var(--m-small-font); }

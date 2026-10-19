@@ -10,11 +10,13 @@ import NextHeader from '../components/next/NextHeader.astro';
 // variant: a class on <html> for that version's own styles.
 // intro: the home page's opening animation (version A) may play; decided here, before the first paint
 // look: a colour or type variation of version A (data-look on <html>); 'dmsans' also loads DM Sans
-interface Props { title?: string; description?: string; palette?: 'paper' | 'mono'; base?: string; variant?: string; logo?: boolean; work?: string; intro?: boolean; enter?: boolean; look?: 'orange' | 'dmsans' | 'blue' | 'brown' }
-const { title = 'Zakaria El Khachia · Product designer', description = 'Product designer with a frontend development background.', palette = 'mono', base = '/next/', variant, logo = false, work, intro = false, enter = false, look } = Astro.props;
+// minimal: the minimal test pages (/minimal/ and the Simple INSO case; styles/minimal.css): .is-min on <html>,
+// 'case' adds .cs-simple on <body>; ?fonts=current shows them in the site's current fonts (data-fonts on <html>)
+interface Props { title?: string; description?: string; palette?: 'paper' | 'mono'; base?: string; variant?: string; logo?: boolean; work?: string; intro?: boolean; enter?: boolean; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; minimal?: 'home' | 'case' }
+const { title = 'Zakaria El Khachia · Product designer', description = 'Product designer with a frontend development background.', palette = 'mono', base = '/next/', variant, logo = false, work, intro = false, enter = false, look, minimal } = Astro.props;
 ---
 <!doctype html>
-<html lang="en" data-palette={palette} data-look={look} class={variant ? `v-${variant}` : undefined}>
+<html lang="en" data-palette={palette} data-look={look} class:list={[variant && `v-${variant}`, minimal && 'is-min']}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -33,6 +35,7 @@ const { title = 'Zakaria El Khachia · Product designer', description = 'Product
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
       })();
     </script>
+    {minimal && <script is:inline>if (/[?&]fonts=current\b/.test(location.search)) document.documentElement.dataset.fonts = 'current';</script>}
     {enter && (
       <script is:inline>
         // Entrance (home, scripts/enter-a.ts): the page appears top to bottom. Hidden from the first
@@ -65,7 +68,7 @@ const { title = 'Zakaria El Khachia · Product designer', description = 'Product
       </script>
     )}
   </head>
-  <body>
+  <body class={minimal === 'case' ? 'cs-simple' : undefined}>
     <NextHeader base={base} contact={variant ? '#contact' : undefined} work={work} logo={logo} />
     <main id="main"><slot /></main>
   </body>

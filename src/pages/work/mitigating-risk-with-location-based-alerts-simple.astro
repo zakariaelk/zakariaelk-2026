@@ -1,0 +1,19 @@
+---
+// The INSO case in its Simple version (src/content/lab/inso-app-simple.mdoc, docs/claude-code-instructions-simple-layout.md):
+// the same template, hero and media as the full version, fewer titles, inline labels and one container for results,
+// in the minimal type (styles/minimal.css; ?fonts=current shows the current fonts). Not indexed, not listed on the
+// home page or in "Next project" links. Remove with the comparison bar once a version is chosen.
+import { getEntry } from 'astro:content';
+import { getProjects } from '../../lib/data';
+import CaseA from '../../components/next/va/CaseA.astro';
+import '../../styles/minimal.css';
+
+const projects = await getProjects();
+const project = (await getEntry('lab', 'inso-app-simple'))!;
+const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
+---
+<CaseA project={project} next={next} base="/" look="blue" compare="simple" />
+
+<script>
+  import '../../scripts/minimal';
+</script>
