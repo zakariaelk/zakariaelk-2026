@@ -13,8 +13,8 @@
 :root[data-look='orange'] { --blue: #ffdeb9; } /* the logo's small circle */
 :root[data-look='orange'].v-a { --marker: #ffdeb9; }
 :root[data-look='orange'][data-theme='dark'].v-a { --marker: #a5713f; }
-:root[data-look='orange'] .a-go .a-go__shape { fill: #ffdeb9; }
-:root[data-look='orange'] .a-go .a-go__arrow { stroke: #1d1b19; }
+:root[data-look='orange'] .a-cta { color: #1d1b19; }
+:root[data-look='orange'] .a-cta__paper { background-color: #ffdeb9; }
 :root[data-look='orange'] .n-btn { --brown: #ffdeb9; --on-brown: #1d1b19; } /* "Visit …" on the case page */
 
 /* ---------- blue and brown (/next/blue/, /next/brown/): one colour for every highlight and link

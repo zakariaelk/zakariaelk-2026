@@ -46,10 +46,7 @@
 .a-case__rule { display: block; width: 100%; height: 8px; margin-bottom: clamp(24px, calc(24px + 12 * (100vw - 768px) / 512), 36px); overflow: visible; }
 .a-case__rule path { fill: none; stroke: var(--a-rule); stroke-width: 1; vector-effect: non-scaling-stroke; } /* the home page's cut edge, as a faint hairline */
 .a-case__rule + .a-case__meta { margin-top: 0; }
-/* "Take a look": a paper cut-out like the phone menu's buttons, in the logo's colours */
-.a-case__cta { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; margin-top: clamp(32px, calc(32px + 16 * (100vw - 768px) / 512), 48px); padding: 15px 26px; font-family: var(--sans); font-weight: 430; font-size: 18px; letter-spacing: -0.2px; line-height: 1.2; color: var(--on-brown); text-decoration: none; }
-.a-case__cta-paper { position: absolute; inset: 0; z-index: -1; background-color: var(--brown); }
-.a-case__cta svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.a-case__cta { margin-top: clamp(32px, calc(32px + 16 * (100vw - 768px) / 512), 48px); } /* "Take a look" (the button itself: media-a.css) */
 
 /* ---------- Story ---------- */
 .a-story h2 { font-size: clamp(16px, calc(16px + 8 * (100vw - 768px) / 512), 24px); scroll-margin-top: 32px; }
@@ -108,18 +105,7 @@
 .a-story .cs-option { padding: clamp(20px, 2.5vw, 28px); background: var(--c-grey-tint); font-size: clamp(18px, calc(18px + 4 * (100vw - 768px) / 512), 22px); line-height: 1.5; }
 .a-story .cs-option__title { margin: 0 0 8px; font-weight: 500; }
 .a-story .cs-option p:last-child { margin-bottom: 0; }
-/* the one-minute story: its cover with a round play button, then the video with controls */
-.a-case__hero .cs-player { max-width: none; margin: 0; } /* as the cover: the full content width */
-.cs-player__frame { position: relative; aspect-ratio: 16 / 9; background: var(--c-grey-tint); }
-.cs-player__video { position: absolute; inset: 0; width: 100%; height: 100%; }
-.cs-player__play { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: flex-end; padding: clamp(18px, 4.5vw, 64px) clamp(14px, 5vw, 72px); border: 0; background: center / cover no-repeat; cursor: pointer; } /* the button sits low right, under the end card's title and clear of the phone */
-@media (max-width: 700px) { .cs-player__pill { gap: 8px; padding: 4px 12px 4px 4px; font-size: 13px; } .cs-player__icon { width: 28px; } }
-.cs-player__pill { display: inline-flex; align-items: center; gap: 12px; padding: 8px 20px 8px 8px; border-radius: 999px; background: var(--brown); color: var(--on-brown); font-family: var(--sans); font-size: clamp(15px, 1.4vw, 18px); box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.5); transition: transform 0.2s ease; }
-.cs-player__icon { display: grid; place-items: center; width: clamp(36px, 3.4vw, 44px); aspect-ratio: 1; border-radius: 50%; background: var(--on-brown); color: var(--brown); }
-.cs-player__icon svg { width: 42%; height: 42%; margin-left: 8%; fill: currentColor; }
-.cs-player__len { opacity: 0.7; }
-.cs-player__play:hover .cs-player__pill, .cs-player__play:focus-visible .cs-player__pill { transform: scale(1.04); }
-.cs-player.is-playing .cs-player__play { display: none; }
+.a-case__hero .cs-player { max-width: none; margin: 0; } /* the one-minute story as the cover: the full content width (player: media-a.css) */
 
 /* usage chart: two lines, values at both ends, years below, crosshair on hover, a table view */
 .v-a { --chart-a: #3d6fae; --chart-b: #b0763a; }

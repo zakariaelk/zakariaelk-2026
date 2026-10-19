@@ -19,6 +19,7 @@ import { cutLine } from '../../../lib/papercut';
 import '../../../styles/next-a.css';
 import '../../../styles/next-a-looks.css';
 import '../../../styles/case-a.css';
+import '../../../styles/media-a.css';
 
 // compare: a temporary bar linking the full and short versions of the INSO case (remove with the short page)
 // heroPlayer: a video with sound as the hero, behind a play button, its cover from posters/ (the INSO case)
@@ -48,7 +49,7 @@ const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug,
   </header>
 
   <div class="a-wrap a-case__hero">
-    {heroPlayer ? <StoryVideo src={heroPlayer} title="One alert, a different turn: the story in one minute" length="1:23" /> : <FramedMedia frame={false} image={d.cover} alt={`${labelOf(d)}: ${d.projectName ?? d.title}`} sizes="(min-width: 1440px) 1340px, 100vw" eager />}
+    {heroPlayer ? <StoryVideo src={heroPlayer} title="One alert, a different turn: the story in one minute" length="1:22" /> : <FramedMedia frame={false} image={d.cover} alt={`${labelOf(d)}: ${d.projectName ?? d.title}`} sizes="(min-width: 1440px) 1340px, 100vw" eager />}
   </div>
 
   <div class="a-wrap">
@@ -61,8 +62,8 @@ const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug,
         </Fragment>
       ))}
       {d.link && (
-        <a class="a-case__cta" href={d.link} target="_blank" rel="noopener">
-          <span class="a-case__cta-paper" aria-hidden="true"></span>
+        <a class="a-cta a-case__cta" href={d.link} target="_blank" rel="noopener">
+          <span class="a-cta__paper" data-ring="11" aria-hidden="true"></span>
           Take a look
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg>
           <span class="sr-only"> at {d.link.replace(/^https?:\/\/(www\.)?/i, '').replace(/\/$/, '')} (opens in a new tab)</span>
@@ -105,24 +106,7 @@ const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug,
 
 <script>
   import '../../../scripts/case-enhance';
-  import { paperRing } from '../../../lib/papercut';
-  // "Take a look": a paper cut-out whose rough edge circles round on hover (stop-motion steps, like
-  // the logo's turn) while the shape itself stays put
-  const cta = document.querySelector<HTMLElement>('.a-case__cta');
-  const paper = cta?.querySelector<HTMLElement>('.a-case__cta-paper');
-  if (cta && paper) {
-    let phase = 0;
-    let timer = 0;
-    const draw = () => { paper.style.clipPath = `path('${paperRing(paper.offsetWidth, paper.offsetHeight, 11, phase)}')`; };
-    new ResizeObserver(draw).observe(paper);
-    const still = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const start = () => { if (still.matches || timer) return; timer = window.setInterval(() => { phase += 1; draw(); }, 140); };
-    const stop = () => { clearInterval(timer); timer = 0; };
-    cta.addEventListener('pointerenter', start);
-    cta.addEventListener('pointerleave', stop);
-    cta.addEventListener('focus', start);
-    cta.addEventListener('blur', stop);
-  }
+  import '../../../scripts/paper-ring'; // the "Take a look" button
   // highlighted sentences ({% mark %}) are drawn in once they are well into the screen
   const marks = document.querySelectorAll<HTMLElement>('.cs-mark');
   const seen = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-drawn'); seen.unobserve(e.target); } }), { rootMargin: '0px 0px -25% 0px' });

@@ -155,19 +155,13 @@
 .a-feat__client { grid-column: 1; margin: 0 0 16px; font-family: var(--sans); font-size: var(--t-meta); line-height: 1.15; color: var(--muted); }
 .a-feat__title { grid-column: 1; margin: 0; font-family: var(--serif); font-weight: 500; font-size: var(--a-title); line-height: 1.15; letter-spacing: -0.01em; text-wrap: balance; }
 .a-feat__meta { grid-column: 1; grid-row: 3; align-self: end; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin: 40px 0 0; }
-/* the round button: the logo's paper circle with an arrow, at the end of the facts; hovering the case
-   turns it clockwise for a moment (script in HomeA) and brings it to full strength */
-.a-go { flex: none; display: block; width: clamp(52px, calc(52px + 12 * (100vw - 390px) / 1050), 64px); opacity: 0.85; transition: opacity 0.2s ease; }
-.a-go svg { display: block; width: 100%; height: auto; overflow: visible; }
-.a-go__shape { transform-box: fill-box; transform-origin: center; animation: n-spin 6s steps(24, end) infinite paused; }
-.a-go__shape { fill: var(--brown); } /* black */
-:root[data-theme='dark'] .a-go__shape { fill: var(--blue); }
-.a-go__arrow { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
-.a-go__arrow { stroke: var(--on-brown); }
-:root[data-theme='dark'] .a-go__arrow { stroke: #1d1b19; }
-.a-feat__link:hover .a-go, .a-feat__link:focus-visible .a-go { opacity: 1; }
-.a-go.is-spinning .a-go__shape { animation-play-state: running; }
-@media (prefers-reduced-motion: reduce) { .a-go__shape { animation: none; } }
+/* "See case study": the paper button (media-a.css) at the end of the facts */
+.a-feat__cta { flex: none; }
+/* the first case with a video player: the card isn't one link (the player has its own controls), so
+   only the title and the button lead to the case */
+.a-feat--player .a-feat__title a { color: inherit; text-decoration: none; }
+.a-feat--player .a-feat__title a:hover, .a-feat--player .a-feat__title a:focus-visible { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.12em; }
+.a-feat--player .a-feat__link:hover .a-feat__title { text-decoration: none; }
 .a-feat__visual { grid-column: 2; grid-row: 1 / -1; }
 .a-feat .v-frame img, .a-feat .v-frame video, .a-screen .v-frame img, .a-screen .v-frame video { border-radius: 0; }
 .a-feat__link:hover .a-feat__title, .a-screen__link:hover .a-screen__title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.12em; }
@@ -371,8 +365,12 @@ html.is-logo-spin .n-brand__logo :is(.n-logo__big-shape, .n-logo__small-shape) {
   .a-timeline li { grid-template-columns: minmax(0, 1fr); }
   .a-timeline__place { display: none; }
 }
-/* phones: Role above Industry, each value on one line, the round button still bottom right */
-@media (max-width: 700px) { .a-feat__meta .a-meta { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+/* phones: Role above Industry, each value on one line, the button below them */
+@media (max-width: 700px) {
+  .a-feat__meta .a-meta { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .a-feat__meta { flex-wrap: wrap; } /* the "See case study" button on its own line, under the facts */
+  .a-feat__meta .a-meta { flex: 1 1 100%; }
+}
 
 /* ---------- Nav: a peach marker band slides in behind the lower half of the link on hover or
    keyboard focus (after rachelchen.design); same hand-drawn shape as the intro highlight ---------- */
@@ -407,7 +405,6 @@ html.is-logo-spin .n-brand__logo :is(.n-logo__big-shape, .n-logo__small-shape) {
   .a-feat--lead .a-feat__meta { grid-row: 2; }
   .a-feat--lead .a-feat__visual { grid-row: 1 / -1; position: relative; z-index: 2; margin-top: calc(-1 * (var(--a-pad-top) + 0.85 * clamp(72px, 7.5vw, 110px))); } /* rises 61–92px above the edge */
   .a-feat--lead .v-frame img, .a-feat--lead .v-frame video { aspect-ratio: 6 / 5; }
-  .a-feat--lead.a-feat--wide .v-frame video { aspect-ratio: 16 / 9; } /* a video shown whole (the teaser on the home page) */
 }
 
 /* ---------- Contact: the invitation on the left, availability on the right ---------- */
