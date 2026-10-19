@@ -1,6 +1,9 @@
 ---
 // Case studies (/work/<slug>/), on version A's case template in the blue colours
 // (components/next/va/CaseA.astro). "Next project" follows the home page order and wraps around.
+// The INSO case shows its short version (src/content/lab/inso-app-short.mdoc) with the one-minute story
+// as the cover; the full version is at /work/mitigating-risk-with-location-based-alerts-full/.
+import { getEntry } from 'astro:content';
 import CaseA from '../../components/next/va/CaseA.astro';
 import { getProjects } from '../../lib/data';
 
@@ -10,5 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { project, next } = Astro.props;
+const inso = project.id === 'mitigating-risk-with-location-based-alerts';
+const shown = inso ? (await getEntry('lab', 'inso-app-short'))! : project;
 ---
-<CaseA project={project} next={next} base="/" look="blue" compare={project.id === 'mitigating-risk-with-location-based-alerts' ? 'full' : undefined} />
+<CaseA project={shown} next={next} base="/" look="blue" compare={inso ? 'short' : undefined} heroPlayer={inso ? '/media/projects/mitigating-risk-with-location-based-alerts/inso-app-one-alert-story.mp4' : undefined} />

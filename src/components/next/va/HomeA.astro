@@ -26,7 +26,7 @@ type Featured = 'split' | 'client' | 'screen-1' | 'screen-2' | 'screen-3';
 // base: where the links stay; caseBase: where the INSO case lives (defaults to base); look: a colour or type variation (/tests/orange-theme/, /tests/serif-option/)
 // hero 'v1': the earlier one-sentence intro ("I'm Zakaria El Khachia, a product designer…"), three lines on desktop (/v1/)
 // leadVideo: a video for the first featured case instead of its usual one, shown whole (16:9), its poster from
-// posters/, starting only once it reaches the middle of the screen (/tests/one-alert/)
+// posters/, starting only once it reaches the middle of the screen (the site home)
 interface Props { leadVideo?: string; hero?: 'v1'; featured?: Featured; highlight?: 'blue' | 'peach' | false; title?: string; intro?: boolean; button?: boolean; base?: string; caseBase?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown' }
 const { leadVideo, hero, featured: layout = 'split', highlight = 'blue', title = 'Zakaria El Khachia · Product designer & builder', intro = false, button = true, base = '/next/a/', caseBase, look } = Astro.props;
 const caseRoot = caseBase ?? base;

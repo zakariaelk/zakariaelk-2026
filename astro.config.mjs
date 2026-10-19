@@ -18,8 +18,10 @@ export default defineConfig({
     '/blog': '/',
     '/contact': '/',
     '/portrait': '/',
-    // the video test's first card opens the short version of the INSO case
-    '/tests/one-alert/work/mitigating-risk-with-location-based-alerts': '/work/mitigating-risk-with-location-based-alerts-short/',
+    // the video test and the short INSO case became the main versions (19 Oct 2026)
+    '/tests/one-alert': '/',
+    '/tests/one-alert/work/mitigating-risk-with-location-based-alerts': '/work/mitigating-risk-with-location-based-alerts/',
+    '/work/mitigating-risk-with-location-based-alerts-short': '/work/mitigating-risk-with-location-based-alerts/',
   },
   prefetch: {
     prefetchAll: true,

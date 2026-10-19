@@ -407,7 +407,7 @@ html.is-logo-spin .n-brand__logo :is(.n-logo__big-shape, .n-logo__small-shape) {
   .a-feat--lead .a-feat__meta { grid-row: 2; }
   .a-feat--lead .a-feat__visual { grid-row: 1 / -1; position: relative; z-index: 2; margin-top: calc(-1 * (var(--a-pad-top) + 0.85 * clamp(72px, 7.5vw, 110px))); } /* rises 61–92px above the edge */
   .a-feat--lead .v-frame img, .a-feat--lead .v-frame video { aspect-ratio: 6 / 5; }
-  .a-feat--lead.a-feat--wide .v-frame video { aspect-ratio: 16 / 9; } /* a video shown whole (/tests/one-alert/) */ /* full width, 17% less tall: the landscape video keeps its whole height, only its blue sides are trimmed */
+  .a-feat--lead.a-feat--wide .v-frame video { aspect-ratio: 16 / 9; } /* a video shown whole (the teaser on the home page) */
 }
 
 /* ---------- Contact: the invitation on the left, availability on the right ---------- */
