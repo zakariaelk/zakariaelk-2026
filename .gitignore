@@ -28,3 +28,4 @@ pnpm-debug.log*
 
 # Private notes (content drafts, publishing rules): kept local while the repo is public
 docs/
+.claude/
