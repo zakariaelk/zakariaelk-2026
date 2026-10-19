@@ -44,7 +44,7 @@ if (body) {
   body.classList.add('is-enhanced');
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const videos = [...body.querySelectorAll<HTMLVideoElement>('video:not(.cs-player__video)')]; // a video behind a play button waits for it
+  const videos = [...body.querySelectorAll<HTMLVideoElement>('video')];
   videos.forEach((v) => { v.autoplay = false; v.pause(); v.preload = 'none'; });
   if (reduce) videos.forEach((v) => { v.controls = true; v.preload = 'metadata'; });
   else {

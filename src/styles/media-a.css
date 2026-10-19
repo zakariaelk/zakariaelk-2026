@@ -5,25 +5,3 @@
 .a-cta { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; padding: 15px 26px; font-family: var(--sans); font-weight: 430; font-size: 18px; letter-spacing: -0.2px; line-height: 1.2; color: var(--on-brown); text-decoration: none; white-space: nowrap; }
 .a-cta__paper { position: absolute; inset: 0; z-index: -1; background-color: var(--brown); }
 .a-cta svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-
-/* A video with sound behind a play button (components/story/StoryVideo.astro): its cover, then the
-   video with its own controls (full screen, speed); at the end a way on to the case study */
-.cs-player { margin: 0; }
-.cs-player__frame { position: relative; container-type: inline-size; aspect-ratio: 16 / 9; background: var(--c-grey-tint, #f0f0f0); }
-.cs-player__video { position: absolute; inset: 0; width: 100%; height: 100%; }
-.cs-player__play { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: flex-end; padding: max(12px, 5cqw) max(12px, 5.5cqw); border: 0; background: center / cover no-repeat; cursor: pointer; } /* the button sits low right, under the end card's title and clear of the phone */
-.cs-player__pill { display: inline-flex; align-items: center; gap: clamp(6px, 1.2cqw, 12px); padding: clamp(3px, 0.7cqw, 8px) clamp(10px, 1.8cqw, 20px) clamp(3px, 0.7cqw, 8px) clamp(3px, 0.7cqw, 8px); border-radius: 999px; background: var(--brown); color: var(--on-brown); font-family: var(--sans); font-size: clamp(12px, 1.6cqw, 18px); line-height: 1.2; box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.5); transition: transform 0.2s ease; } /* sized from the player's own width, so it suits a small card and a full-width cover alike */
-.cs-player__icon { display: grid; place-items: center; width: clamp(24px, 3.8cqw, 44px); aspect-ratio: 1; border-radius: 50%; background: var(--on-brown); color: var(--brown); }
-.cs-player__icon svg { width: 42%; height: 42%; margin-left: 8%; fill: currentColor; }
-.cs-player__len { opacity: 0.7; }
-.cs-player__play:hover .cs-player__pill, .cs-player__play:focus-visible .cs-player__pill { transform: scale(1.04); }
-.cs-player.is-playing .cs-player__play { display: none; }
-.cs-player--left .cs-player__play { justify-content: flex-start; }
-/* the end: the cover again, with the way on to the case study and a replay */
-.cs-player__end { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: clamp(6px, 1.4cqw, 14px); background: rgb(245 244 239 / 0.92); backdrop-filter: blur(6px); }
-:root[data-theme='dark'] .cs-player__end { background: rgb(26 26 26 / 0.9); }
-:root[data-theme='dark'] .cs-player__again { color: #f4f4f4; }
-.cs-player.is-ended .cs-player__end { display: flex; }
-.cs-player__end .a-cta { gap: clamp(6px, 1.2cqw, 10px); padding: clamp(8px, 1.4cqw, 15px) clamp(14px, 2.4cqw, 26px); font-size: clamp(13px, 1.7cqw, 18px); } /* in step with the player's size */
-.cs-player__end .a-cta svg { width: clamp(16px, 1.9cqw, 20px); height: clamp(16px, 1.9cqw, 20px); }
-.cs-player__again { padding: 6px 4px; border: 0; background: none; font-family: var(--sans); font-size: clamp(13px, 1.5cqw, 16px); color: #1d1b19; text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; }

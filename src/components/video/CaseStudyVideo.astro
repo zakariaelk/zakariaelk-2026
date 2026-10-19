@@ -1,0 +1,51 @@
+---
+// A case study's full video (docs: brief-teaser-full-video-cta): the native player with its poster,
+// no autoplay. Opened from a teaser's "Full video" link (?play=1 or #full-video), it scrolls into view
+// and plays with sound; if the browser blocks sound, it plays muted with an "Unmute" button. The
+// query and hash are then removed, so a refresh doesn't play it again.
+interface Props { src: string; poster: string; title: string }
+const { src, poster, title } = Astro.props;
+---
+<section class="c-video" id="full-video" aria-label={title} data-case-video>
+  <video src={src} poster={poster} width="1920" height="1080" controls playsinline preload="metadata"></video>
+  <button type="button" class="c-video__unmute" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-4v13L7 14.5H4z" /><path d="M16 9.5l5 5M21 9.5l-5 5" /></svg>
+    Unmute
+  </button>
+</section>
+
+<script>
+  const box = document.querySelector<HTMLElement>('[data-case-video]');
+  const url = new URL(location.href);
+  if (box && (url.searchParams.get('play') === '1' || url.hash === '#full-video')) {
+    const video = box.querySelector('video')!;
+    const unmute = box.querySelector<HTMLButtonElement>('.c-video__unmute')!;
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    box.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
+    video.muted = false;
+    video.play().catch(() => {
+      // sound blocked (the click was on the previous page): play muted, offer the sound back
+      video.muted = true;
+      video.play().catch(() => {});
+      unmute.hidden = false;
+    });
+    unmute.addEventListener('click', () => { video.muted = false; unmute.hidden = true; });
+    video.addEventListener('volumechange', () => { if (!video.muted) unmute.hidden = true; });
+    url.searchParams.delete('play');
+    history.replaceState(history.state, '', url.pathname + url.search);
+  }
+</script>
+
+<style>
+  .c-video { position: relative; aspect-ratio: 16 / 9; scroll-margin-top: 24px; background: #f5f4ef; }
+  .c-video video { display: block; width: 100%; height: 100%; }
+  .c-video__unmute {
+    position: absolute; top: clamp(10px, 2vw, 20px); right: clamp(10px, 2vw, 20px);
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 10px; border: 0; border-radius: 999px;
+    background: var(--brown); color: var(--on-brown); font-family: var(--sans); font-size: 15px; cursor: pointer;
+    box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.5);
+  }
+  .c-video__unmute[hidden] { display: none; }
+  .c-video__unmute svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .c-video__unmute:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+</style>

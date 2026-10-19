@@ -1,0 +1,64 @@
+---
+// A project card's teaser (docs: brief-teaser-full-video-cta): a silent looping video, decorative (the
+// card's text and links carry the meaning), with a "Full video" link over it that opens the case study
+// on its full video. It starts once it reaches the middle of the screen, after a 2.5 s hold on its
+// poster, pauses off screen, and never plays with reduced motion. Clicks outside the button open the case.
+interface Props { src: string; poster: string; fullHref: string; caseHref: string; label: string }
+const { src, poster, fullHref, caseHref, label } = Astro.props;
+---
+<div class="p-teaser" data-teaser>
+  <a class="p-teaser__media" href={caseHref} tabindex="-1" aria-hidden="true">
+    <video src={src} poster={poster} width="1920" height="1080" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+  </a>
+  <a class="p-teaser__full" href={fullHref} aria-label={label}>
+    <span class="p-teaser__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" /></svg></span>
+    <span aria-hidden="true">Full video</span>
+  </a>
+</div>
+
+<script>
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const HOLD = 2500;
+  document.querySelectorAll<HTMLElement>('[data-teaser]').forEach((box) => {
+    const video = box.querySelector('video')!;
+    if (still) return; // the poster only
+    let timer = 0;
+    // starts once it crosses the middle of the screen, after a short hold on the poster
+    new IntersectionObserver(([e]) => {
+      clearTimeout(timer);
+      if (e.isIntersecting && video.paused) timer = window.setTimeout(() => video.play().catch(() => {}), HOLD);
+    }, { rootMargin: '-45% 0px -45% 0px' }).observe(video);
+    // pauses off screen (CPU, battery)
+    new IntersectionObserver(([e]) => { if (!e.isIntersecting) { clearTimeout(timer); video.pause(); } }).observe(video);
+  });
+</script>
+
+<style>
+  .p-teaser { position: relative; container-type: inline-size; aspect-ratio: 16 / 9; overflow: hidden; background: #f5f4ef; }
+  .p-teaser__media { position: absolute; inset: 0; display: block; }
+  .p-teaser__media video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* a light darkening while the button shows, so it reads clearly */
+  .p-teaser::after { content: ''; position: absolute; inset: 0; background: rgb(0 0 0 / 0.18); opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+  .p-teaser:hover::after, .p-teaser:has(.p-teaser__full:focus-visible)::after { opacity: 1; }
+  /* "Full video": centred, fading in on hover or keyboard focus */
+  .p-teaser__full {
+    position: absolute; left: 50%; top: 50%; z-index: 2; translate: -50% -50%;
+    display: inline-flex; align-items: center; gap: clamp(8px, 1.4cqw, 12px);
+    padding: clamp(5px, 0.8cqw, 7px) clamp(14px, 2.2cqw, 20px) clamp(5px, 0.8cqw, 7px) clamp(5px, 0.8cqw, 7px);
+    border-radius: 999px; background: var(--brown); color: var(--on-brown);
+    font-family: var(--sans); font-weight: 430; font-size: clamp(14px, 2.6cqw, 18px); letter-spacing: -0.2px; line-height: 1.2; text-decoration: none;
+    box-shadow: 0 12px 32px -14px rgb(0 0 0 / 0.55);
+    opacity: 0; transition: opacity 0.15s ease;
+  }
+  .p-teaser:hover .p-teaser__full, .p-teaser__full:focus-visible { opacity: 1; }
+  .p-teaser__full:focus-visible { outline: 2px solid var(--on-brown); outline-offset: 3px; box-shadow: 0 0 0 5px var(--brown); }
+  .p-teaser__icon { display: grid; place-items: center; width: clamp(26px, 5.5cqw, 36px); aspect-ratio: 1; border-radius: 50%; background: var(--on-brown); color: var(--brown); }
+  .p-teaser__icon svg { width: 42%; height: 42%; margin-left: 8%; fill: currentColor; }
+  /* touch screens: always there, smaller, in the bottom-left corner */
+  @media (hover: none) {
+    .p-teaser__full { left: max(10px, 3.5cqw); top: auto; bottom: max(10px, 3.5cqw); translate: none; opacity: 1; gap: 8px; padding: 4px 12px 4px 4px; font-size: 13px; }
+    .p-teaser__icon { width: 26px; }
+    .p-teaser::after { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .p-teaser__full, .p-teaser::after { transition: none; } }
+</style>

@@ -13,7 +13,7 @@
 import { getImage } from 'astro:assets';
 import Next from '../../../layouts/Next.astro';
 import FramedMedia from '../FramedMedia.astro';
-import StoryVideo from '../../story/StoryVideo.astro';
+import ProjectTeaser from '../../video/ProjectTeaser.astro';
 import ContactA from './ContactA.astro';
 import IntroA from './IntroA.astro';
 import { blob, cutMask, tabCut, unevenRect } from '../../../lib/papercut';
@@ -26,10 +26,10 @@ type Featured = 'split' | 'client' | 'screen-1' | 'screen-2' | 'screen-3';
 // intro: the opening animation (the home page only, not the tests)
 // base: where the links stay; caseBase: where the INSO case lives (defaults to base); look: a colour or type variation (/tests/orange-theme/, /tests/serif-option/)
 // hero 'v1': the earlier one-sentence intro ("I'm Zakaria El Khachia, a product designer…"), three lines on desktop (/v1/)
-// leadPlayer: the first featured case shows this video behind a play button (as on its case page),
-// playing in place, with a button on to the case at the end (the site home)
-interface Props { leadPlayer?: string; hero?: 'v1'; featured?: Featured; highlight?: 'blue' | 'peach' | false; title?: string; intro?: boolean; button?: boolean; base?: string; caseBase?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown' }
-const { leadPlayer, hero, featured: layout = 'split', highlight = 'blue', title = 'Zakaria El Khachia · Product designer & builder', intro = false, button = true, base = '/next/a/', caseBase, look } = Astro.props;
+// leadVideo / leadPoster: the first featured case shows this teaser (components/video/ProjectTeaser.astro),
+// with a "Full video" button that opens the case and plays the full video there (the site home)
+interface Props { leadVideo?: string; leadPoster?: string; hero?: 'v1'; featured?: Featured; highlight?: 'blue' | 'peach' | false; title?: string; intro?: boolean; button?: boolean; base?: string; caseBase?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown' }
+const { leadVideo, leadPoster, hero, featured: layout = 'split', highlight = 'blue', title = 'Zakaria El Khachia · Product designer & builder', intro = false, button = true, base = '/next/a/', caseBase, look } = Astro.props;
 const caseRoot = caseBase ?? base;
 
 const { featured, more } = await workList();
@@ -78,7 +78,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
               </a>
             </article>
           ) : (
-            i === 0 && leadPlayer ? (
+            i === 0 && leadVideo ? (
               <article class="a-feat a-feat--lead a-feat--player">
                 <div class="a-feat__link">
                   {layout === 'client' && <p class="a-feat__client">{orgOf(p)}</p>}
@@ -91,7 +91,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
                     {button && <a class="a-cta a-feat__cta" href={caseHref(caseRoot, p.id)}><span class="a-cta__paper" data-ring={String(41 + i * 6)} aria-hidden="true"></span>See case study<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg></a>}
                   </div>
                   <div class="a-feat__visual">
-                    <StoryVideo src={leadPlayer} title="One alert, a different turn: the story in one minute" length="1:22" align="left" endHref={caseHref(caseRoot, p.id)} />
+                    <ProjectTeaser src={leadVideo} poster={leadPoster ?? ''} caseHref={caseHref(caseRoot, p.id)} fullHref={`${caseHref(caseRoot, p.id)}?play=1#full-video`} label="Play the full INSO alerts video" />
                   </div>
                 </div>
               </article>

@@ -105,7 +105,6 @@
 .a-story .cs-option { padding: clamp(20px, 2.5vw, 28px); background: var(--c-grey-tint); font-size: clamp(18px, calc(18px + 4 * (100vw - 768px) / 512), 22px); line-height: 1.5; }
 .a-story .cs-option__title { margin: 0 0 8px; font-weight: 500; }
 .a-story .cs-option p:last-child { margin-bottom: 0; }
-.a-case__hero .cs-player { max-width: none; margin: 0; } /* the one-minute story as the cover: the full content width (player: media-a.css) */
 
 /* usage chart: two lines, values at both ends, years below, crosshair on hover, a table view */
 .v-a { --chart-a: #3d6fae; --chart-b: #b0763a; }
