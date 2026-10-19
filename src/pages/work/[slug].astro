@@ -16,4 +16,4 @@ const { project, next } = Astro.props;
 const inso = project.id === 'mitigating-risk-with-location-based-alerts';
 const shown = inso ? (await getEntry('lab', 'inso-app-short'))! : project;
 ---
-<CaseA project={shown} next={next} base="/" look="blue" compare={inso ? 'short' : undefined} fullVideo={inso ? { src: '/video/inso/one-alert-story-v14.mp4', poster: '/video/inso/one-alert-story-cover.jpg' } : undefined} />
+<CaseA project={shown} next={next} base="/" look="blue" compare={inso ? 'short' : undefined} fullVideo={inso ? { src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg' } : undefined} />
