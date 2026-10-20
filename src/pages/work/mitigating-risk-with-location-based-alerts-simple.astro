@@ -1,0 +1,24 @@
+---
+// The INSO case in its Simple version (src/content/lab/inso-app-simple.mdoc, docs/claude-code-instructions-simple-layout-v2.md):
+// the short text with quieter blocks (icon + narrative title + paragraph, no labels or boxes) and the full video
+// at the top. Styles scoped to .cs-simple (styles/case-simple.css), so the full and short versions don't change.
+// Not indexed, not listed on the home page or in "Next project" links. Remove with the comparison bar.
+import { getEntry } from 'astro:content';
+import { getProjects } from '../../lib/data';
+import CaseA from '../../components/next/va/CaseA.astro';
+import '../../styles/case-simple.css';
+
+const projects = await getProjects();
+const project = (await getEntry('lab', 'inso-app-simple'))!;
+const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
+---
+<CaseA project={project} next={next} base="/" look="blue" compare="simple" fullVideo={{ src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg' }} />
+
+<script>
+  // blocks fade in and rise 4px as they come into view (not with reduced motion)
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('has-block-fade');
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('.cs-block').forEach((b) => io.observe(b));
+  }
+</script>

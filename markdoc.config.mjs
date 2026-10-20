@@ -56,6 +56,16 @@ export default defineMarkdocConfig({
     },
     // one sentence in the site's orange marker highlight, drawn in when it reaches the middle of the screen
     mark: { render: story('Mark'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true } } },
+    // Simple INSO case: icon + narrative title + paragraph (results: + figures "value::descriptor|…" and a source line)
+    block: {
+      render: story('Block'),
+      attributes: {
+        icon: { type: String, required: true, matches: ['friction', 'did', 'testing', 'interviews', 'partners', 'pushback'] },
+        title: { type: String, required: true },
+        figures: { type: String },
+        source: { type: String },
+      },
+    },
     // two or more options weighed against each other: cards side by side on wide screens
     options: { render: story('Options') },
     option: { render: story('Option'), attributes: { title: { type: String, required: true } } },

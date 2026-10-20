@@ -1,0 +1,246 @@
+---
+# Simple version of the INSO case (docs/claude-code-instructions-simple-layout-v2.md), on the short text
+# (inso-app-short.mdoc), at /work/mitigating-risk-with-location-based-alerts-simple/. Blocks are icon + narrative
+# title + paragraph; wording as in the short text except the edits listed in the brief (sections 4 and 6).
+title: "Mitigating risk with location-based alerts"
+headline: "Keeping humanitarian workers informed on the move"
+lede:
+  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, traditionally by SMS and email. This is the mobile app that brings them into one place, and how I redesigned it as the sole designer."
+deliverables: "Heuristic evaluation, UX/UI, testing, launch assets"
+intro: "Helping humanitarian workers stay informed on the move, by redesigning how safety alerts are read, mapped and sent"
+showIntro: false
+tagline: "a safety alert app for humanitarian workers"
+projectType: "Mobile app redesign + new features"
+statement: "Helping humanitarian workers stay informed on the move, by redesigning how safety alerts are read, mapped and sent"
+org: "The International NGO Safety Organisation"
+projectName: "Alert mobile app"
+sector: "Humanitarian safety, NGOs"
+role: "Sole product designer"
+duration: "Dec 2022–Jun 2023, updates designed early 2025, released Sep 2025"
+team: "2 engineers + department lead"
+link: "https://app.ngosafety.org/"
+cover: "../../assets/projects/mitigating-risk-with-location-based-alerts/inso-mobile-app-cover-03.jpg"
+client: "INSO mobile app"
+summary: "The INSO mobile app is a location-based incident reporting tool for NGOs, in real time."
+year: "2023"
+order: 1
+featured: true
+tier: "case"
+problem: "Field teams got safety alerts by SMS and email. The app meant to replace them felt technical and was hard to read under pressure."
+did: "Redesigned onboarding, the alert list, alert details and three map modes, based on how people actually work in the field."
+result: "The redesigned app is used across several INSO country offices to follow incidents nearby."
+hard: "I joined after the core features were built, so a lot of the work was reshaping decisions already made."
+menu:
+  - group: "Overview"
+    items:
+      - label: "Product"
+        heading: "Product"
+      - label: "Context"
+        heading: "Context"
+      - label: "Users"
+        heading: "Users"
+  - group: "Key interactions"
+    items:
+      - label: "Login"
+        heading: "Login"
+      - label: "Alerts"
+        heading: "Alerts"
+      - label: "Alert detail"
+        heading: "Alert detail"
+      - label: "Maps"
+        heading: "Maps"
+  - group: "Wrap-up"
+    items:
+      - label: "Outcome & Takeaways"
+        heading: "Outcome & Takeaways"
+featuredVideo: "/media/projects/mitigating-risk-with-location-based-alerts/inso-app-product-intro-02.mp4"
+---
+
+## Reality check
+
+The app started as an initiative from the engineers, in collaboration with INSO colleagues from the country offices, who had concluded a few things that pointed towards a mobile app:
+
+- SMS was getting more expensive, which put pressure on country office budgets.
+- Internet coverage was increasing, and so was smartphone use: the average NGO worker carries one wherever they are, alongside other communication devices if needed.
+
+Those sessions were the only research behind the app, and the engineers had mostly focused on the technical side. I took the project on wanting to do further research, but with those sessions done, a demo already implemented and two other projects in my pipeline, {% mark text="I decided to focus on design principles instead" /%}. So I based the redesign on a heuristic evaluation and testing with country office colleagues, knowing there would be no baseline to compare against.
+
+## Where it started
+
+**The app existed, but it didn't feel made for the people using it**
+
+The idea was simple: take alerts out of SMS and email and put them in one place, with a map, filters and updates people can follow on the move. My way in was pure curiosity after hearing the developers talk about it for a while. One look and my admittedly biased designer brain went "what is this, and who is it for?" There was no INSO blue (our main brand colour) anywhere, just brown and beige, and the screens felt built for engineers more than for someone reading an alert under pressure.
+
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-former-version.jpg" frame="before" alt="The app when I joined: a dense dark list of alerts in capitals, an alert detail packed with text under a small map, and a map that shows a single alert pin." caption="Before: Visuals showing what the App looked like when I joined the project team." /%}
+
+{% block icon="friction" title="The solution came before the problem" %}
+There was no problem statement to design against, so a quick heuristic evaluation of the app became my starting point. After sharing it with the project lead, I asked to take the app on, with the idea of lining up the UI with the brand, not knowing it would grow into a UX redesign. Along the way it felt like a patchwork every now and then.
+{% /block %}
+
+{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-product-intro-02.mp4" alt="Walk-through of the redesigned app: the alerts list, an alert opening, and the map with its modes." caption="High-level overview of the app structure and key interactions around alerts." /%}
+
+## Users
+
+**Two groups, one sending and one receiving**
+
+NGO field workers and security staff receive the alerts and need them fast and clear, often under pressure. INSO colleagues in the country offices write and send them, mostly from laptops through the Partners Portal. There was no direct access to NGO workers before launch, so country office colleagues stood in for them, through interviews and remote prototype tests in Maze built around real scenarios. Partners only weighed in after launch, through a survey.
+
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-users.jpg" alt="Board in three columns: who (NGO field workers, security and operations staff, INSO field monitors), their key needs, and the product and real-world pain points." caption="Breakdown of the different user profiles, their needs and pain points." /%}
+
+## Login
+
+**Users were asked to act before understanding what the app does**
+
+The app opened straight on a login form, with a request for location access on top. Country office colleagues thought a welcome email would be enough to explain things, but someone could install the app today and only open it a month later when an alert comes in, and by then that email is long gone. So the explanation had to live inside the app.
+
+{% block icon="did" title="Explain first, ask for location later" %}
+Two short onboarding screens now come before the login, and location access is asked only after, once people know what it's for. The login got the brand back, and the validation stopped shouting "Invalid email" before anyone had typed a thing.
+{% /block %}
+
+{% pair %}
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-intro-old.jpg" frame="before" size="half" alt="The old first screen: the login form, with the system prompt asking for location access on top of it." caption="Before: Users were asked to enable location tracking before being introduced to the app" /%}
+{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-intro-new-animated.mp4" frame="after" size="half" alt="The new pre-login flow: two onboarding screens explain what the app does before the login appears." caption="After: Redesign of pre-login flow featuring 2 onboarding screens" /%}
+{% /pair %}
+
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-login-comparison.jpg" frame="compare" alt="Login before: a plain form showing red “Invalid email” and “Invalid password” errors before anything is typed. After: a branded “Let's get started” screen with an illustration of a person beside a lock, calm fields and one Continue button." caption="Login screen before and after. Smart validation was one of the main updates." /%}
+
+{% block icon="partners" title="Most partners found getting started easy" figures="24 of 31::rated 4 or 5|4.1/5::average" source="Post-launch partner survey, no baseline for the old version" /%}
+
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-flow-1-result.png" size="text" alt="Survey bar chart for installation and onboarding: 39% gave 5, 39% gave 4, 16% gave 3, 3% gave 2 and 3% gave 1. 31 responses, average 4.1." caption="Onboarding satisfaction after redesign (31 responses, avg 4.1/5)" /%}
+
+## Alerts
+
+**The main screen had all the information, but it was hard to read and scan**
+
+{% block icon="friction" title="Eight alerts squeezed on one screen" %}
+Eight alerts were squeezed on one screen, with titles of 12 to 16 words in a tiny column and small dates and distances fighting for attention. My first thought was "where should I be looking?" and there was no way to search by place either.
+{% /block %}
+
+{% block icon="did" title="Built for scanning, not for seeing everything" %}
+Scanning came first, with more space and a clear order of location, title and time. Then search at the top, a simpler filter and a list/map toggle. The map-and-listings idea came from apps like Airbnb, and country office colleagues found it familiar straight away.
+{% /block %}
+
+{% pair %}
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-old-alerts-screen.jpg" frame="before" size="half" alt="The old alerts list, annotated: inconsistent typography, low spacing between items, and location, distance and time not prioritised." caption="Before: Alerts screen before redesign, showing density and unclear hierarchy" /%}
+{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-alerts-screen-redesign.mp4" frame="after" size="half" alt="The new alerts list: search at the top, alerts as spaced cards with location and distance first, and a persistent menu with a map button." caption="After: Improved alerts experience with clearer hierarchy and in-app guidance" /%}
+{% /pair %}
+
+{% block icon="testing" title="Testers filtered alerts by location and date without help" figures="10 of 10::completed the location filter · 22 s · ease 9.3/10|13 of 13::completed the date filter · 19 s · ease 8.2/10" source="Maze tests with country office colleagues" /%}
+
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-flow-2-ut-test-01.jpg" alt="Maze results for filtering alerts by location: the task scenario next to the screens testers went through, with a 100% success rate." caption="Task-based usability test scenario and results for filtering alerts by location" /%}
+
+## Alert detail
+
+**I am in an alert. What information will help me the most?**
+
+Interviews with country office colleagues were clear on this: people look for the incident and its location first, then updates and advice. The old screen had it the other way round, so the redesign flipped the order. Testing also showed updates looked just like new alerts, so they got their own marker, and the list and notifications now show fuller location detail (country, province, territory).
+
+{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-alert-details-comparison.mp4" frame="compare" alt="Alert detail before: a map and a long block of text with the incident type buried. After: the title, place and time first, then full location, incident type, latest update and latest advice." caption="Alert detail screen before & after showing the differences in prioritisation of interests" /%}
+
+## Usability vs security
+
+**Keeping alerts safe made the app harder to use**
+
+Alerts are sensitive, so what people can copy or see was a long conversation with country office colleagues, and so was keeping the app discreet if someone looks at the phone. Finding the middle ground was tricky. It isn't fully settled, because the solutions to security concerns kept creating usability problems somewhere else: no copying or screenshots, several layers to get into the app, no Face ID. Partners named the copy and screenshot block as their biggest frustration.
+
+## Maps
+
+**Seeing incidents on a map changes everything**
+
+The old map could only show one alert at a time, and each mode's settings sat behind an icon in another window. Settings belong inside the feature they change, so each of the three map modes now holds its own. In the first version I tested, each mode was explained with one small pop-up.
+
+{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-map-former-design-assessment.mp4" frame="before" alt="The former map: it opens on one alert's pin, with no way to browse other alerts by place." caption="Before: In the former design, users could only view the location of a single alert on the map. Exploring alerts geographically, on the other hand, wasn’t straightforward." /%}
+
+### Explore: what's happening along my route?
+
+Explore lets people move around the map and spot alerts visually, for example along a route with several checkpoints. Testing caught two things worth fixing: scrolling an alert also moved the map, and alerts without a location never showed up on it, so list and map counts didn't match.
+
+{% block icon="testing" title="Testers found the map from the alerts list and explored it freely, with no drop-offs" figures="8 of 8::completed|33 s::on average|8.6/10::ease" source="Maze test with country office colleagues" /%}
+
+{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-map-explore.mp4" frame="after" alt="Explore mode: panning the map shows alert clusters, and tapping one opens the alert." caption="After: We introduced the Explore mode, allowing users to freely navigate the map and visually discover alerts." /%}
+
+### Proximity: I'm not in the area I want to monitor. Can I still stay informed?
+
+Proximity shows alerts within a radius of your live location, or of a pin you drop somewhere else. The first version had two ways to set that radius: on the map, and with a slider in the filter menu a bit like dating apps do. Most testers went to the map through the Map button on the alerts list, so the slider went and the radius now lives in one place.
+
+{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-map-proximity.mp4" frame="after" alt="Proximity mode: a circle around the user's position or a dropped pin, with a radius control, lists the alerts inside it." caption="After: I reworked the Proximity mode, allowing users to monitor alerts within a radius based on either their current location or a custom location dropped on the map." /%}
+
+{% block icon="friction" title="Live or custom location? Hard to tell" %}
+The trickier part was that some testers couldn't tell live location from custom location, or how to use either. All they had to go on was one pop-up: "Use this feature to know what's happening around you and/or while on the move. You can also set a remote location."
+{% /block %}
+
+{% block icon="testing" title="Testers set a radius around a place they weren't in, but the single pop-up left live and custom location unclear" figures="6 of 6::completed|53 s::on average|6.8/10::ease" source="Maze test with country office colleagues" /%}
+
+Together with the engineers and a few colleagues from the information team at HQ we came up with two ideas:
+
+**A doc or FAQ.** Pros: room to explain each feature and when it helps most, and it doesn't get in anyone's way on a first visit. Cons: a lot of extra steps to learn one thing, and on a phone you can't keep the doc and the map side by side like on a desktop.
+
+**Full-screen animated tutorials.** Pros: quick and on demand, shown the first time someone opens a mode and again from Settings, so people see what it's for and how it works. Cons: three steps was the shortest I could get it, which might feel long for some.
+
+{% block icon="did" title="Showing it instead of explaining it" %}
+We took the risk with the tutorials, since text and animation together get the point across faster than text alone.
+{% /block %}
+
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-map-modes-tutorial.jpg" alt="The map opens, then a full-screen tutorial introduces each mode in turn: Explore, Proximity and Geofence, each with a short line on what it is for, Next and Skip." caption="Full-screen tutorials introduce each map mode the first time the map opens." /%}
+
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-proximity-tutorial.jpg" frame="after" alt="The three-step Proximity tutorial: see what is around you, see what is around a custom location, and select the radius with a slider; then the results view, a radius on the map with the alerts inside it." caption="After: The three-step Proximity tutorial, then the results view." /%}
+
+{% block icon="interviews" title="The tutorial cleared up the difference between live and custom location, and colleagues were more satisfied with the feature" source="Interviews with 5 country office colleagues who hadn't seen the app before, updated design and prototype" /%}
+
+### Geofence: how do I track one specific area?
+
+{% block icon="pushback" title="A specialist tool, on a phone" %}
+Geofence lets people draw their own area on the map, which is really for security and GIS staff more than everyone. This is where I pushed back. Colleagues in the country offices told me it takes some tech savviness, and even they didn't feel natural using it. Drawing an area also takes precision, which is far easier on a desktop than with a finger on a phone. The idea was to put the attention where it was needed the most, but the foundation was already there, an early feature called Polygon, so Geofence stayed and the job became making it usable. In that first version there were no instructions at all, just a map, and you were supposed to know you had to tap it to draw.
+{% /block %}
+
+It was also the hardest to learn: 5 of 8 testers finished the task but none of them took the intended path. Two asked for a video, which is heavy on weak connections, so Geofence got the same kind of three-step animated tutorial instead.
+
+{% block icon="interviews" title="Colleagues understood Geofence, but saw it as relevant only to those who work actively with maps" source="Same 5 interviews; lowest-ranked feature in the post-launch partner survey (9 of 30), as expected for a specialist tool" /%}
+
+{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-map-geofence.mp4" frame="after" alt="Geofence with the three-step guide: zoom in, tap to drop pins around an area, confirm, and the alerts inside the shape appear." caption="After: We simplified Geofence (formerly Polygon), allowing users to define areas directly by tapping on the map, supported by clear in-app guidance." /%}
+
+Across releases, Explore takes most of the map traffic, with Proximity and Geofence well behind. That matches what partners ranked as most important, and it fits Geofence being a tool for a handful of specialists.
+
+## After the first release
+
+Feedback from country office colleagues kept shaping the app after launch:
+
+- Font size setting, a dark theme, and the app in French, English and Ukrainian (full Ukrainian since August 2023).
+- Notifications limited to your regions or to a saved map search. People do open them: over 100,000 times from notifications in three years.
+- An update marker and fuller location detail in the list and notifications.
+- Unseen alerts pointed out, a Recent Alerts block, and a restyled date picker with quick options.
+- Animated tutorials in every map mode.
+
+The Ukraine country office was one of the offices that told us the most about internet coverage, which kept improving even through the war, compared with other countries in Africa and Asia.
+
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-new-alerts.jpg" frame="after" alt="Two alerts lists: the plain list, and the same list with a Recent Alerts block at the top holding the alerts not seen yet." caption="After: New alerts pointed out in the alerts list, with the Recent Alerts block on top." /%}
+
+**Composing alerts from the phone.** This was discussed from the start, but we agreed to focus on the NGO side first. Once the prototype showed map modes work fine on a small screen, a few colleagues asked if they could post from the app too, as field monitors often hear about something while far from a laptop. With management sign-off I designed the first version in early 2025, and it was released in September 2025 together with login through an INSO account: a simple form with a map pin and distribution lists, plus updates to existing alerts. A later round added offline composing, which sends the alert as soon as the network is back.
+
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-compose.jpg" frame="after" alt="Composing an alert: the alerts list with an INSO ALERT label and a megaphone button, the empty form, the filled form with location and distribution lists, and the sent confirmation." caption="After: Composing an INSO ALERT from the phone, from the megaphone on the alerts list to the confirmation. Alert text, place names, the map and list sizes are blurred." /%}
+
+## Outcome
+
+**How the app is used today.** The launch month brought about 1,600 users, then a smaller base settled in: around 800 a month through 2024, and 450 to 630 through 2026. About 8 in 10 of them are returning users, so most people who use it keep coming back.
+
+{% usagechart caption="Monthly active and returning users since launch, rounded. Test and visitor traffic left out." /%}
+
+**What I can't say.** Nothing was measured before the redesign, so I can't say whether it made the app better, only that it's used and that people keep coming back.
+
+{% block icon="partners" title="Partners found the app easy to use" figures="23 of 29::rated ease 4 or 5 (79%)|4.1/5::average|24 of 31::for installation and onboarding" source="Post-launch partner survey" /%}
+
+The weakest score was whether the app helped them reach their goal: 21 of 31 gave it a 4 or 5 (average 3.7), and a few said they hadn't really used it yet.
+
+**Takeaways**
+
+- **Design for the worst connection first.** Weak networks, stress and no time to learn shaped most decisions, from animated tutorials instead of video to a list you can scan in seconds.
+- **Test with proxies, then check with the real people.** Country office colleagues before launch, partners after.
+- **Security and usability pull against each other.** Blocking copy and screenshots keeps alerts safe, but partners named it their biggest frustration.
+
+## Reflection
+
+**What I'd do differently:** set baseline metrics before redesigning, run a proper retest of Geofence, and set up tracking before a feature ships.
+
+**About the composer.** It was released in September 2025 and I didn't test or track it afterwards. By then the team, me included, had been tasked with the Partners Portal, a one-stop platform where NGO workers get all of INSO's products and services, and that took our focus. A few months after the release I left INSO for another challenge.
+
+**Still unsolved:** date filters that don't refresh, frequent log-outs, the copy and screenshot block, reading alerts offline, and what partners asked for next (a LIVE indicator, map search and region-based notifications).

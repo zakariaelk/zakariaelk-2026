@@ -1,0 +1,20 @@
+---
+// A content block of the Simple INSO case (docs/claude-code-instructions-simple-layout-v2.md): a small icon
+// showing the kind of block, a short narrative title that says what happened, then its paragraph. For results
+// the finding is the title, followed by a row of figures ("value::descriptor|value::descriptor") and a source
+// line. No labels, no box. The icons (./icons/*.svg) are placeholders until the paper-cut set is approved.
+interface Props { icon: 'friction' | 'did' | 'testing' | 'interviews' | 'partners' | 'pushback'; title: string; figures?: string; source?: string }
+const { icon, title, figures, source } = Astro.props;
+const icons = import.meta.glob<string>('./icons/*.svg', { query: '?raw', import: 'default', eager: true });
+const svg = icons[`./icons/${icon}.svg`];
+const row = figures?.split('|').map((f) => f.split('::').map((s) => s.trim())) ?? [];
+---
+<section class:list={['cs-block', `cs-block--${icon}`]}>
+  <div class="cs-block__head">
+    <span class="cs-block__icon" aria-hidden="true" set:html={svg} />
+    <p class="cs-block__title">{title}</p>
+  </div>
+  <slot />
+  {row.length > 0 && <dl class="cs-block__figures">{row.map(([value, label]) => <div><dt>{value}</dt><dd>{label}</dd></div>)}</dl>}
+  {source && <p class="cs-block__source">{source}</p>}
+</section>

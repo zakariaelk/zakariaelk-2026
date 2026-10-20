@@ -10,8 +10,9 @@ import NextHeader from '../components/next/NextHeader.astro';
 // variant: a class on <html> for that version's own styles.
 // intro: the home page's opening animation (version A) may play; decided here, before the first paint
 // look: a colour or type variation of version A (data-look on <html>); 'dmsans' also loads DM Sans
-interface Props { title?: string; description?: string; palette?: 'paper' | 'mono'; base?: string; variant?: string; logo?: boolean; work?: string; intro?: boolean; enter?: boolean; look?: 'orange' | 'dmsans' | 'blue' | 'brown' }
-const { title = 'Zakaria El Khachia · Product designer', description = 'Product designer with a frontend development background.', palette = 'mono', base = '/next/', variant, logo = false, work, intro = false, enter = false, look } = Astro.props;
+// bodyClass: a class on <body> scoping one page's own styles (cs-simple: the Simple INSO case)
+interface Props { title?: string; description?: string; palette?: 'paper' | 'mono'; base?: string; variant?: string; logo?: boolean; work?: string; intro?: boolean; enter?: boolean; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; bodyClass?: string }
+const { title = 'Zakaria El Khachia · Product designer', description = 'Product designer with a frontend development background.', palette = 'mono', base = '/next/', variant, logo = false, work, intro = false, enter = false, look, bodyClass } = Astro.props;
 ---
 <!doctype html>
 <html lang="en" data-palette={palette} data-look={look} class={variant ? `v-${variant}` : undefined}>
@@ -65,7 +66,7 @@ const { title = 'Zakaria El Khachia · Product designer', description = 'Product
       </script>
     )}
   </head>
-  <body>
+  <body class={bodyClass}>
     <NextHeader base={base} contact={variant ? '#contact' : undefined} work={work} logo={logo} />
     <main id="main"><slot /></main>
   </body>

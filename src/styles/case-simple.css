@@ -1,0 +1,40 @@
+/* The Simple version of the INSO case (docs/claude-code-instructions-simple-layout-v2.md), scoped to
+   .cs-simple on <body> so the full and short versions don't change. Same type, colours, column and hero as
+   the case template; quieter blocks: an icon and a narrative title over the paragraph (components/story/
+   Block.astro), no labels, no boxes, no bars. */
+
+/* ---------- Blocks: icon + narrative title, then the paragraph ---------- */
+.cs-simple .a-story .cs-block { --title-line: calc(var(--t-body) * 1.18 * 1.25); margin-top: 1.8em; margin-bottom: 1em; } /* a little more space above than between paragraphs; --title-line centres the icon on the title's first line */
+.cs-simple .a-story .cs-block > p:last-child { margin-bottom: 0; }
+.cs-block__head { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 0.35em; }
+.cs-block__icon { flex: none; width: 28px; height: 28px; margin-top: calc((var(--title-line) - 28px) / 2); }
+.cs-block__icon svg { display: block; width: 100%; height: 100%; }
+.cs-block__title { margin: 0; font-family: var(--serif); font-weight: 470; font-size: calc(var(--t-body) * 1.18); line-height: 1.25; letter-spacing: -0.01em; text-wrap: pretty; } /* one step above the body */
+.cs-simple .a-story .cs-block__title { margin-bottom: 0; }
+/* wide screens: the icon in the left margin, title and paragraph in the text column */
+@media (min-width: 1100px) {
+  .cs-block__head { position: relative; display: block; }
+  .cs-block__icon { position: absolute; top: 0; left: -64px; width: 40px; height: 40px; margin-top: calc((var(--title-line) - 40px) / 2); }
+}
+/* results: a row of figures (bold value over a small grey descriptor) and a small grey source line */
+.cs-block__figures { display: flex; flex-wrap: wrap; gap: 16px clamp(24px, 4vw, 48px); margin: 18px 0 0; }
+.cs-block__figures dt { font-family: var(--serif); font-weight: 500; font-size: var(--t-body); line-height: 1.2; font-variant-numeric: tabular-nums; }
+.cs-block__figures dd { max-width: 30ch; margin: 4px 0 0; font-family: var(--sans); font-size: clamp(14px, calc(14px + 2 * (100vw - 768px) / 512), 16px); line-height: 1.4; color: var(--muted); }
+.cs-simple .a-story .cs-block__source { margin: 14px 0 0; font-family: var(--sans); font-size: clamp(14px, calc(14px + 3 * (100vw - 768px) / 512), 17px); line-height: 1.45; color: var(--muted); }
+/* a 200ms fade and 4px rise as a block comes into view (the page's script; never with reduced motion) */
+.has-block-fade .cs-simple .cs-block { opacity: 0; transform: translateY(4px); transition: opacity 0.2s ease, transform 0.2s ease; }
+.has-block-fade .cs-simple .cs-block.is-in { opacity: 1; transform: none; }
+
+/* ---------- Structure ---------- */
+/* the three map modes: one small level */
+.cs-simple .a-story h3 { margin: var(--a-gap-s) auto 0.6em; font-family: var(--serif); font-weight: 470; font-size: clamp(22px, calc(22px + 8 * (100vw - 768px) / 512), 30px); line-height: 1.25; letter-spacing: -0.01em; text-wrap: balance; }
+/* "Takeaways": a plain bold line, like "What I can't say", not a heading */
+.cs-simple .a-story .is-lead:not(h2 + .is-lead) { margin: 1.6em auto 0.5em; font-size: inherit; line-height: inherit; letter-spacing: normal; }
+/* bullets: 12–16px apart */
+.cs-simple .a-story article > ul > li + li { margin-top: 14px; }
+
+/* ---------- Visuals ---------- */
+/* no Before / After chips: the caption says it */
+.cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels) { display: none; }
+/* the usage chart centred on the text column like the other visuals */
+.cs-simple .a-story .cs-chart { margin-inline: auto; }

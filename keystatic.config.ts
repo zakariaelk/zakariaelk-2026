@@ -56,6 +56,15 @@ const storyBlocks = {
   reflection: wrapper({ label: 'Reflection (two lists)', schema: {} }),
   confirm: inline({ label: 'Confirm flag', schema: { note: fields.text({ label: 'What to confirm' }), label: fields.text({ label: 'Label', defaultValue: 'Confirm' }) } }),
   mark: inline({ label: 'Orange highlight (one sentence)', schema: { text: fields.text({ label: 'Highlighted text' }) } }),
+  block: wrapper({
+    label: 'Block: icon + narrative title (Simple case)',
+    schema: {
+      icon: fields.select({ label: 'Icon', options: [{ label: 'Friction', value: 'friction' }, { label: 'What I did', value: 'did' }, { label: 'Testing', value: 'testing' }, { label: 'Interviews', value: 'interviews' }, { label: 'Partners', value: 'partners' }, { label: 'Pushback', value: 'pushback' }], defaultValue: 'friction' }),
+      title: fields.text({ label: 'Narrative title' }),
+      figures: fields.text({ label: 'Figures row: value::descriptor, separated by |' }),
+      source: fields.text({ label: 'Source line' }),
+    },
+  }),
   options: wrapper({ label: 'Options (cards side by side)', schema: {} }),
   option: wrapper({ label: 'Option card', schema: { title: fields.text({ label: 'Title' }) } }),
   usagechart: block({ label: 'Usage chart (monthly active and returning users)', schema: { caption: fields.text({ label: 'Caption' }) } }),
