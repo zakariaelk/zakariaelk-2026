@@ -1,15 +1,15 @@
 // Home hero: two words in the headline are rewritten as if someone were typing them and having doubts.
-// The page opens on "Web and mobile apps designer / Sometimes a builder too". A moment later the first line's
+// The page opens on "Web and mobile app designer / Sometimes a builder too". A moment later the first line's
 // words are deleted with a slightly uneven backspace and the next option typed: Software, UX/UI, UX (only "/UI"
 // goes), Product, Just, my face (its pupil drifting from the centre to the top right, thinking), and back to
-// "Web and mobile apps". After every second change there, the second line changes instead: builder, frontend
+// "Web and mobile app". After every second change there, the second line changes instead: builder, frontend
 // developer, website developer, and back to builder. Only one line changes at a time; the caret moves with it.
 // After a full round the opening sentence rests, then it all starts again.
 // Typing rhythm: keystroke studies put the average gap between keys at ~0.24s (Dhakal et al., CHI 2018,
 // 136M keystrokes); a word start takes a little longer, so the space between words gets ~0.35s here.
 // Never with reduced motion: the first text stays.
 const FACE = 'face';
-const FIRST = ['Web and mobile apps', 'Software', 'UX/UI', 'UX', 'Product', 'Just', FACE, 'Web and mobile apps'];
+const FIRST = ['Web and mobile app', 'Software', 'UX/UI', 'UX', 'Product', 'Just', FACE, 'Web and mobile app'];
 const SECOND = ['builder', 'frontend developer', 'website developer', 'builder'];
 
 const KEY = 140; // ms between typed keys, ±40%
@@ -82,9 +82,9 @@ if (boxes.length === 2 && !window.matchMedia('(prefers-reduced-motion: reduce)')
     }
   };
 
-  // starts once the page has come in (after the intro and the entrance fade), plus a moment to read it
+  // starts once the page has come in (after the intro and the entrance fade), after a short beat
   let started = false;
-  const start = () => { if (!started) { started = true; window.setTimeout(run, 2200); } };
+  const start = () => { if (!started) { started = true; window.setTimeout(run, 700); } };
   if (document.documentElement.classList.contains('is-enter')) {
     document.addEventListener('ze:enter-hero-done', start, { once: true });
     window.setTimeout(start, 7000); // in case the entrance never reports back
