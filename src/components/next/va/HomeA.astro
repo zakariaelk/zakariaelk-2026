@@ -1,6 +1,6 @@
 ---
 // Version A home (the chosen direction), also behind every /tests page. A two-line intro ("Web and mobile apps
-// designer / Sometimes a builder too", the first words retyped in turn by scripts/hero-type.ts) and my name below it
+// designer / Sometimes a builder too", a word on each line retyped in turn by scripts/hero-type.ts) and my name below it
 // in the smaller type (its speaker follows, on a paper cut-out like the logo's), then each featured project on its own sheet, the rest
 // of the work as a list on gray paper (hovering a row shows its cover), a short About and contact.
 // featured: how each featured project is shown
@@ -49,7 +49,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
     {hero === 'v1' ? (
       <h1 class="a-statement" aria-label={sentence}><span class="a-s1">I'm Zakaria El Khachi<span class="a-say-a">a<button type="button" class="n-say a-say" aria-label="Hear how to say Zakaria El Khachia" data-audio="/audio/zakaria-el-khachia.mp3"><svg class="a-say__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-4v13L7 14.5H4z" /><path class="wave" d="M15 9.2a4 4 0 0 1 0 5.6" /><path class="wave" d="M17.8 6.6a7.6 7.6 0 0 1 0 10.8" /></svg></button></span>, a product <span class:list={mark}>designer</span> and <span class:list={mark}>builder</span>.</span> <span class="a-s2">I spent the last five years at <a href="https://ngosafety.org" target="_blank" rel="noopener">INSO</a> making safety information<br class="a-br-d" /> accessible and clearer for humanitarian workers in conflict zones.</span></h1>
     ) : (<Fragment>
-    <h1 class="a-statement a-lead" aria-label={sentence}><span class="a-type" data-type><span class="a-type__text">Web and mobile apps</span><span class="a-type__caret"></span></span> <span class:list={mark}>designer</span><br /> Sometimes a <span class:list={mark}>builder</span> too</h1>
+    <h1 class="a-statement a-lead" aria-label={sentence}><span class="a-type" data-type><span class="a-type__text">Web and mobile apps</span><span class="a-type__caret"></span></span> <span class:list={mark}>designer</span><br /> Sometimes a <span class:list={['a-type', mark]} data-type><span class="a-type__text">builder</span><span class="a-type__caret"></span></span> too</h1>
     <p class="a-more">My name happens to be Zakaria El <span class="a-say-a">Khachia<button type="button" class="n-say a-say" aria-label="Hear how to say Zakaria El Khachia" data-audio="/audio/zakaria-el-khachia.mp3"><svg class="a-say__bg" viewBox="0 0 100 100" aria-hidden="true"><path d={blob(61, 50, 50, 47)} /></svg><svg class="a-say__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-4v13L7 14.5H4z" /><path class="wave" d="M15 9.2a4 4 0 0 1 0 5.6" /><path class="wave" d="M17.8 6.6a7.6 7.6 0 0 1 0 10.8" /></svg></button></span></p>
     </Fragment>)}
   </section>
@@ -159,7 +159,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
   const seen = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-drawn'); seen.unobserve(e.target); } }), { rootMargin: '-45% 0px -45% 0px' });
   marks.forEach((m) => seen.observe(m));
   import '../../../scripts/paper-ring'; // the "See case study" buttons
-  import '../../../scripts/hero-type'; // "Web and mobile apps" retyped: Software, UX/UI, UX, Product, Just, my face
+  import '../../../scripts/hero-type'; // "Web and mobile apps" and "builder" retyped in turn
   // highlight: the marker is drawn once the hero text is in ("builder" follows "designer")
   const draw = () => window.setTimeout(() => document.querySelectorAll('.a-hero .a-mark').forEach((m) => m.classList.add('is-drawn')), 300);
   if (document.documentElement.classList.contains('is-enter')) document.addEventListener('ze:enter-hero-done', draw, { once: true });
