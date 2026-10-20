@@ -28,13 +28,9 @@ type Featured = 'split' | 'client' | 'screen-1' | 'screen-2' | 'screen-3';
 // hero 'v1': the earlier one-sentence intro ("I'm Zakaria El Khachia, a product designer…"), three lines on desktop (/v1/)
 // leadVideo / leadPoster: the first featured case shows this teaser (components/video/ProjectTeaser.astro),
 // with a "Full video" button that opens the case and plays the full video there (the site home)
-// hero 'min': "Product designer, sometimes a builder too." with my name below, for the minimal test (/minimal/,
-// styles/minimal.css, with its font switch); leadHref: where the first case links to (there: the Simple INSO case)
-interface Props { leadVideo?: string; leadPoster?: string; leadHref?: string; hero?: 'v1' | 'min'; featured?: Featured; highlight?: 'blue' | 'peach' | false; title?: string; intro?: boolean; button?: boolean; base?: string; caseBase?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown' }
-const { leadVideo, leadPoster, leadHref, hero, featured: layout = 'split', highlight = 'blue', title = 'Zakaria El Khachia · Product designer & builder', intro = false, button = true, base = '/next/a/', caseBase, look } = Astro.props;
+interface Props { leadVideo?: string; leadPoster?: string; hero?: 'v1'; featured?: Featured; highlight?: 'blue' | 'peach' | false; title?: string; intro?: boolean; button?: boolean; base?: string; caseBase?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown' }
+const { leadVideo, leadPoster, hero, featured: layout = 'split', highlight = 'blue', title = 'Zakaria El Khachia · Product designer & builder', intro = false, button = true, base = '/next/a/', caseBase, look } = Astro.props;
 const caseRoot = caseBase ?? base;
-const min = hero === 'min';
-const hrefOf = (id: string, i: number) => (i === 0 && leadHref) || caseHref(caseRoot, id);
 
 const { featured, more } = await workList();
 const screen = layout.startsWith('screen');
@@ -47,13 +43,9 @@ const sentence = hero === 'v1'
   : "I'm a product designer and builder whose name happens to be Zakaria El Khachia.";
 const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : [];
 ---
-<Next base={base} variant="a" logo work="#work" intro={intro} enter={!min} minimal={min ? 'home' : undefined} look={look} title={title} description="Product designer and builder. Most recently, safety tools for humanitarian workers at INSO.">
-  {min && <p class="a-wrap m-bar">Fonts:{' '}<a href="?" data-fonts-link="mono">Serif + mono</a>{' · '}<a href="?fonts=current" data-fonts-link="current">Current</a></p>}
-  <section class:list={['a-hero a-wrap', hero === 'v1' && 'a-hero--v1', min && 'm-hero']}>
-    {min ? (<Fragment>
-    <h1 class="m-title">Product designer,<br /> sometimes a builder too.</h1>
-    <p class="m-text m-name">My name happens to be Zakaria El Khachia <button type="button" class="n-say m-say" aria-label="Hear how to say Zakaria El Khachia" data-audio="/audio/zakaria-el-khachia.mp3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-4v13L7 14.5H4z" /><path class="wave" d="M15 9.2a4 4 0 0 1 0 5.6" /><path class="wave" d="M17.8 6.6a7.6 7.6 0 0 1 0 10.8" /></svg></button></p>
-    </Fragment>) : hero === 'v1' ? (
+<Next base={base} variant="a" logo work="#work" intro={intro} enter look={look} title={title} description="Product designer and builder. Most recently, safety tools for humanitarian workers at INSO.">
+  <section class:list={['a-hero a-wrap', hero === 'v1' && 'a-hero--v1']}>
+    {hero === 'v1' ? (
       <h1 class="a-statement" aria-label={sentence}><span class="a-s1">I'm Zakaria El Khachi<span class="a-say-a">a<button type="button" class="n-say a-say" aria-label="Hear how to say Zakaria El Khachia" data-audio="/audio/zakaria-el-khachia.mp3"><svg class="a-say__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-4v13L7 14.5H4z" /><path class="wave" d="M15 9.2a4 4 0 0 1 0 5.6" /><path class="wave" d="M17.8 6.6a7.6 7.6 0 0 1 0 10.8" /></svg></button></span>, a product <span class:list={mark}>designer</span> and <span class:list={mark}>builder</span>.</span> <span class="a-s2">I spent the last five years at <a href="https://ngosafety.org" target="_blank" rel="noopener">INSO</a> making safety information<br class="a-br-d" /> accessible and clearer for humanitarian workers in conflict zones.</span></h1>
     ) : (<Fragment>
     <h1 class="a-statement a-lead" aria-label={sentence}>I'm a product <span class:list={mark}>designer</span> and <span class:list={mark}>builder</span> whose<br class="a-lead__br" /> name happens to be Zakaria El <span class="a-say-a">Khachia.<button type="button" class="n-say a-say" aria-label="Hear how to say Zakaria El Khachia" data-audio="/audio/zakaria-el-khachia.mp3"><svg class="a-say__bg" viewBox="0 0 100 100" aria-hidden="true"><path d={blob(61, 50, 50, 47)} /></svg><svg class="a-say__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-4v13L7 14.5H4z" /><path class="wave" d="M15 9.2a4 4 0 0 1 0 5.6" /><path class="wave" d="M17.8 6.6a7.6 7.6 0 0 1 0 10.8" /></svg></button></span></h1>
@@ -90,16 +82,16 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
               <article class="a-feat a-feat--lead a-feat--player">
                 <div class="a-feat__link">
                   {layout === 'client' && <p class="a-feat__client">{orgOf(p)}</p>}
-                  <h3 class="a-feat__title"><a href={hrefOf(p.id, i)} data-keep-fonts>{titleOf(p)}</a></h3>
+                  <h3 class="a-feat__title"><a href={caseHref(caseRoot, p.id)}>{titleOf(p)}</a></h3>
                   <div class="a-feat__meta">
                     <dl class="a-meta">
                       {p.data.role && <div><dt>Role</dt><dd>{p.data.role}</dd></div>}
                       {layout === 'split' && p.data.sector && <div><dt>Industry</dt><dd>{p.data.sector}</dd></div>}
                     </dl>
-                    {button && <a class="a-cta a-feat__cta" href={hrefOf(p.id, i)} data-keep-fonts><span class="a-cta__paper" data-ring={String(41 + i * 6)} aria-hidden="true"></span>See case study<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg></a>}
+                    {button && <a class="a-cta a-feat__cta" href={caseHref(caseRoot, p.id)}><span class="a-cta__paper" data-ring={String(41 + i * 6)} aria-hidden="true"></span>See case study<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg></a>}
                   </div>
                   <div class="a-feat__visual">
-                    <ProjectTeaser src={leadVideo} poster={leadPoster ?? ''} caseHref={hrefOf(p.id, i)} fullHref={`${caseHref(caseRoot, p.id)}?play=1#full-video`} label="Play the full INSO alerts video" />
+                    <ProjectTeaser src={leadVideo} poster={leadPoster ?? ''} caseHref={caseHref(caseRoot, p.id)} fullHref={`${caseHref(caseRoot, p.id)}?play=1#full-video`} label="Play the full INSO alerts video" />
                   </div>
                 </div>
               </article>

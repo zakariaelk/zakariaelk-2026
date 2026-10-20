@@ -34,7 +34,7 @@ const storyBlocks = {
   move: wrapper({ label: 'What I did', schema: { label: fields.text({ label: 'Label', defaultValue: 'What I did' }) } }),
   result: wrapper({
     label: 'Result (max 3 sentences)',
-    schema: { value: fields.text({ label: 'Large number (optional, older drafts)' }), label: fields.text({ label: 'Number label, with sample size' }), note: fields.text({ label: 'Small line: the numbers, sample size and who answered' }), kind: fields.select({ label: 'Evidence', options: [{ label: 'Result', value: '' }, { label: 'What testing showed (prototype tests)', value: 'testing' }, { label: 'What interviews showed', value: 'interviews' }, { label: 'What partners said (survey)', value: 'partners' }], defaultValue: '' }), figures: fields.text({ label: 'Figures row: value::descriptor, separated by |' }) },
+    schema: { value: fields.text({ label: 'Large number (optional, older drafts)' }), label: fields.text({ label: 'Number label, with sample size' }), note: fields.text({ label: 'Small line: the numbers, sample size and who answered' }), kind: fields.select({ label: 'Evidence', options: [{ label: 'Result', value: '' }, { label: 'What testing showed (prototype tests)', value: 'testing' }, { label: 'What interviews showed', value: 'interviews' }, { label: 'What partners said (survey)', value: 'partners' }], defaultValue: '' }) },
   }),
   figure: block({
     label: 'Figure',
@@ -55,7 +55,6 @@ const storyBlocks = {
   quote: wrapper({ label: 'Tester quote', schema: { by: fields.text({ label: 'Role and country only' }) } }),
   reflection: wrapper({ label: 'Reflection (two lists)', schema: {} }),
   confirm: inline({ label: 'Confirm flag', schema: { note: fields.text({ label: 'What to confirm' }), label: fields.text({ label: 'Label', defaultValue: 'Confirm' }) } }),
-  runin: inline({ label: 'Run-in label (Friction, What I did)', schema: { text: fields.text({ label: 'Label' }) } }),
   mark: inline({ label: 'Orange highlight (one sentence)', schema: { text: fields.text({ label: 'Highlighted text' }) } }),
   options: wrapper({ label: 'Options (cards side by side)', schema: {} }),
   option: wrapper({ label: 'Option card', schema: { title: fields.text({ label: 'Title' }) } }),

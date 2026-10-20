@@ -1,7 +1,0 @@
----
-// A run-in label at the start of a paragraph ("Friction.", "What I did."), Simple version of the INSO case.
-// On wide screens its CSS moves it into the right margin; it stays the same element for screen readers.
-interface Props { text: string }
-const { text } = Astro.props;
----
-<strong class="cs-runin">{text}<span class="cs-runin__dot">.</span></strong>
