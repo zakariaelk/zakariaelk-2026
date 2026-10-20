@@ -79,19 +79,15 @@
 .a-hero > :is(.a-lead, .a-more) { max-width: 1120px; }
 /* the second paragraph: at most ~65 characters a line on tablets (28em at 28px); on laptops and up
    three lines as wide as the first sentence (in ems, so the breaks hold at every size); phones get
-   the short version */
+   the same text */
 .a-hero > .a-more { max-width: 28em; }
 @media (min-width: 1024px) { .a-hero > .a-more { max-width: 35em; text-wrap: wrap; } } /* lines end on "project" and "NGO", flush with the first sentence (fits from 33.5 to 36.5em) */
-.a-lead__br { display: none; }
-@media (min-width: 1024px) { .a-lead__br { display: inline; } }
-.a-more__short { display: none; }
-@media (max-width: 700px) { .a-more__long { display: none; } .a-more__short { display: inline; } }
 /* phones: both sentences in the featured titles' type (weight 500, line height 1.15, -0.01em), a
    touch smaller on narrower phones so each stays within three lines (tested 360–440px, iPhone mini
    to Pro Max, with ~4% to spare) */
 @media (max-width: 700px) {
   .a-statement.a-lead, .a-more { font-size: min(var(--a-title), calc((100vw - 2 * var(--pad)) / 13.5)); font-weight: 500; line-height: 1.15; letter-spacing: -0.01em; }
-  .a-more { margin-top: 0.95em; } /* the gap between them back to ~25px, as before the second grew */
+  .a-more { margin-top: 0.95em; font-size: var(--t-body); font-weight: 470; line-height: 1.3; } /* my name: the smaller type, the case body size (20px) */
 }
 /* /v1/: the earlier intro, one sentence in two parts at one size; three lines on desktop, the font
    sized so the longest line ("accessible … zones.", 29.2em) fits the content width */
