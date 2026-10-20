@@ -42,7 +42,8 @@ const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug,
 <Next base={base} variant="a" logo look={look} bodyClass={compare === 'simple' ? 'cs-simple' : undefined} title={`${d.projectName ?? d.title} · Zakaria El Khachia`} description={d.statement ?? d.intro}>
 
   {compare && (
-    <p class="a-wrap a-compare">Comparing versions:{' '}<a href="/work/mitigating-risk-with-location-based-alerts-full/" aria-current={compare === 'full' ? 'page' : undefined}>Full</a>{' · '}<a href="/work/mitigating-risk-with-location-based-alerts/" aria-current={compare === 'short' ? 'page' : undefined}>Short</a>{' · '}<a href="/work/mitigating-risk-with-location-based-alerts-simple/" aria-current={compare === 'simple' ? 'page' : undefined}>Simple</a></p>
+    <p class="a-wrap a-compare">Comparing versions:{' '}<a href="/work/mitigating-risk-with-location-based-alerts-full/" aria-current={compare === 'full' ? 'page' : undefined}>Full</a>{' · '}<a href="/work/mitigating-risk-with-location-based-alerts/" aria-current={compare === 'short' ? 'page' : undefined}>Short</a>{' · '}<a href="/work/mitigating-risk-with-location-based-alerts-simple/" aria-current={compare === 'simple' ? 'page' : undefined}>Simple</a>
+      {compare === 'simple' && <span class="a-compare__icons">Icons:{' '}<a href="?" data-icons-link="">Mix</a>{' · '}<a href="?icons=a" data-icons-link="a">A</a>{' · '}<a href="?icons=b" data-icons-link="b">B</a>{' · '}<a href="?icons=c" data-icons-link="c">C</a></span>}</p>
   )}
   <header class="a-wrap a-case" id="top">
     <p class="a-case__label">{labelOf(d)}</p>

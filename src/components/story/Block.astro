@@ -1,17 +1,18 @@
 ---
-// A content block of the Simple INSO case (docs/claude-code-instructions-simple-layout-v2.md): a small icon
+// A content block of the Simple INSO case (docs/claude-code-instructions-simple-layout-v2.md): an icon
 // showing the kind of block, a short narrative title that says what happened, then its paragraph. For results
 // the finding is the title, followed by a row of figures ("value::descriptor|value::descriptor") and a source
-// line. No labels, no box. The icons (./icons/*.svg) are placeholders until the paper-cut set is approved.
+// line. No labels, no box. Icons: three paper-cut styles under test (./icons/a|b|c, made by docs/icons/build.mjs),
+// all three rendered; styles/case-simple.css shows one (mixed down the page, or one style with ?icons=a|b|c).
 interface Props { icon: 'friction' | 'did' | 'testing' | 'interviews' | 'partners' | 'pushback'; title: string; figures?: string; source?: string }
 const { icon, title, figures, source } = Astro.props;
-const icons = import.meta.glob<string>('./icons/*.svg', { query: '?raw', import: 'default', eager: true });
-const svg = icons[`./icons/${icon}.svg`];
+const icons = import.meta.glob<string>('./icons/*/*.svg', { query: '?raw', import: 'default', eager: true });
+const styles = ['a', 'b', 'c'];
 const row = figures?.split('|').map((f) => f.split('::').map((s) => s.trim())) ?? [];
 ---
 <section class:list={['cs-block', `cs-block--${icon}`]}>
   <div class="cs-block__head">
-    <span class="cs-block__icon" aria-hidden="true" set:html={svg} />
+    <span class="cs-block__icon" aria-hidden="true">{styles.map((st) => <span class={`cs-icon cs-icon--${st}`} set:html={icons[`./icons/${st}/${icon}.svg`]} />)}</span>
     <p class="cs-block__title">{title}</p>
   </div>
   <slot />

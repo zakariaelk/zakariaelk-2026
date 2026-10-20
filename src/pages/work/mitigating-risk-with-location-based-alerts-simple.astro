@@ -15,6 +15,10 @@ const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
 <CaseA project={project} next={next} base="/" look="blue" compare="simple" fullVideo={{ src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg' }} />
 
 <script>
+  // icons under test: mixed down the page, or one style throughout with ?icons=a|b|c (styles/case-simple.css)
+  const style = new URLSearchParams(location.search).get('icons') ?? '';
+  if (/^[abc]$/.test(style)) document.documentElement.dataset.icons = style;
+  document.querySelectorAll<HTMLAnchorElement>('[data-icons-link]').forEach((a) => { if (a.dataset.iconsLink === (document.documentElement.dataset.icons ?? '')) a.setAttribute('aria-current', 'true'); });
   // blocks fade in and rise 4px as they come into view (not with reduced motion)
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('has-block-fade');
