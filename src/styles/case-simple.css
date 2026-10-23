@@ -21,14 +21,21 @@
   .cs-block__icon { position: absolute; top: calc(var(--t-body) * 1.18 * 0.15); right: calc(100% + 24px); margin: 0; }
 }
 
-/* Icon colours, by role (docs/icons/build.mjs): the logo blue, a deeper blue, black and white (chosen 23 Oct 2026).
+/* Icon colours, by role (docs/icons/build.mjs): black (the text's) and a light grey, white inside the eyes.
    i-a first paper, i-b second paper, i-k the small dark marks, i-w white */
-.cs-block { --ia: #4a82c6; --ib: #accff6; --ik: #161616; --iw: #fff; }
-:root[data-theme='dark'] .cs-block { --ia: #6f9fd8; --ib: #4f7299; --ik: #ededed; --iw: #f4f4f4; }
+.cs-block { --ia: #161616; --ib: #e2e2e2; --ik: #161616; --iw: #fff; }
+:root[data-theme='dark'] .cs-block { --ia: #ededed; --ib: #4a4a4a; --ik: #ededed; --iw: #1f1f1f; }
 .cs-block__icon .i-a { fill: var(--ia); }
 .cs-block__icon .i-b { fill: var(--ib); }
 .cs-block__icon .i-k { fill: var(--ik); }
 .cs-block__icon .i-w { fill: var(--iw); }
+/* the two eye styles under test: outline by default, grey fill with ?eyes=fill */
+.cs-eyes { display: contents; }
+.cs-eyes--fill, :root[data-eyes='fill'] .cs-eyes--stroke { display: none; }
+:root[data-eyes='fill'] .cs-eyes--fill { display: contents; }
+.a-compare__eyes { margin-left: 24px; white-space: nowrap; }
+.a-compare__eyes a { color: inherit; text-underline-offset: 0.2em; }
+.a-compare__eyes a[aria-current] { color: var(--ink); font-weight: 500; text-decoration: none; }
 /* beside a plain paragraph (no title): spaced like a paragraph, the icon level with the top of its first line */
 .cs-simple .a-story .cs-block--untitled { margin-top: 0; margin-bottom: 1em; }
 @media (min-width: 1200px) { .cs-block--untitled .cs-block__icon { top: calc(var(--t-body) * 0.3); } }
