@@ -4,25 +4,21 @@
    Block.astro), no labels, no boxes, no bars. */
 
 /* ---------- Blocks: icon + narrative title, then the paragraph ---------- */
-.cs-simple .a-story .cs-block { margin-top: 2.8em; margin-bottom: 2.4em; } /* clearly more space around a block than between paragraphs */
+.cs-simple .a-story .cs-block { margin-top: 4em; margin-bottom: 4em; } /* whole blocks (icon, title, paragraph) well apart from each other and from visuals */
 .cs-simple .a-story .cs-block > p:last-child { margin-bottom: 0; }
 .cs-block__head { margin-bottom: 0.35em; }
-/* the icon scales with the screen like the type: 90px on phones to 150px at 1440 */
-.cs-simple { --icon: clamp(90px, calc(90px + 60 * (100vw - 390px) / 1050), 150px); }
-.cs-block__icon { display: block; width: var(--icon); height: var(--icon); margin-bottom: 10px; } /* phones: above the title */
-.cs-block__icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.cs-block--testing .cs-block__icon svg { transform: scale(0.85); } /* the magnifier fills more of its box than the others */
+/* Phones to small laptops: the icon above the title, its left edge on the text's (80px on phones to 110px) */
+.cs-simple { --icon: clamp(80px, calc(80px + 30 * (100vw - 390px) / 810), 110px); }
+.cs-block__icon { display: block; width: fit-content; margin-bottom: 16px; }
+.cs-block__icon svg { display: block; width: calc(var(--icon) * var(--w)); height: calc(var(--icon) * var(--h)); overflow: visible; } /* each box is its drawing's, at one scale (docs/icons/build.mjs) */
 .cs-block__title { margin: 0; font-family: var(--serif); font-weight: 470; font-size: calc(var(--t-body) * 1.18); line-height: 1.25; letter-spacing: -0.01em; text-wrap: pretty; } /* one step above the body */
 .cs-simple .a-story .cs-block__title { margin-bottom: 0; }
-/* tablets: beside the title */
-@media (min-width: 700px) {
-  .cs-block__head { display: flex; align-items: center; gap: 20px; }
-  .cs-block__icon { flex: none; margin: 0; }
-}
-/* wide screens: in the left margin, title and paragraph in the text column */
-@media (min-width: 1270px) { /* from here the margin holds the icon (its size + 24px) */
-  .cs-block__head { position: relative; display: block; }
-  .cs-block__icon { position: absolute; top: 50%; left: calc(-1 * (var(--icon) + 24px)); transform: translateY(-50%); }
+/* From 1200px: in the left margin (the text never moves), as big as the margin allows up to 150px, its top level
+   with the top of the title's letters (0.15em into the title's line) */
+@media (min-width: 1200px) {
+  .cs-simple { --icon: min(clamp(90px, calc(90px + 60 * (100vw - 390px) / 1050), 150px), calc(((100vw - 860px) / 2 - 68px) / 0.88)); } /* 0.88: the widest drawing's share of the grid */
+  .cs-block__head { position: relative; }
+  .cs-block__icon { position: absolute; top: calc(var(--t-body) * 1.18 * 0.15); right: calc(100% + 24px); margin: 0; }
 }
 
 /* Icon colours, by role (docs/icons/build.mjs): the logo blue, a deeper blue and black (chosen 23 Oct 2026).
