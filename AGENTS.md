@@ -7,6 +7,12 @@ Rules:
 - Show every [CONFIRM] marker as a visibly flagged placeholder so I don't miss it.
 - Ask before changing the stack or adding dependencies.
 
+Case study conventions:
+- Ideas or options weighed against each other: number them, give each its own title (a full phrase, e.g. "Support documentation or an FAQ section, available from the Settings screen"), then "Pros:" in green and "Cons:" in red, each on its own line, the text after them in the normal text colour (Markdoc: `{% pc kind="pros" /%}` / `{% pc kind="cons" /%}`).
+
+Case study conventions:
+- Ideas or options weighed against each other: number them, give each its own title (a full phrase, e.g. "Support documentation or an FAQ section, available from the Settings screen"), then "Pros:" in green and "Cons:" in red, each on its own line, the text after them in the normal text colour (Markdoc: `{% pc kind="pros" /%}` / `{% pc kind="cons" /%}`).
+
 ## Development
 
 When starting the dev server, use background mode:
