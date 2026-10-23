@@ -61,8 +61,8 @@ const storyBlocks = {
   block: wrapper({
     label: 'Block: icon + narrative title (Simple case)',
     schema: {
-      icon: fields.select({ label: 'Icon (each used once)', options: [{ label: 'None', value: '' }, { label: 'Friction', value: 'friction' }, { label: 'What I did', value: 'did' }, { label: 'Testing', value: 'testing' }, { label: 'Interviews', value: 'interviews' }, { label: 'Partners', value: 'partners' }, { label: 'Pushback', value: 'pushback' }], defaultValue: '' }),
-      title: fields.text({ label: 'Narrative title' }),
+      icon: fields.select({ label: 'Icon (each used once)', options: [{ label: 'None', value: '' }, { label: 'Friction', value: 'friction' }, { label: 'What I did', value: 'did' }, { label: 'Testing', value: 'testing' }, { label: 'Interviews', value: 'interviews' }, { label: 'Partners', value: 'partners' }, { label: 'Pushback', value: 'pushback' }, { label: 'Eye', value: 'eye' }, { label: 'Bricks', value: 'bricks' }, ...['confused', 'bulb', 'smiling', 'introspect', 'happy', 'satisfied', 'sad', 'doubtful'].map((f) => ({ label: `Face: ${f}`, value: `face-${f}` }))], defaultValue: '' }),
+      title: fields.text({ label: 'Narrative title (optional)' }),
       source: fields.text({ label: 'Source line' }),
     },
   }),

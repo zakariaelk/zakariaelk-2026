@@ -58,7 +58,9 @@ featuredVideo: "/media/projects/mitigating-risk-with-location-based-alerts/inso-
 
 ## Reality check
 
+{% block icon="eye" %}
 The app started as an initiative from the engineers, in collaboration with INSO colleagues from the country offices, who had concluded a few things that pointed towards a mobile app:
+{% /block %}
 
 - SMS was getting more expensive, which put pressure on country office budgets.
 - Internet coverage was increasing, and so was smartphone use: the average NGO worker carries one wherever they are, alongside other communication devices if needed.
@@ -171,7 +173,7 @@ Proximity shows alerts within a radius of your live location, or of a pin you dr
 
 {% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-map-proximity.mp4" frame="after" alt="Proximity mode: a circle around the user's position or a dropped pin, with a radius control, lists the alerts inside it." caption="I reworked the Proximity mode, allowing users to monitor alerts within a radius based on either their current location or a custom location dropped on the map." /%}
 
-{% block title="Live or custom location? Hard to tell" %}
+{% block icon="face-confused" title="Live or custom location? Hard to tell" %}
 The trickier part was that some testers couldn't tell live location from custom location, or how to use either. All they had to go on was one pop-up: "Use this feature to know what's happening around you and/or while on the move. You can also set a remote location."
 {% /block %}
 
@@ -179,7 +181,9 @@ The trickier part was that some testers couldn't tell live location from custom 
 6 out of 6 testers set a radius around a place they weren't in, in 53 seconds on average, with an ease-of-use score of 6.8/10.
 {% /block %}
 
+{% block icon="face-bulb" %}
 Together with the engineers and a few colleagues from the information team at HQ we came up with two ideas:
+{% /block %}
 
 1. **Support documentation or an FAQ section, available from the Settings screen**
 
@@ -193,7 +197,7 @@ Together with the engineers and a few colleagues from the information team at HQ
 
    {% pc kind="cons" /%} three steps was the shortest I could get it, which might feel long for some.
 
-{% block title="Showing it instead of explaining it" %}
+{% block icon="face-smiling" title="Showing it instead of explaining it" %}
 We took the risk with the tutorials, since text and animation together get the point across faster than text alone.
 {% /block %}
 
@@ -241,7 +245,9 @@ With management sign-off I designed the first version in early 2025, and it was 
 
 ## Outcome
 
+{% block icon="bricks" %}
 **How the app is used today.** The launch month brought about 1,600 users, then a smaller base settled in: around 800 a month through 2024, and 450 to 630 through 2026. About 8 in 10 of them are returning users, so most people who use it keep coming back.
+{% /block %}
 
 {% usagechart caption="Monthly active and returning users since launch, rounded. Test and visitor traffic left out." /%}
 
@@ -259,7 +265,9 @@ The weakest score was whether the app helped them reach their goal: 21 of 31 gav
 
 ## Reflection
 
+{% block icon="face-introspect" %}
 **What I'd do differently:** set baseline metrics before redesigning, run a proper retest of Geofence, and set up tracking before a feature ships.
+{% /block %}
 
 **About the composer.** It was released in September 2025 and I didn't test or track it afterwards. By then the team, me included, had been tasked with the Partners Portal, a one-stop platform where NGO workers get all of INSO's products and services, and that took our focus. A few months after the release I left INSO for another challenge.
 

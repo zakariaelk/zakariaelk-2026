@@ -60,8 +60,8 @@ export default defineMarkdocConfig({
     block: {
       render: story('Block'),
       attributes: {
-        icon: { type: String, matches: ['friction', 'did', 'testing', 'interviews', 'partners', 'pushback'] }, // optional: each icon is used once
-        title: { type: String, required: true },
+        icon: { type: String, matches: ['eye', 'friction', 'did', 'testing', 'interviews', 'partners', 'pushback', 'bricks', 'face-confused', 'face-bulb', 'face-smiling', 'face-introspect', 'face-happy', 'face-satisfied', 'face-sad', 'face-doubtful'] }, // optional: each icon is used once
+        title: { type: String }, // optional: an icon can sit beside a plain paragraph
         source: { type: String },
       },
     },
