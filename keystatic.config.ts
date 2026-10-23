@@ -55,13 +55,14 @@ const storyBlocks = {
   quote: wrapper({ label: 'Tester quote', schema: { by: fields.text({ label: 'Role and country only' }) } }),
   reflection: wrapper({ label: 'Reflection (two lists)', schema: {} }),
   confirm: inline({ label: 'Confirm flag', schema: { note: fields.text({ label: 'What to confirm' }), label: fields.text({ label: 'Label', defaultValue: 'Confirm' }) } }),
+  br: inline({ label: 'Line break', schema: {} }),
+  pc: inline({ label: 'Pros / Cons label', schema: { kind: fields.select({ label: 'Kind', options: [{ label: 'Pros', value: 'pros' }, { label: 'Cons', value: 'cons' }], defaultValue: 'pros' }) } }),
   mark: inline({ label: 'Orange highlight (one sentence)', schema: { text: fields.text({ label: 'Highlighted text' }) } }),
   block: wrapper({
     label: 'Block: icon + narrative title (Simple case)',
     schema: {
-      icon: fields.select({ label: 'Icon', options: [{ label: 'Friction', value: 'friction' }, { label: 'What I did', value: 'did' }, { label: 'Testing', value: 'testing' }, { label: 'Interviews', value: 'interviews' }, { label: 'Partners', value: 'partners' }, { label: 'Pushback', value: 'pushback' }], defaultValue: 'friction' }),
+      icon: fields.select({ label: 'Icon (each used once)', options: [{ label: 'None', value: '' }, { label: 'Friction', value: 'friction' }, { label: 'What I did', value: 'did' }, { label: 'Testing', value: 'testing' }, { label: 'Interviews', value: 'interviews' }, { label: 'Partners', value: 'partners' }, { label: 'Pushback', value: 'pushback' }], defaultValue: '' }),
       title: fields.text({ label: 'Narrative title' }),
-      figures: fields.text({ label: 'Figures row: value::descriptor, separated by |' }),
       source: fields.text({ label: 'Source line' }),
     },
   }),

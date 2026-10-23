@@ -1,0 +1,6 @@
+---
+// "Pros:" in green or "Cons:" in red, at the start of a line about an idea (the rest of the line in the text colour)
+interface Props { kind: 'pros' | 'cons' }
+const { kind } = Astro.props;
+---
+<strong class:list={['cs-pc', `cs-pc--${kind}`]}>{kind === 'pros' ? 'Pros:' : 'Cons:'}</strong>

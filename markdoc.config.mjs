@@ -56,16 +56,19 @@ export default defineMarkdocConfig({
     },
     // one sentence in the site's orange marker highlight, drawn in when it reaches the middle of the screen
     mark: { render: story('Mark'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true } } },
-    // Simple INSO case: icon + narrative title + paragraph (results: + figures "value::descriptor|…" and a source line)
+    // Simple INSO case: icon + narrative title + paragraph (results: + a source line)
     block: {
       render: story('Block'),
       attributes: {
-        icon: { type: String, required: true, matches: ['friction', 'did', 'testing', 'interviews', 'partners', 'pushback'] },
+        icon: { type: String, matches: ['friction', 'did', 'testing', 'interviews', 'partners', 'pushback'] }, // optional: each icon is used once
         title: { type: String, required: true },
-        figures: { type: String },
         source: { type: String },
       },
     },
+    // a line break inside a heading or title
+    br: { render: 'br', inline: true, selfClosing: true },
+    // "Pros:" (green) / "Cons:" (red) at the start of a line about an idea
+    pc: { render: story('ProsCons'), inline: true, selfClosing: true, attributes: { kind: { type: String, required: true, matches: ['pros', 'cons'] } } },
     // two or more options weighed against each other: cards side by side on wide screens
     options: { render: story('Options') },
     option: { render: story('Option'), attributes: { title: { type: String, required: true } } },

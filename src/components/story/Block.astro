@@ -1,20 +1,17 @@
 ---
 // A content block of the Simple INSO case (docs/claude-code-instructions-simple-layout-v2.md): an icon
 // showing the kind of block, a short narrative title that says what happened, then its paragraph. For results
-// the finding is the title, followed by a row of figures ("value::descriptor|value::descriptor") and a source
-// line. No labels, no box. Icons: cut-paper symbols (./icons, made by docs/icons/build.mjs), coloured and animated
+// the finding is the title, the numbers are told in the paragraph, and a source line follows. No labels, no box; the icon is optional (each one is used once on a page). Icons: cut-paper symbols (./icons, made by docs/icons/build.mjs), coloured and animated
 // by styles/case-simple.css.
-interface Props { icon: 'friction' | 'did' | 'testing' | 'interviews' | 'partners' | 'pushback'; title: string; figures?: string; source?: string }
-const { icon, title, figures, source } = Astro.props;
+interface Props { icon?: 'friction' | 'did' | 'testing' | 'interviews' | 'partners' | 'pushback'; title: string; source?: string }
+const { icon, title, source } = Astro.props;
 const icons = import.meta.glob<string>('./icons/*.svg', { query: '?raw', import: 'default', eager: true });
-const row = figures?.split('|').map((f) => f.split('::').map((s) => s.trim())) ?? [];
 ---
-<section class:list={['cs-block', `cs-block--${icon}`]}>
+<section class:list={['cs-block', icon && `cs-block--${icon}`]}>
   <div class="cs-block__head">
-    <span class="cs-block__icon" aria-hidden="true" set:html={icons[`./icons/${icon}.svg`]} />
+    {icon && <span class="cs-block__icon" aria-hidden="true" set:html={icons[`./icons/${icon}.svg`]} />}
     <p class="cs-block__title">{title}</p>
   </div>
   <slot />
-  {row.length > 0 && <dl class="cs-block__figures">{row.map(([value, label]) => <div><dt>{value}</dt><dd>{label}</dd></div>)}</dl>}
   {source && <p class="cs-block__source">{source}</p>}
 </section>

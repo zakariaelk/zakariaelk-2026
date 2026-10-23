@@ -78,18 +78,31 @@
 @keyframes pb-stone { 0% { transform: none; animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); } 55% { transform: translateX(64px); animation-timing-function: ease-in; } 64% { transform: translate(64px, 22px) rotate(3deg); animation-timing-function: ease-in; } 70% { transform: translate(64px, 40px); } 74% { transform: translate(64px, 37px); } 78%, 100% { transform: translate(64px, 40px); } }
 @keyframes pb-man { 0% { transform: none; animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); } 55%, 100% { transform: translateX(64px); } }
 
-/* results: a row of figures (bold value over a small grey descriptor) and a small grey source line */
-.cs-block__figures { display: flex; flex-wrap: wrap; gap: 16px clamp(24px, 4vw, 48px); margin: 18px 0 0; }
-.cs-block__figures dt { font-family: var(--serif); font-weight: 500; font-size: var(--t-body); line-height: 1.2; font-variant-numeric: tabular-nums; }
-.cs-block__figures dd { max-width: 30ch; margin: 4px 0 0; font-family: var(--sans); font-size: clamp(14px, calc(14px + 2 * (100vw - 768px) / 512), 16px); line-height: 1.4; color: var(--muted); }
-.cs-simple .a-story .cs-block__source { margin: 14px 0 0; font-family: var(--sans); font-size: clamp(14px, calc(14px + 3 * (100vw - 768px) / 512), 17px); line-height: 1.45; color: var(--muted); }
-/* a 200ms fade and 4px rise as a block comes into view (the page's script; never with reduced motion) */
-.has-block-fade .cs-simple .cs-block { opacity: 0; transform: translateY(4px); transition: opacity 0.2s ease, transform 0.2s ease; }
-.has-block-fade .cs-simple .cs-block.is-in { opacity: 1; transform: none; }
+/* Captions, source lines and other small text: 21px (18px on phones); source and context lines in italic */
+.cs-simple { --small: clamp(18px, calc(18px + 3 * (100vw - 390px) / 634), 21px); }
+.cs-simple .a-story .cs-block__source { margin: 14px 0 0; font-family: var(--serif); font-style: italic; font-weight: 470; font-size: var(--small); line-height: 1.45; color: var(--muted); }
+.cs-simple .a-story :is(figcaption, .cs-chart figcaption) { font-size: var(--small); line-height: 1.45; }
+.cs-simple .a-story .cs-chart__table { margin-top: 20px; font-size: var(--small); } /* "Table view", a little apart from the chart */
+
+/* Spacing: a section's headline and its first block half as far apart as two blocks; a visual that shows what
+   the text above it says a third closer to it */
+.cs-simple .a-story .is-lead + .cs-block { margin-top: 2em; }
+.cs-simple .a-story .cs-block:has(+ :is(.cs-figure, .cs-pair, .cs-chart)) { margin-bottom: 2.67em; }
+.cs-simple .a-story :is(p, ul, ol) + :is(.cs-figure, .cs-pair, .cs-chart) { margin-top: calc(clamp(40px, calc(40px + 24 * (100vw - 768px) / 512), 64px) * 0.67); }
+
+/* The two ideas: numbered, each with its own title, "Pros:" in green and "Cons:" in red on their own lines */
+.cs-simple .a-story article > ol { margin: 1em auto 1em; padding-left: 1.4em; }
+.cs-simple .a-story article > ol > li + li { margin-top: 1.2em; }
+.cs-simple .a-story article > ol > li > p { margin: 0 0 0.35em; }
+.cs-pc { font-weight: 500; }
+.cs-pc--pros { color: #2f7a46; }
+.cs-pc--cons { color: #b23a2e; }
+:root[data-theme='dark'] .cs-pc--pros { color: #7fc796; }
+:root[data-theme='dark'] .cs-pc--cons { color: #f08f84; }
 
 /* ---------- Structure ---------- */
-/* the three map modes: one small level */
-.cs-simple .a-story h3 { margin: var(--a-gap-s) auto 0.6em; font-family: var(--serif); font-weight: 470; font-size: clamp(22px, calc(22px + 8 * (100vw - 768px) / 512), 30px); line-height: 1.25; letter-spacing: -0.01em; text-wrap: balance; }
+/* the map modes: one small level, using the full width of the column */
+.cs-simple .a-story h3 { margin: var(--a-gap-s) auto 0.6em; font-family: var(--serif); font-weight: 470; font-size: clamp(22px, calc(22px + 8 * (100vw - 768px) / 512), 30px); line-height: 1.25; letter-spacing: -0.01em; text-wrap: pretty; }
 /* "Takeaways": a plain bold line, like "What I can't say", not a heading */
 .cs-simple .a-story .is-lead:not(h2 + .is-lead) { margin: 1.6em auto 0.5em; font-size: inherit; line-height: inherit; letter-spacing: normal; }
 /* bullets: 12–16px apart */

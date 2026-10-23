@@ -16,15 +16,12 @@ const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
 
 <script>
   const root = document.documentElement;
-  // blocks fade in and rise 4px as they come into view; each icon plays its animation once its block reaches the
-  // middle of the screen, and again on hover (none of it with reduced motion: the icons stay as drawn)
+  // each icon plays its animation once its block reaches the middle of the screen, and again on hover
+  // (not with reduced motion: the icons stay as drawn)
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    root.classList.add('has-block-fade', 'has-icon-anim');
-    const blocks = [...document.querySelectorAll<HTMLElement>('.cs-block')];
-    const seen = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); seen.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    root.classList.add('has-icon-anim');
     const middle = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-play'); middle.unobserve(e.target); } }), { rootMargin: '-45% 0px -45% 0px' });
-    blocks.forEach((b) => {
-      seen.observe(b);
+    document.querySelectorAll<HTMLElement>('.cs-block').forEach((b) => {
       middle.observe(b);
       b.addEventListener('mouseenter', () => {
         if (b.classList.contains('is-play')) b.querySelectorAll('.cs-block__icon *').forEach((el) => el.getAnimations().forEach((an) => { an.currentTime = 0; an.play(); }));
