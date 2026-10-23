@@ -24,16 +24,13 @@ const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
     const next = () => { svg.dataset.frame = String(steps[i][0]); const ms = steps[i][1]; i++; if (i < steps.length) svg._t = window.setTimeout(next, ms); };
     next();
   };
-  // the two eye styles under test: outline, or grey fill with ?eyes=fill
-  const root = document.documentElement;
-  if (new URLSearchParams(location.search).get('eyes') === 'fill') root.dataset.eyes = 'fill';
-  document.querySelectorAll<HTMLAnchorElement>('[data-eyes-link]').forEach((a) => { if (a.dataset.eyesLink === (root.dataset.eyes ?? '')) a.setAttribute('aria-current', 'true'); });
   const icons = [...document.querySelectorAll<SVGElement>('.cs-block__icon svg')];
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) icons.forEach((svg) => { svg.dataset.frame = svg.dataset.rest; });
   else {
     const middle = new IntersectionObserver((entries) => entries.forEach((e) => {
       if (!e.isIntersecting) return;
-      e.target.querySelectorAll<SVGElement>('.cs-block__icon svg').forEach(play);
+      const svg = e.target.querySelector<SVGElement>('.cs-block__icon svg');
+      if (svg) play(svg);
       middle.unobserve(e.target);
     }), { rootMargin: '-45% 0px -45% 0px' });
     icons.forEach((svg) => {
