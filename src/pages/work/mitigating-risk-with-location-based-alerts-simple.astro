@@ -15,14 +15,23 @@ const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
 <CaseA project={project} next={next} base="/" look="blue" compare="simple" fullVideo={{ src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg' }} />
 
 <script>
-  // icons under test: mixed down the page, or one style throughout with ?icons=a|b|c (styles/case-simple.css)
-  const style = new URLSearchParams(location.search).get('icons') ?? '';
-  if (/^[abc]$/.test(style)) document.documentElement.dataset.icons = style;
-  document.querySelectorAll<HTMLAnchorElement>('[data-icons-link]').forEach((a) => { if (a.dataset.iconsLink === (document.documentElement.dataset.icons ?? '')) a.setAttribute('aria-current', 'true'); });
-  // blocks fade in and rise 4px as they come into view (not with reduced motion)
+  // two colour tests for the icons: the current colours, or ?colors=blue (the logo blue, its shades and black)
+  const root = document.documentElement;
+  if (new URLSearchParams(location.search).get('colors') === 'blue') root.dataset.iconColors = 'blue';
+  document.querySelectorAll<HTMLAnchorElement>('[data-colors-link]').forEach((a) => { if (a.dataset.colorsLink === (root.dataset.iconColors ?? '')) a.setAttribute('aria-current', 'true'); });
+  // blocks fade in and rise 4px as they come into view; each icon plays its animation once its block reaches the
+  // middle of the screen, and again on hover (none of it with reduced motion: the icons stay as drawn)
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.classList.add('has-block-fade');
-    const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
-    document.querySelectorAll('.cs-block').forEach((b) => io.observe(b));
+    root.classList.add('has-block-fade', 'has-icon-anim');
+    const blocks = [...document.querySelectorAll<HTMLElement>('.cs-block')];
+    const seen = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); seen.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    const middle = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-play'); middle.unobserve(e.target); } }), { rootMargin: '-45% 0px -45% 0px' });
+    blocks.forEach((b) => {
+      seen.observe(b);
+      middle.observe(b);
+      b.addEventListener('mouseenter', () => {
+        if (b.classList.contains('is-play')) b.querySelectorAll('.cs-block__icon *').forEach((el) => el.getAnimations().forEach((an) => { an.currentTime = 0; an.play(); }));
+      });
+    });
   }
 </script>

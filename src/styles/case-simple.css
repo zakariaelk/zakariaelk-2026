@@ -7,8 +7,10 @@
 .cs-simple .a-story .cs-block { margin-top: 1.8em; margin-bottom: 1em; } /* a little more space above than between paragraphs */
 .cs-simple .a-story .cs-block > p:last-child { margin-bottom: 0; }
 .cs-block__head { margin-bottom: 0.35em; }
-.cs-block__icon { display: block; width: 84px; height: 84px; margin-bottom: 10px; } /* phones: above the title */
-.cs-icon svg { display: block; width: 100%; height: 100%; }
+/* the icon scales with the screen like the type: 72px on phones to 120px at 1440 */
+.cs-simple { --icon: clamp(72px, calc(72px + 48 * (100vw - 390px) / 1050), 120px); }
+.cs-block__icon { display: block; width: var(--icon); height: var(--icon); margin-bottom: 10px; } /* phones: above the title */
+.cs-block__icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .cs-block__title { margin: 0; font-family: var(--serif); font-weight: 470; font-size: calc(var(--t-body) * 1.18); line-height: 1.25; letter-spacing: -0.01em; text-wrap: pretty; } /* one step above the body */
 .cs-simple .a-story .cs-block__title { margin-bottom: 0; }
 /* tablets: beside the title */
@@ -19,29 +21,72 @@
 /* wide screens: in the left margin, title and paragraph in the text column */
 @media (min-width: 1240px) {
   .cs-block__head { position: relative; display: block; }
-  .cs-block__icon { position: absolute; top: 50%; left: -144px; width: 120px; height: 120px; transform: translateY(-50%); }
+  .cs-block__icon { position: absolute; top: 50%; left: calc(-1 * (var(--icon) + 24px)); transform: translateY(-50%); }
 }
-/* the three styles under test: mixed down the page (a, b, c, a…), or one throughout with ?icons=a|b|c */
-.cs-icon { display: none; }
-:root:not([data-icons]) .cs-block:nth-of-type(3n + 1) .cs-icon--a,
-:root:not([data-icons]) .cs-block:nth-of-type(3n + 2) .cs-icon--b,
-:root:not([data-icons]) .cs-block:nth-of-type(3n) .cs-icon--c,
-:root[data-icons='a'] .cs-icon--a, :root[data-icons='b'] .cs-icon--b, :root[data-icons='c'] .cs-icon--c { display: block; width: 100%; height: 100%; }
-.a-compare__icons { margin-left: 24px; white-space: nowrap; }
-.a-compare__icons a { color: inherit; text-underline-offset: 0.2em; }
-.a-compare__icons a[aria-current] { color: var(--ink); font-weight: 500; text-decoration: none; }
 
-/* Pushback: the figure pushes the ball part of the way, the ball rolls on and drops into the hole. Plays once
-   when the block comes into view, again on hover; still with reduced motion */
-.cs-block .pb-ball, .cs-block .pb-man { transform-box: fill-box; transform-origin: center; }
-.cs-block.is-in .pb-ball { animation: pb-ball 2.6s cubic-bezier(0.4, 0, 0.6, 1) 0.3s both; }
-.cs-block.is-in .pb-man { animation: pb-man 2.6s cubic-bezier(0.4, 0, 0.6, 1) 0.3s both; }
-.cs-block.is-in:hover .pb-ball { animation-name: pb-ball-again; }
-.cs-block.is-in:hover .pb-man { animation-name: pb-man-again; }
-@keyframes pb-ball { 0% { transform: none; } 40% { transform: translateX(36px) rotate(79deg); } 56% { transform: translateX(62px) rotate(137deg); } 66%, 100% { transform: translate(62px, 30px) rotate(150deg); } }
-@keyframes pb-ball-again { 0% { transform: none; } 40% { transform: translateX(36px) rotate(79deg); } 56% { transform: translateX(62px) rotate(137deg); } 66%, 100% { transform: translate(62px, 30px) rotate(150deg); } }
-@keyframes pb-man { 0% { transform: none; } 40%, 100% { transform: translateX(36px); } }
-@keyframes pb-man-again { 0% { transform: none; } 40%, 100% { transform: translateX(36px); } }
+/* Icon colours, by role (docs/icons/build.mjs): i-a first paper, i-b second paper, i-k the small dark marks.
+   Two tests: the current colours, and ?colors=blue (the logo blue, its shades and black) */
+.cs-block { --ia: #de7a4e; --ib: #f0b48f; --ik: #4b3427; }
+.cs-block--did { --ia: #6a94cb; --ib: #a9c6ea; }
+.cs-block--testing { --ia: #6fa580; --ib: #cfe6d6; }
+.cs-block--interviews { --ia: #9a88c6; --ib: #cdc2ea; }
+.cs-block--partners { --ia: #e2b44c; --ib: #f5dc98; }
+.cs-block--pushback { --ia: #d98299; --ib: #eeb7c5; }
+:root[data-theme='dark'] .cs-block { --ik: #e9dfd5; }
+:root[data-icon-colors='blue'] .cs-block { --ia: #4a82c6; --ib: #accff6; --ik: #161616; }
+:root[data-icon-colors='blue'][data-theme='dark'] .cs-block { --ia: #6f9fd8; --ib: #4f7299; --ik: #ededed; }
+.cs-block__icon .i-a { fill: var(--ia); }
+.cs-block__icon .i-b { fill: var(--ib); }
+.cs-block__icon .i-k { fill: var(--ik); }
+
+/* Icon animations: once the block reaches the middle of the screen (.is-play, set by the page's script), again
+   on hover; they wait on their first frame until then, and don't exist with reduced motion */
+.cs-block__icon g { transform-box: fill-box; transform-origin: center; }
+.has-icon-anim .cs-block__icon :is(.fr-a, .fr-b, .fr-k) { animation: 2.2s both paused; }
+.has-icon-anim .cs-block__icon .fr-a { animation-name: fr-a; }
+.has-icon-anim .cs-block__icon .fr-b { animation-name: fr-b; }
+.has-icon-anim .cs-block__icon .fr-k { animation-name: fr-k; }
+.cs-block__icon .hm { transform-box: view-box; transform-origin: 59px 181px; } /* swings from the end of its handle */
+.has-icon-anim .cs-block__icon .hm { animation: hm 1.8s both paused; }
+.has-icon-anim .cs-block__icon .hm-k { animation: hm-k 1.8s both paused; }
+.has-icon-anim .cs-block__icon .mg { animation: mg 2s ease-in-out both paused; }
+.has-icon-anim .cs-block__icon .mg-gear { animation: mg-gear 2s ease-in-out both paused; }
+.has-icon-anim .cs-block__icon .mg-k { animation: mg-k 2s both paused; }
+.has-icon-anim .cs-block__icon .bb-back { animation: bb-back 2.2s both paused; }
+.has-icon-anim .cs-block__icon .bb-front { animation: bb-front 2.2s both paused; }
+.has-icon-anim .cs-block__icon .bb-dot { animation: bb-dot 2.2s both paused; }
+.has-icon-anim .cs-block__icon .bb-dot:nth-of-type(2) { animation-delay: 0.12s; }
+.has-icon-anim .cs-block__icon .bb-dot:nth-of-type(3) { animation-delay: 0.24s; }
+.has-icon-anim .cs-block__icon .bb-k { animation: bb-k 2.2s both paused; }
+.has-icon-anim .cs-block__icon .st { animation: st 1.4s both paused; }
+.has-icon-anim .cs-block__icon .st-k { animation: st-k 1.4s both paused; }
+.has-icon-anim .cs-block__icon :is(.pb-stone, .pb-man) { animation: 3s both paused; }
+.has-icon-anim .cs-block__icon .pb-stone { animation-name: pb-stone; }
+.has-icon-anim .cs-block__icon .pb-man { animation-name: pb-man; }
+.has-icon-anim .cs-block.is-play .cs-block__icon g { animation-play-state: running; }
+
+/* friction: the two arrows push into each other in jolts, slipping back a little each time; the dashes flash */
+@keyframes fr-a { 0% { transform: translate(-22px, -22px); } 18% { transform: translate(-13px, -13px); } 24% { transform: translate(-16px, -16px); } 44% { transform: translate(-7px, -7px); } 50% { transform: translate(-9px, -9px); } 70%, 100% { transform: none; } }
+@keyframes fr-b { 0% { transform: translate(22px, 22px); } 18% { transform: translate(13px, 13px); } 24% { transform: translate(16px, 16px); } 44% { transform: translate(7px, 7px); } 50% { transform: translate(9px, 9px); } 70%, 100% { transform: none; } }
+@keyframes fr-k { 0%, 16% { opacity: 0; } 19%, 23% { opacity: 1; } 26%, 42% { opacity: 0; } 45%, 49% { opacity: 1; } 52%, 68% { opacity: 0; } 71%, 100% { opacity: 1; } }
+/* what I did: the hammer swings back and strikes twice, the marks flash on each strike */
+@keyframes hm { 0% { transform: rotate(-32deg); } 22% { transform: rotate(4deg); animation-timing-function: ease-out; } 30% { transform: none; } 48% { transform: rotate(-26deg); animation-timing-function: ease-in; } 68% { transform: rotate(4deg); } 76%, 100% { transform: none; } }
+@keyframes hm-k { 0%, 21% { opacity: 0; } 23%, 34% { opacity: 1; } 38%, 67% { opacity: 0; } 69%, 100% { opacity: 1; } }
+/* testing: the magnifier scans, the gear turns */
+@keyframes mg { 0% { transform: translate(-10px, 6px); } 35% { transform: translate(8px, -6px); } 65% { transform: translate(-4px, -2px); } 100% { transform: none; } }
+@keyframes mg-gear { 0% { transform: rotate(-240deg); } 100% { transform: none; } }
+@keyframes mg-k { 0%, 80% { opacity: 0; } 90%, 100% { opacity: 1; } }
+/* interviews: one bubble, then the other, then the dots type */
+@keyframes bb-back { 0% { opacity: 0; transform: scale(0.4); } 22% { opacity: 1; transform: scale(1.06); } 30%, 100% { opacity: 1; transform: none; } }
+@keyframes bb-front { 0%, 18% { opacity: 0; transform: scale(0.4); } 40% { opacity: 1; transform: scale(1.06); } 48%, 100% { opacity: 1; transform: none; } }
+@keyframes bb-dot { 0%, 55% { transform: none; } 64% { transform: translateY(-9px); } 73%, 100% { transform: none; } }
+@keyframes bb-k { 0%, 75% { opacity: 0; } 85%, 100% { opacity: 1; } }
+/* partners: the star pops, its sparks flash */
+@keyframes st { 0% { opacity: 0; transform: scale(0.3) rotate(-30deg); } 45% { opacity: 1; transform: scale(1.12) rotate(6deg); } 62% { transform: scale(0.96); } 75%, 100% { opacity: 1; transform: none; } }
+@keyframes st-k { 0%, 55% { opacity: 0; } 65% { opacity: 1; } 72% { opacity: 0.3; } 80%, 100% { opacity: 1; } }
+/* pushback: the person slides the stone along to the hole, it drops in flush and the floor is flat */
+@keyframes pb-stone { 0% { transform: none; animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); } 55% { transform: translateX(64px); animation-timing-function: ease-in; } 64% { transform: translate(64px, 22px) rotate(3deg); animation-timing-function: ease-in; } 70% { transform: translate(64px, 40px); } 74% { transform: translate(64px, 37px); } 78%, 100% { transform: translate(64px, 40px); } }
+@keyframes pb-man { 0% { transform: none; animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); } 55%, 100% { transform: translateX(64px); } }
 
 /* results: a row of figures (bold value over a small grey descriptor) and a small grey source line */
 .cs-block__figures { display: flex; flex-wrap: wrap; gap: 16px clamp(24px, 4vw, 48px); margin: 18px 0 0; }
