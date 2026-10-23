@@ -99,3 +99,42 @@ svg[data-frame="20"] > [data-f="20"] { display: inline; }
   .cs-simple .a-rail.is-open:not(:hover, :focus-within) { width: 40px; }
   .cs-simple .a-rail.is-open:not(:hover, :focus-within) .a-rail__label { opacity: 0; transform: translateX(-12px); }
 }
+
+/* ---------- Sequences (components/story/Sequence.astro): one screen at a time on the visuals' blue ---------- */
+.cs-simple .a-story .cs-seq { max-width: 860px; margin: clamp(40px, calc(40px + 24 * (100vw - 768px) / 512), 64px) auto; }
+.cs-seq__stage { position: relative; display: grid; grid-template: 100% / 100%; place-items: center; height: clamp(440px, 64vh, 660px); background: linear-gradient(115deg, #4d61a3, #8198c7); }
+.cs-seq__screen { grid-area: 1 / 1; height: 86%; width: auto; aspect-ratio: 375 / 660; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 44px -20px rgb(0 0 0 / 0.5); }
+.cs-seq__screen[hidden] { display: none; }
+.cs-seq__dots { display: flex; justify-content: center; gap: 4px; margin-top: 10px; }
+.cs-seq__dots button { width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; }
+.cs-seq__dots button::before { content: ''; display: block; width: 8px; height: 8px; margin: auto; border-radius: 50%; background: var(--line); }
+.cs-seq__dots button[aria-current]::before { background: var(--ink); }
+.cs-simple .a-story .cs-seq figcaption { margin-top: 6px; }
+.cs-simple .a-story .is-lead + .cs-seq, .cs-simple .a-story :is(p, ul, ol, .cs-block) + .cs-seq { margin-top: calc(clamp(40px, calc(40px + 24 * (100vw - 768px) / 512), 64px) * 0.67); } /* close to the text it shows */
+
+/* ---------- Play / pause: a light overlay on hover, a small button in the bottom-left corner ---------- */
+.has-vbtn { position: relative; }
+:is(.has-vbtn, .cs-seq__stage)::after { content: ''; position: absolute; inset: 0; background: rgb(255 255 255 / 0.12); opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+:is(.has-vbtn, .cs-seq__stage):hover::after { opacity: 1; }
+.cs-vbtn { position: absolute; left: 16px; bottom: 16px; z-index: 2; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: rgb(255 255 255 / 0.92); color: #161616; cursor: pointer; opacity: 0; transition: opacity 0.15s ease; }
+.cs-vbtn svg { width: 18px; height: 18px; fill: currentColor; }
+.cs-vbtn__play, .is-paused .cs-vbtn__pause { display: none; }
+.is-paused .cs-vbtn__play { display: inline; }
+:is(.has-vbtn, .cs-seq__stage):hover .cs-vbtn, .cs-vbtn:focus-visible, .is-paused .cs-vbtn { opacity: 1; }
+@media (hover: none) { .cs-vbtn { opacity: 1; } }
+.cs-vbtn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@media (min-width: 768px) { .cs-vbtn { left: 20px; bottom: 20px; } }
+
+/* ---------- Full screen view (scripts/lightbox.ts) ---------- */
+.cs-simple .a-story :is(.cs-media, .cs-seq__stage) img { cursor: zoom-in; }
+.lb { width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; background: rgb(16 16 16 / 0.94); color: #fff; overflow: hidden; }
+.lb::backdrop { background: transparent; }
+.lb__stage { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; }
+.lb__img { max-width: 92vw; max-height: 84dvh; transform-origin: center; cursor: zoom-in; user-select: none; touch-action: none; }
+.lb.is-zoomed .lb__img { cursor: grab; }
+.lb.is-zoomed .lb__img:active { cursor: grabbing; }
+.lb__close { position: absolute; top: 18px; right: 18px; display: grid; place-items: center; width: 52px; height: 52px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #161616; cursor: pointer; }
+.lb__close svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.lb__bar { position: absolute; left: 50%; bottom: 20px; display: flex; gap: 6px; padding: 6px; border-radius: 30px; background: rgb(22 22 22 / 0.85); translate: -50% 0; } /* readable over any image */
+.lb__bar button { min-width: 48px; height: 44px; padding: 0 14px; border: 0; border-radius: 22px; background: #fff; color: #161616; font: 500 18px/1 var(--sans); cursor: pointer; }
+:is(.lb__close, .lb__bar button):focus-visible { outline: 3px solid #accff6; outline-offset: 2px; }

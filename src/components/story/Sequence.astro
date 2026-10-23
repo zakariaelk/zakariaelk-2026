@@ -1,0 +1,27 @@
+---
+// A flow shown one screen at a time, like a short video: the screens step on by themselves while the sequence is
+// on screen (a cut, no slide), with a play/pause button and dots to jump to a screen. With reduced motion it
+// doesn't step on by itself. images: paths in src/assets separated by commas; alts: one per screen, separated
+// by |. The page's script (scripts/sequence.ts) runs it; a click opens the screen full size (scripts/lightbox.ts).
+import { getImage } from 'astro:assets';
+import { assetImage } from '../../lib/media';
+
+interface Props { images: string; alts?: string; caption?: string }
+const { images, alts = '', caption } = Astro.props;
+const paths = images.split(',').map((s) => s.trim()).filter(Boolean);
+const altList = alts.split('|').map((s) => s.trim());
+const screens = await Promise.all(paths.map(async (p, i) => {
+  const src = assetImage(p);
+  if (!src) throw new Error(`Sequence: image not found in src/assets: ${p}`);
+  const [view, full] = await Promise.all([getImage({ src, width: 720, format: 'webp' }), getImage({ src, width: Math.min(src.width, 1400), format: 'webp' })]);
+  return { view: view.src, full: full.src, alt: altList[i] ?? '' };
+}));
+---
+<figure class="cs-seq" data-seq>
+  <div class="cs-seq__stage">
+    {screens.map((s, i) => <img class="cs-seq__screen" src={s.view} data-full={s.full} alt={s.alt} width="375" height="660" loading="lazy" decoding="async" hidden={i > 0} />)}
+    <button type="button" class="cs-vbtn" aria-label="Pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="cs-vbtn__pause" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /><path class="cs-vbtn__play" d="M8 5.5v13l11-6.5z" /></svg></button>
+  </div>
+  <div class="cs-seq__dots">{screens.map((_, i) => <button type="button" aria-label={`Screen ${i + 1} of ${screens.length}`} aria-current={i === 0 ? 'true' : undefined} />)}</div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

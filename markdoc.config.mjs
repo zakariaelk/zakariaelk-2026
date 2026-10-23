@@ -65,6 +65,8 @@ export default defineMarkdocConfig({
         source: { type: String },
       },
     },
+    // a flow shown one screen at a time, like a short video (images: src/assets paths, comma-separated; alts: |)
+    sequence: { render: story('Sequence'), selfClosing: true, attributes: { images: { type: String, required: true }, alts: { type: String }, caption: { type: String } } },
     // a line break inside a heading or title
     br: { render: 'br', inline: true, selfClosing: true },
     // "Pros:" (green) / "Cons:" (red) at the start of a line about an idea

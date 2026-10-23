@@ -15,6 +15,9 @@ const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
 <CaseA project={project} next={next} base="/" look="blue" compare="simple" fullVideo={{ src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg' }} />
 
 <script>
+  import '../../scripts/sequence'; // flows shown one screen at a time
+  import '../../scripts/lightbox'; // images full screen, with zoom
+  import '../../scripts/video-controls'; // a clear play/pause on videos
   // icons are flipbooks (docs/icons/build.mjs): each plays its frames once when its block reaches the middle of
   // the screen, and again on hover; with reduced motion each shows its standing frame
   const play = (svg: SVGElement & { _t?: number }) => {
