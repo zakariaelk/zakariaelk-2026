@@ -15,10 +15,7 @@ const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
 <CaseA project={project} next={next} base="/" look="blue" compare="simple" fullVideo={{ src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg' }} />
 
 <script>
-  // two colour tests for the icons: the current colours, or ?colors=blue (the logo blue, its shades and black)
   const root = document.documentElement;
-  if (new URLSearchParams(location.search).get('colors') === 'blue') root.dataset.iconColors = 'blue';
-  document.querySelectorAll<HTMLAnchorElement>('[data-colors-link]').forEach((a) => { if (a.dataset.colorsLink === (root.dataset.iconColors ?? '')) a.setAttribute('aria-current', 'true'); });
   // blocks fade in and rise 4px as they come into view; each icon plays its animation once its block reaches the
   // middle of the screen, and again on hover (none of it with reduced motion: the icons stay as drawn)
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
