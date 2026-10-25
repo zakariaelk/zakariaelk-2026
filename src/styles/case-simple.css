@@ -97,6 +97,18 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
 .cs-simple .a-story .cs-pair__grid { gap: 16px; }
 .cs-simple .a-story figcaption { max-width: none; margin: 12px 0 0; padding-inline: 0; text-align: left; }
 .cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels) { display: none; } /* the caption says Before / After */
+/* ---------- Titles, variant C (?titles=small): the small sans titles taken off the paragraphs, shown again to
+   compare (hidden in the other variants); 48px above such a block, the title 8px above its paragraph, the icon
+   level with the title ---------- */
+.cs-block__title { display: none; }
+:root[data-titles='small'] .cs-simple .a-story .cs-block:has(.cs-block__title) { margin-top: 48px; }
+:root[data-titles='small'] .cs-block__title { display: block; margin: 0 0 8px; font-family: var(--sans); font-weight: 600; font-size: 20px; line-height: 28px; color: var(--cs-title); text-wrap: pretty; }
+:root[data-titles='small'] .cs-block:has(.cs-block__title) .cs-block__head { float: none; display: flex; align-items: flex-start; gap: 10px; margin: 0; }
+@media (min-width: 900px) {
+  :root[data-titles='small'] .cs-block:has(.cs-block__title) .cs-block__head { display: block; }
+  :root[data-titles='small'] .cs-block:has(.cs-block__title) .cs-block__icon { top: -4px; } /* (28 - 36) / 2: on the title's line */
+}
+
 /* ---------- Titles, variant B (?titles=sans): label and title on one line, in bold sans, Medium-style ---------- */
 .a-compare__titles { margin-left: 24px; white-space: nowrap; }
 .a-compare__titles a { color: inherit; text-underline-offset: 0.2em; }

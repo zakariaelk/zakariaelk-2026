@@ -75,7 +75,7 @@ The idea was simple: take alerts out of SMS and email and put them in one place,
 
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-former-version.jpg" frame="before" alt="The app when I joined: a dense dark list of alerts in capitals, an alert detail packed with text under a small map, and a map that shows a single alert pin." caption="Before: Visuals showing what the App looked like when I joined the project team." /%}
 
-{% block icon="friction" %}
+{% block icon="friction" title="The solution came before the problem" %}
 There was no problem statement to design against, so a quick heuristic evaluation of the app became my starting point. After sharing it with the project lead, I asked to take the app on, with the idea of lining up the UI with the brand, not knowing it would grow into a UX redesign. Along the way it felt like a patchwork every now and then.
 {% /block %}
 
@@ -95,7 +95,7 @@ NGO field workers and security staff receive the alerts and need them fast and c
 
 The app opened straight on a login form, with a request for location access on top. Country office colleagues thought a welcome email would be enough to explain things, but someone could install the app today and only open it a month later when an alert comes in, and by then that email is long gone. So the explanation had to live inside the app.
 
-{% block icon="did" %}
+{% block icon="did" title="Explain first, ask for location later" %}
 Two short onboarding screens now come before the login, and location access is asked only after, once people know what it's for. The login got the brand back, and the validation stopped shouting "Invalid email" before anyone had typed a thing.
 {% /block %}
 
@@ -106,7 +106,7 @@ Two short onboarding screens now come before the login, and location access is a
 
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-login-comparison.jpg" frame="compare" alt="Login before: a plain form showing red “Invalid email” and “Invalid password” errors before anything is typed. After: a branded “Let's get started” screen with an illustration of a person beside a lock, calm fields and one Continue button." caption="Login screen before and after. Smart validation was one of the main updates." /%}
 
-{% block icon="partners" source="Post-launch partner survey, no baseline for the old version" %}
+{% block icon="partners" source="Post-launch partner survey, no baseline for the old version" title="Most partners found getting started easy" %}
 24 out of 31 partners rated getting started 4 or 5 out of 5, an average of 4.1/5.
 {% /block %}
 
@@ -116,16 +116,20 @@ Two short onboarding screens now come before the login, and location access is a
 
 **The main screen had all the information, but it was hard to read and scan**
 
+{% block title="Eight alerts squeezed on one screen" %}
 Eight alerts were squeezed on one screen, with titles of 12 to 16 words in a tiny column and small dates and distances fighting for attention. My first thought was "where should I be looking?" and there was no way to search by place either.
+{% /block %}
 
+{% block title="Built for scanning, not for seeing everything" %}
 Scanning came first, with more space and a clear order of location, title and time. Then search at the top, a simpler filter and a list/map toggle. The map-and-listings idea came from apps like Airbnb, and country office colleagues found it familiar straight away.
+{% /block %}
 
 {% pair %}
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-old-alerts-screen.jpg" frame="before" size="half" alt="The old alerts list, annotated: inconsistent typography, low spacing between items, and location, distance and time not prioritised." caption="Before: Alerts screen before redesign, showing density and unclear hierarchy" /%}
 {% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-alerts-screen-redesign.mp4" frame="after" size="half" alt="The new alerts list: search at the top, alerts as spaced cards with location and distance first, and a persistent menu with a map button." caption="After: Improved alerts experience with clearer hierarchy and in-app guidance" /%}
 {% /pair %}
 
-{% block icon="testing" source="Maze tests with country office colleagues" %}
+{% block icon="testing" source="Maze tests with country office colleagues" title="Testers filtered alerts by location and date without help" %}
 10 out of 10 testers filtered alerts by location in 22 seconds on average, with an ease-of-use score of 9.3/10; 13 out of 13 filtered by date in 19 seconds, scoring 8.2/10.
 {% /block %}
 
@@ -157,7 +161,7 @@ The old map could only show one alert at a time, and each mode's settings sat be
 
 Explore lets people move around the map and spot alerts visually, for example along a route with several checkpoints. Testing caught two things worth fixing: scrolling an alert also moved the map, and alerts without a location never showed up on it, so list and map counts didn't match.
 
-{% block source="Maze test with country office colleagues" %}
+{% block source="Maze test with country office colleagues" title="Testers found the map from the alerts list and explored it freely, with no drop-offs" %}
 8 out of 8 testers found the map and explored it, getting to a specific location in 33 seconds on average, with an ease-of-use score of 8.6/10.
 {% /block %}
 
@@ -169,11 +173,11 @@ Proximity shows alerts within a radius of your live location, or of a pin you dr
 
 {% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-map-proximity.mp4" frame="after" alt="Proximity mode: a circle around the user's position or a dropped pin, with a radius control, lists the alerts inside it." caption="I reworked the Proximity mode, allowing users to monitor alerts within a radius based on either their current location or a custom location dropped on the map." /%}
 
-{% block icon="face-confused" %}
+{% block icon="face-confused" title="Live or custom location? Hard to tell" %}
 The trickier part was that some testers couldn't tell live location from custom location, or how to use either. All they had to go on was one pop-up: "Use this feature to know what's happening around you and/or while on the move. You can also set a remote location."
 {% /block %}
 
-{% block source="Maze test with country office colleagues" %}
+{% block source="Maze test with country office colleagues" title="Testers set a radius around a place they weren't in, but the single pop-up left live and custom location unclear" %}
 6 out of 6 testers set a radius around a place they weren't in, in 53 seconds on average, with an ease-of-use score of 6.8/10.
 {% /block %}
 
@@ -193,7 +197,7 @@ Together with the engineers and a few colleagues from the information team at HQ
 
    {% pc kind="cons" /%} three steps was the shortest I could get it, which might feel long for some.
 
-{% block icon="face-smiling" %}
+{% block icon="face-smiling" title="Showing it instead of explaining it" %}
 We took the risk with the tutorials, since text and animation together get the point across faster than text alone.
 {% /block %}
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/sequences/proximity-1.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/proximity-2.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/proximity-3.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/proximity-4.jpg" alts="Proximity tutorial, 1 of 3: see what is around you.|2 of 3: see what is around a custom location.|3 of 3: select the radius of your proximity with the slider.|The results: a radius on the map with the alerts inside it." caption="The three-step Proximity tutorial, then the results view." /%}
