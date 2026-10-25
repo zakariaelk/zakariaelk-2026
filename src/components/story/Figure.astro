@@ -17,9 +17,12 @@ const sizes = size === 'half' ? '(min-width: 1200px) 560px, (min-width: 760px) 4
   : size === 'text' ? '(min-width: 760px) 640px, 100vw'
   : '(min-width: 1200px) 1140px, 100vw';
 const noteList = notes?.split('|').map((s) => s.trim()).filter(Boolean) ?? [];
+// landscape or portrait, from the media's own size (a video's from its poster): the Simple case sizes them by it
+const dims = isVideo ? poster : img;
+const orient = dims && dims.width / dims.height < 1.1 ? 'portrait' : 'landscape';
 const label = frame === 'before' ? 'Before' : frame === 'after' ? 'After' : '';
 ---
-<figure class:list={['cs-figure', `cs-figure--${size}`, frame && `cs-frame--${frame}`]}>
+<figure class:list={['cs-figure', `cs-figure--${size}`, frame && `cs-frame--${frame}`]} data-orient={orient}>
   {label && <p class="cs-frame__label">{label}</p>}
   {frame === 'compare' && <p class="cs-frame__labels" aria-hidden="true"><span>Before</span><span>After</span></p>}
   <div class="cs-media">

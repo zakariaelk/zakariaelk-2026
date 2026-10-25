@@ -1,24 +1,26 @@
 /* The Simple version of the INSO case, scoped to .cs-simple on <body> so the full and short versions don't change.
    Reading experience v3 (docs/claude-code-instructions-reading-experience.md), as adjusted on 25 Oct: Medium-style
-   text in one 680px column, the body at the lede's size (about 73 characters a line), one title setting; visuals
-   in the column. Titles in two variants to compare: serif under a small label (default), or ?titles=sans. Blocks:
-   an icon beside a paragraph (components/story/Block.astro). */
+   text in one 680px column, the body at the lede's size (about 70 characters a line), one title setting; landscape
+   visuals wide (NYT-style), every visual edge to edge on phones. Titles in variants to compare: serif under a
+   small label (default), ?titles=sans, ?titles=small. Blocks: an icon beside or above a paragraph
+   (components/story/Block.astro). */
 
 /* ---------- Type scale: phones, then 768px, then 1100px ---------- */
 .cs-simple {
   --cs-title: #161616; --cs-text: #292929; --cs-muted: #6b6b6b; --cs-rule: #e3e3e3; --cs-rule-strong: #bdbdbd;
   --h1: 32px; --h1-lh: 39px;
-  --pt: 22px; --pt-lh: 29px;       /* paragraph title: the bold headline sentence of a section */
-  --body: 19px; --body-lh: 30px;   /* body and lede: one size */
+  --pt: 23px; --pt-lh: 30px;       /* paragraph title: the bold headline sentence of a section */
+  --body: 21px; --body-lh: 31px;   /* body and lede: one size; on phones about 40 characters a line, as NYT's */
+  --small: 15px; --small-lh: 22px; /* captions and source lines */
   --sec-gap: 80px;                 /* between sections */
   --col: 680px; --side: 20px;      /* the text column and its side padding */
 }
 :root[data-theme='dark'] .cs-simple { --cs-title: #ededed; --cs-text: #d6d6d6; --cs-muted: #9b9b9b; --cs-rule: #333; --cs-rule-strong: #555; }
-@media (min-width: 768px) { .cs-simple { --h1: 38px; --h1-lh: 46px; --pt: 24px; --pt-lh: 32px; --body: 21px; --body-lh: 33px; --side: 24px; } }
+@media (min-width: 768px) { .cs-simple { --h1: 38px; --h1-lh: 46px; --pt: 24px; --pt-lh: 32px; --body: 21px; --body-lh: 33px; --small: 14px; --small-lh: 20px; --side: 24px; } }
 @media (min-width: 1100px) { .cs-simple { --h1: 44px; --h1-lh: 52px; --pt: 26px; --pt-lh: 34px; --body: 22px; --body-lh: 34px; --sec-gap: 96px; } }
 /* the small sans roles, the same at every size */
 .cs-simple .a-case__label, .cs-simple .a-story h2, .cs-simple .a-case__meta dt { font-family: var(--sans); font-weight: 500; font-size: 13px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cs-muted); }
-.cs-simple .a-story :is(figcaption, .cs-block__source, .cs-chart figcaption, .cs-chart__table summary) { font-family: var(--sans); font-style: normal; font-weight: 400; font-size: 14px; line-height: 20px; color: var(--cs-muted); }
+.cs-simple .a-story :is(figcaption, .cs-block__source, .cs-chart figcaption, .cs-chart__table summary) { font-family: var(--sans); font-style: normal; font-weight: 400; font-size: var(--small); line-height: var(--small-lh); color: var(--cs-muted); }
 
 /* ---------- Top: in the same column (the hero itself is unchanged) ---------- */
 .cs-simple .a-case > * { max-width: var(--col); margin-inline: auto; }
@@ -53,14 +55,15 @@
 .cs-simple .a-story .cs-block { margin: 0 auto 22px; }
 .cs-simple .a-story .cs-block > p:last-child { margin-bottom: 0; }
 .cs-simple .a-story .cs-block__source { margin: 8px 0 0; }
-/* icons: one 36px box hanging 56px left of the column, level with the paragraph's first line; below 900px,
-   28px beside the first line, the text running round it */
-.cs-block__icon { display: block; width: 28px; height: 28px; }
+/* icons: below 900px, 32px above their paragraph (or title), 40px clear of what comes before; from 900px, one
+   44px box hanging 64px left of the column, level with the paragraph's first line */
+.cs-simple .a-story .cs-block:has(.cs-block__icon) { margin-top: 40px; }
+.cs-block__icon { display: block; width: 32px; height: 32px; margin-bottom: 10px; }
 .cs-block__icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.cs-block__head { float: left; margin: calc((var(--body-lh) - 28px) / 2) 10px 0 0; }
 @media (min-width: 900px) {
-  .cs-block__head { position: relative; float: none; margin: 0; }
-  .cs-block__icon { position: absolute; left: -56px; top: calc((var(--body-lh) - 36px) / 2); width: 36px; height: 36px; }
+  .cs-simple .a-story .cs-block:has(.cs-block__icon) { margin-top: 0; }
+  .cs-block__head { position: relative; }
+  .cs-block__icon { position: absolute; left: -64px; top: calc((var(--body-lh) - 44px) / 2); width: 44px; height: 44px; margin: 0; }
 }
 
 /* Icon colours, by role (docs/icons/build.mjs): black (the text's) and a light grey, white inside the eyes.
@@ -97,17 +100,25 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
 .cs-simple .a-story .cs-pair__grid { gap: 16px; }
 .cs-simple .a-story figcaption { max-width: none; margin: 12px 0 0; padding-inline: 0; text-align: left; }
 .cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels) { display: none; } /* the caption says Before / After */
+/* landscape visuals and before/after pairs, from 1100px: wider than the text, 80% of the window up to 1200px, never
+   to the edges (portrait ones, sequences and the chart stay in the column) */
+@media (min-width: 1100px) {
+  .cs-simple .a-story :is(.cs-figure, .cs-pair)[data-orient='landscape']:not(.cs-pair .cs-figure) { max-width: min(80vw, 1200px); }
+  .cs-simple .a-story .cs-pair__grid { gap: 24px; }
+}
+/* phones: every visual edge to edge, its caption back in the text's margins */
+@media (max-width: 767px) {
+  .cs-simple .a-story :is(.cs-figure, .cs-pair, .cs-seq, .cs-chart):not(.cs-pair .cs-figure) { max-width: none; margin-inline: calc(-1 * var(--side)); }
+  .cs-simple .a-story :is(.cs-figure, .cs-pair, .cs-seq, .cs-chart) figcaption, .cs-simple .a-story .cs-seq__dots, .cs-simple .a-story .cs-chart :is(.cs-chart__legend, .cs-chart__table) { padding-inline: var(--side); }
+  .cs-simple .a-story .cs-pair__grid { gap: 12px; }
+}
 /* ---------- Titles, variant C (?titles=small): the small sans titles taken off the paragraphs, shown again to
    compare (hidden in the other variants); 48px above such a block, the title 8px above its paragraph, the icon
    level with the title ---------- */
 .cs-block__title { display: none; }
 :root[data-titles='small'] .cs-simple .a-story .cs-block:has(.cs-block__title) { margin-top: 48px; }
 :root[data-titles='small'] .cs-block__title { display: block; margin: 0 0 8px; font-family: var(--sans); font-weight: 600; font-size: 20px; line-height: 28px; color: var(--cs-title); text-wrap: pretty; }
-:root[data-titles='small'] .cs-block:has(.cs-block__title) .cs-block__head { float: none; display: flex; align-items: flex-start; gap: 10px; margin: 0; }
-@media (min-width: 900px) {
-  :root[data-titles='small'] .cs-block:has(.cs-block__title) .cs-block__head { display: block; }
-  :root[data-titles='small'] .cs-block:has(.cs-block__title) .cs-block__icon { top: -4px; } /* (28 - 36) / 2: on the title's line */
-}
+@media (min-width: 900px) { :root[data-titles='small'] .cs-block:has(.cs-block__title) .cs-block__icon { top: -8px; } } /* (28 - 44) / 2: on the title's line */
 
 /* ---------- Titles, variant B (?titles=sans): label and title on one line, in bold sans, Medium-style ---------- */
 .a-compare__titles { margin-left: 24px; white-space: nowrap; }
