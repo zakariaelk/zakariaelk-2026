@@ -43,7 +43,7 @@ const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug,
 
   {compare && (
     <p class="a-wrap a-compare">Comparing versions:{' '}<a href="/work/mitigating-risk-with-location-based-alerts-full/" aria-current={compare === 'full' ? 'page' : undefined}>Full</a>{' · '}<a href="/work/mitigating-risk-with-location-based-alerts/" aria-current={compare === 'short' ? 'page' : undefined}>Short</a>{' · '}<a href="/work/mitigating-risk-with-location-based-alerts-simple/" aria-current={compare === 'simple' ? 'page' : undefined}>Simple</a>
-      {compare === 'simple' && <span class="a-compare__visuals">Visuals:{' '}<a href="?" data-visuals-link="">Column</a>{' · '}<a href="?visuals=wide" data-visuals-link="wide">Wide</a></span>}</p>
+      {compare === 'simple' && <span class="a-compare__titles">Titles:{' '}<a href="?" data-titles-link="">Serif</a>{' · '}<a href="?titles=sans" data-titles-link="sans">Sans</a></span>}</p>
   )}
   <header class="a-wrap a-case" id="top">
     <p class="a-case__label">{labelOf(d)}</p>

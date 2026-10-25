@@ -3,7 +3,7 @@
 interface Props { caption?: string }
 const { caption } = Astro.props;
 ---
-<figure class="cs-pair" data-orient="landscape">
+<figure class="cs-pair">
   <div class="cs-pair__grid"><slot /></div>
   {caption && <figcaption>{caption}</figcaption>}
 </figure>

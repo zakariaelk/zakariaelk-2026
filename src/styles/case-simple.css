@@ -1,21 +1,21 @@
 /* The Simple version of the INSO case, scoped to .cs-simple on <body> so the full and short versions don't change.
-   Reading experience v3 (docs/claude-code-instructions-reading-experience.md): Medium-style text in one 680px
-   column, about four sizes, subheads that stand out by weight; visuals in two variants to compare
-   (?visuals=wide). Blocks: an icon and a narrative title over the paragraph (components/story/Block.astro). */
+   Reading experience v3 (docs/claude-code-instructions-reading-experience.md), as adjusted on 25 Oct: Medium-style
+   text in one 680px column, the body at the lede's size (about 73 characters a line), one title setting; visuals
+   in the column. Titles in two variants to compare: serif under a small label (default), or ?titles=sans. Blocks:
+   an icon beside a paragraph (components/story/Block.astro). */
 
 /* ---------- Type scale: phones, then 768px, then 1100px ---------- */
 .cs-simple {
   --cs-title: #161616; --cs-text: #292929; --cs-muted: #6b6b6b; --cs-rule: #e3e3e3; --cs-rule-strong: #bdbdbd;
   --h1: 32px; --h1-lh: 39px;
   --pt: 22px; --pt-lh: 29px;       /* paragraph title: the bold headline sentence of a section */
-  --h3: 20px; --h3-lh: 27px;       /* map-mode titles */
-  --body: 18px; --body-lh: 28px;
+  --body: 19px; --body-lh: 30px;   /* body and lede: one size */
   --sec-gap: 80px;                 /* between sections */
   --col: 680px; --side: 20px;      /* the text column and its side padding */
 }
 :root[data-theme='dark'] .cs-simple { --cs-title: #ededed; --cs-text: #d6d6d6; --cs-muted: #9b9b9b; --cs-rule: #333; --cs-rule-strong: #555; }
-@media (min-width: 768px) { .cs-simple { --h1: 38px; --h1-lh: 46px; --pt: 24px; --pt-lh: 32px; --h3: 22px; --h3-lh: 30px; --body: 19px; --body-lh: 30px; --side: 24px; } }
-@media (min-width: 1100px) { .cs-simple { --h1: 44px; --h1-lh: 52px; --pt: 26px; --pt-lh: 34px; --body: 20px; --body-lh: 32px; --sec-gap: 96px; } }
+@media (min-width: 768px) { .cs-simple { --h1: 38px; --h1-lh: 46px; --pt: 24px; --pt-lh: 32px; --body: 21px; --body-lh: 33px; --side: 24px; } }
+@media (min-width: 1100px) { .cs-simple { --h1: 44px; --h1-lh: 52px; --pt: 26px; --pt-lh: 34px; --body: 22px; --body-lh: 34px; --sec-gap: 96px; } }
 /* the small sans roles, the same at every size */
 .cs-simple .a-case__label, .cs-simple .a-story h2, .cs-simple .a-case__meta dt { font-family: var(--sans); font-weight: 500; font-size: 13px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cs-muted); }
 .cs-simple .a-story :is(figcaption, .cs-block__source, .cs-chart figcaption, .cs-chart__table summary) { font-family: var(--sans); font-style: normal; font-weight: 400; font-size: 14px; line-height: 20px; color: var(--cs-muted); }
@@ -24,7 +24,7 @@
 .cs-simple .a-case > * { max-width: var(--col); margin-inline: auto; }
 .cs-simple .a-case__title { margin-top: 12px; font-family: var(--serif); font-weight: 500; font-size: var(--h1); line-height: var(--h1-lh); letter-spacing: -0.01em; color: var(--cs-title); }
 .cs-simple .a-case__intro { max-width: var(--col); margin-top: 48px; }
-.cs-simple .a-case__lede { margin: 0 0 22px; font-family: var(--serif); font-weight: 400; font-size: 22px; line-height: 34px; color: var(--cs-text); }
+.cs-simple .a-case__lede { margin: 0 0 22px; font-family: var(--serif); font-weight: 400; font-size: var(--body); line-height: var(--body-lh); color: var(--cs-text); }
 .cs-simple .a-case__meta { margin-top: 32px; gap: 20px 32px; }
 .cs-simple .a-case__meta dd { margin-top: 4px; font-family: var(--sans); font-size: 15px; line-height: 22px; color: var(--cs-text); }
 .cs-simple .a-case__cta { font-size: 15px; } /* "Take a look": the small sans size, no extra size in the scale */
@@ -42,33 +42,25 @@
 .cs-simple .a-story h2 + .is-lead strong { font-weight: inherit; }
 /* any other bold-only line ("Takeaways"): plain bold body text */
 .cs-simple .a-story .is-lead:not(h2 + .is-lead) { margin: 0 auto 8px; font-size: inherit; line-height: inherit; letter-spacing: normal; }
-/* map-mode titles: 64px above, 20px below */
-.cs-simple .a-story h3 { margin: 64px auto 20px; font-family: var(--serif); font-weight: 560; font-size: var(--h3); line-height: var(--h3-lh); letter-spacing: -0.005em; color: var(--cs-title); text-wrap: pretty; }
+/* map-mode titles (and the other headings inside a section): the one title setting, 64px above, 20px below */
+.cs-simple .a-story h3 { margin: 64px auto 20px; font-family: var(--serif); font-weight: 560; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; color: var(--cs-title); text-wrap: pretty; }
 /* lists: 14px between items */
 .cs-simple .a-story article > :is(ul, ol) { margin: 0 auto 22px; padding-left: 1.3em; }
 .cs-simple .a-story article > :is(ul, ol) > li + li { margin-top: 14px; }
 .cs-simple .a-story article > ol > li > p { margin: 0 0 8px; }
 
-/* ---------- Blocks: 48px above a block title, the title 8px above its paragraph ---------- */
-.cs-simple .a-story .cs-block { margin-top: 48px; margin-bottom: 22px; }
+/* ---------- Blocks: an icon beside a paragraph, no title of their own ---------- */
+.cs-simple .a-story .cs-block { margin: 0 auto 22px; }
 .cs-simple .a-story .cs-block > p:last-child { margin-bottom: 0; }
-.cs-simple .a-story .cs-block--untitled { margin-top: 0; }
-.cs-block__head { position: relative; }
-.cs-block__title { margin: 0 0 8px; font-family: var(--sans); font-weight: 600; font-size: 20px; line-height: 28px; color: var(--cs-title); text-wrap: pretty; }
-.cs-simple .a-story .cs-block__title { margin-bottom: 8px; }
 .cs-simple .a-story .cs-block__source { margin: 8px 0 0; }
-/* icons: all in one 36px box, hanging 56px left of the column, level with the first line of the title (or of the
-   paragraph); below 900px, 28px and inline before the title (beside the first line of a plain paragraph) */
+/* icons: one 36px box hanging 56px left of the column, level with the paragraph's first line; below 900px,
+   28px beside the first line, the text running round it */
 .cs-block__icon { display: block; width: 28px; height: 28px; }
 .cs-block__icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.cs-block:not(.cs-block--untitled) .cs-block__head { display: flex; align-items: flex-start; gap: 10px; }
-.cs-block:not(.cs-block--untitled) .cs-block__icon { flex: none; }
-.cs-block--untitled .cs-block__head { float: left; margin: calc((var(--body-lh) - 28px) / 2) 10px 0 0; }
+.cs-block__head { float: left; margin: calc((var(--body-lh) - 28px) / 2) 10px 0 0; }
 @media (min-width: 900px) {
-  .cs-block:not(.cs-block--untitled) .cs-block__head { display: block; }
-  .cs-block--untitled .cs-block__head { float: none; margin: 0; }
-  .cs-block__icon { position: absolute; left: -56px; top: -4px; width: 36px; height: 36px; } /* (28 - 36) / 2: centred on a 28px title line */
-  .cs-block--untitled .cs-block__icon { top: calc((var(--body-lh) - 36px) / 2); }
+  .cs-block__head { position: relative; float: none; margin: 0; }
+  .cs-block__icon { position: absolute; left: -56px; top: calc((var(--body-lh) - 36px) / 2); width: 36px; height: 36px; }
 }
 
 /* Icon colours, by role (docs/icons/build.mjs): black (the text's) and a light grey, white inside the eyes.
@@ -105,15 +97,16 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
 .cs-simple .a-story .cs-pair__grid { gap: 16px; }
 .cs-simple .a-story figcaption { max-width: none; margin: 12px 0 0; padding-inline: 0; text-align: left; }
 .cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels) { display: none; } /* the caption says Before / After */
-/* variant B (?visuals=wide, from 1100px): landscape visuals and pairs wider than the text, never to the edges */
-@media (min-width: 1100px) {
-  :root[data-visuals='wide'] .cs-simple .a-story :is(.cs-figure, .cs-pair)[data-orient='landscape']:not(.cs-pair .cs-figure) { max-width: min(80vw, 1200px); }
-  :root[data-visuals='wide'] .cs-simple .a-story .cs-pair__grid { gap: 24px; }
-}
-/* the visuals switch in the temporary bar */
-.a-compare__visuals { margin-left: 24px; white-space: nowrap; }
-.a-compare__visuals a { color: inherit; text-underline-offset: 0.2em; }
-.a-compare__visuals a[aria-current] { color: var(--ink); font-weight: 500; text-decoration: none; }
+/* ---------- Titles, variant B (?titles=sans): label and title on one line, in bold sans, Medium-style ---------- */
+.a-compare__titles { margin-left: 24px; white-space: nowrap; }
+.a-compare__titles a { color: inherit; text-underline-offset: 0.2em; }
+.a-compare__titles a[aria-current] { color: var(--ink); font-weight: 500; text-decoration: none; }
+/* the section label moves into its title ("Alerts: The main screen…"); it stays in the page for the rail */
+:root[data-titles='sans'] .cs-simple .a-story h2.has-lead { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+:root[data-titles='sans'] .cs-simple .a-story h2.has-lead:not(:first-child) + [data-section] { margin-top: var(--sec-gap); }
+:root[data-titles='sans'] .cs-simple .a-story [data-section]::before { content: attr(data-section) ': ' / ''; }
+:root[data-titles='sans'] .cs-simple .a-story :is(h2:not(.has-lead), [data-section], h3) { font-family: var(--sans); font-weight: 700; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.01em; text-transform: none; color: var(--cs-title); }
+:root[data-titles='sans'] .cs-simple .a-story h2:not(.has-lead) { margin-bottom: 20px; }
 
 /* the chart and its table: always the column; the table with hairlines only */
 .cs-simple .a-story .cs-chart__table { margin-top: 16px; }

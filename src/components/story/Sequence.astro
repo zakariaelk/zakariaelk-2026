@@ -17,7 +17,7 @@ const screens = await Promise.all(paths.map(async (p, i) => {
   return { view: view.src, full: full.src, alt: altList[i] ?? '' };
 }));
 ---
-<figure class="cs-seq" data-seq data-orient="portrait">
+<figure class="cs-seq" data-seq>
   <div class="cs-seq__stage">
     {screens.map((s, i) => <img class="cs-seq__screen" src={s.view} data-full={s.full} alt={s.alt} width="375" height="660" loading="lazy" decoding="async" hidden={i > 0} />)}
     <button type="button" class="cs-vbtn" aria-label="Pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="cs-vbtn__pause" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /><path class="cs-vbtn__play" d="M8 5.5v13l11-6.5z" /></svg></button>
