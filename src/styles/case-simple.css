@@ -1,24 +1,74 @@
-/* The Simple version of the INSO case (docs/claude-code-instructions-simple-layout-v2.md), scoped to
-   .cs-simple on <body> so the full and short versions don't change. Same type, colours, column and hero as
-   the case template; quieter blocks: an icon and a narrative title over the paragraph (components/story/
-   Block.astro), no labels, no boxes, no bars. */
+/* The Simple version of the INSO case, scoped to .cs-simple on <body> so the full and short versions don't change.
+   Reading experience v3 (docs/claude-code-instructions-reading-experience.md): Medium-style text in one 680px
+   column, about four sizes, subheads that stand out by weight; visuals in two variants to compare
+   (?visuals=wide). Blocks: an icon and a narrative title over the paragraph (components/story/Block.astro). */
 
-/* ---------- Blocks: icon + narrative title, then the paragraph ---------- */
-.cs-simple .a-story .cs-block { margin-top: 4em; margin-bottom: 4em; } /* whole blocks (icon, title, paragraph) well apart from each other and from visuals */
+/* ---------- Type scale: phones, then 768px, then 1100px ---------- */
+.cs-simple {
+  --cs-title: #161616; --cs-text: #292929; --cs-muted: #6b6b6b; --cs-rule: #e3e3e3; --cs-rule-strong: #bdbdbd;
+  --h1: 32px; --h1-lh: 39px;
+  --pt: 22px; --pt-lh: 29px;       /* paragraph title: the bold headline sentence of a section */
+  --h3: 20px; --h3-lh: 27px;       /* map-mode titles */
+  --body: 18px; --body-lh: 28px;
+  --sec-gap: 80px;                 /* between sections */
+  --col: 680px; --side: 20px;      /* the text column and its side padding */
+}
+:root[data-theme='dark'] .cs-simple { --cs-title: #ededed; --cs-text: #d6d6d6; --cs-muted: #9b9b9b; --cs-rule: #333; --cs-rule-strong: #555; }
+@media (min-width: 768px) { .cs-simple { --h1: 38px; --h1-lh: 46px; --pt: 24px; --pt-lh: 32px; --h3: 22px; --h3-lh: 30px; --body: 19px; --body-lh: 30px; --side: 24px; } }
+@media (min-width: 1100px) { .cs-simple { --h1: 44px; --h1-lh: 52px; --pt: 26px; --pt-lh: 34px; --body: 20px; --body-lh: 32px; --sec-gap: 96px; } }
+/* the small sans roles, the same at every size */
+.cs-simple .a-case__label, .cs-simple .a-story h2, .cs-simple .a-case__meta dt { font-family: var(--sans); font-weight: 500; font-size: 13px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cs-muted); }
+.cs-simple .a-story :is(figcaption, .cs-block__source, .cs-chart figcaption, .cs-chart__table summary) { font-family: var(--sans); font-style: normal; font-weight: 400; font-size: 14px; line-height: 20px; color: var(--cs-muted); }
+
+/* ---------- Top: in the same column (the hero itself is unchanged) ---------- */
+.cs-simple .a-case > * { max-width: var(--col); margin-inline: auto; }
+.cs-simple .a-case__title { margin-top: 12px; font-family: var(--serif); font-weight: 500; font-size: var(--h1); line-height: var(--h1-lh); letter-spacing: -0.01em; color: var(--cs-title); }
+.cs-simple .a-case__intro { max-width: var(--col); margin-top: 48px; }
+.cs-simple .a-case__lede { margin: 0 0 22px; font-family: var(--serif); font-weight: 400; font-size: 22px; line-height: 34px; color: var(--cs-text); }
+.cs-simple .a-case__meta { margin-top: 32px; gap: 20px 32px; }
+.cs-simple .a-case__meta dd { margin-top: 4px; font-family: var(--sans); font-size: 15px; line-height: 22px; color: var(--cs-text); }
+.cs-simple .a-case__cta { font-size: 15px; } /* "Take a look": the small sans size, no extra size in the scale */
+
+/* ---------- The story: one column, body, paragraph gap 22px ---------- */
+.cs-simple .a-story.a-wrap { padding-top: var(--sec-gap); padding-inline: var(--side); font-family: var(--serif); font-weight: 400; font-size: var(--body); line-height: var(--body-lh); color: var(--cs-text); }
+.cs-simple .a-story article > * { max-width: var(--col); margin-inline: auto; }
+.cs-simple .a-story p { margin-top: 0; margin-bottom: 22px; }
+.cs-simple .a-story strong { font-weight: 600; color: var(--cs-title); }
+/* section title: a small kicker; between sections 96px (80px on phones); kicker to paragraph title 12px */
+.cs-simple .a-story h2 { margin: var(--sec-gap) auto 12px; }
+:is(.cs-simple .a-story > article, .cs-simple .a-story) > h2:first-child { margin-top: 0; }
+/* paragraph title: the bold headline sentence under a section title, 20px above its first paragraph */
+.cs-simple .a-story h2 + .is-lead { margin: 0 auto 20px; font-family: var(--serif); font-weight: 560; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; color: var(--cs-title); text-wrap: pretty; }
+.cs-simple .a-story h2 + .is-lead strong { font-weight: inherit; }
+/* any other bold-only line ("Takeaways"): plain bold body text */
+.cs-simple .a-story .is-lead:not(h2 + .is-lead) { margin: 0 auto 8px; font-size: inherit; line-height: inherit; letter-spacing: normal; }
+/* map-mode titles: 64px above, 20px below */
+.cs-simple .a-story h3 { margin: 64px auto 20px; font-family: var(--serif); font-weight: 560; font-size: var(--h3); line-height: var(--h3-lh); letter-spacing: -0.005em; color: var(--cs-title); text-wrap: pretty; }
+/* lists: 14px between items */
+.cs-simple .a-story article > :is(ul, ol) { margin: 0 auto 22px; padding-left: 1.3em; }
+.cs-simple .a-story article > :is(ul, ol) > li + li { margin-top: 14px; }
+.cs-simple .a-story article > ol > li > p { margin: 0 0 8px; }
+
+/* ---------- Blocks: 48px above a block title, the title 8px above its paragraph ---------- */
+.cs-simple .a-story .cs-block { margin-top: 48px; margin-bottom: 22px; }
 .cs-simple .a-story .cs-block > p:last-child { margin-bottom: 0; }
-.cs-block__head { margin-bottom: 0.35em; }
-/* Phones to small laptops: the icon above the title, its left edge on the text's (80px on phones to 110px) */
-.cs-simple { --icon: clamp(80px, calc(80px + 30 * (100vw - 390px) / 810), 110px); }
-.cs-block__icon { display: block; width: fit-content; margin-bottom: 16px; }
-.cs-block__icon svg { display: block; width: calc(var(--icon) * var(--w)); height: calc(var(--icon) * var(--h)); overflow: visible; } /* each box is its drawing's, at one scale (docs/icons/build.mjs) */
-.cs-block__title { margin: 0; font-family: var(--serif); font-weight: 470; font-size: calc(var(--t-body) * 1.18); line-height: 1.25; letter-spacing: -0.01em; text-wrap: pretty; } /* one step above the body */
-.cs-simple .a-story .cs-block__title { margin-bottom: 0; }
-/* From 1200px: in the left margin (the text never moves), as big as the margin allows up to 150px, its top level
-   with the top of the title's letters (0.15em into the title's line) */
-@media (min-width: 1200px) {
-  .cs-simple { --icon: min(clamp(90px, calc(90px + 60 * (100vw - 390px) / 1050), 150px), calc(((100vw - 860px) / 2 - 68px) / 0.88)); } /* 0.88: the widest drawing's share of the grid */
-  .cs-block__head { position: relative; }
-  .cs-block__icon { position: absolute; top: calc(var(--t-body) * 1.18 * 0.15); right: calc(100% + 24px); margin: 0; }
+.cs-simple .a-story .cs-block--untitled { margin-top: 0; }
+.cs-block__head { position: relative; }
+.cs-block__title { margin: 0 0 8px; font-family: var(--sans); font-weight: 600; font-size: 20px; line-height: 28px; color: var(--cs-title); text-wrap: pretty; }
+.cs-simple .a-story .cs-block__title { margin-bottom: 8px; }
+.cs-simple .a-story .cs-block__source { margin: 8px 0 0; }
+/* icons: all in one 36px box, hanging 56px left of the column, level with the first line of the title (or of the
+   paragraph); below 900px, 28px and inline before the title (beside the first line of a plain paragraph) */
+.cs-block__icon { display: block; width: 28px; height: 28px; }
+.cs-block__icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.cs-block:not(.cs-block--untitled) .cs-block__head { display: flex; align-items: flex-start; gap: 10px; }
+.cs-block:not(.cs-block--untitled) .cs-block__icon { flex: none; }
+.cs-block--untitled .cs-block__head { float: left; margin: calc((var(--body-lh) - 28px) / 2) 10px 0 0; }
+@media (min-width: 900px) {
+  .cs-block:not(.cs-block--untitled) .cs-block__head { display: block; }
+  .cs-block--untitled .cs-block__head { float: none; margin: 0; }
+  .cs-block__icon { position: absolute; left: -56px; top: -4px; width: 36px; height: 36px; } /* (28 - 36) / 2: centred on a 28px title line */
+  .cs-block--untitled .cs-block__icon { top: calc((var(--body-lh) - 36px) / 2); }
 }
 
 /* Icon colours, by role (docs/icons/build.mjs): black (the text's) and a light grey, white inside the eyes.
@@ -29,79 +79,49 @@
 .cs-block__icon .i-b { fill: var(--ib); }
 .cs-block__icon .i-k { fill: var(--ik); }
 .cs-block__icon .i-w { fill: var(--iw); }
-/* beside a plain paragraph (no title): spaced like a paragraph, the icon level with the top of its first line */
-.cs-simple .a-story .cs-block--untitled { margin-top: 0; margin-bottom: 1em; }
-@media (min-width: 1200px) { .cs-block--untitled .cs-block__icon { top: calc(var(--t-body) * 0.3); } }
 
 /* Icons are flipbooks, like the logo's stop-motion: one frame shown at a time (data-frame on the svg). The page's
    script plays each once when its block reaches the middle of the screen, and again on hover; with reduced
    motion it shows the frame meant to stand still. Nothing fades or slides in */
 .cs-block__icon [data-f] { display: none; }
-svg[data-frame="1"] > [data-f="1"],
-svg[data-frame="2"] > [data-f="2"],
-svg[data-frame="3"] > [data-f="3"],
-svg[data-frame="4"] > [data-f="4"],
-svg[data-frame="5"] > [data-f="5"],
-svg[data-frame="6"] > [data-f="6"],
-svg[data-frame="7"] > [data-f="7"],
-svg[data-frame="8"] > [data-f="8"],
-svg[data-frame="9"] > [data-f="9"],
-svg[data-frame="10"] > [data-f="10"],
-svg[data-frame="11"] > [data-f="11"],
-svg[data-frame="12"] > [data-f="12"],
-svg[data-frame="13"] > [data-f="13"],
-svg[data-frame="14"] > [data-f="14"],
-svg[data-frame="15"] > [data-f="15"],
-svg[data-frame="16"] > [data-f="16"],
-svg[data-frame="17"] > [data-f="17"],
-svg[data-frame="18"] > [data-f="18"],
-svg[data-frame="19"] > [data-f="19"],
-svg[data-frame="20"] > [data-f="20"] { display: inline; }
+svg[data-frame="1"] > [data-f="1"], svg[data-frame="2"] > [data-f="2"], svg[data-frame="3"] > [data-f="3"],
+svg[data-frame="4"] > [data-f="4"], svg[data-frame="5"] > [data-f="5"], svg[data-frame="6"] > [data-f="6"],
+svg[data-frame="7"] > [data-f="7"], svg[data-frame="8"] > [data-f="8"], svg[data-frame="9"] > [data-f="9"],
+svg[data-frame="10"] > [data-f="10"], svg[data-frame="11"] > [data-f="11"], svg[data-frame="12"] > [data-f="12"],
+svg[data-frame="13"] > [data-f="13"], svg[data-frame="14"] > [data-f="14"], svg[data-frame="15"] > [data-f="15"],
+svg[data-frame="16"] > [data-f="16"], svg[data-frame="17"] > [data-f="17"], svg[data-frame="18"] > [data-f="18"],
+svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { display: inline; }
 
-/* Captions, source lines and other small text: 21px (18px on phones); source and context lines in italic */
-.cs-simple { --small: clamp(18px, calc(18px + 3 * (100vw - 390px) / 634), 21px); }
-.cs-simple .a-story .cs-block__source { margin: 14px 0 0; font-family: var(--serif); font-style: italic; font-weight: 470; font-size: var(--small); line-height: 1.45; color: var(--muted); }
-.cs-simple .a-story :is(figcaption, .cs-chart figcaption) { font-size: var(--small); line-height: 1.45; }
-.cs-simple .a-story .cs-chart__table { margin-top: 20px; font-size: var(--small); } /* "Table view", a little apart from the chart */
+/* The two ideas: "Pros:" in green and "Cons:" in red on their own lines */
+.cs-pc { font-weight: 600; }
+.cs-simple .a-story .cs-pc--pros { color: #2f7a46; }
+.cs-simple .a-story .cs-pc--cons { color: #b23a2e; }
+:root[data-theme='dark'] .cs-simple .a-story .cs-pc--pros { color: #7fc796; }
+:root[data-theme='dark'] .cs-simple .a-story .cs-pc--cons { color: #f08f84; }
 
-/* Spacing: a section's headline and its first block half as far apart as two blocks; a visual that shows what
-   the text above it says a third closer to it */
-.cs-simple .a-story .is-lead + .cs-block { margin-top: 2em; }
-.cs-simple .a-story .cs-block:has(+ :is(.cs-figure, .cs-pair, .cs-chart)) { margin-bottom: 2.67em; }
-.cs-simple .a-story :is(p, ul, ol) + :is(.cs-figure, .cs-pair, .cs-chart) { margin-top: calc(clamp(40px, calc(40px + 24 * (100vw - 768px) / 512), 64px) * 0.67); }
-
-/* The two ideas: numbered, each with its own title, "Pros:" in green and "Cons:" in red on their own lines */
-.cs-simple .a-story article > ol { margin: 1em auto 1em; padding-left: 1.4em; }
-.cs-simple .a-story article > ol > li + li { margin-top: 1.2em; }
-.cs-simple .a-story article > ol > li > p { margin: 0 0 0.35em; }
-.cs-pc { font-weight: 500; }
-.cs-pc--pros { color: #2f7a46; }
-.cs-pc--cons { color: #b23a2e; }
-:root[data-theme='dark'] .cs-pc--pros { color: #7fc796; }
-:root[data-theme='dark'] .cs-pc--cons { color: #f08f84; }
-
-/* ---------- Structure ---------- */
-/* the map modes: one small level, using the full width of the column */
-.cs-simple .a-story h3 { margin: var(--a-gap-s) auto 0.6em; font-family: var(--serif); font-weight: 470; font-size: clamp(22px, calc(22px + 8 * (100vw - 768px) / 512), 30px); line-height: 1.25; letter-spacing: -0.01em; text-wrap: pretty; }
-/* "Takeaways": a plain bold line, like "What I can't say", not a heading */
-.cs-simple .a-story .is-lead:not(h2 + .is-lead) { margin: 1.6em auto 0.5em; font-size: inherit; line-height: inherit; letter-spacing: normal; }
-/* bullets: 12–16px apart */
-.cs-simple .a-story article > ul > li + li { margin-top: 14px; }
-
-/* ---------- Visuals ---------- */
-/* no Before / After chips: the caption says it */
-.cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels) { display: none; }
-/* the usage chart centred on the text column like the other visuals */
-.cs-simple .a-story .cs-chart { margin-inline: auto; }
-
-/* the rail stays folded to its strokes here (hover still opens it): open, its names would sit on the icons in the margin */
-@media (min-width: 1280px) {
-  .cs-simple .a-rail.is-open:not(:hover, :focus-within) { width: 40px; }
-  .cs-simple .a-rail.is-open:not(:hover, :focus-within) .a-rail__label { opacity: 0; transform: translateX(-12px); }
+/* ---------- Visuals: 40px above and below, the caption left-aligned 12px under it, as wide as the visual ---------- */
+.cs-simple .a-story :is(.cs-figure, .cs-pair, .cs-seq, .cs-chart, .is-media, .media-video) { max-width: var(--col); margin: 40px auto; }
+.cs-simple .a-story .cs-pair .cs-figure { margin: 0; max-width: none; }
+.cs-simple .a-story .cs-pair__grid { gap: 16px; }
+.cs-simple .a-story figcaption { max-width: none; margin: 12px 0 0; padding-inline: 0; text-align: left; }
+.cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels) { display: none; } /* the caption says Before / After */
+/* variant B (?visuals=wide, from 1100px): landscape visuals and pairs wider than the text, never to the edges */
+@media (min-width: 1100px) {
+  :root[data-visuals='wide'] .cs-simple .a-story :is(.cs-figure, .cs-pair)[data-orient='landscape']:not(.cs-pair .cs-figure) { max-width: min(80vw, 1200px); }
+  :root[data-visuals='wide'] .cs-simple .a-story .cs-pair__grid { gap: 24px; }
 }
+/* the visuals switch in the temporary bar */
+.a-compare__visuals { margin-left: 24px; white-space: nowrap; }
+.a-compare__visuals a { color: inherit; text-underline-offset: 0.2em; }
+.a-compare__visuals a[aria-current] { color: var(--ink); font-weight: 500; text-decoration: none; }
+
+/* the chart and its table: always the column; the table with hairlines only */
+.cs-simple .a-story .cs-chart__table { margin-top: 16px; }
+.cs-simple .a-story .cs-chart__table table, .cs-simple .a-story article > table { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 15px; line-height: 22px; color: var(--cs-text); }
+.cs-simple .a-story :is(.cs-chart__table, article) :is(th, td) { padding: 14px 16px 14px 0; border: 0; border-bottom: 1px solid var(--cs-rule); text-align: left; }
+.cs-simple .a-story :is(.cs-chart__table, article) thead th { font-weight: 600; color: var(--cs-title); border-bottom-color: var(--cs-rule-strong); }
 
 /* ---------- Sequences (components/story/Sequence.astro): one screen at a time on the visuals' blue ---------- */
-.cs-simple .a-story .cs-seq { max-width: 860px; margin: clamp(40px, calc(40px + 24 * (100vw - 768px) / 512), 64px) auto; }
 .cs-seq__stage { position: relative; display: grid; grid-template: 100% / 100%; place-items: center; height: clamp(440px, 64vh, 660px); background: linear-gradient(115deg, #4d61a3, #8198c7); }
 .cs-seq__screen { grid-area: 1 / 1; height: 86%; width: auto; aspect-ratio: 375 / 660; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 44px -20px rgb(0 0 0 / 0.5); }
 .cs-seq__screen[hidden] { display: none; }
@@ -109,8 +129,6 @@ svg[data-frame="20"] > [data-f="20"] { display: inline; }
 .cs-seq__dots button { width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; }
 .cs-seq__dots button::before { content: ''; display: block; width: 8px; height: 8px; margin: auto; border-radius: 50%; background: var(--line); }
 .cs-seq__dots button[aria-current]::before { background: var(--ink); }
-.cs-simple .a-story .cs-seq figcaption { margin-top: 6px; }
-.cs-simple .a-story .is-lead + .cs-seq, .cs-simple .a-story :is(p, ul, ol, .cs-block) + .cs-seq { margin-top: calc(clamp(40px, calc(40px + 24 * (100vw - 768px) / 512), 64px) * 0.67); } /* close to the text it shows */
 
 /* ---------- Play / pause: a light overlay on hover, a small button in the bottom-left corner ---------- */
 .has-vbtn { position: relative; }
@@ -123,18 +141,19 @@ svg[data-frame="20"] > [data-f="20"] { display: inline; }
 :is(.has-vbtn, .cs-seq__stage):hover .cs-vbtn, .cs-vbtn:focus-visible, .is-paused .cs-vbtn { opacity: 1; }
 @media (hover: none) { .cs-vbtn { opacity: 1; } }
 .cs-vbtn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-@media (min-width: 768px) { .cs-vbtn { left: 20px; bottom: 20px; } }
+@media (prefers-reduced-motion: reduce) { :is(.has-vbtn, .cs-seq__stage)::after, .cs-vbtn { transition: none; } }
 
-/* ---------- Full screen view (scripts/lightbox.ts) ---------- */
-.cs-simple .a-story :is(.cs-media, .cs-seq__stage) img { cursor: zoom-in; }
-.lb { width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; background: rgb(16 16 16 / 0.94); color: #fff; overflow: hidden; }
-.lb::backdrop { background: transparent; }
-.lb__stage { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; }
-.lb__img { max-width: 92vw; max-height: 84dvh; transform-origin: center; cursor: zoom-in; user-select: none; touch-action: none; }
-.lb.is-zoomed .lb__img { cursor: grab; }
-.lb.is-zoomed .lb__img:active { cursor: grabbing; }
-.lb__close { position: absolute; top: 18px; right: 18px; display: grid; place-items: center; width: 52px; height: 52px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #161616; cursor: pointer; }
-.lb__close svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
-.lb__bar { position: absolute; left: 50%; bottom: 20px; display: flex; gap: 6px; padding: 6px; border-radius: 30px; background: rgb(22 22 22 / 0.85); translate: -50% 0; } /* readable over any image */
-.lb__bar button { min-width: 48px; height: 44px; padding: 0 14px; border: 0; border-radius: 22px; background: #fff; color: #161616; font: 500 18px/1 var(--sans); cursor: pointer; }
-:is(.lb__close, .lb__bar button):focus-visible { outline: 3px solid #accff6; outline-offset: 2px; }
+/* ---------- Enlarge (scripts/lightbox.ts): a magnifier-plus on every image, a full-screen view ---------- */
+.has-zoom { position: relative; }
+.cs-simple .a-story .has-zoom img { cursor: zoom-in; }
+.cs-zoom { position: absolute; right: 12px; bottom: 12px; z-index: 2; display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #161616; box-shadow: 0 1px 4px rgb(0 0 0 / 0.25); cursor: pointer; opacity: 0.7; }
+.cs-zoom:hover, .cs-zoom:focus-visible { opacity: 1; }
+.cs-zoom svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.cs-zoom:focus-visible { outline: 2px solid #161616; outline-offset: 2px; }
+.lbz { width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; background: rgb(0 0 0 / 0.92); overflow: hidden; }
+.lbz::backdrop { background: transparent; }
+.lbz__stage { width: 100%; height: 100%; display: grid; place-items: center; cursor: zoom-out; }
+.lbz__frame { position: relative; display: block; }
+.lbz__img { display: block; max-width: 95vw; max-height: 95dvh; width: auto; height: auto; touch-action: pinch-zoom; }
+.lbz .cs-zoom { opacity: 1; }
+html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
