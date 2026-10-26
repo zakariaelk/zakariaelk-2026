@@ -123,7 +123,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
     <a class="a-col a-next__link" href={caseHref(base, next.id)}>
       <span class="a-next__text">
         <span class="a-case__label">Next project</span>
-        <span class="a-next__title">{labelOf(next.data)} — {next.data.headline}</span>
+        <span class="a-next__title">{next.data.headline}</span>
       </span>
       <Image class="a-next__thumb" src={next.data.cover} alt="" width={700} sizes="(min-width: 900px) 350px, 100vw" />
     </a>

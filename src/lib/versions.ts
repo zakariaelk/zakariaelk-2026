@@ -17,7 +17,7 @@ export const FEATURED = [CASE, 'ngosafety-website-redesign', '3e-international']
  *  stays as it is for /next/ and version B. */
 export const SHORT_TITLES: Record<string, string> = {
   [CASE]: 'Helping humanitarian workers stay informed on the move through safety alerts.',
-  'ngosafety-website-redesign': 'Redesigning and building ngosafety.org, from brief to tested website.',
+  'ngosafety-website-redesign': 'Making NGO safety products and services visible and accessible.',
   '3e-international': "Bringing learning through play to a bilingual school's website.",
 };
 
