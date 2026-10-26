@@ -15,7 +15,7 @@ import CaseStudyVideo from '../../video/CaseStudyVideo.astro';
 import ContactA from './ContactA.astro';
 import type { CollectionEntry } from 'astro:content';
 import { caseHref } from '../../../lib/versions';
-import { cutLine } from '../../../lib/papercut';
+import { cutLine, unevenRect } from '../../../lib/papercut';
 import '../../../styles/next-a.css';
 import '../../../styles/next-a-looks.css';
 import '../../../styles/case-a.css';
@@ -42,9 +42,22 @@ const meta = [
 const rows = [meta.slice(0, 2), meta.slice(2)].filter((r) => r.length);
 // rail: the body's section names (its h2s)
 const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug, label: h.text }));
+// the rail and the phone menu start with "Intro": the title and the cover
+const nav = [{ id: 'top', label: 'Intro' }, ...sections];
 ---
 <Next base={base} variant="a" logo look={look} bodyClass={compare === 'simple' ? 'cs-simple' : undefined} title={`${d.projectName ?? d.title} · Zakaria El Khachia`} description={d.statement ?? d.intro}>
 
+  {sections.length > 2 && (
+    <div class="a-toc" data-toc>
+      <button type="button" class="a-toc__bar" aria-expanded="false" aria-controls="a-toc-list">
+        <span class="a-toc__name">Contents</span><span class="a-toc__sep" aria-hidden="true">¬</span><span class="a-toc__current" data-toc-current>Intro</span>
+        <svg class="a-toc__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6" /></svg>
+      </button>
+      <nav class="a-toc__panel" id="a-toc-list" aria-label="Sections" hidden style={`clip-path:${unevenRect(43, 0.6)}`}>
+        <ol>{nav.map((s) => <li><a href={`#${s.id}`} data-section={s.id}>{s.label}</a></li>)}</ol>
+      </nav>
+    </div>
+  )}
   <header class="a-wrap a-case" id="top">
     <p class="a-case__label">{labelOf(d)}</p>
     <h1 class="a-case__title">{d.headline}</h1>
@@ -96,9 +109,8 @@ const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug,
       <div class="a-rail-track">
         <nav class="a-rail" aria-label="Sections">
           <ol>
-            {sections.map((s) => <li><a href={`#${s.id}`} data-section={s.id}><span class="a-rail__tick" aria-hidden="true"></span><span class="a-rail__label">{s.label}</span></a></li>)}
+            {nav.map((s) => <li><a href={`#${s.id}`} data-section={s.id}><span class="a-rail__tick" aria-hidden="true"></span><span class="a-rail__label">{s.label}</span></a></li>)}
           </ol>
-          <a class="a-rail__top" href="#top"><span class="a-rail__tick" aria-hidden="true"></span><span class="a-rail__label">Back to top</span></a>
         </nav>
       </div>
     )}
@@ -131,8 +143,19 @@ const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug,
   // It stays open until the page has scrolled ~350px past the point where the rail sticks.
   const rail = document.querySelector<HTMLElement>('.a-rail');
   const track = document.querySelector<HTMLElement>('.a-rail-track');
-  const links = [...document.querySelectorAll<HTMLAnchorElement>('.a-rail [data-section]')];
-  const targets = links.map((a) => document.getElementById(a.dataset.section!)).filter(Boolean) as HTMLElement[];
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.a-rail [data-section], .a-toc [data-section]')];
+  // the phone menu: opens and closes; a choice, Esc or a tap outside closes it; its bar names the current section
+  const toc = document.querySelector<HTMLElement>('[data-toc]');
+  const tocBtn = toc?.querySelector<HTMLButtonElement>('.a-toc__bar');
+  const tocPanel = toc?.querySelector<HTMLElement>('.a-toc__panel');
+  const tocCurrent = toc?.querySelector<HTMLElement>('[data-toc-current]');
+  const setToc = (open: boolean) => { if (!tocBtn || !tocPanel) return; tocBtn.setAttribute('aria-expanded', String(open)); tocPanel.hidden = !open; toc!.classList.toggle('is-open', open); };
+  tocBtn?.addEventListener('click', () => setToc(tocBtn.getAttribute('aria-expanded') !== 'true'));
+  tocPanel?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setToc(false)));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && tocBtn?.getAttribute('aria-expanded') === 'true') { setToc(false); tocBtn.focus(); } });
+  document.addEventListener('click', (e) => { if (toc && !toc.contains(e.target as Node)) setToc(false); });
+  const nav = [...document.querySelectorAll<HTMLAnchorElement>('.a-rail [data-section]')].map((a) => ({ id: a.dataset.section!, label: a.textContent!.trim() }));
+  const targets = [...new Set(links.map((a) => a.dataset.section!))].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
   if (targets.length) {
     let active = '';
     let ticking = false;
@@ -148,6 +171,7 @@ const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug,
       if (id === active) return;
       active = id;
       links.forEach((a) => (a.dataset.section === id ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+      if (tocCurrent) tocCurrent.textContent = nav.find((n) => n.id === id)?.label ?? 'Intro';
     };
     update();
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });

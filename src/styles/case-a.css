@@ -186,8 +186,6 @@
   .a-rail a[aria-current] .a-rail__tick { width: 20px; opacity: 1; }
   .a-rail__label { flex: none; width: 160px; opacity: 0; transform: translateX(-12px); transition: opacity 0.25s ease, transform 0.45s cubic-bezier(0.65, 0, 0.25, 1); }
   .a-rail:hover .a-rail__label, .a-rail:focus-within .a-rail__label { opacity: 1; transform: none; }
-  .a-rail__top { margin-top: 12px; }
-  .a-rail__top .a-rail__tick { width: 6px; }
 }
 /* open by itself on wide screens, where the names fit in the margin: no card, so it never covers the text */
 @media (min-width: 1280px) {
@@ -207,3 +205,23 @@
   .a-story .cs-pair__grid, .a-story .cs-stats--strip, .a-story .cs-options { grid-template-columns: minmax(0, 1fr); }
   .a-next__link { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ---------- Phones and tablets: the sections as a sticky menu at the top, naming the current one (the rail's job on
+   wide screens); its list opens on a piece of cut paper ---------- */
+.a-toc { position: sticky; top: 0; z-index: 40; background: var(--bg); border-bottom: 1px solid var(--line); font-family: var(--sans); }
+.a-toc__bar { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 1440px; margin-inline: auto; padding: 14px var(--pad); border: 0; background: none; color: var(--ink); font: inherit; font-size: 16px; line-height: 1.3; text-align: left; cursor: pointer; }
+.a-toc__name { font-weight: 600; }
+.a-toc__sep { color: var(--muted); }
+.a-toc__current { flex: 1; min-width: 0; overflow: hidden; color: var(--muted); white-space: nowrap; text-overflow: ellipsis; }
+.a-toc__chev { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s ease; }
+.a-toc.is-open .a-toc__chev { transform: rotate(180deg); }
+.a-toc__bar:focus-visible { outline: 2px solid var(--ink); outline-offset: -4px; }
+.a-toc__panel { position: absolute; left: var(--pad); right: var(--pad); top: calc(100% + 6px); max-height: calc(100dvh - 90px); overflow: auto; padding: 18px 22px; background: var(--surface, #fff); filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.18)); }
+.a-toc__panel[hidden] { display: none; }
+.a-toc__panel ol { margin: 0; padding: 0; list-style: none; }
+.a-toc__panel a { display: block; padding: 9px 0; color: var(--muted); font-size: 17px; text-decoration: none; }
+.a-toc__panel a[aria-current] { color: var(--ink); font-weight: 600; }
+.a-toc__panel a:hover, .a-toc__panel a:focus-visible { color: var(--ink); }
+@media (min-width: 1100px) { .a-toc { display: none; } }
+@media (prefers-reduced-motion: reduce) { .a-toc__chev { transition: none; } }
+@media (max-width: 1099px) { .a-story :is(h2, h3), #top { scroll-margin-top: 72px; } } /* clear of the sticky menu */
