@@ -44,7 +44,7 @@ const sentence = hero === 'v1'
   : 'Web and mobile app designer. Sometimes a builder too.';
 const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : [];
 ---
-<Next base={base} variant="a" logo work="#work" intro={intro} enter look={look} title={title} description="Product designer and builder. Most recently, safety tools for humanitarian workers at INSO.">
+<Next base={base} variant="a" logo work="#work" intro={intro} enter look={look} bodyClass="is-home" title={title} description="Product designer and builder. Most recently, safety tools for humanitarian workers at INSO.">
   <section class:list={['a-hero a-wrap', hero === 'v1' && 'a-hero--v1']}>
     {hero === 'v1' ? (
       <h1 class="a-statement" aria-label={sentence}><span class="a-s1">I'm Zakaria El Khachi<span class="a-say-a">a<button type="button" class="n-say a-say" aria-label="Hear how to say Zakaria El Khachia" data-audio="/audio/zakaria-el-khachia.mp3"><svg class="a-say__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-4v13L7 14.5H4z" /><path class="wave" d="M15 9.2a4 4 0 0 1 0 5.6" /><path class="wave" d="M17.8 6.6a7.6 7.6 0 0 1 0 10.8" /></svg></button></span>, a product <span class:list={mark}>designer</span> and <span class:list={mark}>builder</span>.</span> <span class="a-s2">I spent the last five years at <a href="https://ngosafety.org" target="_blank" rel="noopener">INSO</a> making safety information<br class="a-br-d" /> accessible and clearer for humanitarian workers in conflict zones.</span></h1>

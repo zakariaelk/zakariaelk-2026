@@ -24,7 +24,7 @@
 
 /* ---------- Top: in the same column (the hero itself is unchanged) ---------- */
 .cs-simple .a-case > * { max-width: var(--col); margin-inline: auto; }
-.cs-simple .a-case__title { margin-top: 12px; font-family: var(--serif); font-weight: 500; font-size: var(--h1); line-height: var(--h1-lh); letter-spacing: -0.01em; color: var(--cs-title); }
+.cs-simple .a-case__title { margin-top: 12px; font-family: var(--serif); font-weight: 600; font-size: var(--h1); line-height: var(--h1-lh); letter-spacing: -0.01em; color: var(--cs-title); }
 .cs-simple .a-case__intro { max-width: var(--col); margin-top: 48px; }
 .cs-simple .a-case__lede { margin: 0 0 22px; font-family: var(--serif); font-weight: 400; font-size: var(--body); line-height: var(--body-lh); color: var(--cs-text); }
 .cs-simple .a-case__meta { margin-top: 32px; gap: 20px 32px; }
@@ -40,12 +40,12 @@
 .cs-simple .a-story h2 { margin: var(--sec-gap) auto 12px; }
 :is(.cs-simple .a-story > article, .cs-simple .a-story) > h2:first-child { margin-top: 0; }
 /* paragraph title: the bold headline sentence under a section title, 20px above its first paragraph */
-.cs-simple .a-story h2 + .is-lead { margin: 0 auto 20px; font-family: var(--serif); font-weight: 560; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; color: var(--cs-title); text-wrap: pretty; }
+.cs-simple .a-story h2 + .is-lead { margin: 0 auto 20px; font-family: var(--serif); font-weight: 600; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; color: var(--cs-title); text-wrap: pretty; }
 .cs-simple .a-story h2 + .is-lead strong { font-weight: inherit; }
 /* any other bold-only line ("Takeaways"): plain bold body text */
 .cs-simple .a-story .is-lead:not(h2 + .is-lead) { margin: 0 auto 8px; font-size: inherit; line-height: inherit; letter-spacing: normal; }
 /* map-mode titles (and the other headings inside a section): the one title setting, 64px above, 20px below */
-.cs-simple .a-story h3 { margin: 64px auto 20px; font-family: var(--serif); font-weight: 560; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; color: var(--cs-title); text-wrap: pretty; }
+.cs-simple .a-story h3 { margin: 64px auto 20px; font-family: var(--serif); font-weight: 600; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; color: var(--cs-title); text-wrap: pretty; }
 /* lists: 14px between items */
 .cs-simple .a-story article > :is(ul, ol) { margin: 0 auto 22px; padding-left: 1.3em; }
 .cs-simple .a-story article > :is(ul, ol) > li + li { margin-top: 14px; }

@@ -2,7 +2,13 @@
    reading sizes from the reference (28/24/20px body, 60/48/32px titles, 24/20/16px labels), big
    gaps between blocks so each one is read on its own, and nothing competing with the work. */
 
-:root[data-palette][data-theme].v-a { --bg: var(--surface); } /* one white paper, grain kept */
+:root[data-palette][data-theme].v-a { --bg: var(--surface); }
+/* the page: a flat off-white; the paper's grain only on the home page's top (header and intro, body.is-home) and on
+   the footer band. The home's other bands keep their torn edges, without the grain */
+:root[data-palette][data-theme='light'].v-a { --bg: #f9f8f5; }
+.v-a body { background-image: none; }
+.v-a body.is-home { background-image: var(--paper); }
+.v-a .n-band:not(.a-band--contact) { background-image: none; }
 :root[data-palette][data-theme='dark'].v-a { --surface: #1a1a1a; } /* a touch darker for white text */
 .v-a {
   --a-gap: clamp(120px, calc(120px + 120 * (100vw - 390px) / 1050), 240px); /* between blocks */
@@ -129,7 +135,7 @@
 .v-a { --a-rule: #e8e8e8; }
 :root[data-theme='dark'].v-a { --a-rule: #333; }
 .a-foot { border-top: 1px solid var(--a-rule); }
-.a-foot__row { display: flex; justify-content: space-between; gap: 12px 32px; padding-top: 22px; padding-bottom: 24px; font-family: var(--sans); font-size: 19px; line-height: 1.3; color: var(--ink); }
+.a-foot__row { display: flex; justify-content: space-between; gap: 12px 32px; padding-top: 22px; padding-bottom: 24px; font-family: var(--sans); font-size: 18px; line-height: 1.3; color: var(--ink); }
 @media (max-width: 700px) { .a-foot__row { font-size: 17px; } } /* phones: the Other work descriptions' size */
 .a-foot p { margin: 0; }
 .a-foot__links { display: none; margin: 0; padding: 0; list-style: none; gap: 32px; }
@@ -414,7 +420,7 @@ html.is-logo-spin .n-brand__logo :is(.n-logo__big-shape, .n-logo__small-shape) {
 }
 
 /* ---------- Contact: the invitation on the left, availability on the right ---------- */
-.a-status { display: inline-flex; align-items: center; gap: 12px; margin: 0; font-family: var(--sans); font-size: var(--a-meta); line-height: 1.3; color: var(--ink); white-space: nowrap; }
+.a-status { display: inline-flex; align-items: center; gap: 12px; margin: 0; font-family: var(--sans); font-size: 18px; line-height: 1.3; color: var(--ink); white-space: nowrap; }
 .a-status__dot { flex: none; width: 16px; height: 16px; border-radius: 50%; background: #2fbf71; box-shadow: 0 0 0 5px rgb(47 191 113 / 0.18); animation: a-blink 1.2s ease-in-out infinite; }
 @keyframes a-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 @media (prefers-reduced-motion: reduce) { .a-status__dot { animation: none; } }

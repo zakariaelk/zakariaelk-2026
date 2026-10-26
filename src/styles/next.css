@@ -185,7 +185,7 @@ img, video { display: block; max-width: 100%; height: auto; }
 :root[data-theme='dark'] .n-theme .moon { display: none; }
 :root[data-theme='dark'] .n-theme .sun { display: block; }
 
-.n-nav { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 36px); font-family: var(--sans); font-size: var(--nav); } /* the name's size, in the sans */
+.n-nav { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 36px); font-family: var(--sans); font-size: 18px; } /* 18px, like the footer's small texts */
 .n-burger { display: none; }
 .n-nav a { text-decoration: none; color: #0c0c0c; letter-spacing: -0.3px; font-weight: 430; }
 :root[data-theme='dark'] .n-nav a { color: var(--ink); }
