@@ -26,10 +26,21 @@
 }
 .a-col { max-width: 860px; margin-inline: auto; }
 
-/* temporary: the bar linking the full and short versions of the INSO case */
-.a-compare { margin: 0; padding-top: 8px; font-family: var(--sans); font-size: 15px; color: var(--muted); }
-.a-compare a { color: inherit; text-underline-offset: 0.2em; }
-.a-compare a[aria-current] { color: var(--ink); font-weight: 500; text-decoration: none; }
+/* temporary: a small "versions" tooltip on the right of the title block, linking the INSO case's versions */
+.a-case { position: relative; }
+.a-versions { position: absolute; top: clamp(20px, calc(20px + 18 * (100vw - 768px) / 492), 44px); right: 0; z-index: 30; font-family: var(--sans); font-size: 15px; }
+.a-versions summary { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: var(--muted); cursor: pointer; list-style: none; }
+.a-versions summary::-webkit-details-marker { display: none; }
+.a-versions summary:hover, .a-versions[open] summary { color: var(--ink); background: rgb(0 0 0 / 0.05); }
+.a-versions summary svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.a-versions__panel { position: absolute; right: 0; top: calc(100% + 6px); min-width: 200px; padding: 14px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg, #fff); box-shadow: 0 16px 40px -18px rgb(0 0 0 / 0.35); }
+.a-versions__panel p { margin: 0 0 6px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.a-versions__panel ul { margin: 0 0 12px; padding: 0; list-style: none; }
+.a-versions__panel ul:last-child { margin-bottom: 0; }
+.a-versions__panel li + li { margin-top: 4px; }
+.a-versions__panel a { color: var(--ink); text-underline-offset: 0.2em; }
+.a-versions__panel a[aria-current] { font-weight: 600; text-decoration: none; }
+.a-versions__panel a[aria-current]::before { content: '✓ '; }
 
 /* ---------- Top ---------- */
 .a-case { padding-top: clamp(20px, calc(20px + 18 * (100vw - 768px) / 492), 44px); } /* 38px at 1260 */

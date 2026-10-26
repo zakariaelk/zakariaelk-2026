@@ -3,10 +3,11 @@
 // card's text and links carry the meaning), with a "Full video" link over it that opens the case study
 // on its full video. It starts once it reaches the middle of the screen, after a 2.5 s hold on its
 // poster, pauses off screen, and never plays with reduced motion. Clicks outside the button open the case.
-interface Props { src: string; poster: string; fullHref: string; caseHref: string; label: string }
-const { src, poster, fullHref, caseHref, label } = Astro.props;
+// cut: a clip-path that trims it like the home's other covers (a piece of paper cut with scissors)
+interface Props { src: string; poster: string; fullHref: string; caseHref: string; label: string; cut?: string }
+const { src, poster, fullHref, caseHref, label, cut } = Astro.props;
 ---
-<div class="p-teaser" data-teaser>
+<div class:list={['p-teaser', cut && 'v-frame--cut']} data-teaser style={cut ? `clip-path:${cut}` : undefined}>
   <a class="p-teaser__media" href={caseHref} tabindex="-1" aria-hidden="true">
     <video src={src} poster={poster} width="1920" height="1080" muted loop playsinline preload="metadata" aria-hidden="true"></video>
   </a>

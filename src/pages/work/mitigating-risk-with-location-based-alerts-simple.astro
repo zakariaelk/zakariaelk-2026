@@ -12,7 +12,7 @@ const projects = await getProjects();
 const project = (await getEntry('lab', 'inso-app-simple'))!;
 const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
 ---
-<CaseA project={project} next={next} base="/" look="blue" compare="simple" fullVideo={{ src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg' }} />
+<CaseA project={project} next={next} base="/" look="blue" compare="simple" fullVideo={{ src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg', length: '1:27', caption: 'Watch: How does INSO alerts help humanitarian workers stay safe on the job?' }} />
 
 <script>
   import '../../scripts/sequence'; // flows shown one screen at a time

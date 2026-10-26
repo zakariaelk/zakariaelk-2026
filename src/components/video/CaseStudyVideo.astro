@@ -1,26 +1,45 @@
 ---
-// A case study's full video (docs: brief-teaser-full-video-cta): the native player with its poster,
-// no autoplay. Opened from a teaser's "Full video" link (?play=1 or #full-video), it scrolls into view
+// A case study's full video (docs: brief-teaser-full-video-cta): cut like a piece of paper (the home covers' cut),
+// its poster behind a "Play video · 1:27" button in the bottom-left corner, a "Watch: …" caption under it; the
+// native controls once it plays. No autoplay. Opened from a teaser's "Full video" link (?play=1 or #full-video), it scrolls into view
 // and plays with sound; if the browser blocks sound, it plays muted with an "Unmute" button. The
 // query and hash are then removed, so a refresh doesn't play it again.
-interface Props { src: string; poster: string; title: string }
-const { src, poster, title } = Astro.props;
+import { unevenRect } from '../../lib/papercut';
+interface Props { src: string; poster: string; title: string; length?: string; caption?: string }
+const { src, poster, title, length, caption } = Astro.props;
 ---
-<section class="c-video" id="full-video" aria-label={title} data-case-video>
-  <video src={src} poster={poster} width="1920" height="1080" controls playsinline preload="metadata"></video>
+<figure class="c-video-fig">
+<section class="c-video" id="full-video" aria-label={title} data-case-video style={`clip-path:${unevenRect(29, 0.5)}`}>
+  <video src={src} poster={poster} width="1920" height="1080" playsinline preload="metadata"></video>
+  <button type="button" class="c-video__play" aria-label={`Play video${length ? `, ${length}` : ''}`}>
+    <span class="c-video__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" /></svg></span>
+    <span aria-hidden="true">Play video</span>
+    {length && <span class="c-video__len" aria-hidden="true">{length}</span>}
+  </button>
   <button type="button" class="c-video__unmute" hidden>
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-4v13L7 14.5H4z" /><path d="M16 9.5l5 5M21 9.5l-5 5" /></svg>
     Unmute
   </button>
 </section>
+{caption && <figcaption class="c-video__caption">{caption}</figcaption>}
+</figure>
 
 <script>
   const box = document.querySelector<HTMLElement>('[data-case-video]');
   const url = new URL(location.href);
+  // the play button: starts it with sound and hands over to the native controls
+  if (box) {
+    const video = box.querySelector('video')!;
+    const start = () => { box.classList.add('is-started'); video.controls = true; video.play().catch(() => {}); };
+    box.querySelector('.c-video__play')!.addEventListener('click', start);
+    video.addEventListener('play', () => { box.classList.add('is-started'); video.controls = true; });
+  }
   if (box && (url.searchParams.get('play') === '1' || url.hash === '#full-video')) {
     const video = box.querySelector('video')!;
     const unmute = box.querySelector<HTMLButtonElement>('.c-video__unmute')!;
     const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    box.classList.add('is-started');
+    box.querySelector('video')!.controls = true;
     box.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
     video.muted = false;
     video.play().catch(() => {
@@ -38,7 +57,18 @@ const { src, poster, title } = Astro.props;
 
 <style>
   .c-video { position: relative; aspect-ratio: 16 / 9; scroll-margin-top: 24px; background: #f5f4ef; }
+  .c-video-fig { margin: 0; filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.08)) drop-shadow(0 8px 16px rgb(0 0 0 / 0.06)); }
   .c-video video { display: block; width: 100%; height: 100%; }
+  /* "Play video · 1:27", bottom left, sized from the player's width */
+  .c-video { container-type: inline-size; }
+  .c-video__play { position: absolute; left: max(12px, 3cqw); bottom: max(12px, 3cqw); display: inline-flex; align-items: center; gap: clamp(8px, 1.4cqw, 12px); padding: clamp(4px, 0.8cqw, 7px) clamp(14px, 2.2cqw, 20px) clamp(4px, 0.8cqw, 7px) clamp(4px, 0.8cqw, 7px); border: 0; border-radius: 999px; background: var(--brown); color: var(--on-brown); font-family: var(--sans); font-size: clamp(14px, 2.2cqw, 17px); line-height: 1.2; cursor: pointer; box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.5); }
+  .c-video__icon { display: grid; place-items: center; width: clamp(28px, 5cqw, 38px); aspect-ratio: 1; border-radius: 50%; background: var(--on-brown); color: var(--brown); }
+  .c-video__icon svg { width: 44%; height: 44%; margin-left: 8%; fill: currentColor; }
+  .c-video__len { opacity: 0.75; font-variant-numeric: tabular-nums; }
+  .c-video__play:hover, .c-video__play:focus-visible { filter: brightness(1.15); }
+  .c-video__play:focus-visible { outline: 2px solid var(--on-brown); outline-offset: 3px; }
+  .c-video.is-started .c-video__play { display: none; }
+  .c-video__caption { margin: 12px 0 0; font-family: var(--sans); font-size: 15px; line-height: 22px; color: var(--muted); }
   .c-video__unmute {
     position: absolute; top: clamp(10px, 2vw, 20px); right: clamp(10px, 2vw, 20px);
     display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 10px; border: 0; border-radius: 999px;

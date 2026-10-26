@@ -92,7 +92,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
                     {button && <a class="a-cta a-feat__cta" href={caseHref(caseRoot, p.id)}><span class="a-cta__paper" data-ring={String(41 + i * 6)} aria-hidden="true"></span>See case study<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg></a>}
                   </div>
                   <div class="a-feat__visual">
-                    <ProjectTeaser src={leadVideo} poster={leadPoster ?? ''} caseHref={caseHref(caseRoot, p.id)} fullHref={`${caseHref(caseRoot, p.id)}?play=1#full-video`} label="Play the full INSO alerts video" />
+                    <ProjectTeaser cut={unevenRect(31 + i * 7, 0.8)} src={leadVideo} poster={leadPoster ?? ''} caseHref={caseHref(caseRoot, p.id)} fullHref={`${caseHref(caseRoot, p.id)}?play=1#full-video`} label="Play the full INSO alerts video" />
                   </div>
                 </div>
               </article>

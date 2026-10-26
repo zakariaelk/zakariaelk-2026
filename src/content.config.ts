@@ -2,6 +2,8 @@ import { defineCollection, type SchemaContext } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+const facts = z.union([z.string(), z.array(z.string())]).optional();
+
 const projectSchema = ({ image }: SchemaContext) =>
     z.object({
       title: z.string(),
@@ -9,7 +11,8 @@ const projectSchema = ({ image }: SchemaContext) =>
       headline: z.string(),
       // Case page top (layout sketch v4): the intro under the hero, the facts
       lede: z.array(z.string()).default([]),
-      deliverables: z.string().optional(),
+      // case facts: one line, or a list (one item a line); team items can be "Name – role" or { name, role, url }
+      deliverables: facts,
       summary: z.string(),
       intro: z.string(),
       // Show the intro under the title on the case study page (it still feeds the home card)
@@ -23,9 +26,9 @@ const projectSchema = ({ image }: SchemaContext) =>
       org: z.string().optional(),
       projectName: z.string().optional(),
       sector: z.string().optional(),
-      role: z.string().optional(),
-      duration: z.string().optional(),
-      team: z.string().optional(),
+      role: facts,
+      duration: facts,
+      team: z.union([z.string(), z.array(z.union([z.string(), z.object({ name: z.string(), role: z.string().optional(), url: z.string().optional() })]))]).optional(),
       year: z.string(),
       link: z.string().optional(),
       cover: image(),

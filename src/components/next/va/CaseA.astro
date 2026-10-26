@@ -21,37 +21,51 @@ import '../../../styles/next-a-looks.css';
 import '../../../styles/case-a.css';
 import '../../../styles/media-a.css';
 
-// compare: a temporary bar linking the full, short and simple versions of the INSO case (remove with those pages);
+// compare: a small "versions" tooltip beside the title, linking the full, short and simple versions of the INSO case
+// (remove with those pages);
 // 'simple' also scopes that page's own styles (styles/case-simple.css) with .cs-simple on <body>
 // fullVideo: the case's full video as its cover (components/video/CaseStudyVideo.astro, #full-video)
-interface Props { project: CollectionEntry<'projects' | 'lab'>; next: CollectionEntry<'projects'>; base?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; compare?: 'full' | 'short' | 'simple'; fullVideo?: { src: string; poster: string } }
+interface Props { project: CollectionEntry<'projects' | 'lab'>; next: CollectionEntry<'projects'>; base?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; compare?: 'full' | 'short' | 'simple'; fullVideo?: { src: string; poster: string; length?: string; caption?: string } }
 const { project, next, base = '/next/a/', look, compare, fullVideo } = Astro.props;
 const d = project.data;
 const { Content, headings } = await render(project);
 const labelOf = (p: CollectionEntry<'projects' | 'lab'>['data']) => p.org ?? p.client; // the client's name
+// the facts: each one line or a list; team members as "name – role", the name a link when a URL is given
+type Item = string | { name: string; role?: string; url?: string };
+const list = (v?: Item | Item[]) => (v === undefined ? [] : Array.isArray(v) ? v : [v]);
 const meta = [
-  { label: 'Role', value: d.role },
-  { label: 'Team', value: d.team },
-  { label: 'Timeline', value: d.duration },
-  { label: 'Deliverables', value: d.deliverables },
-].filter((m) => m.value) as { label: string; value: string }[];
+  { label: 'Role', items: list(d.role) },
+  { label: 'Team', items: list(d.team) },
+  { label: 'Timeline', items: list(d.duration) },
+  { label: 'Deliverables', items: list(d.deliverables) },
+].filter((m) => m.items.length);
 const rows = [meta.slice(0, 2), meta.slice(2)].filter((r) => r.length);
 // rail: the body's section names (its h2s)
 const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug, label: h.text }));
 ---
 <Next base={base} variant="a" logo look={look} bodyClass={compare === 'simple' ? 'cs-simple' : undefined} title={`${d.projectName ?? d.title} · Zakaria El Khachia`} description={d.statement ?? d.intro}>
 
-  {compare && (
-    <p class="a-wrap a-compare">Comparing versions:{' '}<a href="/work/mitigating-risk-with-location-based-alerts-full/" aria-current={compare === 'full' ? 'page' : undefined}>Full</a>{' · '}<a href="/work/mitigating-risk-with-location-based-alerts/" aria-current={compare === 'short' ? 'page' : undefined}>Short</a>{' · '}<a href="/work/mitigating-risk-with-location-based-alerts-simple/" aria-current={compare === 'simple' ? 'page' : undefined}>Simple</a>
-      {compare === 'simple' && <span class="a-compare__titles">Titles:{' '}<a href="?" data-titles-link="">Serif</a>{' · '}<a href="?titles=sans" data-titles-link="sans">Sans</a>{' · '}<a href="?titles=small" data-titles-link="small">With small titles</a></span>}</p>
-  )}
   <header class="a-wrap a-case" id="top">
     <p class="a-case__label">{labelOf(d)}</p>
     <h1 class="a-case__title">{d.headline}</h1>
+    {compare && (
+      <details class="a-versions">
+        <summary aria-label="Versions of this case study"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 11v6M12 7.5v.5" /></svg></summary>
+        <div class="a-versions__panel">
+          <p>Comparing versions</p>
+          <ul>
+            <li><a href="/work/mitigating-risk-with-location-based-alerts-full/" aria-current={compare === 'full' ? 'page' : undefined}>Full</a></li>
+            <li><a href="/work/mitigating-risk-with-location-based-alerts/" aria-current={compare === 'short' ? 'page' : undefined}>Short</a></li>
+            <li><a href="/work/mitigating-risk-with-location-based-alerts-simple/" aria-current={compare === 'simple' ? 'page' : undefined}>Simple</a></li>
+          </ul>
+          {compare === 'simple' && <Fragment><p>Titles</p><ul><li><a href="?" data-titles-link="">Serif</a></li><li><a href="?titles=sans" data-titles-link="sans">Sans</a></li><li><a href="?titles=small" data-titles-link="small">With small titles</a></li></ul></Fragment>}
+        </div>
+      </details>
+    )}
   </header>
 
   <div class="a-wrap a-case__hero">
-    {fullVideo ? <CaseStudyVideo src={fullVideo.src} poster={fullVideo.poster} title="One alert, a different turn: the story in one minute" /> : <FramedMedia frame={false} image={d.cover} alt={`${labelOf(d)}: ${d.projectName ?? d.title}`} sizes="(min-width: 1440px) 1340px, 100vw" eager />}
+    {fullVideo ? <CaseStudyVideo src={fullVideo.src} poster={fullVideo.poster} length={fullVideo.length} title={fullVideo.caption ?? 'One alert, a different turn: the story in one minute'} caption={fullVideo.caption} /> : <FramedMedia frame={false} image={d.cover} alt={`${labelOf(d)}: ${d.projectName ?? d.title}`} sizes="(min-width: 1440px) 1340px, 100vw" eager />}
   </div>
 
   <div class="a-wrap">
@@ -60,7 +74,7 @@ const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug,
       {rows.map((r, i) => (
         <Fragment>
           {i > 0 && <svg class="a-case__rule" viewBox="0 0 1000 24" preserveAspectRatio="none" aria-hidden="true"><path d={cutLine(37)} /></svg>}
-          <dl class="a-case__meta">{r.map((m) => <div><dt>{m.label}</dt><dd>{m.value}</dd></div>)}</dl>
+          <dl class="a-case__meta">{r.map((m) => <div><dt>{m.label}</dt>{m.items.map((it) => <dd>{typeof it === 'string' ? it : <Fragment>{it.url ? <a href={it.url} target="_blank" rel="noopener">{it.name}</a> : <span class="a-case__name">{it.name}</span>}{it.role && ` – ${it.role}`}</Fragment>}</dd>)}</div>)}</dl>
         </Fragment>
       ))}
       {d.link && (

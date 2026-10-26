@@ -14,10 +14,11 @@
   --small: 15px; --small-lh: 22px; /* captions and source lines */
   --sec-gap: 80px;                 /* between sections */
   --col: 680px; --side: 20px;      /* the text column and its side padding */
+  --meta: 18px; --meta-lh: 26px; --lede-gap: 40px; --rule-gap: 24px;
 }
 :root[data-theme='dark'] .cs-simple { --cs-title: #ededed; --cs-text: #d6d6d6; --cs-muted: #9b9b9b; --cs-rule: #333; --cs-rule-strong: #555; }
-@media (min-width: 768px) { .cs-simple { --h1: 38px; --h1-lh: 46px; --pt: 24px; --pt-lh: 32px; --body: 21px; --body-lh: 33px; --small: 14px; --small-lh: 20px; --side: 24px; } }
-@media (min-width: 1100px) { .cs-simple { --h1: 44px; --h1-lh: 52px; --pt: 26px; --pt-lh: 34px; --body: 22px; --body-lh: 34px; --sec-gap: 96px; } }
+@media (min-width: 768px) { .cs-simple { --h1: 38px; --h1-lh: 46px; --pt: 24px; --pt-lh: 32px; --body: 21px; --body-lh: 33px; --small: 14px; --small-lh: 20px; --side: 24px; --meta: 19px; --meta-lh: 28px; --lede-gap: 48px; --rule-gap: 28px; } }
+@media (min-width: 1100px) { .cs-simple { --h1: 44px; --h1-lh: 52px; --pt: 26px; --pt-lh: 34px; --body: 22px; --body-lh: 34px; --sec-gap: 96px; --meta: 20px; --meta-lh: 30px; --lede-gap: 60px; --rule-gap: 32px; } }
 /* the small sans roles, the same at every size */
 .cs-simple .a-case__label, .cs-simple .a-story h2, .cs-simple .a-case__meta dt { font-family: var(--sans); font-weight: 500; font-size: 13px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cs-muted); }
 .cs-simple .a-story :is(figcaption, .cs-block__source, .cs-chart figcaption, .cs-chart__table summary) { font-family: var(--sans); font-style: normal; font-weight: 400; font-size: var(--small); line-height: var(--small-lh); color: var(--cs-muted); }
@@ -26,9 +27,18 @@
 .cs-simple .a-case > * { max-width: var(--col); margin-inline: auto; }
 .cs-simple .a-case__title { margin-top: 12px; font-family: var(--serif); font-weight: 600; font-size: var(--h1); line-height: var(--h1-lh); letter-spacing: -0.01em; color: var(--cs-title); }
 .cs-simple .a-case__intro { max-width: var(--col); margin-top: 48px; }
-.cs-simple .a-case__lede { margin: 0 0 22px; font-family: var(--serif); font-weight: 400; font-size: var(--body); line-height: var(--body-lh); color: var(--cs-text); }
-.cs-simple .a-case__meta { margin-top: 32px; gap: 20px 32px; }
-.cs-simple .a-case__meta dd { margin-top: 4px; font-family: var(--sans); font-size: 15px; line-height: 22px; color: var(--cs-text); }
+.cs-simple .a-case__lede { margin: 0 0 var(--lede-gap); font-family: var(--serif); font-weight: 400; font-size: var(--body); line-height: var(--body-lh); color: var(--cs-text); }
+.cs-simple .a-case__meta { margin-top: 0; gap: 24px 32px; }
+.cs-simple .a-case__meta dt { margin-bottom: 16px; }
+.cs-simple .a-case__meta dd { margin: 0; font-family: var(--serif); font-weight: 400; font-size: var(--meta); line-height: var(--meta-lh); color: var(--cs-text); }
+.cs-simple .a-case__meta dd + dd { margin-top: 4px; }
+.cs-simple .a-case__meta dd a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+/* the cut-paper line between the two rows of facts: 32px above and below at 1440, 28 on tablets, 24 on phones */
+.cs-simple .a-case__meta + .a-case__rule { margin-top: var(--rule-gap); }
+.cs-simple .a-case__rule { margin-bottom: var(--rule-gap); }
+/* the cover: in the text column */
+.cs-simple .a-case__hero { max-width: var(--col); padding-inline: 0; }
+@media (max-width: 767px) { .cs-simple .a-case__hero { max-width: none; } }
 .cs-simple .a-case__cta { font-size: 15px; } /* "Take a look": the small sans size, no extra size in the scale */
 
 /* ---------- The story: one column, body, paragraph gap 22px ---------- */
@@ -121,9 +131,6 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
 @media (min-width: 900px) { :root[data-titles='small'] .cs-block:has(.cs-block__title) .cs-block__icon { top: -8px; } } /* (28 - 44) / 2: on the title's line */
 
 /* ---------- Titles, variant B (?titles=sans): label and title on one line, in bold sans, Medium-style ---------- */
-.a-compare__titles { margin-left: 24px; white-space: nowrap; }
-.a-compare__titles a { color: inherit; text-underline-offset: 0.2em; }
-.a-compare__titles a[aria-current] { color: var(--ink); font-weight: 500; text-decoration: none; }
 /* the section label moves into its title ("Alerts: The main screen…"); it stays in the page for the rail */
 :root[data-titles='sans'] .cs-simple .a-story h2.has-lead { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 :root[data-titles='sans'] .cs-simple .a-story h2.has-lead:not(:first-child) + [data-section] { margin-top: var(--sec-gap); }
@@ -173,3 +180,7 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
 .lbz__img { display: block; max-width: 95vw; max-height: 95dvh; width: auto; height: auto; touch-action: pinch-zoom; }
 .lbz .cs-zoom { opacity: 1; }
 html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
+
+/* the versions tooltip: at the right edge of the title column, level with the client label */
+.cs-simple .a-versions { top: 0; right: max(var(--side), calc((100% - var(--col)) / 2)); margin: 0; max-width: none; }
+.cs-simple .a-versions summary { margin-top: -7px; } /* centred on the label's line */
