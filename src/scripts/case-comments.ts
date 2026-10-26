@@ -72,6 +72,11 @@ if (root && card) {
   };
   card.querySelector('.cc-cancel')!.addEventListener('click', () => closeCard(false));
   card.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCard(false); });
+  // a click anywhere else closes it too
+  document.addEventListener('pointerdown', (e) => {
+    if (card.hidden || card.contains(e.target as Node) || pin.contains(e.target as Node)) return;
+    closeCard(false);
+  });
 
   // drag the pin onto the page; a click (no drag) or the keyboard comments on the paragraph being read
   let drag: { id: number; x: number; y: number; moved: boolean } | null = null, over: HTMLElement | null = null, justDragged = false;

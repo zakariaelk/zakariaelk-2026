@@ -4,14 +4,8 @@
 // there and opens a short form (a click or Enter opens it for the paragraph being read). The pin then goes back to its
 // place, dimmed. Comments go to Netlify Forms ("case-comments"; the static form below is what Netlify detects), with
 // the section and the text they were dropped on. scripts/case-comments.ts runs it.
-import { blob, rng } from '../lib/papercut';
-// cut with scissors like the logo: straight, slightly uneven cuts, no smooth curves
-const rand = rng(53);
-const j = (v: number, a: number) => (v + (rand() - 0.5) * a).toFixed(1);
-const poly = (pts: [number, number][], a = 2.2) => 'M' + pts.map(([x, y]) => `${j(x, a)} ${j(y, a)}`).join(' L') + 'Z';
-const bubble = poly([[34, 31], [66, 30], [72, 35], [72, 56], [66, 62], [50, 62], [39, 72], [41, 62], [34, 62], [28, 56], [28, 36]]);
-const plus = poly([[47.5, 38], [52.5, 38.5], [52.5, 44.5], [58.5, 44.5], [58, 49.5], [52.5, 49.5], [52.5, 55.5], [47.5, 55], [47.5, 49.5], [41.5, 49.5], [42, 44.5], [47.5, 44.5]], 0.8);
-const pin = `<svg viewBox="0 0 100 100" aria-hidden="true"><path class="cc-paper" d="${blob(37, 50, 50, 46)}"/><path class="cc-glyph" d="${bubble}"/><path class="cc-plus" d="${plus}"/></svg>`;
+import { blob } from '../lib/papercut';
+const pin = `<svg viewBox="0 0 100 100" aria-hidden="true"><path class="cc-paper" d="${blob(37, 50, 50, 46)}"/><path class="cc-glyph" d="M31 34h38a6 6 0 0 1 6 6v18a6 6 0 0 1-6 6H48l-11 9v-9h-6a6 6 0 0 1-6-6V40a6 6 0 0 1 6-6z"/></svg>`;
 ---
 <div class="cc" data-comments hidden>
   <button type="button" class="cc-pin" aria-label="Leave a comment or a question" aria-describedby="cc-hint-text" set:html={pin} />

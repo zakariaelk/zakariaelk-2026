@@ -237,8 +237,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cc-pin { display: block; width: 42px; height: 42px; padding: 0; border: 0; background: none; cursor: grab; touch-action: none; filter: drop-shadow(0 6px 12px rgb(0 0 0 / 0.22)); }
 .cc-pin svg, .cc-dropped svg { display: block; width: 100%; height: 100%; }
 .cc-paper { fill: #1f1f1f; }
-.cc-glyph { fill: #f4f2ec; } /* the bubble, cut from light paper */
-.cc-plus { fill: #1f1f1f; } /* the plus, cut out of it */
+.cc-glyph { fill: none; stroke: #f4f2ec; stroke-width: 4.5; stroke-linejoin: round; } /* a chat bubble */
 .cc.is-quiet .cc-pin { opacity: 0.3; }
 .cc.is-quiet .cc-pin:is(:hover, :focus-visible), .cc.is-dragging .cc-pin { opacity: 1; }
 .cc.is-dragging .cc-pin { cursor: grabbing; }
@@ -251,7 +250,6 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cc-over, .cc-target { outline: 2px dashed var(--cs-muted); outline-offset: 6px; border-radius: 2px; }
 .cc-dropped { position: absolute; z-index: 30; width: 28px; height: 28px; pointer-events: none; filter: drop-shadow(0 3px 6px rgb(0 0 0 / 0.2)); }
 .cc-dropped.is-sent .cc-paper { fill: #2f7a46; }
-.cc-dropped.is-sent .cc-plus { fill: #2f7a46; }
 /* the composer, on cut paper */
 .cc-card { position: fixed; z-index: 60; width: min(340px, calc(100vw - 24px)); padding: 18px 18px 14px; background: #fff; color: var(--cs-text); font-family: var(--sans); clip-path: polygon(1% 2%, 99% 0, 100% 98%, 0 100%); filter: drop-shadow(0 14px 30px rgb(0 0 0 / 0.22)); }
 .cc-card[hidden] { display: none; }
