@@ -35,6 +35,18 @@ const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
     const next = () => { svg.dataset.frame = String(steps[i][0]); const ms = steps[i][1]; i++; if (i < steps.length) svg._t = window.setTimeout(next, ms); };
     next();
   };
+  // an icon on a block that opens its section goes above the section's label, never between label and text
+  document.querySelectorAll<HTMLElement>('.a-story .cs-block').forEach((block) => {
+    let prev = block.previousElementSibling;
+    if (prev?.matches('p') && prev.children.length === 1 && prev.firstElementChild!.tagName === 'STRONG') prev = prev.previousElementSibling; // the section's headline
+    const icon = block.querySelector('.cs-block__icon');
+    if (!prev?.matches('h2') || !icon) return;
+    const holder = document.createElement('div');
+    holder.className = `cs-block cs-sec-icon ${[...block.classList].filter((c) => c.startsWith('cs-block--')).join(' ')}`;
+    holder.innerHTML = '<div class="cs-block__head"></div>';
+    holder.firstElementChild!.append(icon);
+    prev.before(holder);
+  });
   const icons = [...document.querySelectorAll<SVGElement>('.cs-block__icon svg')];
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) icons.forEach((svg) => { svg.dataset.frame = svg.dataset.rest; });
   else {

@@ -7,7 +7,7 @@
 
 /* ---------- Type scale: phones, then 768px, then 1100px ---------- */
 .cs-simple {
-  --cs-title: #161616; --cs-text: #292929; --cs-muted: #6b6b6b; --cs-rule: #e3e3e3; --cs-rule-strong: #bdbdbd;
+  --cs-title: #161616; --cs-text: #292929; --cs-muted: #6b6b6b; --cs-caption: #575757; --cs-rule: #e3e3e3; --cs-rule-strong: #bdbdbd;
   --h1: 32px; --h1-lh: 39px;
   --pt: 23px; --pt-lh: 30px;       /* paragraph title: the bold headline sentence of a section */
   --body: 21px; --body-lh: 31px;   /* body and lede: one size; on phones about 40 characters a line, as NYT's */
@@ -16,7 +16,7 @@
   --col: 680px; --side: 20px;      /* the text column and its side padding */
   --meta: 18px; --meta-lh: 26px; --lede-gap: 40px; --rule-gap: 24px;
 }
-:root[data-theme='dark'] .cs-simple { --cs-title: #ededed; --cs-text: #d6d6d6; --cs-muted: #9b9b9b; --cs-rule: #333; --cs-rule-strong: #555; }
+:root[data-theme='dark'] .cs-simple { --cs-title: #ededed; --cs-text: #d6d6d6; --cs-muted: #9b9b9b; --cs-caption: #b0b0b0; --cs-rule: #333; --cs-rule-strong: #555; }
 @media (min-width: 768px) { .cs-simple { --h1: 38px; --h1-lh: 46px; --pt: 24px; --pt-lh: 32px; --body: 21px; --body-lh: 33px; --small: 14px; --small-lh: 20px; --side: 24px; --meta: 19px; --meta-lh: 28px; --lede-gap: 48px; --rule-gap: 28px; } }
 @media (min-width: 1100px) { .cs-simple { --h1: 44px; --h1-lh: 52px; --pt: 26px; --pt-lh: 34px; --body: 22px; --body-lh: 34px; --sec-gap: 96px; --meta: 20px; --meta-lh: 30px; --lede-gap: 60px; --rule-gap: 32px; } }
 /* the small sans roles, the same at every size */
@@ -65,16 +65,26 @@
 .cs-simple .a-story .cs-block { margin: 0 auto 22px; }
 .cs-simple .a-story .cs-block > p:last-child { margin-bottom: 0; }
 .cs-simple .a-story .cs-block__source { margin: 8px 0 0; }
-/* icons: below 900px, 32px above their paragraph (or title), 40px clear of what comes before; from 900px, one
-   44px box hanging 64px left of the column, level with the paragraph's first line */
-.cs-simple .a-story .cs-block:has(.cs-block__icon) { margin-top: 40px; }
-.cs-block__icon { display: block; width: 32px; height: 32px; margin-bottom: 10px; }
+/* icons: below 900px, 64px above their paragraph (or title), 48px clear of what comes before; from 900px, one
+   56px box hanging 76px left of the column, level with the paragraph's first line. An icon that opens a section
+   sits above the section's label instead (scripts in the page move it), never between label and text */
+.cs-simple .a-story .cs-block:has(.cs-block__icon) { margin-top: 48px; }
+.cs-block__icon { display: block; width: 64px; height: 64px; margin-bottom: 12px; }
+.cs-simple .a-story .cs-sec-icon { margin: var(--sec-gap) auto 0; max-width: var(--col); }
+.cs-simple .a-story .cs-sec-icon:first-child { margin-top: 0; }
+.cs-simple .a-story .cs-sec-icon + h2 { margin-top: 0; }
 .cs-block__icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
 @media (min-width: 900px) {
   .cs-simple .a-story .cs-block:has(.cs-block__icon) { margin-top: 0; }
   .cs-block__head { position: relative; }
-  .cs-block__icon { position: absolute; left: -64px; top: calc((var(--body-lh) - 44px) / 2); width: 44px; height: 44px; margin: 0; }
+  .cs-block__icon { position: absolute; left: -76px; top: calc((var(--body-lh) - 56px) / 2); width: 56px; height: 56px; margin: 0; }
+  .cs-simple .a-story .cs-sec-icon { height: 0; }
+  .cs-simple .a-story .cs-sec-icon .cs-block__icon { top: -19px; } /* level with the section label (18px line) */
+  .cs-block--result .cs-block__icon { left: -98px; } /* outside the result's rule and indent */
 }
+/* results as a callout: a thin rule on the left, the text indented, the source 10px under it */
+.cs-simple .a-story .cs-block--result > :is(p:not(.cs-block__title), .cs-block__source) { margin: 0; padding-left: 20px; border-left: 2px solid var(--cs-title); }
+.cs-simple .a-story .cs-block--result > .cs-block__source { padding-top: 10px; }
 
 /* Icon colours, by role (docs/icons/build.mjs): black (the text's) and a light grey, white inside the eyes.
    i-a first paper, i-b second paper, i-k the small dark marks, i-w white */
@@ -107,14 +117,19 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
 /* ---------- Visuals: 40px above and below, the caption left-aligned 12px under it, as wide as the visual ---------- */
 .cs-simple .a-story :is(.cs-figure, .cs-pair, .cs-seq, .cs-chart, .is-media, .media-video) { max-width: var(--col); margin: 40px auto; }
 .cs-simple .a-story .cs-pair .cs-figure { margin: 0; max-width: none; }
-.cs-simple .a-story .cs-pair__grid { gap: 16px; }
-.cs-simple .a-story figcaption { max-width: none; margin: 12px 0 0; padding-inline: 0; text-align: left; }
-.cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels) { display: none; } /* the caption says Before / After */
+.cs-simple .a-story figcaption { max-width: none; margin: 12px 0 0; padding-inline: 0; text-align: center; color: var(--cs-caption); }
+.cs-simple .c-video__caption { text-align: center; color: var(--cs-caption); }
+/* before / after: pairs stacked (landscape visuals are too small side by side), 16px apart; a small paper-cut tag,
+   BEFORE or AFTER, on the top-left of each visual (and of each half of a combined one) */
+.cs-simple .a-story .cs-pair__grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.cs-simple .a-story .cs-figure:is(.cs-frame--before, .cs-frame--after, .cs-frame--compare) { position: relative; }
+.cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels span) { position: absolute; top: 12px; left: 12px; z-index: 2; margin: 0; padding: 5px 12px 4px; background: #f1eee7; color: var(--cs-text); font-family: var(--sans); font-weight: 500; font-size: 13px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; clip-path: polygon(2% 8%, 97% 0%, 100% 90%, 1% 100%); }
+.cs-simple .a-story .cs-frame__labels { position: static; }
+.cs-simple .a-story .cs-frame__labels span:last-child { left: calc(50% + 12px); }
 /* landscape visuals and before/after pairs, from 1100px: wider than the text, 80% of the window up to 1200px, never
    to the edges (portrait ones, sequences and the chart stay in the column) */
 @media (min-width: 1100px) {
   .cs-simple .a-story :is(.cs-figure, .cs-pair)[data-orient='landscape']:not(.cs-pair .cs-figure) { max-width: min(80vw, 1200px); }
-  .cs-simple .a-story .cs-pair__grid { gap: 24px; }
 }
 /* phones: every visual edge to edge, its caption back in the text's margins */
 @media (max-width: 767px) {
@@ -128,7 +143,7 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
 .cs-block__title { display: none; }
 :root[data-titles='small'] .cs-simple .a-story .cs-block:has(.cs-block__title) { margin-top: 48px; }
 :root[data-titles='small'] .cs-block__title { display: block; margin: 0 0 8px; font-family: var(--sans); font-weight: 600; font-size: 20px; line-height: 28px; color: var(--cs-title); text-wrap: pretty; }
-@media (min-width: 900px) { :root[data-titles='small'] .cs-block:has(.cs-block__title) .cs-block__icon { top: -8px; } } /* (28 - 44) / 2: on the title's line */
+@media (min-width: 900px) { :root[data-titles='small'] .cs-block:has(.cs-block__title) .cs-block__icon { top: -14px; } } /* (28 - 56) / 2: on the title's line */
 
 /* ---------- Titles, variant B (?titles=sans): label and title on one line, in bold sans, Medium-style ---------- */
 /* the section label moves into its title ("Alerts: The main screen…"); it stays in the page for the rail */

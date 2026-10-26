@@ -80,7 +80,7 @@ Those sessions were the only research behind the app, and the engineers had most
 
 The idea was simple: take alerts out of SMS and email and put them in one place, with a map, filters and updates people can follow on the move. My way in was pure curiosity after hearing the developers talk about it for a while. One look and my admittedly biased designer brain went "what is this, and who is it for?" There was no INSO blue (our main brand colour) anywhere, just brown and beige, and the screens felt built for engineers more than for someone reading an alert under pressure.
 
-{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-former-version.jpg" frame="before" alt="The app when I joined: a dense dark list of alerts in capitals, an alert detail packed with text under a small map, and a map that shows a single alert pin." caption="Before: Visuals showing what the App looked like when I joined the project team." /%}
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-former-version.jpg" frame="before" alt="The app when I joined: a dense dark list of alerts in capitals, an alert detail packed with text under a small map, and a map that shows a single alert pin." caption="Visuals showing what the App looked like when I joined the project team." /%}
 
 {% block icon="friction" title="The solution came before the problem" %}
 There was no problem statement to design against, so a quick heuristic evaluation of the app became my starting point. After sharing it with the project lead, I asked to take the app on, with the idea of lining up the UI with the brand, not knowing it would grow into a UX redesign. Along the way it felt like a patchwork every now and then.
@@ -90,7 +90,7 @@ There was no problem statement to design against, so a quick heuristic evaluatio
 
 ## Users
 
-**Two groups, one sending and one receiving**
+**Three groups, one sending and two receiving**
 
 NGO field workers and security staff receive the alerts and need them fast and clear, often under pressure. INSO colleagues in the country offices write and send them, mostly from laptops through the Partners Portal. There was no direct access to NGO workers before launch, so country office colleagues stood in for them, through interviews and remote prototype tests in Maze built around real scenarios. Partners only weighed in after launch, through a survey.
 
@@ -107,8 +107,8 @@ Two short onboarding screens now come before the login, and location access is a
 {% /block %}
 
 {% pair %}
-{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-intro-old.jpg" frame="before" size="half" alt="The old first screen: the login form, with the system prompt asking for location access on top of it." caption="Before: Users were asked to enable location tracking before being introduced to the app" /%}
-{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-intro-new-animated.mp4" frame="after" size="half" alt="The new pre-login flow: two onboarding screens explain what the app does before the login appears." caption="After: Redesign of pre-login flow featuring 2 onboarding screens" /%}
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-intro-old.jpg" frame="before" size="half" alt="The old first screen: the login form, with the system prompt asking for location access on top of it." caption="Users were asked to enable location tracking before being introduced to the app" /%}
+{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-intro-new-animated.mp4" frame="after" size="half" alt="The new pre-login flow: two onboarding screens explain what the app does before the login appears." caption="Redesign of pre-login flow featuring 2 onboarding screens" /%}
 {% /pair %}
 
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-login-comparison.jpg" frame="compare" alt="Login before: a plain form showing red “Invalid email” and “Invalid password” errors before anything is typed. After: a branded “Let's get started” screen with an illustration of a person beside a lock, calm fields and one Continue button." caption="Login screen before and after. Smart validation was one of the main updates." /%}
@@ -132,8 +132,8 @@ Scanning came first, with more space and a clear order of location, title and ti
 {% /block %}
 
 {% pair %}
-{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-old-alerts-screen.jpg" frame="before" size="half" alt="The old alerts list, annotated: inconsistent typography, low spacing between items, and location, distance and time not prioritised." caption="Before: Alerts screen before redesign, showing density and unclear hierarchy" /%}
-{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-alerts-screen-redesign.mp4" frame="after" size="half" alt="The new alerts list: search at the top, alerts as spaced cards with location and distance first, and a persistent menu with a map button." caption="After: Improved alerts experience with clearer hierarchy and in-app guidance" /%}
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-old-alerts-screen.jpg" frame="before" size="half" alt="The old alerts list, annotated: inconsistent typography, low spacing between items, and location, distance and time not prioritised." caption="Alerts screen before redesign, showing density and unclear hierarchy" /%}
+{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-alerts-screen-redesign.mp4" frame="after" size="half" alt="The new alerts list: search at the top, alerts as spaced cards with location and distance first, and a persistent menu with a map button." caption="Improved alerts experience with clearer hierarchy and in-app guidance" /%}
 {% /pair %}
 
 {% block icon="testing" source="Maze tests with country office colleagues" title="Testers filtered alerts by location and date without help" %}
@@ -162,7 +162,7 @@ Alerts are sensitive, so what people can copy or see was a long conversation wit
 
 The old map could only show one alert at a time, and each mode's settings sat behind an icon in another window. Settings belong inside the feature they change, so each of the three map modes now holds its own. In the first version I tested, each mode was explained with one small pop-up.
 
-{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-map-former-design-assessment.mp4" frame="before" alt="The former map: it opens on one alert's pin, with no way to browse other alerts by place." caption="Before: In the former design, users could only view the location of a single alert on the map. Exploring alerts geographically, on the other hand, wasn’t straightforward." /%}
+{% figure src="/media/projects/mitigating-risk-with-location-based-alerts/inso-app-map-former-design-assessment.mp4" frame="before" alt="The former map: it opens on one alert's pin, with no way to browse other alerts by place." caption="In the former design, users could only view the location of a single alert on the map. Exploring alerts geographically, on the other hand, wasn’t straightforward." /%}
 
 ### Explore: what's happening along my route?
 

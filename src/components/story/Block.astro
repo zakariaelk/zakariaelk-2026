@@ -8,7 +8,7 @@ interface Props { icon?: string; title?: string; source?: string }
 const { icon, title, source } = Astro.props;
 const icons = import.meta.glob<string>('./icons/*.svg', { query: '?raw', import: 'default', eager: true });
 ---
-<section class:list={['cs-block', icon && `cs-block--${icon}`, !title && 'cs-block--untitled']}>
+<section class:list={['cs-block', icon && `cs-block--${icon}`, !title && 'cs-block--untitled', source && 'cs-block--result']}>
   <div class="cs-block__head">
     {icon && <span class="cs-block__icon" aria-hidden="true" set:html={icons[`./icons/${icon}.svg`]} />}
     {title && <p class="cs-block__title">{title}</p>}
