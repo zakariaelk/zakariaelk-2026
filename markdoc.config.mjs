@@ -43,6 +43,7 @@ export default defineMarkdocConfig({
         frame: { type: String, matches: ['', 'before', 'after', 'compare'] },
         size: { type: String, matches: ['wide', 'text', 'half'] },
         notes: { type: String },
+        related: { type: Boolean }, // shows a result's own data: kept close to it
       },
     },
     pair: { render: story('Pair'), attributes: { caption: { type: String }, side: { type: Boolean } } },
@@ -67,6 +68,10 @@ export default defineMarkdocConfig({
     },
     // a flow shown one screen at a time, like a short video (images: src/assets paths, comma-separated; alts: |)
     sequence: { render: story('Sequence'), selfClosing: true, attributes: { images: { type: String, required: true }, alts: { type: String }, caption: { type: String }, frame: { type: String, matches: ['', 'before', 'after', 'compare'] }, landscape: { type: Boolean } } },
+    // text kept for review, struck through
+    del: { render: 'del', inline: true },
+    // the "Take a look" button, wherever the case places it
+    cta: { render: story('CaseCta'), selfClosing: true, attributes: { href: { type: String, required: true }, label: { type: String } } },
     // a line break inside a heading or title
     br: { render: 'br', inline: true, selfClosing: true },
     // "Pros:" (green) / "Cons:" (red) at the start of a line about an idea

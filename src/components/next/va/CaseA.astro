@@ -90,7 +90,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
           <dl class="a-case__meta">{r.map((m) => <div><dt>{m.label}</dt>{m.items.map((it) => <dd>{typeof it === 'string' ? it : <Fragment>{it.url ? <a href={it.url} target="_blank" rel="noopener">{it.name}</a> : <span class="a-case__name">{it.name}</span>}{it.role && ` – ${it.role}`}</Fragment>}</dd>)}</div>)}</dl>
         </Fragment>
       ))}
-      {d.link && (
+      {d.link && compare !== 'simple' && (
         <a class="a-cta a-case__cta" href={d.link} target="_blank" rel="noopener">
           <span class="a-cta__paper" data-ring="11" aria-hidden="true"></span>
           Take a look

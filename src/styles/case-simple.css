@@ -39,7 +39,7 @@
 /* the cover: in the text column */
 .cs-simple .a-case__hero { max-width: var(--col); padding-inline: 0; }
 @media (max-width: 767px) { .cs-simple .a-case__hero { max-width: none; } }
-.cs-simple .a-case__cta { font-size: 15px; } /* "Take a look": the small sans size, no extra size in the scale */
+.cs-simple :is(.a-case__cta, .cs-cta .a-cta) { font-size: 15px; } /* "Take a look": the small sans size, no extra size in the scale */
 
 /* ---------- The story: one column, body, paragraph gap 22px ---------- */
 .cs-simple .a-story.a-wrap { padding-top: var(--sec-gap); padding-inline: var(--side); font-family: var(--serif); font-weight: 400; font-size: var(--body); line-height: var(--body-lh); color: var(--cs-text); }
@@ -72,7 +72,8 @@
 .cs-block__icon { display: block; width: 64px; height: 64px; margin-bottom: 12px; }
 .cs-simple .a-story .cs-sec-icon { margin: var(--sec-gap) auto 0; max-width: var(--col); }
 .cs-simple .a-story .cs-sec-icon:first-child { margin-top: 0; }
-.cs-simple .a-story .cs-sec-icon + h2 { margin-top: 0; }
+.cs-simple .a-story .cs-sec-icon + :is(h2, h3) { margin-top: 0; }
+.cs-simple .a-story .cs-sec-icon:has(+ h3) { margin-top: 64px; }
 .cs-block__icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
 @media (min-width: 900px) {
   .cs-simple .a-story .cs-block:has(.cs-block__icon) { margin-top: 0; }
@@ -80,9 +81,14 @@
   .cs-block__icon { position: absolute; left: -76px; top: calc((var(--body-lh) - 56px) / 2); width: 56px; height: 56px; margin: 0; }
   .cs-simple .a-story .cs-sec-icon { height: 0; }
   .cs-simple .a-story .cs-sec-icon .cs-block__icon { top: -19px; } /* level with the section label (18px line) */
+  .cs-simple .a-story .cs-sec-icon:has(+ h3) .cs-block__icon { top: calc((var(--pt-lh) - 56px) / 2); } /* or with a heading's first line */
   .cs-block--result .cs-block__icon { left: -98px; } /* outside the result's rule and indent */
 }
-/* results as a callout: a thin rule on the left, the text indented, the source 10px under it */
+/* results as a callout: a thin rule on the left, the text indented, the source 10px under it; set apart like a
+   section, except from a visual that shows its own data (data-related), which stays close below it */
+.cs-simple .a-story .cs-block.cs-block--result { margin-top: var(--sec-gap); margin-bottom: var(--sec-gap); }
+.cs-simple .a-story .cs-block.cs-block--result:has(+ [data-related]) { margin-bottom: 0; }
+.cs-simple .a-story .cs-block--result + [data-related] { margin-top: 24px; }
 .cs-simple .a-story .cs-block--result > :is(p:not(.cs-block__title), .cs-block__source) { margin: 0; padding-left: 20px; border-left: 2px solid var(--cs-title); }
 .cs-simple .a-story .cs-block--result > .cs-block__source { padding-top: 10px; }
 
@@ -105,7 +111,10 @@ svg[data-frame="7"] > [data-f="7"], svg[data-frame="8"] > [data-f="8"], svg[data
 svg[data-frame="10"] > [data-f="10"], svg[data-frame="11"] > [data-f="11"], svg[data-frame="12"] > [data-f="12"],
 svg[data-frame="13"] > [data-f="13"], svg[data-frame="14"] > [data-f="14"], svg[data-frame="15"] > [data-f="15"],
 svg[data-frame="16"] > [data-f="16"], svg[data-frame="17"] > [data-f="17"], svg[data-frame="18"] > [data-f="18"],
-svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { display: inline; }
+svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"], svg[data-frame="21"] > [data-f="21"],
+svg[data-frame="22"] > [data-f="22"], svg[data-frame="23"] > [data-f="23"], svg[data-frame="24"] > [data-f="24"],
+svg[data-frame="25"] > [data-f="25"], svg[data-frame="26"] > [data-f="26"], svg[data-frame="27"] > [data-f="27"],
+svg[data-frame="28"] > [data-f="28"], svg[data-frame="29"] > [data-f="29"], svg[data-frame="30"] > [data-f="30"] { display: inline; }
 
 /* The two ideas: "Pros:" in green and "Cons:" in red on their own lines */
 .cs-pc { font-weight: 600; }
@@ -134,7 +143,7 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
 }
 /* phones: every visual edge to edge, its caption back in the text's margins */
 @media (max-width: 767px) {
-  .cs-simple .a-story :is(.cs-figure, .cs-pair, .cs-seq, .cs-chart):not(.cs-pair .cs-figure) { max-width: none; margin-inline: calc(-1 * var(--side)); }
+  .cs-simple .a-story :is(.cs-figure, .cs-pair, .cs-seq, .cs-chart):not(.cs-pair :is(.cs-figure, .cs-seq)) { max-width: none; margin-inline: calc(-1 * var(--side)); }
   .cs-simple .a-story :is(.cs-figure, .cs-pair, .cs-seq, .cs-chart) figcaption, .cs-simple .a-story .cs-seq__nav, .cs-simple .a-story .cs-chart :is(.cs-chart__legend, .cs-chart__table) { padding-inline: var(--side); }
   .cs-simple .a-story .cs-pair__grid { gap: 12px; }
 }
@@ -219,3 +228,10 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 /* the versions tooltip: at the right edge of the title column, level with the client label */
 .cs-simple .a-versions { top: 0; right: max(var(--side), calc((100% - var(--col)) / 2)); margin: 0; max-width: none; }
 .cs-simple .a-versions summary { margin-top: -7px; } /* centred on the label's line */
+
+/* a section whose name is its title (Takeaways): the paragraph-title setting, a section's space before it */
+.cs-simple .a-story h2.cs-h2-title { margin: var(--sec-gap) auto 20px; font-family: var(--serif); font-weight: 600; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; text-transform: none; color: var(--cs-title); }
+/* text kept for review */
+.cs-simple .a-story del { color: var(--cs-muted); text-decoration-thickness: 1px; }
+/* "Take a look", centred under the usage chart, with room around it */
+.cs-simple .a-story .cs-cta { margin: 56px auto var(--sec-gap); text-align: center; }

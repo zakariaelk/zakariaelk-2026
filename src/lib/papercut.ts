@@ -175,7 +175,7 @@ export function paperRing(w: number, h: number, seed: number, phase = 0) {
   w = Math.max(w, h);
   const straight = w - 2 * r;
   const perimeter = 2 * straight + 2 * Math.PI * r;
-  const n = Math.max(12, Math.round(perimeter / (h * 0.3)));
+  const n = Math.max(16, Math.round(perimeter / (h * 0.2))); // more, smaller cuts: neatly cut, not jagged
   const pts: string[] = [];
   for (let i = 0; i < n; i++) {
     let d = (i / n) * perimeter;
@@ -184,7 +184,7 @@ export function paperRing(w: number, h: number, seed: number, phase = 0) {
     else if ((d -= straight) < Math.PI * r) { const a = -Math.PI / 2 + d / r; x = w - r + Math.cos(a) * r; y = r + Math.sin(a) * r; nx = Math.cos(a); ny = Math.sin(a); } // right end
     else if ((d -= Math.PI * r) < straight) { x = w - r - d; y = h; nx = 0; ny = 1; } // bottom, right to left
     else { d -= straight; const a = Math.PI / 2 + d / r; x = r + Math.cos(a) * r; y = r + Math.sin(a) * r; nx = Math.cos(a); ny = Math.sin(a); } // left end
-    const nick = -h * 0.075 + hash(seed, (((i - phase) % n) + n) % n) * h * 0.09; // mostly inward, so it stays in the box
+    const nick = -h * 0.04 + hash(seed, (((i - phase) % n) + n) % n) * h * 0.045; // mostly inward, so it stays in the box
     pts.push(`${(x + nx * nick).toFixed(1)} ${(y + ny * nick).toFixed(1)}`);
   }
   return 'M' + pts.join(' L') + 'Z';

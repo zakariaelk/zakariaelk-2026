@@ -113,11 +113,11 @@ Two short onboarding screens now come before the login, and location access is a
 
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-login-comparison.jpg" frame="compare" alt="Login before: a plain form showing red “Invalid email” and “Invalid password” errors before anything is typed. After: a branded “Let's get started” screen with an illustration of a person beside a lock, calm fields and one Continue button." caption="Login screen before and after. Smart validation was one of the main updates." /%}
 
-{% block icon="partners" source="Post-launch partner survey, no baseline for the old version" title="Most partners found getting started easy" %}
+{% block source="Post-launch partner survey, no baseline for the old version" title="Most partners found getting started easy" %}
 24 out of 31 partners rated getting started 4 or 5 out of 5, an average of 4.1/5.
 {% /block %}
 
-{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-flow-1-result.png" size="text" alt="Survey bar chart for installation and onboarding: 39% gave 5, 39% gave 4, 16% gave 3, 3% gave 2 and 3% gave 1. 31 responses, average 4.1." caption="Onboarding satisfaction after redesign (31 responses, avg 4.1/5)" /%}
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-flow-1-result.png" related=true size="text" alt="Survey bar chart for installation and onboarding: 39% gave 5, 39% gave 4, 16% gave 3, 3% gave 2 and 3% gave 1. 31 responses, average 4.1." caption="Onboarding satisfaction after redesign (31 responses, avg 4.1/5)" /%}
 
 ## Alerts
 
@@ -136,11 +136,11 @@ Scanning came first, with more space and a clear order of location, title and ti
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/sequences/alerts-new-1.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/alerts-new-2.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/alerts-new-3.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/alerts-new-4.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/alerts-new-5.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/alerts-new-6.jpg" alts="The new alerts list.|In-app guidance: search anything in alerts.|Search results for a place.|In-app guidance: filter alerts by date.|Saved alerts.|In-app guidance: stay updated with incoming alerts." caption="Improved alerts experience with clearer hierarchy and in-app guidance" frame="after" /%}
 {% /pair %}
 
-{% block icon="testing" source="Maze tests with country office colleagues" title="Testers filtered alerts by location and date without help" %}
+{% block source="Maze tests with country office colleagues" title="Testers filtered alerts by location and date without help" %}
 10 out of 10 testers filtered alerts by location in 22 seconds on average, with an ease-of-use score of 9.3/10; 13 out of 13 filtered by date in 19 seconds, scoring 8.2/10.
 {% /block %}
 
-{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-flow-2-ut-test-01.jpg" alt="Maze results for filtering alerts by location: the task scenario next to the screens testers went through, with a 100% success rate." caption="Task-based usability test scenario and results for filtering alerts by location" /%}
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-flow-2-ut-test-01.jpg" related=true alt="Maze results for filtering alerts by location: the task scenario next to the screens testers went through, with a 100% success rate." caption="Task-based usability test scenario and results for filtering alerts by location" /%}
 
 ## Alert detail
 
@@ -188,9 +188,7 @@ The trickier part was that some testers couldn't tell live location from custom 
 6 out of 6 testers set a radius around a place they weren't in, in 53 seconds on average, with an ease-of-use score of 6.8/10.
 {% /block %}
 
-{% block icon="face-bulb" %}
 Together with the engineers and a few colleagues from the information team at HQ we came up with two ideas:
-{% /block %}
 
 1. **Support documentation or an FAQ section, available from the Settings screen**
 
@@ -204,8 +202,8 @@ Together with the engineers and a few colleagues from the information team at HQ
 
    {% pc kind="cons" /%} three steps was the shortest I could get it, which might feel long for some.
 
-{% block icon="face-smiling" title="Showing it instead of explaining it" %}
-We took the risk with the tutorials, since text and animation together get the point across faster than text alone.
+{% block title="Showing it instead of explaining it" %}
+The voting majority leaned towards option 2 and agreed that text and animation together get the point across faster than text alone.
 {% /block %}
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/sequences/proximity-1.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/proximity-2.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/proximity-3.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/proximity-4.jpg" alts="Proximity tutorial, 1 of 3: see what is around you.|2 of 3: see what is around a custom location.|3 of 3: select the radius of your proximity with the slider.|The results: a radius on the map with the alerts inside it." caption="The three-step Proximity tutorial, then the results view." /%}
 
@@ -233,7 +231,7 @@ Across releases, Explore takes most of the map traffic, with Proximity and Geofe
 
 ## After the first release
 
-Feedback from country office colleagues kept shaping the app after launch:
+### Feedback from country office colleagues kept shaping the app after launch
 
 - Font size setting, a dark theme, and the app in French, English and Ukrainian (full Ukrainian since August 2023).
 - Notifications limited to your regions or to a saved map search. People do open them: over 100,000 times from notifications in three years.
@@ -241,7 +239,7 @@ Feedback from country office colleagues kept shaping the app after launch:
 - Unseen alerts pointed out, a Recent Alerts block, and a restyled date picker with quick options.
 - Animated tutorials in every map mode.
 
-The Ukraine country office was one of the offices that told us the most about internet coverage, which kept improving even through the war, compared with other countries in Africa and Asia.
+{% del %}The Ukraine country office was one of the offices that told us the most about internet coverage, which kept improving even through the war, compared with other countries in Africa and Asia.{% /del %}
 
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/sequences/new-alerts-1.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/new-alerts-2.png, projects/mitigating-risk-with-location-based-alerts/sequences/new-alerts-3.jpg" alts="The alerts list while browsing.|A New alerts button appears at the top of the list.|The list with a Recent Alerts block on top, holding the alerts not seen yet." caption="New alerts pointed out live while you browse the list, with the Recent Alerts block separating what's new from what you've read." /%}
 
@@ -255,11 +253,15 @@ With management sign-off I designed the first version in early 2025, and it was 
 
 ## Outcome
 
+### How the app is used today
+
 {% block icon="bricks" %}
-**How the app is used today.** The launch month brought about 1,600 users, then a smaller base settled in: around 800 a month through 2024, and 450 to 630 through 2026. About 8 in 10 of them are returning users, so most people who use it keep coming back.
+The launch month brought about 1,600 users, then a smaller base settled in: around 800 a month through 2024, and 450 to 630 through 2026. About 8 in 10 of them are returning users, so most people who use it keep coming back.
 {% /block %}
 
 {% usagechart caption="Monthly active and returning users since launch, rounded. Test and visitor traffic left out." /%}
+
+{% cta href="https://app.ngosafety.org/" label="Take a look" /%}
 
 **What I can't say.** Nothing was measured before the redesign, so I can't say whether it made the app better, only that it's used and that people keep coming back.
 
@@ -267,7 +269,7 @@ In a post-launch survey, 29 partners gave the app's ease of use an average score
 
 The weakest score was whether the app helped them reach their goal: 21 of 31 gave it a 4 or 5 (average 3.7), and a few said they hadn't really used it yet.
 
-**Takeaways**
+## Takeaways {% .cs-h2-title %}
 
 - **Design for the worst connection first.** Weak networks, stress and no time to learn shaped most decisions, from animated tutorials instead of video to a list you can scan in seconds.
 - **Test with proxies, then check with the real people.** Country office colleagues before launch, partners after.

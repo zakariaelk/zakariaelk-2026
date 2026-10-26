@@ -6,8 +6,9 @@
 import { Image, getImage } from 'astro:assets';
 import { assetImage, posterFor } from '../../lib/media';
 
-interface Props { src: string; alt: string; caption?: string; frame?: string; size?: string; notes?: string }
-const { src, alt, caption, frame = '', size = 'wide', notes } = Astro.props;
+// related: the visual shows the data of the result just above it, so it stays close to it
+interface Props { src: string; alt: string; caption?: string; frame?: string; size?: string; notes?: string; related?: boolean }
+const { src, alt, caption, frame = '', size = 'wide', notes, related = false } = Astro.props;
 const isVideo = /\.mp4$/i.test(src);
 const img = isVideo ? undefined : assetImage(src);
 if (!isVideo && !img) throw new Error(`Figure: image not found in src/assets: ${src}`);
@@ -22,7 +23,7 @@ const dims = isVideo ? poster : img;
 const orient = dims && dims.width / dims.height < 1.1 ? 'portrait' : 'landscape';
 const label = frame === 'before' ? 'Before' : frame === 'after' ? 'After' : '';
 ---
-<figure class:list={['cs-figure', `cs-figure--${size}`, frame && `cs-frame--${frame}`]} data-orient={orient}>
+<figure class:list={['cs-figure', `cs-figure--${size}`, frame && `cs-frame--${frame}`]} data-orient={orient} data-related={related ? '' : undefined}>
   {label && <p class="cs-frame__label">{label}</p>}
   {frame === 'compare' && <p class="cs-frame__labels" aria-hidden="true"><span>Before</span><span>After</span></p>}
   <div class="cs-media">
