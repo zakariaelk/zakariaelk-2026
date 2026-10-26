@@ -11,13 +11,15 @@ if (document.body.classList.contains('cs-simple')) {
   if (titles === 'sans' || titles === 'small') root.dataset.titles = titles;
   document.querySelectorAll<HTMLAnchorElement>('[data-titles-link]').forEach((a) => { if (a.dataset.titlesLink === (root.dataset.titles ?? '')) a.setAttribute('aria-current', 'true'); });
 
-  // a section name with a bold headline under it stays a small label over that headline; a section name that says
-  // something itself (the other cases' headings) is the title
-  document.querySelectorAll<HTMLElement>('.a-story h2').forEach((h) => {
+  // a section name with a bold headline under it stays a small label over that headline; in a case written that way
+  // (INSO) every section name stays a label (Takeaways, Reflection…). In the other cases, written with plain
+  // headings, the section name is the title
+  const h2s = [...document.querySelectorAll<HTMLElement>('.a-story h2')];
+  h2s.forEach((h) => {
     const lead = h.nextElementSibling as HTMLElement | null;
     if (lead?.matches('p') && lead.children.length === 1 && lead.firstElementChild!.tagName === 'STRONG') { h.classList.add('has-lead'); lead.dataset.section = h.textContent ?? ''; }
-    else h.classList.add('is-title');
   });
+  if (!h2s.some((h) => h.classList.contains('has-lead'))) h2s.forEach((h) => h.classList.add('is-title'));
 
   // icons are flipbooks (docs/icons/build.mjs): each plays its frames (twice, a short hold between) when its block
   // reaches the middle of the screen, and again on hover, then stops; with reduced motion each shows its standing frame

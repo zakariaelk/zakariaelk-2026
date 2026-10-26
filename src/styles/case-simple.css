@@ -276,6 +276,8 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story h2.is-title { margin: var(--sec-gap) auto 20px; font-family: var(--serif); font-weight: 600; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; text-transform: none; color: var(--cs-title); text-wrap: pretty; }
 :is(.cs-simple .a-story > article, .cs-simple .a-story) > h2.is-title:first-child { margin-top: 0; }
 .cs-simple .a-story h2.is-title + h3 { margin-top: 0; }
+/* their subheadings a step below the title: body size, still bold */
+.cs-simple .a-story h2.is-title ~ h3 { font-size: var(--body); line-height: var(--body-lh); margin-bottom: 12px; }
 /* markdown images and their italic captions */
 .cs-simple .a-story .is-media img { display: block; width: 100%; height: auto; border-radius: 0; }
 .cs-simple .a-story .is-caption { max-width: none; margin: 12px 0 40px; text-align: center; font-family: var(--sans); font-size: var(--small); line-height: var(--small-lh); color: var(--cs-caption); }
