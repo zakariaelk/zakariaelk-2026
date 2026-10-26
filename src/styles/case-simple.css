@@ -223,8 +223,8 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-versions { top: 0; right: max(var(--side), calc((100% - var(--col)) / 2)); margin: 0; max-width: none; }
 .cs-simple .a-versions summary { margin-top: -7px; } /* centred on the label's line */
 
-/* a section whose name is its title (Takeaways): the paragraph-title setting, a section's space before it */
-.cs-simple .a-story h2.cs-h2-title { margin: var(--sec-gap) auto 20px; font-family: var(--serif); font-weight: 600; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; text-transform: none; color: var(--cs-title); }
+/* Reflection: more room above it, after the Takeaways list */
+.cs-simple .a-story .cs-sec-icon:has(+ #reflection), .cs-simple .a-story #reflection:not(.cs-sec-icon + *) { margin-top: calc(var(--sec-gap) * 1.5); }
 /* text kept for review */
 .cs-simple .a-story del { color: var(--cs-muted); text-decoration-thickness: 1px; }
 /* "Take a look", centred under the usage chart, with room around it */
