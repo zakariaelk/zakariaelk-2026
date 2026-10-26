@@ -1,8 +1,9 @@
 ---
-// Case studies (/work/<slug>/), on version A's case template in the blue colours
-// (components/next/va/CaseA.astro). "Next project" follows the home page order and wraps around.
-// The INSO case shows its short version (src/content/lab/inso-app-short.mdoc) with its full video as the
-// cover (#full-video, which the home page's "Full video" link opens and plays); the full version is at /work/mitigating-risk-with-location-based-alerts-full/.
+// Case studies (/work/<slug>/), on the case template (components/next/va/CaseA.astro) in the Simple reading format,
+// in the blue colours. "Next project" follows the home page order and wraps around.
+// The INSO case shows src/content/lab/inso-app-simple.mdoc with its full video as the cover (#full-video, which the
+// home page's "Full video" link opens and plays). Its earlier versions are still at
+// /work/mitigating-risk-with-location-based-alerts-full/ and …-short/ (noindex, reached from the "versions" tooltip).
 import { getEntry } from 'astro:content';
 import CaseA from '../../components/next/va/CaseA.astro';
 import { getProjects } from '../../lib/data';
@@ -14,6 +15,6 @@ export async function getStaticPaths() {
 
 const { project, next } = Astro.props;
 const inso = project.id === 'mitigating-risk-with-location-based-alerts';
-const shown = inso ? (await getEntry('lab', 'inso-app-short'))! : project;
+const shown = inso ? (await getEntry('lab', 'inso-app-simple'))! : project;
 ---
-<CaseA project={shown} next={next} base="/" look="blue" compare={inso ? 'short' : undefined} fullVideo={inso ? { src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg', length: '1:27', caption: 'Watch: How does INSO alerts help humanitarian workers stay safe on the job?' } : undefined} />
+<CaseA project={shown} next={next} base="/" look="blue" compare={inso ? 'simple' : undefined} fullVideo={inso ? { src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg', length: '1:27', caption: 'Watch: How does INSO alerts help humanitarian workers stay safe on the job?' } : undefined} />

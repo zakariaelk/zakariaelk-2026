@@ -1,0 +1,13 @@
+---
+// The INSO case's short version (src/content/lab/inso-app-short.mdoc) in the earlier look (format="classic"), kept
+// for comparison with the Simple one now at /work/mitigating-risk-with-location-based-alerts/. Not listed on the
+// home page or in "Next project" links. Remove with the "versions" tooltip.
+import { getEntry } from 'astro:content';
+import { getProjects } from '../../lib/data';
+import CaseA from '../../components/next/va/CaseA.astro';
+
+const projects = await getProjects();
+const project = (await getEntry('lab', 'inso-app-short'))!;
+const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
+---
+<CaseA project={project} next={next} base="/" look="blue" format="classic" compare="short" fullVideo={{ src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg', length: '1:27', caption: 'Watch: How does INSO alerts help humanitarian workers stay safe on the job?' }} />

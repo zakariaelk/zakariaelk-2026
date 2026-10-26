@@ -112,5 +112,5 @@ const add = (box: HTMLElement, current: () => HTMLImageElement | null) => {
   box.append(btn);
   box.addEventListener('click', (e) => { const img = current(); if (img && e.target === img) open(img, btn); });
 };
-document.querySelectorAll<HTMLElement>('.a-story .cs-media').forEach((box) => { const img = box.querySelector('img'); if (img) add(box, () => img); });
+document.querySelectorAll<HTMLElement>('.a-story :is(.cs-media, .is-media):not(.carousel-stage *)').forEach((box) => { const img = box.querySelector('img'); if (img) add(box, () => img); }); // figures, and the other cases' markdown images
 document.querySelectorAll<HTMLElement>('.a-story .cs-seq__stage').forEach((stage) => add(stage, () => stage.querySelector<HTMLImageElement>('.cs-seq__slide:not([hidden]) img')));

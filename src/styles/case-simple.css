@@ -270,3 +270,30 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 @media (max-width: 767px) { .cc { right: 10px; } .cc-pin { width: 38px; height: 38px; } .cc-hint { width: 200px; font-size: 14px; } }
 /* a section label straight followed by a heading: the label-to-title space, not a heading's */
 .cs-simple .a-story h2 + h3, .cs-simple .a-story h2 + .cs-sec-icon:has(+ h3) { margin-top: 0; }
+
+/* ---------- The other cases' content in the same format ---------- */
+/* a section name that says something itself (the other cases' headings) is the title, not a small label */
+.cs-simple .a-story h2.is-title { margin: var(--sec-gap) auto 20px; font-family: var(--serif); font-weight: 600; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; text-transform: none; color: var(--cs-title); text-wrap: pretty; }
+:is(.cs-simple .a-story > article, .cs-simple .a-story) > h2.is-title:first-child { margin-top: 0; }
+.cs-simple .a-story h2.is-title + h3 { margin-top: 0; }
+/* markdown images and their italic captions */
+.cs-simple .a-story .is-media img { display: block; width: 100%; height: auto; border-radius: 0; }
+.cs-simple .a-story .is-caption { max-width: none; margin: 12px 0 40px; text-align: center; font-family: var(--sans); font-size: var(--small); line-height: var(--small-lh); color: var(--cs-caption); }
+.cs-simple .a-story .is-caption em { font-style: normal; }
+.cs-simple .a-story .is-media:has(+ .is-caption) { margin-bottom: 0; }
+/* quotes: a left rule and the text a step bolder, like a result */
+.cs-simple .a-story blockquote { max-width: var(--col); margin: 40px auto; padding: 0 0 0 20px; border-left: 2px solid var(--cs-title); font-family: var(--serif); font-weight: 600; font-size: var(--body); line-height: var(--body-lh); color: var(--cs-title); }
+.cs-simple .a-story blockquote p { margin: 0; }
+/* the earlier fade carousel (CHDC): one image at a time, arrows at the sides, in the column */
+.cs-simple .a-story .carousel-chapter { position: relative; max-width: var(--col); margin: 40px auto; }
+.cs-simple .a-story .carousel-stage > p { margin: 0; }
+.cs-simple .a-story .carousel-stage img { display: none; width: 100%; height: auto; }
+.cs-simple .a-story .carousel-stage img.is-active, .cs-simple .a-story .carousel-stage img:only-child { display: block; }
+.cs-simple .a-story .carousel-desc { order: 2; margin: 12px 0 0; text-align: center; }
+.cs-simple .a-story .carousel-desc p { margin: 0; font-family: var(--sans); font-size: var(--small); line-height: var(--small-lh); color: var(--cs-caption); }
+.cs-simple .a-story .carousel-chapter { display: flex; flex-direction: column; }
+.cs-simple .a-story .carousel-control { position: absolute; top: calc(50% - 40px); z-index: 2; display: grid; place-items: center; width: 40px; height: 40px; padding: 0 0 3px; border: 0; border-radius: 50%; background: rgb(255 255 255 / 0.92); color: #161616; font: 26px/1 var(--sans); cursor: pointer; }
+.cs-simple .a-story .carousel-control--prev { left: 12px; }
+.cs-simple .a-story .carousel-control--next { right: 12px; }
+@media (max-width: 767px) { .cs-simple .a-story .carousel-chapter { max-width: none; margin-inline: calc(-1 * var(--side)); } .cs-simple .a-story .carousel-desc { padding-inline: var(--side); } }
+.cs-simple .a-story article > table { max-width: var(--col); margin: 32px auto 40px; }

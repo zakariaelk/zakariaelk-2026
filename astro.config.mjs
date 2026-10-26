@@ -21,7 +21,8 @@ export default defineConfig({
     // the video test and the short INSO case became the main versions (19 Oct 2026)
     '/tests/one-alert': '/',
     '/tests/one-alert/work/mitigating-risk-with-location-based-alerts': '/work/mitigating-risk-with-location-based-alerts/',
-    '/work/mitigating-risk-with-location-based-alerts-short': '/work/mitigating-risk-with-location-based-alerts/',
+    // the Simple format became the main INSO case (26 Oct 2026); its test address now lands there
+    '/work/mitigating-risk-with-location-based-alerts-simple': '/work/mitigating-risk-with-location-based-alerts/',
   },
   prefetch: {
     prefetchAll: true,

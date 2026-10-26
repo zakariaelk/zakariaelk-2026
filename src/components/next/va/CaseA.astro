@@ -1,10 +1,10 @@
 ---
-// Version A case study, after hansonwu.com/game-breakdowns and the layout sketch v3
-// (docs/case-study-layout-sketch-for-claude-code.md): a light start, proof early, details as they come.
-//   client → headline → hero (full content width) → one or two intro paragraphs → facts (2×2) → "Take a look"
-//   then the story in an 860px column (opening with "The reality of this project"), visuals wider, and the next project.
-// A slim rail at the far left lists the sections: open beside the first section, it sticks as the page
-// scrolls and folds to its strokes after ~350px (names on hover); the current section's stroke is longer.
+// The case study template (version A), in the "Simple" reading format since 26 Oct 2026 (format="simple", the default):
+// one 680px column in Medium-style type, a cover in the column, facts as lists, results as callouts, icons beside
+// paragraphs, slideshows, an enlarge view, "Take a look" at the end of the story, a section rail with "Intro" (a sticky
+// "Contents" menu on phones) and comments anywhere (docs/claude-code-instructions-reading-experience.md; styles/
+// case-simple.css, scripts/case-simple.ts). format="classic" keeps the earlier look (the INSO case's Full and Short
+// versions): a client label, headline, wide hero, facts, then the story in an 860px column with the rail.
 // Used by /work/<slug>/ and the /next/… and /tests variations: base = where the links stay,
 // look = their colour or type variation.
 import { Image } from 'astro:assets';
@@ -13,6 +13,7 @@ import Next from '../../../layouts/Next.astro';
 import FramedMedia from '../FramedMedia.astro';
 import CaseStudyVideo from '../../video/CaseStudyVideo.astro';
 import ContactA from './ContactA.astro';
+import CaseComments from '../../CaseComments.astro';
 import type { CollectionEntry } from 'astro:content';
 import { caseHref } from '../../../lib/versions';
 import { cutLine, unevenRect } from '../../../lib/papercut';
@@ -20,13 +21,17 @@ import '../../../styles/next-a.css';
 import '../../../styles/next-a-looks.css';
 import '../../../styles/case-a.css';
 import '../../../styles/media-a.css';
+import '../../../styles/case-simple.css'; // scoped to .cs-simple, so the classic format doesn't change
 
+// format: 'simple' (default) or 'classic' (the INSO case's older Full and Short versions)
 // compare: a small "versions" tooltip beside the title, linking the full, short and simple versions of the INSO case
-// (remove with those pages);
-// 'simple' also scopes that page's own styles (styles/case-simple.css) with .cs-simple on <body>
+// (remove with the older pages)
 // fullVideo: the case's full video as its cover (components/video/CaseStudyVideo.astro, #full-video)
-interface Props { project: CollectionEntry<'projects' | 'lab'>; next: CollectionEntry<'projects'>; base?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; compare?: 'full' | 'short' | 'simple'; fullVideo?: { src: string; poster: string; length?: string; caption?: string } }
-const { project, next, base = '/next/a/', look, compare, fullVideo } = Astro.props;
+interface Props { project: CollectionEntry<'projects' | 'lab'>; next: CollectionEntry<'projects'>; base?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; format?: 'simple' | 'classic'; compare?: 'full' | 'short' | 'simple'; fullVideo?: { src: string; poster: string; length?: string; caption?: string } }
+const { project, next, base = '/next/a/', look, format = 'simple', compare, fullVideo } = Astro.props;
+const simple = format === 'simple';
+// "Take a look": in the story ({% cta %}), or at its end when the text doesn't place it
+const ctaInText = (project.body ?? '').includes('{% cta');
 const d = project.data;
 const { Content, headings } = await render(project);
 const labelOf = (p: CollectionEntry<'projects' | 'lab'>['data']) => p.org ?? p.client; // the client's name
@@ -45,7 +50,7 @@ const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug,
 // the rail and the phone menu start with "Intro": the title and the cover
 const nav = [{ id: 'top', label: 'Intro' }, ...sections];
 ---
-<Next base={base} variant="a" logo look={look} bodyClass={compare === 'simple' ? 'cs-simple' : undefined} title={`${d.projectName ?? d.title} · Zakaria El Khachia`} description={d.statement ?? d.intro}>
+<Next base={base} variant="a" logo look={look} bodyClass={simple ? 'cs-simple' : undefined} title={`${d.projectName ?? d.title} · Zakaria El Khachia`} description={d.statement ?? d.intro}>
 
   {sections.length > 2 && (
     <div class="a-toc" data-toc>
@@ -68,8 +73,8 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
           <p>Comparing versions</p>
           <ul>
             <li><a href="/work/mitigating-risk-with-location-based-alerts-full/" aria-current={compare === 'full' ? 'page' : undefined}>Full</a></li>
-            <li><a href="/work/mitigating-risk-with-location-based-alerts/" aria-current={compare === 'short' ? 'page' : undefined}>Short</a></li>
-            <li><a href="/work/mitigating-risk-with-location-based-alerts-simple/" aria-current={compare === 'simple' ? 'page' : undefined}>Simple</a></li>
+            <li><a href="/work/mitigating-risk-with-location-based-alerts-short/" aria-current={compare === 'short' ? 'page' : undefined}>Short</a></li>
+            <li><a href="/work/mitigating-risk-with-location-based-alerts/" aria-current={compare === 'simple' ? 'page' : undefined}>Simple</a></li>
           </ul>
           {compare === 'simple' && <Fragment><p>Titles</p><ul><li><a href="?" data-titles-link="">Serif</a></li><li><a href="?titles=sans" data-titles-link="sans">Sans</a></li><li><a href="?titles=small" data-titles-link="small">With small titles</a></li></ul></Fragment>}
         </div>
@@ -78,7 +83,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
   </header>
 
   <div class="a-wrap a-case__hero">
-    {fullVideo ? <CaseStudyVideo src={fullVideo.src} poster={fullVideo.poster} length={fullVideo.length} title={fullVideo.caption ?? 'One alert, a different turn: the story in one minute'} caption={fullVideo.caption} /> : <FramedMedia frame={false} image={d.cover} alt={`${labelOf(d)}: ${d.projectName ?? d.title}`} sizes="(min-width: 1440px) 1340px, 100vw" eager />}
+    {fullVideo ? <CaseStudyVideo src={fullVideo.src} poster={fullVideo.poster} length={fullVideo.length} title={fullVideo.caption ?? 'One alert, a different turn: the story in one minute'} caption={fullVideo.caption} /> : <FramedMedia frame={false} cut={simple ? unevenRect(29, 0.5) : undefined} image={d.cover} alt={`${labelOf(d)}: ${d.projectName ?? d.title}`} sizes={simple ? '(min-width: 760px) 680px, 100vw' : '(min-width: 1440px) 1340px, 100vw'} eager />}
   </div>
 
   <div class="a-wrap">
@@ -90,7 +95,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
           <dl class="a-case__meta">{r.map((m) => <div><dt>{m.label}</dt>{m.items.map((it) => <dd>{typeof it === 'string' ? it : <Fragment>{it.url ? <a href={it.url} target="_blank" rel="noopener">{it.name}</a> : <span class="a-case__name">{it.name}</span>}{it.role && ` – ${it.role}`}</Fragment>}</dd>)}</div>)}</dl>
         </Fragment>
       ))}
-      {d.link && compare !== 'simple' && (
+      {d.link && !simple && (
         <a class="a-cta a-case__cta" href={d.link} target="_blank" rel="noopener">
           <span class="a-cta__paper" data-ring="11" aria-hidden="true"></span>
           Take a look
@@ -116,6 +121,16 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
     )}
     <div class="a-story a-wrap" data-story>
       <Content />
+      {simple && d.link && !ctaInText && (
+        <p class="cs-cta">
+          <a class="a-cta" href={d.link} target="_blank" rel="noopener">
+            <span class="a-cta__paper" data-ring="11" aria-hidden="true"></span>
+            Take a look
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg>
+            <span class="sr-only"> at {d.link.replace(/^https?:\/\/(www\.)?/i, '').replace(/\/$/, '')} (opens in a new tab)</span>
+          </a>
+        </p>
+      )}
     </div>
   </div>
 
@@ -130,11 +145,13 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
   </nav>
 
   <ContactA />
-  <slot /> <!-- page extras, e.g. the Simple case's comments -->
+  {simple && <CaseComments />}
+  <slot />
 </Next>
 
 <script>
   import '../../../scripts/case-enhance';
+  import '../../../scripts/case-simple'; // the simple format's slideshows, enlarge view, icons, video buttons
   import '../../../scripts/paper-ring'; // the "Take a look" button
   // highlighted sentences ({% mark %}) are drawn in once they are well into the screen
   const marks = document.querySelectorAll<HTMLElement>('.cs-mark');

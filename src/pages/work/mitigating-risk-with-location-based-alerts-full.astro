@@ -1,7 +1,7 @@
 ---
 // The INSO case in its full version (src/content/projects/mitigating-risk-with-location-based-alerts.mdoc),
-// for comparing with the short one now shown at /work/mitigating-risk-with-location-based-alerts/. Not listed
-// on the home page or in "Next project" links. Remove with the comparison bar once a version is chosen.
+// in the earlier look (format="classic"), for comparing with the Simple one now at /work/mitigating-risk-with-location-based-alerts/.
+// Not listed on the home page or in "Next project" links. Remove with the "versions" tooltip.
 import { getProjects } from '../../lib/data';
 import CaseA from '../../components/next/va/CaseA.astro';
 
@@ -9,4 +9,4 @@ const projects = await getProjects();
 const project = projects.find((p) => p.id === 'mitigating-risk-with-location-based-alerts')!;
 const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
 ---
-<CaseA project={project} next={next} base="/" look="blue" compare="full" />
+<CaseA project={project} next={next} base="/" look="blue" format="classic" compare="full" />
