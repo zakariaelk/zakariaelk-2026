@@ -11,12 +11,15 @@ document.querySelectorAll<HTMLElement>('[data-seq]').forEach((fig) => {
   const stage = fig.querySelector<HTMLElement>('.cs-seq__stage')!;
   const status = fig.querySelector<HTMLElement>('[data-seq-status]')!;
   const n = slides.length;
+  const cap = fig.querySelector<HTMLElement>('figcaption[data-captions]');
+  const caps: string[] | null = cap ? JSON.parse(cap.dataset.captions!) : null;
   if (n < 2) return;
   let i = 0, timer = 0, visible = false, playing = !reduce;
   const show = (k: number, announce = false) => {
     slides[i].hidden = true; dots[i]?.removeAttribute('aria-current');
     i = (k + n) % n;
     slides[i].hidden = false; dots[i]?.setAttribute('aria-current', 'true');
+    if (cap && caps?.[i]) (cap.querySelector('[data-cap-text]') ?? cap).textContent = caps[i]; // a caption per screen
     if (announce) status.textContent = `Screen ${i + 1} of ${n}`;
   };
   const tick = () => {

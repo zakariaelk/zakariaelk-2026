@@ -226,3 +226,4 @@
 @media (min-width: 1100px) { .a-toc { display: none; } }
 @media (prefers-reduced-motion: reduce) { .a-toc__chev { transition: none; } }
 @media (max-width: 1099px) { .a-story :is(h2, h3), #top { scroll-margin-top: 72px; } } /* clear of the sticky menu */
+.cs-cap__frame { display: none; } /* "Before:" / "After:" in captions: the Simple case only (the others keep their tags) */

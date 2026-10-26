@@ -90,6 +90,7 @@
 .cs-simple .a-story .cs-block.cs-block--result:has(+ [data-related]) { margin-bottom: 0; }
 .cs-simple .a-story .cs-block--result + [data-related] { margin-top: 24px; }
 .cs-simple .a-story .cs-block--result > :is(p:not(.cs-block__title), .cs-block__source) { margin: 0; padding-left: 20px; border-left: 2px solid var(--cs-title); }
+.cs-simple .a-story .cs-block--result > p:not(.cs-block__title, .cs-block__source) { font-weight: 600; color: var(--cs-title); } /* the finding, bold like a heading */
 .cs-simple .a-story .cs-block--result > .cs-block__source { padding-top: 10px; }
 
 /* Icon colours, by role (docs/icons/build.mjs): black (the text's) and a light grey, white inside the eyes.
@@ -128,19 +129,12 @@ svg[data-frame="28"] > [data-f="28"], svg[data-frame="29"] > [data-f="29"], svg[
 .cs-simple .a-story .cs-pair .cs-figure { margin: 0; max-width: none; }
 .cs-simple .a-story figcaption { max-width: none; margin: 12px 0 0; padding-inline: 0; text-align: center; color: var(--cs-caption); }
 .cs-simple .c-video__caption { text-align: center; color: var(--cs-caption); }
-/* before / after: pairs stacked (landscape visuals are too small side by side), 16px apart; a small paper-cut tag,
-   BEFORE or AFTER, on the top-left of each visual (and of each half of a combined one) */
+/* before / after: pairs stacked (landscape visuals are too small side by side), 16px apart; no tags on the visuals,
+   the caption starts with "Before:" or "After:", a step darker than the caption */
 .cs-simple .a-story .cs-pair__grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-.cs-simple .a-story .cs-figure:is(.cs-frame--before, .cs-frame--after, .cs-frame--compare) { position: relative; }
-.cs-simple .a-story .cs-seq__stage > :is(.cs-frame__label, .cs-frame__labels) { z-index: 3; }
-.cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels span) { position: absolute; top: 12px; left: 12px; z-index: 2; margin: 0; padding: 5px 12px 4px; background: #f1eee7; color: var(--cs-text); font-family: var(--sans); font-weight: 500; font-size: 13px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; clip-path: polygon(2% 8%, 97% 0%, 100% 90%, 1% 100%); }
-.cs-simple .a-story .cs-frame__labels { position: static; }
-.cs-simple .a-story .cs-frame__labels span:last-child { left: calc(50% + 12px); }
-/* landscape visuals and before/after pairs, from 1100px: wider than the text, 80% of the window up to 1200px, never
-   to the edges (portrait ones, sequences and the chart stay in the column) */
-@media (min-width: 1100px) {
-  .cs-simple .a-story :is(.cs-figure, .cs-pair)[data-orient='landscape']:not(.cs-pair .cs-figure) { max-width: min(80vw, 1200px); }
-}
+.cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels) { display: none; }
+.cs-simple .a-story .cs-cap__frame { display: inline; font-weight: 500; color: var(--cs-title); }
+/* every visual stays in the 680px column (no wider), and runs edge to edge on phones */
 /* phones: every visual edge to edge, its caption back in the text's margins */
 @media (max-width: 767px) {
   .cs-simple .a-story :is(.cs-figure, .cs-pair, .cs-seq, .cs-chart):not(.cs-pair :is(.cs-figure, .cs-seq)) { max-width: none; margin-inline: calc(-1 * var(--side)); }
@@ -235,3 +229,45 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story del { color: var(--cs-muted); text-decoration-thickness: 1px; }
 /* "Take a look", centred under the usage chart, with room around it */
 .cs-simple .a-story .cs-cta { margin: 56px auto var(--sec-gap); text-align: center; }
+
+/* ---------- Comments anywhere (components/CaseComments.astro): a paper pin at the middle right ---------- */
+.cs-simple main { position: relative; }
+.cc { position: fixed; right: 18px; top: 50%; z-index: 45; translate: 0 -50%; }
+.cc[hidden] { display: none; }
+.cc-pin { display: block; width: 52px; height: 52px; padding: 0; border: 0; background: none; cursor: grab; touch-action: none; filter: drop-shadow(0 6px 12px rgb(0 0 0 / 0.22)); }
+.cc-pin svg, .cc-dropped svg { display: block; width: 100%; height: 100%; }
+.cc-paper { fill: #1f1f1f; }
+.cc-glyph { fill: none; stroke: #f4f2ec; stroke-width: 4.5; stroke-linejoin: round; }
+.cc-plus { fill: none; stroke: #f4f2ec; stroke-width: 4.5; stroke-linecap: round; }
+.cc.is-quiet .cc-pin { opacity: 0.45; }
+.cc.is-quiet .cc-pin:is(:hover, :focus-visible), .cc.is-dragging .cc-pin { opacity: 1; }
+.cc.is-dragging .cc-pin { cursor: grabbing; }
+.cc-pin:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 4px; border-radius: 50%; }
+.cc-hint { position: absolute; right: calc(100% + 12px); top: 50%; width: 240px; padding: 14px 16px; translate: 0 -50%; background: #fff; color: var(--cs-text); font-family: var(--sans); font-size: 15px; line-height: 21px; clip-path: polygon(1% 3%, 99% 0, 100% 97%, 0 100%); filter: drop-shadow(0 10px 22px rgb(0 0 0 / 0.18)); }
+.cc-hint[hidden] { display: none; }
+.cc-hint p { margin: 0 0 10px; }
+.cc-hint__ok { padding: 4px 12px; border: 1px solid var(--cs-rule-strong); border-radius: 999px; background: none; font: inherit; font-size: 14px; cursor: pointer; }
+/* where it can be dropped, and where it was */
+.cc-over, .cc-target { outline: 2px dashed var(--cs-muted); outline-offset: 6px; border-radius: 2px; }
+.cc-dropped { position: absolute; z-index: 30; width: 32px; height: 32px; pointer-events: none; filter: drop-shadow(0 3px 6px rgb(0 0 0 / 0.2)); }
+.cc-dropped.is-sent .cc-paper { fill: #2f7a46; }
+/* the composer, on cut paper */
+.cc-card { position: fixed; z-index: 60; width: min(340px, calc(100vw - 24px)); padding: 18px 18px 14px; background: #fff; color: var(--cs-text); font-family: var(--sans); clip-path: polygon(1% 2%, 99% 0, 100% 98%, 0 100%); filter: drop-shadow(0 14px 30px rgb(0 0 0 / 0.22)); }
+.cc-card[hidden] { display: none; }
+.cc-card__title { margin: 0; font-weight: 600; font-size: 16px; color: var(--cs-title); }
+.cc-card__on { margin: 4px 0 12px; font-size: 13px; line-height: 18px; color: var(--cs-muted); }
+.cc-field { display: block; }
+.cc-field :is(textarea, input) { width: 100%; padding: 9px 10px; border: 1px solid var(--cs-rule-strong); border-radius: 4px; background: #fff; color: var(--cs-title); font: 15px/1.4 var(--sans); }
+.cc-field textarea { resize: vertical; min-height: 96px; }
+.cc-row { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 8px; }
+.cc-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+.cc-actions button { padding: 8px 16px; border-radius: 999px; font: 500 15px/1 var(--sans); cursor: pointer; }
+.cc-cancel { border: 1px solid var(--cs-rule-strong); background: none; color: var(--cs-title); }
+.cc-send { border: 0; background: #1f1f1f; color: #fff; }
+.cc-send:disabled { opacity: 0.6; cursor: default; }
+.cc-status { min-height: 18px; margin: 8px 0 0; font-size: 13px; color: var(--cs-muted); }
+.cc-hidden { position: absolute; left: -9999px; }
+:root[data-theme='dark'] :is(.cc-hint, .cc-card, .cc-field :is(textarea, input)) { background: #232323; }
+@media (max-width: 767px) { .cc { right: 10px; } .cc-pin { width: 44px; height: 44px; } .cc-hint { width: 200px; font-size: 14px; } }
+/* a section label straight followed by a heading: the label-to-title space, not a heading's */
+.cs-simple .a-story h2 + h3, .cs-simple .a-story h2 + .cs-sec-icon:has(+ h3) { margin-top: 0; }

@@ -1,0 +1,45 @@
+---
+// Comments anywhere on a case study (test on the Simple INSO case). A paper-cut pin sits at the middle right once
+// the reader has scrolled a bit, with a hint shown once; dragging it onto a paragraph, heading or visual leaves a copy
+// there and opens a short form (a click or Enter opens it for the paragraph being read). The pin then goes back to its
+// place, dimmed. Comments go to Netlify Forms ("case-comments"; the static form below is what Netlify detects), with
+// the section and the text they were dropped on. scripts/case-comments.ts runs it.
+import { blob } from '../lib/papercut';
+const pin = `<svg viewBox="0 0 100 100" aria-hidden="true"><path class="cc-paper" d="${blob(37, 50, 50, 46)}"/><path class="cc-glyph" d="M30 33h40a6 6 0 0 1 6 6v20a6 6 0 0 1-6 6H48l-12 10v-10h-6a6 6 0 0 1-6-6V39a6 6 0 0 1 6-6z"/><path class="cc-plus" d="M50 41v16M42 49h16"/></svg>`;
+---
+<div class="cc" data-comments hidden>
+  <button type="button" class="cc-pin" aria-label="Leave a comment or a question" aria-describedby="cc-hint-text" set:html={pin} />
+  <div class="cc-hint" role="note" hidden>
+    <p id="cc-hint-text">Have a comment or a question? Drag this onto any paragraph or visual and drop me a note.</p>
+    <button type="button" class="cc-hint__ok">Got it</button>
+  </div>
+</div>
+
+<template id="cc-dropped"><span class="cc-dropped" aria-hidden="true" set:html={pin} /></template>
+
+<!-- the composer: a card of cut paper beside the dropped pin -->
+<div class="cc-card" role="dialog" aria-modal="false" aria-labelledby="cc-card-title" hidden>
+  <form name="case-comments" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="cc-form">
+    <input type="hidden" name="form-name" value="case-comments" />
+    <p class="cc-hidden"><label>Leave this empty: <input name="bot-field" /></label></p>
+    <input type="hidden" name="page" />
+    <input type="hidden" name="section" />
+    <input type="hidden" name="quote" />
+    <p class="cc-card__title" id="cc-card-title">Comment or question</p>
+    <p class="cc-card__on" data-cc-on></p>
+    <label class="cc-field"><span class="sr-only">Your comment or question</span><textarea name="comment" rows="4" required placeholder="Your comment or question"></textarea></label>
+    <div class="cc-row">
+      <label class="cc-field"><span class="sr-only">Your name (optional)</span><input name="name" autocomplete="name" placeholder="Name (optional)" /></label>
+      <label class="cc-field"><span class="sr-only">Your email, if you'd like a reply (optional)</span><input name="email" type="email" autocomplete="email" placeholder="Email, for a reply (optional)" /></label>
+    </div>
+    <div class="cc-actions">
+      <button type="button" class="cc-cancel">Cancel</button>
+      <button type="submit" class="cc-send">Send</button>
+    </div>
+    <p class="cc-status" role="status" aria-live="polite"></p>
+  </form>
+</div>
+
+<script>
+  import '../scripts/case-comments';
+</script>

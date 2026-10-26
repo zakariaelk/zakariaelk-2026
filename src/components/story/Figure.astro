@@ -36,5 +36,5 @@ const label = frame === 'before' ? 'Before' : frame === 'after' ? 'After' : '';
     )}
   </div>
   {noteList.length > 0 && <ol class="cs-notes" aria-label="What changed">{noteList.map((n) => <li>{n}</li>)}</ol>}
-  {caption && <figcaption>{caption}</figcaption>}
+  {caption && <figcaption>{label && <span class="cs-cap__frame">{label}: </span>}{caption}</figcaption>}
 </figure>

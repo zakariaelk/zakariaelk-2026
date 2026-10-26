@@ -4,12 +4,15 @@
 // like a short video, until the reader pauses it or takes over; never with reduced motion. scripts/sequence.ts runs
 // it; the enlarge button opens the screen shown (scripts/lightbox.ts).
 // images: paths in src/assets, comma-separated; alts: one per screen, separated by |;
-// frame: a BEFORE / AFTER / both (compare) tag on the top-left; landscape: wide slides (default: phone screens).
+// frame: a BEFORE / AFTER / both (compare) tag; landscape: wide slides (default: phone screens);
+// captions: one per screen, separated by | (the caption follows the screen shown), instead of one caption.
 import { getImage } from 'astro:assets';
 import { assetImage } from '../../lib/media';
 
-interface Props { images: string; alts?: string; caption?: string; frame?: '' | 'before' | 'after' | 'compare'; landscape?: boolean }
-const { images, alts = '', caption, frame = '', landscape = false } = Astro.props;
+interface Props { images: string; alts?: string; caption?: string; captions?: string; frame?: '' | 'before' | 'after' | 'compare'; landscape?: boolean }
+const { images, alts = '', captions, frame = '', landscape = false } = Astro.props;
+const capList = captions?.split('|').map((s) => s.trim());
+const caption = capList?.[0] ?? Astro.props.caption;
 const paths = images.split(',').map((s) => s.trim()).filter(Boolean);
 const altList = alts.split('|').map((s) => s.trim());
 const screens = await Promise.all(paths.map(async (p, i) => {
@@ -38,5 +41,5 @@ const n = screens.length;
     </div>
   )}
   <p class="sr-only" aria-live="polite" data-seq-status></p>
-  {caption && <figcaption>{caption}</figcaption>}
+  {caption && <figcaption data-captions={capList ? JSON.stringify(capList) : undefined}>{(frame === 'before' || frame === 'after') && <span class="cs-cap__frame">{frame === 'before' ? 'Before' : 'After'}: </span>}<span data-cap-text>{caption}</span></figcaption>}
 </figure>
