@@ -123,6 +123,7 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
    BEFORE or AFTER, on the top-left of each visual (and of each half of a combined one) */
 .cs-simple .a-story .cs-pair__grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .cs-simple .a-story .cs-figure:is(.cs-frame--before, .cs-frame--after, .cs-frame--compare) { position: relative; }
+.cs-simple .a-story .cs-seq__stage > :is(.cs-frame__label, .cs-frame__labels) { z-index: 3; }
 .cs-simple .a-story :is(.cs-frame__label, .cs-frame__labels span) { position: absolute; top: 12px; left: 12px; z-index: 2; margin: 0; padding: 5px 12px 4px; background: #f1eee7; color: var(--cs-text); font-family: var(--sans); font-weight: 500; font-size: 13px; line-height: 18px; letter-spacing: 0.08em; text-transform: uppercase; clip-path: polygon(2% 8%, 97% 0%, 100% 90%, 1% 100%); }
 .cs-simple .a-story .cs-frame__labels { position: static; }
 .cs-simple .a-story .cs-frame__labels span:last-child { left: calc(50% + 12px); }
@@ -134,7 +135,7 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
 /* phones: every visual edge to edge, its caption back in the text's margins */
 @media (max-width: 767px) {
   .cs-simple .a-story :is(.cs-figure, .cs-pair, .cs-seq, .cs-chart):not(.cs-pair .cs-figure) { max-width: none; margin-inline: calc(-1 * var(--side)); }
-  .cs-simple .a-story :is(.cs-figure, .cs-pair, .cs-seq, .cs-chart) figcaption, .cs-simple .a-story .cs-seq__dots, .cs-simple .a-story .cs-chart :is(.cs-chart__legend, .cs-chart__table) { padding-inline: var(--side); }
+  .cs-simple .a-story :is(.cs-figure, .cs-pair, .cs-seq, .cs-chart) figcaption, .cs-simple .a-story .cs-seq__nav, .cs-simple .a-story .cs-chart :is(.cs-chart__legend, .cs-chart__table) { padding-inline: var(--side); }
   .cs-simple .a-story .cs-pair__grid { gap: 12px; }
 }
 /* ---------- Titles, variant C (?titles=small): the small sans titles taken off the paragraphs, shown again to
@@ -160,13 +161,31 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
 .cs-simple .a-story :is(.cs-chart__table, article) thead th { font-weight: 600; color: var(--cs-title); border-bottom-color: var(--cs-rule-strong); }
 
 /* ---------- Sequences (components/story/Sequence.astro): one screen at a time on the visuals' blue ---------- */
-.cs-seq__stage { position: relative; display: grid; grid-template: 100% / 100%; place-items: center; height: clamp(440px, 64vh, 660px); background: linear-gradient(115deg, #4d61a3, #8198c7); }
-.cs-seq__screen { grid-area: 1 / 1; height: 86%; width: auto; aspect-ratio: 375 / 660; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 44px -20px rgb(0 0 0 / 0.5); }
-.cs-seq__screen[hidden] { display: none; }
-.cs-seq__dots { display: flex; justify-content: center; gap: 4px; margin-top: 10px; }
+.cs-seq__stage { position: relative; display: grid; grid-template: 100% / 100%; place-items: center; height: clamp(440px, 64vh, 660px); background: linear-gradient(115deg, #4d61a3, #8198c7); touch-action: pan-y; }
+.cs-seq.cs-frame--before .cs-seq__stage { background: linear-gradient(115deg, #8a8590, #a39fa8); } /* the old design's grey */
+.cs-seq__stage:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 3px; }
+.cs-seq__slide { grid-area: 1 / 1; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.cs-seq__slide[hidden] { display: none; }
+.cs-seq:not(.cs-seq--landscape) .cs-seq__slide { position: absolute; inset: 0; } /* phone screens fit the stage's height */
+.cs-seq__screen { height: 86%; width: auto; max-width: 92%; object-fit: contain; border-radius: 14px; box-shadow: 0 20px 44px -20px rgb(0 0 0 / 0.5); }
+/* landscape slides: the frame itself, full width */
+.cs-seq--landscape .cs-seq__stage { height: auto; background: none; }
+.cs-seq--landscape .cs-seq__screen { width: 100%; height: auto; max-width: none; border-radius: 0; box-shadow: none; }
+/* previous · dots · next */
+.cs-seq__nav { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; }
+.cs-seq__arrow { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 1px solid var(--cs-rule-strong); border-radius: 50%; background: none; color: var(--cs-title); cursor: pointer; }
+.cs-seq__arrow svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cs-seq__arrow:hover { background: rgb(0 0 0 / 0.05); }
+.cs-seq__arrow:focus-visible, .cs-seq__dots button:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 2px; }
+.cs-seq__dots { display: flex; justify-content: center; gap: 0; }
 .cs-seq__dots button { width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; }
-.cs-seq__dots button::before { content: ''; display: block; width: 8px; height: 8px; margin: auto; border-radius: 50%; background: var(--line); }
-.cs-seq__dots button[aria-current]::before { background: var(--ink); }
+.cs-seq__dots button::before { content: ''; display: block; width: 8px; height: 8px; margin: auto; border-radius: 50%; background: var(--cs-rule-strong); }
+.cs-seq__dots button[aria-current]::before { background: var(--cs-title); }
+/* a pair of phone-screen slideshows side by side */
+.cs-simple .a-story .cs-pair--side .cs-pair__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.cs-simple .a-story .cs-pair--side .cs-seq { margin: 0; max-width: none; }
+.cs-pair--side .cs-seq__stage { height: auto; aspect-ratio: 4 / 5; }
+@media (max-width: 767px) { .cs-pair--side .cs-seq__stage { aspect-ratio: 3 / 5; } .cs-pair--side .cs-seq__dots { display: none; } }
 
 /* ---------- Play / pause: a light overlay on hover, a small button in the bottom-left corner ---------- */
 .has-vbtn { position: relative; }
@@ -188,11 +207,12 @@ svg[data-frame="19"] > [data-f="19"], svg[data-frame="20"] > [data-f="20"] { dis
 .cs-zoom:hover, .cs-zoom:focus-visible { opacity: 1; }
 .cs-zoom svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
 .cs-zoom:focus-visible { outline: 2px solid #161616; outline-offset: 2px; }
-.lbz { width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; background: rgb(0 0 0 / 0.92); overflow: hidden; }
+.lbz { position: fixed; inset: 0; width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; background: rgb(12 12 12 / 0.96); overflow: hidden; }
 .lbz::backdrop { background: transparent; }
 .lbz__stage { width: 100%; height: 100%; display: grid; place-items: center; cursor: zoom-out; }
 .lbz__frame { position: relative; display: block; }
-.lbz__img { display: block; max-width: 95vw; max-height: 95dvh; width: auto; height: auto; touch-action: pinch-zoom; }
+.lbz__img { display: block; max-width: 95vw; max-height: 95dvh; width: auto; height: auto; transform-origin: center; touch-action: none; } /* the script zooms it */
+.lbz__frame { overflow: visible; }
 .lbz .cs-zoom { opacity: 1; }
 html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 

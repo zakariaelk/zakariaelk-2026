@@ -45,7 +45,7 @@ export default defineMarkdocConfig({
         notes: { type: String },
       },
     },
-    pair: { render: story('Pair'), attributes: { caption: { type: String } } },
+    pair: { render: story('Pair'), attributes: { caption: { type: String }, side: { type: Boolean } } },
     quote: { render: story('Quote'), attributes: { by: { type: String, required: true } } },
     reflection: { render: story('Reflection') },
     confirm: {
@@ -66,7 +66,7 @@ export default defineMarkdocConfig({
       },
     },
     // a flow shown one screen at a time, like a short video (images: src/assets paths, comma-separated; alts: |)
-    sequence: { render: story('Sequence'), selfClosing: true, attributes: { images: { type: String, required: true }, alts: { type: String }, caption: { type: String } } },
+    sequence: { render: story('Sequence'), selfClosing: true, attributes: { images: { type: String, required: true }, alts: { type: String }, caption: { type: String }, frame: { type: String, matches: ['', 'before', 'after', 'compare'] }, landscape: { type: Boolean } } },
     // a line break inside a heading or title
     br: { render: 'br', inline: true, selfClosing: true },
     // "Pros:" (green) / "Cons:" (red) at the start of a line about an idea

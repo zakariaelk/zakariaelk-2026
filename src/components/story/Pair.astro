@@ -1,9 +1,10 @@
 ---
 // Before/after pair: before (grey) always first, after (blue) second. Stacks on small screens.
-interface Props { caption?: string }
-const { caption } = Astro.props;
+// side: two portrait visuals (phone screens) side by side; otherwise they stack
+interface Props { caption?: string; side?: boolean }
+const { caption, side = false } = Astro.props;
 ---
-<figure class="cs-pair" data-orient="landscape">
+<figure class:list={['cs-pair', side && 'cs-pair--side']} data-orient={side ? 'portrait' : 'landscape'}>
   <div class="cs-pair__grid"><slot /></div>
   {caption && <figcaption>{caption}</figcaption>}
 </figure>
