@@ -9,6 +9,12 @@
 .v-a body { background-image: none; }
 .v-a body.is-home { background-image: var(--paper); }
 .v-a .n-band:not(.a-band--contact) { background-image: none; }
+/* home: one flat sheet in the case studies' colour from the first project to the footer; a torn edge only where it
+   leaves the intro, and the footer's own */
+:root.v-a body.is-home :is(.a-band, .a-band--gray) { --band: var(--bg); }
+:root.v-a body.is-home :is(.a-band, .a-band--gray) .n-cut { background-image: none; }
+:root.v-a body.is-home :is(.a-band ~ .a-band, .a-band--gray) { filter: none; }
+:root.v-a body.is-home :is(.a-band ~ .a-band, .a-band--gray) .n-cut { display: none; }
 :root[data-palette][data-theme='dark'].v-a { --surface: #1a1a1a; } /* a touch darker for white text */
 .v-a {
   --a-gap: clamp(120px, calc(120px + 120 * (100vw - 390px) / 1050), 240px); /* between blocks */
