@@ -15,11 +15,11 @@ const LINE = 0.2, RISE = 0.8, HOLD = 2.5; // a line every 0.2 s; a thought about
 
 // one step becomes timed jumps: a roll its frames; a thought rises in, is held, then is gone (if the next thought
 // comes sooner, the one shown goes first)
-type Op = { t: number; look?: Look; lids?: number; wide?: boolean; hi?: boolean; q?: boolean; face?: boolean; hands?: boolean; bubble?: number; reveal?: boolean; say?: string; id?: number; clear?: number };
+type Op = { t: number; look?: Look; lids?: number; wide?: boolean; hi?: boolean; q?: boolean; face?: boolean; hands?: boolean; bubble?: number; reveal?: boolean; eyes?: string; say?: string; id?: number; clear?: number };
 const expand = (steps: ReactionStep[]): Op[] => {
   let shown = -1, until = -Infinity;
   return steps.flatMap((s, k) => {
-    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, hi: s.hi, q: s.q, face: s.face, hands: s.hands, bubble: s.bubble, reveal: s.reveal }];
+    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, hi: s.hi, q: s.q, face: s.face, hands: s.hands, bubble: s.bubble, reveal: s.reveal, eyes: s.eyes }];
     if (s.roll) ops.push({ t: s.t, look: 'r' }, { t: s.t + 0.18, look: 'ur' }, { t: s.t + 0.36, look: 'u' }, { t: s.t + 0.6, lids: 0.4 }, { t: s.t + 1, look: 'd', lids: 0.5 });
     if (s.say) {
       if (s.t < until) ops.push({ t: s.t, clear: shown });
@@ -79,6 +79,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     if (o.hands) { char.classList.remove('no-hands'); char.classList.add('is-rising'); }
     if (o.bubble) bubble.dataset.b = String(o.bubble);
     if (o.reveal) slides[i].querySelector<HTMLElement>('.cs-rx__first')?.classList.add('is-gone');
+    if (o.eyes) char.style.setProperty('--rx-eye', o.eyes);
     if (o.clear !== undefined && say.dataset.id === String(o.clear)) say.replaceChildren();
     if (o.say !== undefined) write(o.say, o.id!);
   };

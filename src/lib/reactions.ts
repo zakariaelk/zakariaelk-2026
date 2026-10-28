@@ -5,12 +5,12 @@
 // l, r, u, ur), hi (highlight on), lids (share of the eye closed), wide (surprised), roll (eye roll: right, up, lids
 // drop, eyes fall back down), q (question mark), say (what he thinks, written in his bubble word by word), face (his
 // face shows), hands (hands and phone rise into view), bubble (1 small circle, 2 bigger circle, 3 the bubble), reveal
-// (a slide's own screen replaces the one it shows first, its first). eyes: the colour of his eyes on that slide, from
-// white to red as he gets more frustrated.
+// (a slide's own screen replaces the one it shows first, its first), eyes (his eyes turn this colour). A slide's eyes:
+// their colour as it starts, from white to red as he gets more frustrated.
 // A slide with intro: true starts with nothing of him shown, so its steps bring him in.
 
 export type Look = 'c' | 'd' | 'dd' | 'l' | 'r' | 'u' | 'ur';
-export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; roll?: boolean; q?: boolean; say?: string; face?: boolean; hands?: boolean; bubble?: 1 | 2 | 3; reveal?: boolean }
+export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; roll?: boolean; q?: boolean; say?: string; face?: boolean; hands?: boolean; bubble?: 1 | 2 | 3; reveal?: boolean; eyes?: string }
 export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; intro?: boolean; first?: string; eyes?: string; steps: ReactionStep[] }
 export interface ReactionSet { label: string; width: number; height: number; slides: ReactionSlide[] }
 
@@ -74,12 +74,12 @@ export const REACTIONS: Record<string, ReactionSet> = {
         mode: 'blur',
         holes: [[140, 610, 495, 625]],
         caption: 'Location is asked first, with one thin line of explanation.',
-        eyes: '#ff6f61',
+        eyes: '#ffad5c', // still orange: he hasn't seen the prompt yet
         end: 11.8,
         first: DIR + 'old-login.png',
         steps: [
           { t: 0, look: 'd' },
-          { t: 2, reveal: true, look: 'c', wide: true, say: 'Whoaaa, my location?' },
+          { t: 2, reveal: true, eyes: '#ff6f61', look: 'c', wide: true, say: 'Whoaaa, my location?' },
           { t: 3.6, wide: false, look: 'd', lids: 0.4, hi: true },
           { t: 5, say: 'Why, though?' },
           { t: 7, roll: true },
