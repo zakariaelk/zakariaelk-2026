@@ -1,7 +1,7 @@
 ---
-// A slideshow: the old screen in the middle; on its left YoupieMan, the small line-drawn character with a phone, reacts with his
-// eyes, what he thinks shown in a thought bubble above him, while one problem on the screen is highlighted (the rest
-// dimmed or blurred). An intro slide starts with only him, in the middle, until he steps aside. It plays by itself and stays under the
+// A slideshow: the old screen in the middle; on its left YoupieMan, the small line-drawn character with a phone,
+// reacts with his eyes, what he thinks shown in a thought bubble above him, while one problem on the screen is
+// highlighted (the rest dimmed or blurred). At the end he offers to play it again. It plays by itself and stays under the
 // reader's control: previous / next, dots, swipe, the arrow keys, a counter and pause. With reduced motion every
 // slide is a still: highlight on, the character in his last pose. The slides are in lib/reactions.ts, the character
 // in character/character.svg (docs/icons/character.mjs), and scripts/reactions.ts plays them.
@@ -50,12 +50,15 @@ const slides = await Promise.all(data.slides.map(async (s) => {
   const load = s.load && `left:${(s.load[0] / W) * 100}%;top:${(s.load[1] / H) * 100}%;width:${(s.load[2] / W) * 100}%;height:${(s.load[2] / H) * 100}%`;
   return { ...s, view: view.src, full: full.src, layers, load, zoom, del, mask: maskOf(s.holes) };
 }));
-const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, intro: s.intro, eyes: s.eyes, steps: s.steps, caption: s.caption })));
+const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, steps: s.steps, caption: s.caption })));
 ---
 <figure class="cs-rx" data-rx={timeline} aria-roledescription="carousel" aria-label={data.label}>
   <div class="cs-rx__stage" tabindex="0" aria-label={`${data.label}: use the arrow keys to move between slides`}>
     <div class="cs-rx__side">
-      <div class="cs-rx__bubble" data-b="3" aria-hidden="true"><Fragment set:html={bubble} /><div class="cs-rx__say"></div></div>
+      <div class="cs-rx__bubble">
+        <Fragment set:html={bubble} /><div class="cs-rx__say" aria-hidden="true"></div>
+        <button type="button" class="cs-rx__again" aria-label="Yes, play the slideshow again" hidden>Yes</button>
+      </div>
       <div class="cs-rx__char" set:html={character} />
     </div>
     <div class="cs-rx__screens">
