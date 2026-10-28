@@ -320,13 +320,17 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .rx-q { transform-box: view-box; visibility: hidden; }
 .rx-char.is-q .rx-q { visibility: visible; animation: rx-pop 0.36s steps(1, end); }
 @keyframes rx-pop { 0% { scale: 0.5; rotate: -12deg; } 33% { scale: 1.25; rotate: 8deg; } 66% { scale: 0.92; rotate: -4deg; } 100% { scale: 1; rotate: 0deg; } }
-/* his thought bubble: one size for every thought, the text written in the middle word by word; on the first slide it
-   builds up: the small circle, the bigger one, then the bubble */
+/* his thought bubble: one size for every thought; on the first slide it builds up: the small circle, the bigger one,
+   then the bubble. Each thought rises into the middle line by line, each line from behind its own mask in a few
+   jumps like his hands; later it's simply gone */
 .cs-rx__bubble { position: relative; width: 100%; }
 .cs-rx__bubble svg { display: block; width: 100%; height: auto; }
 .cs-rx__bubble[data-b='0'] :is(.rx-b1, .rx-b2, .rx-b3), .cs-rx__bubble[data-b='1'] :is(.rx-b2, .rx-b3), .cs-rx__bubble[data-b='2'] .rx-b3 { visibility: hidden; }
-.cs-rx__say { position: absolute; inset: 4% 8% 26%; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 0 0.24em; margin: 0; font: 600 20px/1.05 'Caveat Variable', 'Caveat', cursive; color: #161616; text-align: center; }
-.cs-rx__say span[hidden] { display: none; }
+.cs-rx__say { position: absolute; inset: 6% 8% 27%; display: flex; align-items: center; justify-content: center; font: 600 20px/1.08 'Caveat Variable', 'Caveat', cursive; color: #161616; text-align: center; }
+.cs-rx__lines { width: 100%; text-wrap: balance; }
+.cs-rx__mask { display: block; overflow: hidden; }
+.cs-rx__in { display: inline-block; animation: rx-text-in 0.3s steps(1, end) both; }
+@keyframes rx-text-in { 0% { translate: 0 105%; } 33% { translate: 0 62%; } 66% { translate: 0 22%; } 100% { translate: 0 0; } }
 :root[data-theme='dark'] .cs-rx__say { color: #ededed; }
 /* his face shows first, then his hands and phone rise from below in a few jumps */
 .rx-char.no-face :is(.rx-face, .rx-q) { visibility: hidden; }
@@ -350,7 +354,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-rx.is-paused .cs-rx__i-play { display: block; }
 .cs-rx__count { min-width: 3.5em; margin-left: 6px; font-family: var(--sans); font-size: var(--small); color: var(--cs-caption); font-variant-numeric: tabular-nums; }
 .cs-simple .a-story .cs-rx figcaption { margin-top: 8px; text-align: center; }
-@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-q .rx-q, .rx-char.is-rising .rx-hands { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-q .rx-q, .rx-char.is-rising .rx-hands, .cs-rx__in { animation: none; } }
 /* phones: no room for him beside a centred screen, so the screen goes right and he takes the space on its left */
 @media (max-width: 767px) {
   .cs-simple .a-story .cs-rx { --rx-h: min(64vh, 470px); }

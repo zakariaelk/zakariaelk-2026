@@ -39,7 +39,7 @@ const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, intro: s.i
 <figure class="cs-rx" data-rx={timeline} aria-roledescription="carousel" aria-label={data.label}>
   <div class="cs-rx__stage" tabindex="0" aria-label={`${data.label}: use the arrow keys to move between slides`}>
     <div class="cs-rx__side">
-      <div class="cs-rx__bubble" data-b="3" aria-hidden="true"><Fragment set:html={bubble} /><p class="cs-rx__say"></p></div>
+      <div class="cs-rx__bubble" data-b="3" aria-hidden="true"><Fragment set:html={bubble} /><div class="cs-rx__say"></div></div>
       <div class="cs-rx__char" set:html={character} />
     </div>
     <div class="cs-rx__screens">

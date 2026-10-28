@@ -1,7 +1,8 @@
 // The reacting character's slideshows (components/story/Reactions.astro, lib/reactions.ts). A clock per slideshow
 // runs while it's on screen and not paused and fires the slide's steps on time; everything moves in jumps, like the
 // face icons' flipbooks: the eyes, the eye roll (right, up, lids drop, eyes fall back down), his hands and phone
-// rising into view, his bubble building up circle by circle, each thought written in it word by word, fast. Pointing at it or focusing it only holds the next slide back; the
+// rising into view, his bubble building up circle by circle, each thought rising into it line by line, each line from
+// behind its own mask, held 2.5 s, then gone at once before the next one rises. Pointing at it or focusing it only holds the next slide back; the
 // pause button stops the clock, character included. With reduced motion: no clock, each slide a still with the
 // highlight on, the character in his last pose and his last thought.
 import type { Look, ReactionStep } from '../lib/reactions';
@@ -10,16 +11,25 @@ const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const LOOK: Record<Look, [number, number]> = { c: [0, 0], d: [0, 9], dd: [0, 12], l: [-11, 0], r: [11, 0], u: [0, -11], ur: [8, -8] };
 const EYE_H = 48; // the eye's height in the drawing; a lid closes by a share of it
 
-const WORD = 0.09; // seconds between words
+const LINE = 0.2, RISE = 0.8, HOLD = 2.5; // a line every 0.2 s; a thought about 0.8 s to rise, then held (seconds)
 
-// one step becomes timed jumps: a roll its frames, a thought its words
-type Op = { t: number; look?: Look; lids?: number; wide?: boolean; hi?: boolean; q?: boolean; say?: string; word?: number; face?: boolean; hands?: boolean; bubble?: number };
-const expand = (steps: ReactionStep[]): Op[] => steps.flatMap((s) => {
-  const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, hi: s.hi, q: s.q, face: s.face, hands: s.hands, bubble: s.bubble }];
-  if (s.roll) ops.push({ t: s.t, look: 'r' }, { t: s.t + 0.18, look: 'ur' }, { t: s.t + 0.36, look: 'u' }, { t: s.t + 0.6, lids: 0.4 }, { t: s.t + 1, look: 'd', lids: 0.5 });
-  if (s.say) ops.push({ t: s.t, say: s.say }, ...s.say.split(' ').map((_, k) => ({ t: s.t + k * WORD, word: k })));
-  return ops;
-}).sort((a, b) => a.t - b.t);
+// one step becomes timed jumps: a roll its frames; a thought rises in, is held, then is gone (if the next thought
+// comes sooner, the one shown goes first)
+type Op = { t: number; look?: Look; lids?: number; wide?: boolean; hi?: boolean; q?: boolean; face?: boolean; hands?: boolean; bubble?: number; say?: string; id?: number; clear?: number };
+const expand = (steps: ReactionStep[]): Op[] => {
+  let shown = -1, until = -Infinity;
+  return steps.flatMap((s, k) => {
+    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, hi: s.hi, q: s.q, face: s.face, hands: s.hands, bubble: s.bubble }];
+    if (s.roll) ops.push({ t: s.t, look: 'r' }, { t: s.t + 0.18, look: 'ur' }, { t: s.t + 0.36, look: 'u' }, { t: s.t + 0.6, lids: 0.4 }, { t: s.t + 1, look: 'd', lids: 0.5 });
+    if (s.say) {
+      if (s.t < until) ops.push({ t: s.t, clear: shown });
+      const off = s.t + RISE + HOLD;
+      ops.push({ t: s.t, say: s.say, id: k }, { t: off, clear: k });
+      shown = k; until = off;
+    }
+    return ops;
+  }).sort((a, b) => a.t - b.t);
+};
 
 document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   const data: { end: number; intro?: boolean; steps: ReactionStep[]; caption: string }[] = JSON.parse(fig.dataset.rx!);
@@ -41,6 +51,24 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   const look = ([x, y]: [number, number]) => pupils.forEach((p) => (p.style.translate = `${x}px ${y}px`));
   const close = (share: number) => lids.forEach((l) => (l.style.translate = `0 ${share * EYE_H}px`));
   const veil = () => slides[i].querySelector<HTMLElement>('.cs-rx__veil');
+  // a thought: laid out once to find its lines (balanced), then each line in its own mask, rising after the one above
+  const write = (text: string, id: number) => {
+    const box = document.createElement('div');
+    box.className = 'cs-rx__lines';
+    const words = text.split(' ').map((w) => { const s = document.createElement('span'); s.textContent = w; return s; });
+    words.forEach((w, k) => box.append(w, k < words.length - 1 ? ' ' : ''));
+    say.replaceChildren(box);
+    const lines: string[][] = [];
+    let top = -1;
+    words.forEach((w) => { if (w.offsetTop !== top) { lines.push([]); top = w.offsetTop; } lines[lines.length - 1].push(w.textContent!); });
+    box.replaceChildren(...lines.map((ws, k) => {
+      const mask = document.createElement('span'), inner = document.createElement('span');
+      mask.className = 'cs-rx__mask'; inner.className = 'cs-rx__in';
+      inner.textContent = ws.join(' '); inner.style.animationDelay = `${k * LINE}s`;
+      mask.append(inner); return mask;
+    }));
+    say.dataset.id = String(id);
+  };
   const apply = (o: Op) => {
     if (o.look) look(LOOK[o.look]);
     if (o.lids !== undefined) close(o.lids);
@@ -50,8 +78,8 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     if (o.face) char.classList.remove('no-face');
     if (o.hands) { char.classList.remove('no-hands'); char.classList.add('is-rising'); }
     if (o.bubble) bubble.dataset.b = String(o.bubble);
-    if (o.say !== undefined) say.replaceChildren(...o.say.split(' ').map((w) => { const s = document.createElement('span'); s.textContent = w; s.hidden = true; return s; }));
-    if (o.word !== undefined) { const w = say.children[o.word] as HTMLElement | undefined; if (w) w.hidden = false; }
+    if (o.clear !== undefined && say.dataset.id === String(o.clear)) say.replaceChildren();
+    if (o.say !== undefined) write(o.say, o.id!);
   };
   // the start of a slide: eyes on the phone, lids open, nothing highlighted or thought yet; on an intro slide nothing
   // of him shown yet either
@@ -73,7 +101,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     count.textContent = `${i + 1} of ${n}`;
     caption.textContent = data[i].caption;
     reset(!!data[i].intro); t = 0; fired = 0;
-    if (reduce) { timeline[i].forEach(apply); char.classList.remove('is-rising'); fired = timeline[i].length; }
+    if (reduce) { timeline[i].filter((o) => o.clear === undefined).forEach(apply); char.classList.remove('is-rising'); fired = timeline[i].length; } // the last thought stays
   };
   const tick = (now: number) => {
     const dt = last ? Math.min(0.1, (now - last) / 1000) : 0; last = now;
