@@ -2,8 +2,8 @@
 // scripts/reactions.ts; docs/claude-code-brief-login-problems-slideshow.md). Each slide: a screen, the parts to
 // highlight (x1, x2, y1, y2 in the screenshot's pixels; none for no highlight), dark overlay or blur, a caption, and
 // the character's steps in seconds. Step keys: look (c centre, at the reader; d bottom, on the phone; dd further down;
-// l, r), hi (highlight on), lids (share of the eye closed), meh (his disappointed face, -_-', or back to his usual
-// one), say (what he thinks, rising into his bubble line by line; stay: it stays up), show / hide (one of the slide's
+// l, r), hi (highlight on), lids (share of the eye closed), wide (eyes wide open), drop (a sweat drop on his
+// usual face), meh (his disappointed face, -_-', or back to his usual one), say (what he thinks, rising into his bubble line by line; stay: it stays up), show / hide (one of the slide's
 // layers), load (the app installing: its progress fills in this many seconds), zoom (the rest of the screen blurs and
 // the slide's small print grows, as it is; false: back), tap (his thumb taps the phone), swipe (his thumb swipes up),
 // thumb (his thumb held in a pose: rest, up, press, low), del (the app to delete: jiggle, with its minus badge; gone,
@@ -14,7 +14,7 @@
 // around its icon and name).
 
 export type Look = 'c' | 'd' | 'dd' | 'l' | 'r';
-export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; meh?: boolean; say?: string; stay?: boolean; show?: string; hide?: string; load?: number; zoom?: boolean; tap?: boolean; swipe?: boolean; thumb?: 'rest' | 'up' | 'press' | 'low'; del?: 'jiggle' | 'gone' | 'off'; again?: boolean }
+export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; say?: string; stay?: boolean; show?: string; hide?: string; load?: number; zoom?: boolean; tap?: boolean; swipe?: boolean; thumb?: 'rest' | 'up' | 'press' | 'low'; del?: 'jiggle' | 'gone' | 'off'; again?: boolean }
 export interface ReactionLayer { src: string; fade?: number; on?: boolean }
 export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; layers?: Record<string, ReactionLayer>; load?: [number, number, number]; zoom?: [number, number, number, number]; del?: { src: string; at: [number, number, number, number] }; steps: ReactionStep[] }
 export interface ReactionSet { label: string; width: number; height: number; slides: ReactionSlide[] }
@@ -63,7 +63,7 @@ export const REACTIONS: Record<string, ReactionSet> = {
         mode: 'blur',
         holes: [],
         caption: 'The login: no intro, a tiny note on how to get an account, no password reset.',
-        end: 26.7,
+        end: 25.8,
         zoom: [22, 714, 842, 922],
         layers: { prompt: { src: DIR + 'old-login-location.png' } },
         steps: [
@@ -75,8 +75,9 @@ export const REACTIONS: Record<string, ReactionSet> = {
           { t: 10.45, tap: true }, { t: 10.7, hi: true, zoom: true },
           { t: 16.5, hi: false, zoom: false, look: 'd', say: 'I see now' }, // the zoom held 5.8 s
           { t: 19.2, lids: 0.3, say: "but I don't remember my password here..." },
-          { t: 22.1, lids: 0, look: 'dd', say: 'Do I have to contact INSO to reset my password?' },
-          { t: 23.45, show: 'prompt' }, { t: 25.15, meh: true },
+          { t: 22.1, lids: 0, look: 'dd', say: 'Do I have to contact INSO to reset my password?' }, { t: 22.7, meh: true },
+          { t: 23.45, show: 'prompt' }, { t: 23.65, meh: false, wide: true, look: 'c' },
+          { t: 24.6, wide: false, lids: 0.5, drop: true },
         ],
       },
       {
@@ -85,7 +86,7 @@ export const REACTIONS: Record<string, ReactionSet> = {
         mode: 'overlay',
         holes: [],
         caption: 'Location is asked before he has even logged in.',
-        end: 17,
+        end: 15.7,
         del: { src: DIR + 'home-screen-dark.png', at: [214, 364, 148, 330] },
         layers: {
           prompt: { src: DIR + 'old-login-location.png', on: true },
@@ -93,18 +94,18 @@ export const REACTIONS: Record<string, ReactionSet> = {
           deleted: { src: DIR + 'home-screen-deleted.png' }, // the apps after it move up a place
         },
         steps: [
-          { t: 0, meh: true, look: 'c' },
-          { t: 0.45, look: 'r', say: 'What?' }, { t: 1.45, look: 'c' },
-          { t: 2.15, look: 'r', say: 'My location?' }, { t: 3.3, look: 'c' },
-          { t: 4, look: 'r', say: "Why? I haven't even logged in" }, { t: 5.45, look: 'c' },
-          { t: 6.95, look: 'd', tap: true }, { t: 7.2, hide: 'prompt', meh: false },
-          { t: 7.75, say: "Never mind I'll do this some other time..." },
-          { t: 10.7, swipe: true }, { t: 10.95, show: 'home' },
-          { t: 11.55, say: 'Or never', stay: true }, { t: 12, meh: true },
-          { t: 12.75, thumb: 'press' }, { t: 13.45, del: 'jiggle' }, { t: 13.75, thumb: 'rest' },
-          { t: 14.1, tap: true }, { t: 14.35, del: 'gone' },
-          { t: 14.8, show: 'deleted', del: 'off' },
-          { t: 15.9, meh: false, look: 'c', say: 'Shall I show you again?', stay: true }, { t: 16.5, again: true },
+          { t: 0, lids: 0.5, drop: true, look: 'c' },
+          { t: 0.4, say: "I haven't even logged in" },
+          { t: 2, lids: 1 }, { t: 2.15, lids: 0.5 }, // a blink
+          { t: 2.5, say: "and you're asking about location?" },
+          { t: 5.6, look: 'd', tap: true }, { t: 5.85, hide: 'prompt', lids: 0, drop: false },
+          { t: 6.4, say: "Never mind I'll do this some other time..." },
+          { t: 9.35, swipe: true }, { t: 9.6, show: 'home' },
+          { t: 10.2, say: 'Or never', stay: true }, { t: 10.65, meh: true },
+          { t: 11.4, thumb: 'press' }, { t: 12.1, del: 'jiggle' }, { t: 12.4, thumb: 'rest' },
+          { t: 12.75, tap: true }, { t: 13, del: 'gone' },
+          { t: 13.45, show: 'deleted', del: 'off' },
+          { t: 14.55, meh: false, look: 'c', say: 'Want to see this again?', stay: true }, { t: 15.15, again: true },
         ],
       },
     ],

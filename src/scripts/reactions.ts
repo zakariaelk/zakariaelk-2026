@@ -18,11 +18,11 @@ const LINE = 0.2, RISE = 0.8, HOLD = 2.5; // a line every 0.2 s; a thought about
 // one step becomes timed jumps: a tap or swipe its thumb poses; a thought rises in, is held, then is gone (if the next
 // thought comes sooner, the one shown goes first; with stay it stays)
 type Arm = 'rest' | 'up' | 'press' | 'low';
-type Op = { t: number; arm?: Arm; look?: Look; lids?: number; meh?: boolean; hi?: boolean; show?: string; hide?: string; load?: number; zoom?: boolean; del?: 'jiggle' | 'gone' | 'off'; again?: boolean; say?: string; id?: number; clear?: number };
+type Op = { t: number; arm?: Arm; look?: Look; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; hi?: boolean; show?: string; hide?: string; load?: number; zoom?: boolean; del?: 'jiggle' | 'gone' | 'off'; again?: boolean; say?: string; id?: number; clear?: number };
 const expand = (steps: ReactionStep[]): Op[] => {
   let shown = -1, until = -Infinity;
   return steps.flatMap((s, k) => {
-    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, meh: s.meh, hi: s.hi, show: s.show, hide: s.hide, load: s.load, zoom: s.zoom, arm: s.thumb, del: s.del, again: s.again }];
+    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, drop: s.drop, meh: s.meh, hi: s.hi, show: s.show, hide: s.hide, load: s.load, zoom: s.zoom, arm: s.thumb, del: s.del, again: s.again }];
     if (s.tap) ops.push({ t: s.t, arm: 'up' }, { t: s.t + 0.15, arm: 'press' }, { t: s.t + 0.35, arm: 'up' }, { t: s.t + 0.5, arm: 'rest' });
     if (s.swipe) ops.push({ t: s.t, arm: 'low' }, { t: s.t + 0.12, arm: 'press' }, { t: s.t + 0.24, arm: 'up' }, { t: s.t + 0.45, arm: 'rest' });
     if (s.say) {
@@ -92,6 +92,8 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     if (o.arm) char.dataset.arm = o.arm;
     if (o.look) look(LOOK[o.look]);
     if (o.lids !== undefined) close(o.lids);
+    if (o.wide !== undefined) char.classList.toggle('is-wide', o.wide);
+    if (o.drop !== undefined) char.classList.toggle('is-drop', o.drop);
     if (o.meh !== undefined) char.classList.toggle('is-meh', o.meh);
     if (o.hi !== undefined) veil()?.classList.toggle('is-on', o.hi);
     if (o.show) layer(o.show)?.classList.add('is-on');
@@ -108,7 +110,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   // all at once (no fades)
   const reset = () => {
     fig.classList.add('is-resetting');
-    char.classList.remove('is-meh');
+    char.classList.remove('is-meh', 'is-wide', 'is-drop');
     again.hidden = true; say.classList.remove('has-again');
     look(LOOK.d); close(0); char.dataset.arm = 'rest';
     slides.forEach((s) => {

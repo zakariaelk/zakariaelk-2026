@@ -316,9 +316,11 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 :root[data-theme='dark'] :is(.rx-char, .rx-bubble) .i-w { fill: #1f1f1f; }
 /* no gliding: every change is a jump, like the face icons */
 .rx-eye { transform-box: view-box; }
-/* his disappointed face, -_-': eyes shut to lines, a smaller mouth, a sweat drop sliding down and fading in */
-.rx-char:not(.is-meh) :is(.rx-meh, .rx-drop), .rx-char.is-meh :is(.rx-eyes, .rx-mouth) { visibility: hidden; }
-.rx-char.is-meh .rx-drop { animation: rx-drop 1.1s ease-out both; }
+/* eyes wide open; his disappointed face, -_-': eyes shut to lines, a smaller mouth; a sweat drop (with that face or
+   his usual one) sliding down and fading in */
+.rx-char.is-wide .rx-eye { scale: 1.15; }
+.rx-char:not(.is-meh) .rx-meh, .rx-char:not(.is-meh, .is-drop) .rx-drop, .rx-char.is-meh :is(.rx-eyes, .rx-mouth) { visibility: hidden; }
+.rx-char:is(.is-meh, .is-drop) .rx-drop { animation: rx-drop 1.1s ease-out both; }
 @keyframes rx-drop { from { translate: 0 -9px; opacity: 0; } to { translate: 0 3px; opacity: 1; } }
 /* his thought bubble: one size for every thought. Each thought rises into the middle line by line, each line from
    behind its own mask in a few jumps; later it's simply gone. At the end a small Yes button under his question */
@@ -378,7 +380,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-rx.is-paused .cs-rx__i-play { display: block; }
 .cs-rx__count { min-width: 3.5em; margin-left: 6px; font-family: var(--sans); font-size: var(--small); color: var(--cs-caption); font-variant-numeric: tabular-nums; }
 .cs-simple .a-story .cs-rx figcaption { margin-top: 8px; text-align: center; }
-@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-meh .rx-drop, .cs-rx__in, .cs-rx__again { animation: none; } .cs-rx__layer, .cs-rx__zoom, .cs-rx__del > span { transition: none; } .cs-rx__del.is-jiggle > span { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char:is(.is-meh, .is-drop) .rx-drop, .cs-rx__in, .cs-rx__again { animation: none; } .cs-rx__layer, .cs-rx__zoom, .cs-rx__del > span { transition: none; } .cs-rx__del.is-jiggle > span { animation: none; } }
 /* phones: no room for him beside a centred screen, so the screen goes right and he takes the space on its left */
 @media (max-width: 767px) {
   .cs-simple .a-story .cs-rx { --rx-h: min(64vh, 470px); }
