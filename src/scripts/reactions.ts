@@ -15,11 +15,11 @@ const LINE = 0.2, RISE = 0.8, HOLD = 2.5; // a line every 0.2 s; a thought about
 
 // one step becomes timed jumps: a roll its frames; a thought rises in, is held, then is gone (if the next thought
 // comes sooner, the one shown goes first)
-type Op = { t: number; look?: Look; lids?: number; wide?: boolean; hi?: boolean; q?: boolean; face?: boolean; hands?: boolean; bubble?: number; say?: string; id?: number; clear?: number };
+type Op = { t: number; look?: Look; lids?: number; wide?: boolean; hi?: boolean; q?: boolean; face?: boolean; hands?: boolean; bubble?: number; reveal?: boolean; say?: string; id?: number; clear?: number };
 const expand = (steps: ReactionStep[]): Op[] => {
   let shown = -1, until = -Infinity;
   return steps.flatMap((s, k) => {
-    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, hi: s.hi, q: s.q, face: s.face, hands: s.hands, bubble: s.bubble }];
+    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, hi: s.hi, q: s.q, face: s.face, hands: s.hands, bubble: s.bubble, reveal: s.reveal }];
     if (s.roll) ops.push({ t: s.t, look: 'r' }, { t: s.t + 0.18, look: 'ur' }, { t: s.t + 0.36, look: 'u' }, { t: s.t + 0.6, lids: 0.4 }, { t: s.t + 1, look: 'd', lids: 0.5 });
     if (s.say) {
       if (s.t < until) ops.push({ t: s.t, clear: shown });
@@ -32,7 +32,7 @@ const expand = (steps: ReactionStep[]): Op[] => {
 };
 
 document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
-  const data: { end: number; intro?: boolean; steps: ReactionStep[]; caption: string }[] = JSON.parse(fig.dataset.rx!);
+  const data: { end: number; intro?: boolean; eyes?: string; steps: ReactionStep[]; caption: string }[] = JSON.parse(fig.dataset.rx!);
   const timeline = data.map((d) => expand(d.steps));
   const n = data.length;
   const char = fig.querySelector<SVGElement>('.rx-char')!;
@@ -78,6 +78,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     if (o.face) char.classList.remove('no-face');
     if (o.hands) { char.classList.remove('no-hands'); char.classList.add('is-rising'); }
     if (o.bubble) bubble.dataset.b = String(o.bubble);
+    if (o.reveal) slides[i].querySelector<HTMLElement>('.cs-rx__first')?.classList.add('is-gone');
     if (o.clear !== undefined && say.dataset.id === String(o.clear)) say.replaceChildren();
     if (o.say !== undefined) write(o.say, o.id!);
   };
@@ -88,7 +89,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     char.classList.toggle('no-face', intro); char.classList.toggle('no-hands', intro);
     bubble.dataset.b = intro ? '0' : '3';
     look(LOOK.d); close(0);
-    slides.forEach((s) => s.querySelector('.cs-rx__veil')?.classList.remove('is-on'));
+    slides.forEach((s) => { s.querySelector('.cs-rx__veil')?.classList.remove('is-on'); s.querySelector('.cs-rx__first')?.classList.remove('is-gone'); });
     say.replaceChildren();
   };
 
@@ -101,6 +102,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     count.textContent = `${i + 1} of ${n}`;
     caption.textContent = data[i].caption;
     reset(!!data[i].intro); t = 0; fired = 0;
+    char.style.setProperty('--rx-eye', data[i].eyes ?? ''); // white, then warmer as he gets frustrated
     if (reduce) { timeline[i].filter((o) => o.clear === undefined).forEach(apply); char.classList.remove('is-rising'); fired = timeline[i].length; } // the last thought stays
   };
   const tick = (now: number) => {

@@ -32,9 +32,13 @@ const slides = await Promise.all(data.slides.map(async (s) => {
   const src = assetImage(s.screen);
   if (!src) throw new Error(`Reactions: image not found in src/assets: ${s.screen}`);
   const [view, full] = await Promise.all([getImage({ src, width: 640, format: 'webp' }), getImage({ src, width: Math.min(src.width, 1200), format: 'webp' })]);
-  return { ...s, view: view.src, full: full.src, mask: maskOf(s.holes) };
+  // a screen shown first, until a step reveals the slide's own (e.g. the login before its location prompt)
+  const firstSrc = s.first ? assetImage(s.first) : undefined;
+  if (s.first && !firstSrc) throw new Error(`Reactions: image not found in src/assets: ${s.first}`);
+  const first = firstSrc ? (await getImage({ src: firstSrc, width: 640, format: 'webp' })).src : undefined;
+  return { ...s, view: view.src, full: full.src, first, mask: maskOf(s.holes) };
 }));
-const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, intro: s.intro, steps: s.steps, caption: s.caption })));
+const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, intro: s.intro, eyes: s.eyes, steps: s.steps, caption: s.caption })));
 ---
 <figure class="cs-rx" data-rx={timeline} aria-roledescription="carousel" aria-label={data.label}>
   <div class="cs-rx__stage" tabindex="0" aria-label={`${data.label}: use the arrow keys to move between slides`}>
@@ -47,6 +51,7 @@ const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, intro: s.i
         <div class="cs-rx__slide" role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${n}`} hidden={i > 0}>
           <div class="cs-rx__screen">
             <img src={s.view} data-full={s.full} alt={s.alt} width={W} height={H} loading="lazy" decoding="async" />
+            {s.first && <img class="cs-rx__first" src={s.first} alt="" width={W} height={H} loading="lazy" decoding="async" />}
             {s.holes.length > 0 && <span class:list={['cs-rx__veil', `cs-rx__veil--${s.mode}`]} style={`--mask:${s.mask}`} aria-hidden="true"></span>}
           </div>
         </div>
