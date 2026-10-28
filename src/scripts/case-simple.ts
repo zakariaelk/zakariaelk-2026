@@ -2,7 +2,7 @@
 // the enlarge view, video play/pause buttons, the titles variants of the INSO case, headings, and the icons.
 // Runs only on pages in that format (.cs-simple on <body>).
 if (document.body.classList.contains('cs-simple')) {
-  void Promise.all([import('./sequence'), import('./lightbox'), import('./video-controls')]); // after case-enhance has marked the images
+  void Promise.all([import('./sequence'), import('./lightbox'), import('./video-controls'), import('./reactions')]); // after case-enhance has marked the images
 
   // INSO's titles to compare: serif paragraph titles under a small section label (default), ?titles=sans: label and
   // title on one line in bold sans, ?titles=small: the small sans titles taken off the paragraphs, shown again

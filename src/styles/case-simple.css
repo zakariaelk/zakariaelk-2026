@@ -299,3 +299,47 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story .carousel-control--next { right: 12px; }
 @media (max-width: 767px) { .cs-simple .a-story .carousel-chapter { max-width: none; margin-inline: calc(-1 * var(--side)); } .cs-simple .a-story .carousel-desc { padding-inline: var(--side); } }
 .cs-simple .a-story article > table { max-width: var(--col); margin: 32px auto 40px; }
+
+/* ---------- The character reacting to old screens (components/story/Reactions.astro, scripts/reactions.ts) ---------- */
+.cs-simple .a-story .cs-rx { max-width: var(--col); margin: 40px auto; --ik: #161616; --iw: #fff; }
+:root[data-theme='dark'] .cs-rx { --ik: #ededed; --iw: #1f1f1f; }
+.cs-rx__stage { display: flex; align-items: center; justify-content: center; gap: clamp(24px, 6vw, 56px); touch-action: pan-y; }
+.cs-rx__stage:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 3px; }
+.cs-rx__char { flex: none; width: 160px; }
+.cs-rx__char svg { display: block; width: 100%; height: auto; overflow: visible; }
+.rx-char .i-k { fill: var(--ik); }
+.rx-char .i-w { fill: var(--iw); }
+/* every eye move about 350 ms; the eye roll is drawn frame by frame (no transition) */
+.rx-pupil, .rx-lid { transition: translate 0.35s ease-in-out; }
+.rx-eye { transform-box: view-box; transition: scale 0.35s ease-in-out; }
+.rx-char.is-wide .rx-eye { scale: 1.15; }
+.rx-char.is-rolling .rx-pupil { transition: none; }
+.rx-q { transform-box: view-box; opacity: 0; scale: 0.6; rotate: -14deg; filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.18)); transition: opacity 0.3s ease, scale 0.3s cubic-bezier(0.3, 1.6, 0.5, 1), rotate 0.3s ease; }
+.rx-char.is-q .rx-q { opacity: 1; scale: 1; rotate: 0deg; }
+.rx-q__back path { fill: #b8693c; }
+.rx-q__front path { fill: #e39a63; }
+.rx-char.is-instant :is(.rx-pupil, .rx-lid, .rx-eye, .rx-q) { transition: none; }
+/* the old screen: the phone screenshot, a veil over all but the problem (dark, or blurred) */
+.cs-rx__screens { display: grid; flex: none; }
+.cs-rx__slide { grid-area: 1 / 1; }
+.cs-rx__slide[hidden] { display: none; }
+.cs-rx__screen { position: relative; height: clamp(440px, 64vh, 600px); aspect-ratio: 750 / 1626; overflow: hidden; border-radius: 22px; box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08), 0 20px 44px -20px rgb(0 0 0 / 0.5); }
+.cs-rx__screen img { display: block; width: 100%; height: 100%; }
+.cs-rx__veil { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease; -webkit-mask: var(--mask) 0 0 / 100% 100% no-repeat; mask: var(--mask) 0 0 / 100% 100% no-repeat; pointer-events: none; }
+.cs-rx__veil.is-on { opacity: 1; }
+.cs-rx__veil--overlay { background: rgb(0 0 0 / 0.55); }
+.cs-rx__veil--blur { background: rgb(0 0 0 / 0.06); -webkit-backdrop-filter: blur(6px) brightness(0.7); backdrop-filter: blur(6px) brightness(0.7); }
+.cs-rx__nav { margin-top: 16px; }
+.cs-rx__pause svg path { stroke: currentColor; }
+.cs-rx__i-play { display: none; fill: currentColor; stroke: none; }
+.cs-rx.is-paused .cs-rx__i-pause { display: none; }
+.cs-rx.is-paused .cs-rx__i-play { display: block; }
+.cs-rx__count { min-width: 3.5em; margin-left: 6px; font-family: var(--sans); font-size: var(--small); color: var(--cs-caption); font-variant-numeric: tabular-nums; }
+.cs-simple .a-story .cs-rx figcaption { margin-top: 8px; text-align: center; }
+@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil, .rx-q { transition: none; } }
+/* phones: the character above the screen, smaller */
+@media (max-width: 699px) {
+  .cs-rx__stage { flex-direction: column; gap: 12px; }
+  .cs-rx__char { width: 96px; }
+  .cs-rx__screen { height: min(62vh, 520px); }
+}

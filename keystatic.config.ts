@@ -56,6 +56,7 @@ const storyBlocks = {
   reflection: wrapper({ label: 'Reflection (two lists)', schema: {} }),
   confirm: inline({ label: 'Confirm flag', schema: { note: fields.text({ label: 'What to confirm' }), label: fields.text({ label: 'Label', defaultValue: 'Confirm' }) } }),
   sequence: block({ label: 'Sequence (one screen at a time)', schema: { images: fields.text({ label: 'Images in src/assets, comma-separated', multiline: true }), alts: fields.text({ label: 'Alt text per screen, separated by |', multiline: true }), caption: fields.text({ label: 'Caption', multiline: true }) } }),
+  reactions: block({ label: 'Character reacting to old screens', schema: { set: fields.text({ label: 'Slides set in src/lib/reactions.ts' }) } }),
   br: inline({ label: 'Line break', schema: {} }),
   pc: inline({ label: 'Pros / Cons label', schema: { kind: fields.select({ label: 'Kind', options: [{ label: 'Pros', value: 'pros' }, { label: 'Cons', value: 'cons' }], defaultValue: 'pros' }) } }),
   mark: inline({ label: 'Orange highlight (one sentence)', schema: { text: fields.text({ label: 'Highlighted text' }) } }),

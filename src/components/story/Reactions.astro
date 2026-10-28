@@ -1,0 +1,58 @@
+---
+// A slideshow where the line-drawn character, on the left with a phone, reacts with his eyes to an old screen on the
+// right, while one problem on it is highlighted (the rest dimmed or blurred). It plays by itself and stays under the
+// reader's control: previous / next, dots, swipe, the arrow keys, a counter and pause. With reduced motion every
+// slide is a still: highlight on, the character in his last pose. The slides are in lib/reactions.ts, the character
+// in character/character.svg (docs/icons/character.mjs), and scripts/reactions.ts plays them.
+import { getImage } from 'astro:assets';
+import { assetImage } from '../../lib/media';
+import { REACTIONS } from '../../lib/reactions';
+import character from './character/character.svg?raw';
+
+interface Props { set: string }
+const data = REACTIONS[Astro.props.set];
+if (!data) throw new Error(`Reactions: no set "${Astro.props.set}" in lib/reactions.ts`);
+const { width: W, height: H } = data;
+const n = data.slides.length;
+// everything but the holes: a mask that is opaque where the veil shows and has rounded holes where the screen
+// stays clear (a mask works on transparency, so the holes are cut out of one shape)
+const PAD = 22;
+const maskOf = (holes: [number, number, number, number][]) => {
+  const r = PAD;
+  const cuts = holes.map(([x1, x2, y1, y2]) => {
+    const [a, b, c, d] = [x1 - PAD, x2 + PAD, y1 - PAD, y2 + PAD];
+    return `M${a + r} ${c}H${b - r}A${r} ${r} 0 0 1 ${b} ${c + r}V${d - r}A${r} ${r} 0 0 1 ${b - r} ${d}H${a + r}A${r} ${r} 0 0 1 ${a} ${d - r}V${c + r}A${r} ${r} 0 0 1 ${a + r} ${c}Z`;
+  }).join('');
+  return `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${W} ${H}' preserveAspectRatio='none'><path fill-rule='evenodd' d='M0 0H${W}V${H}H0Z${cuts}'/></svg>`)}")`;
+};
+const slides = await Promise.all(data.slides.map(async (s) => {
+  const src = assetImage(s.screen);
+  if (!src) throw new Error(`Reactions: image not found in src/assets: ${s.screen}`);
+  const [view, full] = await Promise.all([getImage({ src, width: 640, format: 'webp' }), getImage({ src, width: Math.min(src.width, 1200), format: 'webp' })]);
+  return { ...s, view: view.src, full: full.src, mask: maskOf(s.holes) };
+}));
+const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, steps: s.steps, caption: s.caption })));
+---
+<figure class="cs-rx" data-rx={timeline} aria-roledescription="carousel" aria-label={data.label}>
+  <div class="cs-rx__stage" tabindex="0" aria-label={`${data.label}: use the arrow keys to move between slides`}>
+    <div class="cs-rx__char" set:html={character} />
+    <div class="cs-rx__screens">
+      {slides.map((s, i) => (
+        <div class="cs-rx__slide" role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${n}`} hidden={i > 0}>
+          <div class="cs-rx__screen">
+            <img src={s.view} data-full={s.full} alt={s.alt} width={W} height={H} loading="lazy" decoding="async" />
+            <span class:list={['cs-rx__veil', `cs-rx__veil--${s.mode}`]} style={`--mask:${s.mask}`} aria-hidden="true"></span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+  <div class="cs-seq__nav cs-rx__nav">
+    <button type="button" class="cs-seq__arrow cs-rx__pause" aria-label="Pause the slideshow"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="cs-rx__i-pause" d="M8.5 6v12M15.5 6v12" /><path class="cs-rx__i-play" d="M8 5.5v13l11-6.5z" /></svg></button>
+    <button type="button" class="cs-seq__arrow" data-step="-1" aria-label="Previous slide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6l-6 6 6 6" /></svg></button>
+    <div class="cs-seq__dots">{slides.map((_, i) => <button type="button" aria-label={`Slide ${i + 1} of ${n}`} aria-current={i === 0 ? 'true' : undefined} />)}</div>
+    <button type="button" class="cs-seq__arrow" data-step="1" aria-label="Next slide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6" /></svg></button>
+    <span class="cs-rx__count" data-rx-count>1 of {n}</span>
+  </div>
+  <figcaption aria-live="polite" data-rx-caption>{slides[0].caption}</figcaption>
+</figure>

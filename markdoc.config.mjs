@@ -68,6 +68,8 @@ export default defineMarkdocConfig({
     },
     // a flow shown one screen at a time, like a short video (images: src/assets paths, comma-separated; alts: |)
     sequence: { render: story('Sequence'), selfClosing: true, attributes: { images: { type: String, required: true }, alts: { type: String }, caption: { type: String }, captions: { type: String }, frame: { type: String, matches: ['', 'before', 'after', 'compare'] }, landscape: { type: Boolean } } },
+    // the character reacting to old screens, one problem highlighted per slide (slides in lib/reactions.ts)
+    reactions: { render: story('Reactions'), selfClosing: true, attributes: { set: { type: String, required: true } } },
     // text kept for review, struck through
     del: { render: 'del', inline: true },
     // the "Take a look" button, wherever the case places it
