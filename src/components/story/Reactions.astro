@@ -1,6 +1,7 @@
 ---
-// A slideshow where the line-drawn character, on the left with a phone, reacts with his eyes to an old screen on the
-// right, while one problem on it is highlighted (the rest dimmed or blurred). It plays by itself and stays under the
+// A slideshow on the old design's brown panel: the small line-drawn character, on the left with a phone, reacts with
+// his eyes to an old screen on the right, what he thinks written above him on paper snippets, while one problem on
+// the screen is highlighted (the rest dimmed or blurred). It plays by itself and stays under the
 // reader's control: previous / next, dots, swipe, the arrow keys, a counter and pause. With reduced motion every
 // slide is a still: highlight on, the character in his last pose. The slides are in lib/reactions.ts, the character
 // in character/character.svg (docs/icons/character.mjs), and scripts/reactions.ts plays them.
@@ -8,6 +9,7 @@ import { getImage } from 'astro:assets';
 import { assetImage } from '../../lib/media';
 import { REACTIONS } from '../../lib/reactions';
 import character from './character/character.svg?raw';
+import '@fontsource-variable/caveat'; // his thoughts, in handwriting
 
 interface Props { set: string }
 const data = REACTIONS[Astro.props.set];
@@ -35,13 +37,16 @@ const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, steps: s.s
 ---
 <figure class="cs-rx" data-rx={timeline} aria-roledescription="carousel" aria-label={data.label}>
   <div class="cs-rx__stage" tabindex="0" aria-label={`${data.label}: use the arrow keys to move between slides`}>
-    <div class="cs-rx__char" set:html={character} />
+    <div class="cs-rx__side">
+      <p class="cs-rx__say" aria-hidden="true"></p>
+      <div class="cs-rx__char" set:html={character} />
+    </div>
     <div class="cs-rx__screens">
       {slides.map((s, i) => (
         <div class="cs-rx__slide" role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${n}`} hidden={i > 0}>
           <div class="cs-rx__screen">
             <img src={s.view} data-full={s.full} alt={s.alt} width={W} height={H} loading="lazy" decoding="async" />
-            <span class:list={['cs-rx__veil', `cs-rx__veil--${s.mode}`]} style={`--mask:${s.mask}`} aria-hidden="true"></span>
+            {s.holes.length > 0 && <span class:list={['cs-rx__veil', `cs-rx__veil--${s.mode}`]} style={`--mask:${s.mask}`} aria-hidden="true"></span>}
           </div>
         </div>
       ))}

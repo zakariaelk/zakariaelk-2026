@@ -1,16 +1,16 @@
 // Slideshows where the line-drawn character reacts to old screens (components/story/Reactions.astro,
 // scripts/reactions.ts; docs/claude-code-brief-login-problems-slideshow.md). Each slide: a screen, the parts to
-// highlight (x1, x2, y1, y2 in the screenshot's pixels), dark overlay or blur, a caption, and the character's
-// steps in seconds. Step keys: look (c, d, dd, l, r: centre, bottom, further down, left, right), hi (highlight on),
-// lids (share of the eye closed), wide (surprised), roll (eye roll, then lids half closed), q (the question mark).
+// highlight (x1, x2, y1, y2 in the screenshot's pixels; none for no highlight), dark overlay or blur, a caption, and
+// the character's steps in seconds. Step keys: look (c centre, at the reader; d bottom, on the phone; dd further down;
+// l, r, u, ur), hi (highlight on), lids (share of the eye closed), wide (surprised), roll (eye roll: right, up, lids
+// drop, eyes fall back down), q (question mark), say (what he thinks, written above him word by word).
 
-export interface ReactionStep { t: number; look?: 'c' | 'd' | 'dd' | 'l' | 'r'; hi?: boolean; lids?: number; wide?: boolean; roll?: boolean; q?: boolean }
+export type Look = 'c' | 'd' | 'dd' | 'l' | 'r' | 'u' | 'ur';
+export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; roll?: boolean; q?: boolean; say?: string }
 export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; steps: ReactionStep[] }
 export interface ReactionSet { label: string; width: number; height: number; slides: ReactionSlide[] }
 
 const DIR = 'projects/mitigating-risk-with-location-based-alerts/login-problems/';
-// the scan: bottom centre, left, lower, right, centre
-const scan = (from: number): ReactionStep[] => (['l', 'dd', 'r', 'c', 'd'] as const).map((look, k) => ({ t: from + k, look }));
 
 export const REACTIONS: Record<string, ReactionSet> = {
   'inso-login': {
@@ -22,10 +22,15 @@ export const REACTIONS: Record<string, ReactionSet> = {
         screen: DIR + 'old-login.png',
         alt: 'The old login: the INSO logo, email and password fields, a pale LOGIN button and a small note, and nothing else.',
         mode: 'overlay',
-        holes: [[205, 545, 135, 320], [28, 722, 940, 1560]],
+        holes: [],
         caption: 'A login form, and nothing saying what the app is for.',
         end: 11,
-        steps: [{ t: 0, look: 'd', hi: true }, ...scan(1), ...scan(6)],
+        steps: [
+          { t: 0, look: 'd', say: "Let's see what this app actually does" },
+          { t: 3.2, look: 'l', say: 'Huh?' },
+          { t: 4.2, look: 'r' }, { t: 5.2, look: 'dd' }, { t: 6.2, look: 'l' }, { t: 7.2, look: 'r' },
+          { t: 8.2, look: 'c', say: 'What is this?' },
+        ],
       },
       {
         screen: DIR + 'old-login.png',
@@ -33,8 +38,13 @@ export const REACTIONS: Record<string, ReactionSet> = {
         mode: 'overlay',
         holes: [[28, 708, 845, 918]],
         caption: 'How to get an account is a tiny note. No link, no contact.',
-        end: 8,
-        steps: [{ t: 0, look: 'd' }, { t: 1, look: 'c' }, { t: 2, look: 'd' }, { t: 4, hi: true, lids: 0.4 }, { t: 6, roll: true }],
+        end: 9.5,
+        steps: [
+          { t: 0, look: 'd', say: 'OK. How do I sign up?' },
+          { t: 2.2, look: 'dd' }, { t: 3.2, look: 'd' },
+          { t: 4.2, hi: true, lids: 0.4, say: 'This tiny note?' },
+          { t: 6.4, roll: true, say: 'Contact who, exactly?' },
+        ],
       },
       {
         screen: DIR + 'old-login-location.png',
@@ -42,8 +52,13 @@ export const REACTIONS: Record<string, ReactionSet> = {
         mode: 'blur',
         holes: [[140, 610, 495, 625]],
         caption: 'Location is asked first, with one thin line of explanation.',
-        end: 7,
-        steps: [{ t: 0, look: 'c', wide: true }, { t: 1, wide: false, lids: 0.4, hi: true }, { t: 3, roll: true }, { t: 4, q: true }],
+        end: 9,
+        steps: [
+          { t: 0, look: 'c', wide: true, say: 'Whoa. My location?' },
+          { t: 1.6, wide: false, look: 'd', lids: 0.4, hi: true, say: 'Why, though?' },
+          { t: 3.8, roll: true, say: "I haven't even logged in" },
+          { t: 5.8, q: true },
+        ],
       },
     ],
   },

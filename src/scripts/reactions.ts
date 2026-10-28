@@ -1,20 +1,36 @@
 // The reacting character's slideshows (components/story/Reactions.astro, lib/reactions.ts). A clock per slideshow
-// runs while it's on screen and not paused, fires the slide's steps on time (every eye step a second, the move
-// itself 350 ms) and moves on when the slide ends. Pointing at it or focusing it only holds the next slide back;
-// the pause button stops the clock, character included. With reduced motion: no clock, each slide a still with the
-// highlight on and the character in his last pose.
-import type { ReactionStep } from '../lib/reactions';
+// runs while it's on screen and not paused and fires the slide's steps on time; everything moves in jumps, like the
+// face icons' flipbooks: the eyes, the eye roll (right, up, lids drop, eyes fall back down), his thoughts written a
+// word at a time and given a shake when done. Pointing at it or focusing it only holds the next slide back; the
+// pause button stops the clock, character included. With reduced motion: no clock, each slide a still with the
+// highlight on, the character in his last pose and his last thought.
+import type { Look, ReactionStep } from '../lib/reactions';
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const LOOK = { c: [0, 0], d: [0, 9], dd: [0, 12], l: [-11, 0], r: [11, 0] } as const;
+const LOOK: Record<Look, [number, number]> = { c: [0, 0], d: [0, 9], dd: [0, 12], l: [-11, 0], r: [11, 0], u: [0, -11], ur: [8, -8] };
 const EYE_H = 48; // the eye's height in the drawing; a lid closes by a share of it
+const WORD = 0.22; // seconds between words
+
+// one step becomes timed jumps: a roll its frames, a thought its words and the shake
+type Op = { t: number; look?: Look; lids?: number; wide?: boolean; hi?: boolean; q?: boolean; say?: string; word?: number; shake?: boolean };
+const expand = (steps: ReactionStep[]): Op[] => steps.flatMap((s) => {
+  const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, hi: s.hi, q: s.q }];
+  if (s.roll) ops.push({ t: s.t, look: 'r' }, { t: s.t + 0.18, look: 'ur' }, { t: s.t + 0.36, look: 'u' }, { t: s.t + 0.6, lids: 0.4 }, { t: s.t + 1, look: 'd', lids: 0.5 });
+  if (s.say) {
+    const n = s.say.split(' ').length;
+    ops.push({ t: s.t, say: s.say }, ...Array.from({ length: n }, (_, k) => ({ t: s.t + 0.1 + k * WORD, word: k })), { t: s.t + 0.15 + n * WORD, shake: true });
+  }
+  return ops;
+}).sort((a, b) => a.t - b.t);
 
 document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   const data: { end: number; steps: ReactionStep[]; caption: string }[] = JSON.parse(fig.dataset.rx!);
+  const timeline = data.map((d) => expand(d.steps));
   const n = data.length;
   const char = fig.querySelector<SVGElement>('.rx-char')!;
   const pupils = [...char.querySelectorAll<SVGGElement>('.rx-pupil')];
   const lids = [...char.querySelectorAll<SVGGElement>('.rx-lid')];
+  const say = fig.querySelector<HTMLElement>('.cs-rx__say')!;
   const slides = [...fig.querySelectorAll<HTMLElement>('.cs-rx__slide')];
   const dots = [...fig.querySelectorAll<HTMLButtonElement>('.cs-seq__dots button')];
   const stage = fig.querySelector<HTMLElement>('.cs-rx__stage')!;
@@ -22,43 +38,38 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   const count = fig.querySelector<HTMLElement>('[data-rx-count]')!;
   const caption = fig.querySelector<HTMLElement>('[data-rx-caption]')!;
 
-  // the character
-  let roll = 0;
-  const look = (x: number, y: number) => pupils.forEach((p) => (p.style.translate = `${x}px ${y}px`));
+  // the character and his thoughts
+  const look = ([x, y]: [number, number]) => pupils.forEach((p) => (p.style.translate = `${x}px ${y}px`));
   const close = (share: number) => lids.forEach((l) => (l.style.translate = `0 ${share * EYE_H}px`));
-  const veil = (on: boolean) => slides[i].querySelector<HTMLElement>('.cs-rx__veil')!.classList.toggle('is-on', on);
-  const rollEyes = (instant: boolean) => {
-    const end = () => { char.classList.remove('is-rolling'); close(0.5); };
-    const at = (a: number) => look(11 * Math.cos(a), 11 * Math.sin(a));
-    const a0 = Math.PI / 4, a1 = a0 - (Math.PI * 3) / 2; // lower right, over the top, to lower left
-    if (instant) { at(a1); end(); return; }
-    char.classList.add('is-rolling');
-    const t0 = performance.now();
-    const frame = (now: number) => {
-      const k = Math.min(1, (now - t0) / 900), e = k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
-      at(a0 + (a1 - a0) * e);
-      if (k < 1) roll = requestAnimationFrame(frame); else end();
-    };
-    if (roll) cancelAnimationFrame(roll);
-    roll = requestAnimationFrame(frame);
+  const veil = () => slides[i].querySelector<HTMLElement>('.cs-rx__veil');
+  const write = (text: string) => {
+    say.classList.remove('is-shake');
+    say.replaceChildren(...text.split(' ').map((w, k) => {
+      const s = document.createElement('span');
+      s.textContent = w; s.hidden = true;
+      // each word on its own snip of paper, cut a little differently, a little askew
+      const j = (a: number) => (((k * 37 + a * 11 + w.length * 7) % 9) - 4) * 0.9;
+      s.style.clipPath = `polygon(${2 + j(1)}% ${6 + j(2)}%, ${98 + j(3) / 2}% ${j(4) / 2 + 2}%, 100% ${94 + j(5)}%, ${j(6) / 2 + 1}% 100%)`;
+      s.style.rotate = `${j(7) * 0.9}deg`;
+      return s;
+    }));
   };
-  const apply = (s: ReactionStep, instant = false) => {
-    if (s.look) look(...(LOOK[s.look] as [number, number]));
-    if (s.lids !== undefined) close(s.lids);
-    if (s.wide !== undefined) char.classList.toggle('is-wide', s.wide);
-    if (s.hi) veil(true);
-    if (s.q) char.classList.add('is-q');
-    if (s.roll) rollEyes(instant);
+  const apply = (o: Op) => {
+    if (o.look) look(LOOK[o.look]);
+    if (o.lids !== undefined) close(o.lids);
+    if (o.wide !== undefined) char.classList.toggle('is-wide', o.wide);
+    if (o.hi) veil()?.classList.add('is-on');
+    if (o.q) char.classList.add('is-q');
+    if (o.say !== undefined) write(o.say);
+    if (o.word !== undefined) { const w = say.children[o.word] as HTMLElement | undefined; if (w) w.hidden = false; }
+    if (o.shake) { say.classList.remove('is-shake'); void say.offsetWidth; say.classList.add('is-shake'); }
   };
-  // the start of a slide: eyes on the phone, lids open, no highlight, no question mark; no transitions
+  // the start of a slide: eyes on the phone, lids open, nothing highlighted or thought yet
   const reset = () => {
-    if (roll) { cancelAnimationFrame(roll); roll = 0; }
-    char.classList.add('is-instant');
-    char.classList.remove('is-wide', 'is-q', 'is-rolling');
-    look(...(LOOK.d as unknown as [number, number])); close(0);
-    slides.forEach((s) => s.querySelector('.cs-rx__veil')!.classList.remove('is-on'));
-    void char.getBoundingClientRect();
-    requestAnimationFrame(() => char.classList.remove('is-instant'));
+    char.classList.remove('is-wide', 'is-q');
+    look(LOOK.d); close(0);
+    slides.forEach((s) => s.querySelector('.cs-rx__veil')?.classList.remove('is-on'));
+    say.replaceChildren(); say.classList.remove('is-shake');
   };
 
   // the slideshow
@@ -70,14 +81,14 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     count.textContent = `${i + 1} of ${n}`;
     caption.textContent = data[i].caption;
     reset(); t = 0; fired = 0;
-    if (reduce) { char.classList.add('is-instant'); data[i].steps.forEach((s) => apply(s, true)); fired = data[i].steps.length; }
+    if (reduce) { timeline[i].forEach(apply); say.classList.remove('is-shake'); fired = timeline[i].length; }
   };
   const tick = (now: number) => {
     const dt = last ? Math.min(0.1, (now - last) / 1000) : 0; last = now;
     if (playing && visible) {
       t += dt;
-      const steps = data[i].steps;
-      while (fired < steps.length && steps[fired].t <= t) apply(steps[fired++]);
+      const ops = timeline[i];
+      while (fired < ops.length && ops[fired].t <= t) apply(ops[fired++]);
       if (t >= data[i].end && !held) show(i + 1);
     }
     requestAnimationFrame(tick);

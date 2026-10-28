@@ -301,45 +301,52 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story article > table { max-width: var(--col); margin: 32px auto 40px; }
 
 /* ---------- The character reacting to old screens (components/story/Reactions.astro, scripts/reactions.ts) ---------- */
-.cs-simple .a-story .cs-rx { max-width: var(--col); margin: 40px auto; --ik: #161616; --iw: #fff; }
-:root[data-theme='dark'] .cs-rx { --ik: #ededed; --iw: #1f1f1f; }
-.cs-rx__stage { display: flex; align-items: center; justify-content: center; gap: clamp(24px, 6vw, 56px); touch-action: pan-y; }
+/* on the old design's brown panel, like the other "before" slideshows; the character small on the left, what he
+   thinks above him, the old screen on the right */
+.cs-simple .a-story .cs-rx { max-width: var(--col); margin: 40px auto; --rx-h: clamp(440px, 64vh, 660px); --rx-screen: 0.86; }
+.cs-rx__stage { display: flex; align-items: center; justify-content: center; gap: clamp(16px, 4vw, 40px); height: var(--rx-h); padding: 0 16px; background: linear-gradient(115deg, #8a8590, #a39fa8); touch-action: pan-y; }
 .cs-rx__stage:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 3px; }
-.cs-rx__char { flex: none; width: 160px; }
+.cs-rx__side { flex: 0 0 200px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.cs-rx__char { width: 80px; }
 .cs-rx__char svg { display: block; width: 100%; height: auto; overflow: visible; }
-.rx-char .i-k { fill: var(--ik); }
-.rx-char .i-w { fill: var(--iw); }
-/* every eye move about 350 ms; the eye roll is drawn frame by frame (no transition) */
-.rx-pupil, .rx-lid { transition: translate 0.35s ease-in-out; }
-.rx-eye { transform-box: view-box; transition: scale 0.35s ease-in-out; }
+.rx-char .i-k { fill: #161616; }
+.rx-char .i-w { fill: #fff; }
+/* no gliding: every change is a jump, like the face icons */
+.rx-eye { transform-box: view-box; }
 .rx-char.is-wide .rx-eye { scale: 1.15; }
-.rx-char.is-rolling .rx-pupil { transition: none; }
-.rx-q { transform-box: view-box; opacity: 0; scale: 0.6; rotate: -14deg; filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.18)); transition: opacity 0.3s ease, scale 0.3s cubic-bezier(0.3, 1.6, 0.5, 1), rotate 0.3s ease; }
-.rx-char.is-q .rx-q { opacity: 1; scale: 1; rotate: 0deg; }
-.rx-q__back path { fill: #b8693c; }
-.rx-q__front path { fill: #e39a63; }
-.rx-char.is-instant :is(.rx-pupil, .rx-lid, .rx-eye, .rx-q) { transition: none; }
+.rx-q { transform-box: view-box; visibility: hidden; }
+.rx-char.is-q .rx-q { visibility: visible; animation: rx-pop 0.36s steps(1, end); }
+@keyframes rx-pop { 0% { scale: 0.5; rotate: -12deg; } 33% { scale: 1.25; rotate: 8deg; } 66% { scale: 0.92; rotate: -4deg; } 100% { scale: 1; rotate: 0deg; } }
+/* his thoughts: handwritten words, each on its own snip of white paper, popping in one by one, then a shake */
+.cs-rx__say { display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-end; gap: 4px 3px; min-height: 4.6em; max-width: 200px; margin: 0; font: 600 23px/1.05 'Caveat Variable', 'Caveat', cursive; color: #161616; text-align: center; }
+.cs-rx__say span { display: inline-block; padding: 3px 7px 4px; background: #fff; box-shadow: 0 1px 0 rgb(0 0 0 / 0.08); animation: rx-pop 0.27s steps(1, end); }
+.cs-rx__say span[hidden] { display: none; }
+.cs-rx__say.is-shake { animation: rx-shake 0.48s steps(1, end); }
+@keyframes rx-shake { 0% { translate: 0 0; rotate: 0deg; } 17% { translate: -3px 1px; rotate: -3deg; } 33% { translate: 3px -1px; rotate: 3deg; } 50% { translate: -2px 0; rotate: -2deg; } 67% { translate: 2px 1px; rotate: 1.5deg; } 83% { translate: -1px 0; rotate: -1deg; } 100% { translate: 0 0; rotate: 0deg; } }
 /* the old screen: the phone screenshot, a veil over all but the problem (dark, or blurred) */
 .cs-rx__screens { display: grid; flex: none; }
 .cs-rx__slide { grid-area: 1 / 1; }
 .cs-rx__slide[hidden] { display: none; }
-.cs-rx__screen { position: relative; height: clamp(440px, 64vh, 600px); aspect-ratio: 750 / 1626; overflow: hidden; border-radius: 22px; box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08), 0 20px 44px -20px rgb(0 0 0 / 0.5); }
+.cs-rx__screen { position: relative; height: calc(var(--rx-h) * var(--rx-screen)); aspect-ratio: 750 / 1626; overflow: hidden; border-radius: 14px; box-shadow: 0 20px 44px -20px rgb(0 0 0 / 0.5); }
 .cs-rx__screen img { display: block; width: 100%; height: 100%; }
 .cs-rx__veil { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease; -webkit-mask: var(--mask) 0 0 / 100% 100% no-repeat; mask: var(--mask) 0 0 / 100% 100% no-repeat; pointer-events: none; }
 .cs-rx__veil.is-on { opacity: 1; }
 .cs-rx__veil--overlay { background: rgb(0 0 0 / 0.55); }
 .cs-rx__veil--blur { background: rgb(0 0 0 / 0.06); -webkit-backdrop-filter: blur(6px) brightness(0.7); backdrop-filter: blur(6px) brightness(0.7); }
-.cs-rx__nav { margin-top: 16px; }
+.cs-rx__nav { margin-top: 10px; }
 .cs-rx__pause svg path { stroke: currentColor; }
 .cs-rx__i-play { display: none; fill: currentColor; stroke: none; }
 .cs-rx.is-paused .cs-rx__i-pause { display: none; }
 .cs-rx.is-paused .cs-rx__i-play { display: block; }
 .cs-rx__count { min-width: 3.5em; margin-left: 6px; font-family: var(--sans); font-size: var(--small); color: var(--cs-caption); font-variant-numeric: tabular-nums; }
 .cs-simple .a-story .cs-rx figcaption { margin-top: 8px; text-align: center; }
-@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil, .rx-q { transition: none; } }
-/* phones: the character above the screen, smaller */
-@media (max-width: 699px) {
-  .cs-rx__stage { flex-direction: column; gap: 12px; }
-  .cs-rx__char { width: 96px; }
-  .cs-rx__screen { height: min(62vh, 520px); }
+@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-q .rx-q, .cs-rx__say span, .cs-rx__say.is-shake { animation: none; } }
+/* phones: the same row, everything smaller; the panel to the screen's edges */
+@media (max-width: 767px) {
+  .cs-simple .a-story .cs-rx { max-width: none; margin-inline: calc(-1 * var(--side)); --rx-h: min(78vh, 620px); --rx-screen: 0.8; }
+  .cs-simple .a-story .cs-rx figcaption, .cs-rx__nav { padding-inline: var(--side); }
+  .cs-rx__stage { gap: 10px; padding: 0 10px; }
+  .cs-rx__side { flex-basis: 112px; }
+  .cs-rx__char { width: 58px; }
+  .cs-rx__say { font-size: 18px; max-width: 120px; }
 }
