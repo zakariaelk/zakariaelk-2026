@@ -301,12 +301,14 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story article > table { max-width: var(--col); margin: 32px auto 40px; }
 
 /* ---------- The character reacting to old screens (components/story/Reactions.astro, scripts/reactions.ts) ---------- */
-/* the character small on the left with his thought bubble above, both centred on the old screen to the right */
-.cs-simple .a-story .cs-rx { max-width: var(--col); margin: 40px auto; --rx-h: clamp(480px, 70vh, 660px); }
-.cs-rx__stage { display: flex; align-items: center; justify-content: center; gap: clamp(16px, 4vw, 44px); touch-action: pan-y; }
+/* the old screen in the middle of the column; on its left the small character with his thought bubble above, a
+   little left of it (comic style), the pair centred on the screen's height */
+.cs-simple .a-story .cs-rx { max-width: var(--col); margin: 40px auto; --rx-h: clamp(480px, 68vh, 640px); }
+.cs-rx__stage { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; touch-action: pan-y; }
+.cs-rx__screens { grid-column: 2; }
 .cs-rx__stage:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 3px; }
-.cs-rx__side { flex: 0 0 200px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.cs-rx__char { width: 80px; }
+.cs-rx__side { grid-column: 1; grid-row: 1; justify-self: end; width: 152px; margin-right: 18px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.cs-rx__char { width: 80px; margin-left: -18px; } /* the bubble's circles over the right side of his head */
 .cs-rx__char svg { display: block; width: 100%; height: auto; overflow: visible; }
 .rx-char .i-k, .rx-bubble .i-k { fill: #161616; }
 .rx-char .i-w, .rx-bubble .i-w { fill: #fff; }
@@ -318,15 +320,21 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .rx-q { transform-box: view-box; visibility: hidden; }
 .rx-char.is-q .rx-q { visibility: visible; animation: rx-pop 0.36s steps(1, end); }
 @keyframes rx-pop { 0% { scale: 0.5; rotate: -12deg; } 33% { scale: 1.25; rotate: 8deg; } 66% { scale: 0.92; rotate: -4deg; } 100% { scale: 1; rotate: 0deg; } }
-/* his thought bubble: one size for every thought; the text appears whole, in the middle, with one light shake */
+/* his thought bubble: one size for every thought, the text written in the middle word by word; on the first slide it
+   builds up: the small circle, the bigger one, then the bubble */
 .cs-rx__bubble { position: relative; width: 100%; }
 .cs-rx__bubble svg { display: block; width: 100%; height: auto; }
-.cs-rx__say { position: absolute; inset: 4% 9% 26%; display: flex; align-items: center; justify-content: center; margin: 0; font: 600 22px/1.05 'Caveat Variable', 'Caveat', cursive; color: #161616; text-align: center; text-wrap: balance; }
+.cs-rx__bubble[data-b='0'] :is(.rx-b1, .rx-b2, .rx-b3), .cs-rx__bubble[data-b='1'] :is(.rx-b2, .rx-b3), .cs-rx__bubble[data-b='2'] .rx-b3 { visibility: hidden; }
+.cs-rx__say { position: absolute; inset: 4% 8% 26%; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 0 0.24em; margin: 0; font: 600 20px/1.05 'Caveat Variable', 'Caveat', cursive; color: #161616; text-align: center; }
+.cs-rx__say span[hidden] { display: none; }
 :root[data-theme='dark'] .cs-rx__say { color: #ededed; }
-.cs-rx__say.is-shake { animation: rx-shake 0.3s steps(1, end); }
-@keyframes rx-shake { 0% { translate: 0 0; rotate: 0deg; } 25% { translate: -1px 0; rotate: -1.2deg; } 50% { translate: 1px 0; rotate: 1.2deg; } 75% { translate: -0.5px 0; rotate: -0.6deg; } 100% { translate: 0 0; rotate: 0deg; } }
+/* his face shows first, then his hands and phone rise from below in a few jumps */
+.rx-char.no-face :is(.rx-face, .rx-q) { visibility: hidden; }
+.rx-char.no-hands .rx-hands { translate: 0 150px; }
+.rx-char.is-rising .rx-hands { animation: rx-rise 0.4s steps(1, end); }
+@keyframes rx-rise { 0% { translate: 0 150px; } 25% { translate: 0 95px; } 50% { translate: 0 45px; } 75% { translate: 0 12px; } 100% { translate: 0 0; } }
 /* the old screen: the phone screenshot, a veil over all but the problem (dark, or blurred) */
-.cs-rx__screens { display: grid; flex: none; }
+.cs-rx__screens { display: grid; }
 .cs-rx__slide { grid-area: 1 / 1; }
 .cs-rx__slide[hidden] { display: none; }
 .cs-rx__screen { position: relative; height: var(--rx-h); aspect-ratio: 750 / 1626; overflow: hidden; border-radius: 14px; box-shadow: 0 0 0 1px rgb(0 0 0 / 0.1), 0 20px 44px -20px rgb(0 0 0 / 0.5); }
@@ -342,12 +350,12 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-rx.is-paused .cs-rx__i-play { display: block; }
 .cs-rx__count { min-width: 3.5em; margin-left: 6px; font-family: var(--sans); font-size: var(--small); color: var(--cs-caption); font-variant-numeric: tabular-nums; }
 .cs-simple .a-story .cs-rx figcaption { margin-top: 8px; text-align: center; }
-@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-q .rx-q, .cs-rx__say.is-shake { animation: none; } }
-/* phones: the same row, everything smaller */
+@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-q .rx-q, .rx-char.is-rising .rx-hands { animation: none; } }
+/* phones: no room for him beside a centred screen, so the screen goes right and he takes the space on its left */
 @media (max-width: 767px) {
   .cs-simple .a-story .cs-rx { --rx-h: min(64vh, 470px); }
-  .cs-rx__stage { gap: 10px; }
-  .cs-rx__side { flex-basis: 124px; }
-  .cs-rx__char { width: 58px; }
-  .cs-rx__say { font-size: 15.5px; }
+  .cs-rx__stage { grid-template-columns: 1fr auto; }
+  .cs-rx__side { width: 118px; margin-right: 10px; }
+  .cs-rx__char { width: 58px; margin-left: -10px; }
+  .cs-rx__say { font-size: 15px; }
 }

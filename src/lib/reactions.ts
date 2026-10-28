@@ -3,11 +3,13 @@
 // highlight (x1, x2, y1, y2 in the screenshot's pixels; none for no highlight), dark overlay or blur, a caption, and
 // the character's steps in seconds. Step keys: look (c centre, at the reader; d bottom, on the phone; dd further down;
 // l, r, u, ur), hi (highlight on), lids (share of the eye closed), wide (surprised), roll (eye roll: right, up, lids
-// drop, eyes fall back down), q (question mark), say (what he thinks, written above him word by word).
+// drop, eyes fall back down), q (question mark), say (what he thinks, written in his bubble word by word), face (his
+// face shows), hands (hands and phone rise into view), bubble (1 small circle, 2 bigger circle, 3 the bubble).
+// A slide with intro: true starts with nothing of him shown, so its steps bring him in.
 
 export type Look = 'c' | 'd' | 'dd' | 'l' | 'r' | 'u' | 'ur';
-export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; roll?: boolean; q?: boolean; say?: string }
-export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; steps: ReactionStep[] }
+export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; roll?: boolean; q?: boolean; say?: string; face?: boolean; hands?: boolean; bubble?: 1 | 2 | 3 }
+export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; intro?: boolean; steps: ReactionStep[] }
 export interface ReactionSet { label: string; width: number; height: number; slides: ReactionSlide[] }
 
 const DIR = 'projects/mitigating-risk-with-location-based-alerts/login-problems/';
@@ -19,17 +21,32 @@ export const REACTIONS: Record<string, ReactionSet> = {
     height: 1626,
     slides: [
       {
+        screen: DIR + 'old-splash.png',
+        alt: 'The old splash screen: a blank white screen with the INSO logo in the middle.',
+        mode: 'overlay',
+        holes: [],
+        caption: 'The app opens on its logo.',
+        end: 5.5,
+        intro: true,
+        steps: [
+          { t: 0.3, face: true, look: 'c' },
+          { t: 0.9, hands: true },
+          { t: 1.5, look: 'd' },
+          { t: 1.9, bubble: 1 }, { t: 2.15, bubble: 2 }, { t: 2.4, bubble: 3 },
+          { t: 2.7, say: "Let's see what this app actually does" },
+        ],
+      },
+      {
         screen: DIR + 'old-login.png',
         alt: 'The old login: the INSO logo, email and password fields, a pale LOGIN button and a small note, and nothing else.',
         mode: 'overlay',
         holes: [],
         caption: 'A login form, and nothing saying what the app is for.',
-        end: 11,
+        end: 8,
         steps: [
-          { t: 0, look: 'd', say: "Let's see what this app actually does" },
-          { t: 3.2, look: 'l', say: 'Huh?' },
-          { t: 4.2, look: 'r' }, { t: 5.2, look: 'dd' }, { t: 6.2, look: 'l' }, { t: 7.2, look: 'r' },
-          { t: 8.2, look: 'c', say: 'What is this?' },
+          { t: 0.3, look: 'l', say: 'Huh?' },
+          { t: 1.3, look: 'r' }, { t: 2.3, look: 'dd' }, { t: 3.3, look: 'l' }, { t: 4.3, look: 'r' },
+          { t: 5.3, look: 'c', say: 'What is this?' },
         ],
       },
       {

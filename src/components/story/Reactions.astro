@@ -1,6 +1,6 @@
 ---
-// A slideshow: the small line-drawn character, on the left with a phone, reacts with his eyes to an old screen on the
-// right, what he thinks shown in a thought bubble above him, while one problem on the screen is highlighted (the rest
+// A slideshow: the old screen in the middle; on its left the small line-drawn character with a phone reacts with his
+// eyes, what he thinks shown in a thought bubble above him, while one problem on the screen is highlighted (the rest
 // dimmed or blurred). It plays by itself and stays under the
 // reader's control: previous / next, dots, swipe, the arrow keys, a counter and pause. With reduced motion every
 // slide is a still: highlight on, the character in his last pose. The slides are in lib/reactions.ts, the character
@@ -34,12 +34,12 @@ const slides = await Promise.all(data.slides.map(async (s) => {
   const [view, full] = await Promise.all([getImage({ src, width: 640, format: 'webp' }), getImage({ src, width: Math.min(src.width, 1200), format: 'webp' })]);
   return { ...s, view: view.src, full: full.src, mask: maskOf(s.holes) };
 }));
-const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, steps: s.steps, caption: s.caption })));
+const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, intro: s.intro, steps: s.steps, caption: s.caption })));
 ---
 <figure class="cs-rx" data-rx={timeline} aria-roledescription="carousel" aria-label={data.label}>
   <div class="cs-rx__stage" tabindex="0" aria-label={`${data.label}: use the arrow keys to move between slides`}>
     <div class="cs-rx__side">
-      <div class="cs-rx__bubble" aria-hidden="true"><Fragment set:html={bubble} /><p class="cs-rx__say"></p></div>
+      <div class="cs-rx__bubble" data-b="3" aria-hidden="true"><Fragment set:html={bubble} /><p class="cs-rx__say"></p></div>
       <div class="cs-rx__char" set:html={character} />
     </div>
     <div class="cs-rx__screens">
