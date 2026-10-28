@@ -314,8 +314,8 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .rx-char .i-w, .rx-bubble .i-w { fill: #fff; }
 :root[data-theme='dark'] :is(.rx-char, .rx-bubble) .i-k { fill: #ededed; }
 :root[data-theme='dark'] :is(.rx-char, .rx-bubble) .i-w { fill: #1f1f1f; }
-/* his eyes (and lids) warm up from slide to slide: white, yellow, orange, red */
-.rx-char .rx-eye .i-w { fill: var(--rx-eye, #fff); }
+/* his eyes (and lids) warm up from slide to slide: white, yellow, orange, red, the colour fading in */
+.rx-char .rx-eye .i-w { fill: var(--rx-eye, #fff); transition: fill 1.6s ease; }
 :root[data-theme='dark'] .rx-char .rx-eye .i-w { fill: var(--rx-eye, #1f1f1f); }
 /* no gliding: every change is a jump, like the face icons */
 .rx-eye { transform-box: view-box; }
@@ -359,7 +359,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-rx.is-paused .cs-rx__i-play { display: block; }
 .cs-rx__count { min-width: 3.5em; margin-left: 6px; font-family: var(--sans); font-size: var(--small); color: var(--cs-caption); font-variant-numeric: tabular-nums; }
 .cs-simple .a-story .cs-rx figcaption { margin-top: 8px; text-align: center; }
-@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-q .rx-q, .rx-char.is-rising .rx-hands, .cs-rx__in { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-q .rx-q, .rx-char.is-rising .rx-hands, .cs-rx__in { animation: none; } .rx-char .rx-eye .i-w { transition: none; } }
 /* phones: no room for him beside a centred screen, so the screen goes right and he takes the space on its left */
 @media (max-width: 767px) {
   .cs-simple .a-story .cs-rx { --rx-h: min(64vh, 470px); }
