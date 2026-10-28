@@ -1,36 +1,36 @@
-// The reacting character's slideshows (components/story/Reactions.astro, lib/reactions.ts). A clock per slideshow
+// The slideshows of YoupieMan, the reacting character (components/story/Reactions.astro, lib/reactions.ts). A clock per slideshow
 // runs while it's on screen and not paused and fires the slide's steps on time; everything moves in jumps, like the
-// face icons' flipbooks: the eyes, the eye roll (right, up, lids drop, eyes fall back down), his hands and phone
+// face icons' flipbooks: the eyes, his disappointed face (its sweat drop slides down), his hands and phone
 // rising into view, his bubble building up circle by circle, each thought rising into it line by line, each line from
 // behind its own mask, held 2.5 s, then gone at once before the next one rises; on the first slide he stands alone in
 // the middle, then steps aside and the screen fades in; an app's install progress fills in jumps; the rest of the screen
-// blurs and small print grows, as it is; his thumb taps or swipes the phone in a few poses. Pointing at it or focusing it only holds the next slide back; the
+// blurs and small print grows, as it is; an app jiggles, then shrinks away as it's deleted; his thumb taps or swipes the phone in a few poses. Pointing at it or focusing it only holds the next slide back; the
 // pause button stops the clock, character included. With reduced motion: no clock, each slide a still with the
 // highlight on, the character in his last pose and his last thought. After the last slide it stops.
 import type { Look, ReactionStep } from '../lib/reactions';
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const LOOK: Record<Look, [number, number]> = { c: [0, 0], d: [0, 9], dd: [0, 12], l: [-11, 0], r: [11, 0], u: [0, -11], ur: [8, -8] };
+const LOOK: Record<Look, [number, number]> = { c: [0, 0], d: [0, 9], dd: [0, 12], l: [-11, 0], r: [11, 0] };
 const EYE_H = 48; // the eye's height in the drawing; a lid closes by a share of it
 
 const LINE = 0.2, RISE = 0.8, HOLD = 2.5; // a line every 0.2 s; a thought about 0.8 s to rise, then held (seconds)
 
-// one step becomes timed jumps: a roll its frames; a thought rises in, is held, then is gone (if the next thought
-// comes sooner, the one shown goes first)
+// one step becomes timed jumps: a tap or swipe its thumb poses; a thought rises in, is held, then is gone (if the next
+// thought comes sooner, the one shown goes first; with stay it stays)
 type Arm = 'rest' | 'up' | 'press' | 'low';
-type Op = { t: number; arm?: Arm; look?: Look; lids?: number; wide?: boolean; hi?: boolean; q?: boolean; face?: boolean; hands?: boolean; bubble?: number; move?: boolean; show?: string; hide?: string; load?: number; zoom?: boolean; say?: string; id?: number; clear?: number };
+type Op = { t: number; arm?: Arm; look?: Look; lids?: number; meh?: boolean; hi?: boolean; face?: boolean; hands?: boolean; bubble?: number; move?: boolean; show?: string; hide?: string; load?: number; zoom?: boolean; jiggle?: boolean; remove?: boolean; say?: string; id?: number; clear?: number };
 const expand = (steps: ReactionStep[]): Op[] => {
   let shown = -1, until = -Infinity;
   return steps.flatMap((s, k) => {
-    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, hi: s.hi, q: s.q, face: s.face, hands: s.hands, bubble: s.bubble, move: s.move, show: s.show, hide: s.hide, load: s.load, zoom: s.zoom }];
+    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, meh: s.meh, hi: s.hi, face: s.face, hands: s.hands, bubble: s.bubble, move: s.move, show: s.show, hide: s.hide, load: s.load, zoom: s.zoom, arm: s.thumb, jiggle: s.jiggle, remove: s.remove }];
     if (s.tap) ops.push({ t: s.t, arm: 'up' }, { t: s.t + 0.15, arm: 'press' }, { t: s.t + 0.35, arm: 'up' }, { t: s.t + 0.5, arm: 'rest' });
     if (s.swipe) ops.push({ t: s.t, arm: 'low' }, { t: s.t + 0.12, arm: 'press' }, { t: s.t + 0.24, arm: 'up' }, { t: s.t + 0.45, arm: 'rest' });
-    if (s.roll) ops.push({ t: s.t, look: 'r' }, { t: s.t + 0.18, look: 'ur' }, { t: s.t + 0.36, look: 'u' }, { t: s.t + 0.6, lids: 0.4 }, { t: s.t + 1, look: 'd', lids: 0.5 });
     if (s.say) {
       if (s.t < until) ops.push({ t: s.t, clear: shown });
       const off = s.t + RISE + HOLD;
-      ops.push({ t: s.t, say: s.say, id: k }, { t: off, clear: k });
-      shown = k; until = off;
+      ops.push({ t: s.t, say: s.say, id: k });
+      if (!s.stay) ops.push({ t: off, clear: k });
+      shown = k; until = s.stay ? Infinity : off;
     }
     return ops;
   }).sort((a, b) => a.t - b.t);
@@ -54,7 +54,8 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   const caption = fig.querySelector<HTMLElement>('[data-rx-caption]')!;
 
   // the character and his thoughts
-  const look = ([x, y]: [number, number]) => pupils.forEach((p) => (p.style.translate = `${x}px ${y}px`));
+  const meh = char.querySelector<SVGGElement>('.rx-meh-eyes')!;
+  const look = ([x, y]: [number, number]) => { pupils.forEach((p) => (p.style.translate = `${x}px ${y}px`)); meh.style.translate = `${x * 0.7}px 0`; }; // shut eyes glance sideways only
   const close = (share: number) => lids.forEach((l) => (l.style.translate = `0 ${share * EYE_H}px`));
   const veil = () => slides[i].querySelector<HTMLElement>('.cs-rx__veil');
   const layer = (name: string) => slides[i].querySelector<HTMLElement>(`[data-layer="${name}"]`);
@@ -94,9 +95,8 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     if (o.arm) char.dataset.arm = o.arm;
     if (o.look) look(LOOK[o.look]);
     if (o.lids !== undefined) close(o.lids);
-    if (o.wide !== undefined) char.classList.toggle('is-wide', o.wide);
+    if (o.meh !== undefined) char.classList.toggle('is-meh', o.meh);
     if (o.hi !== undefined) veil()?.classList.toggle('is-on', o.hi);
-    if (o.q) char.classList.add('is-q');
     if (o.face) char.classList.remove('no-face');
     if (o.hands) { char.classList.remove('no-hands'); char.classList.add('is-rising'); }
     if (o.bubble) bubble.dataset.b = String(o.bubble);
@@ -105,6 +105,9 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     if (o.hide) layer(o.hide)?.classList.remove('is-on');
     if (o.load) loading = { from: o.t, dur: o.load };
     if (o.zoom !== undefined) slides[i].querySelector('.cs-rx__zoom')?.classList.toggle('is-on', o.zoom);
+    const del = slides[i].querySelector<HTMLElement>('.cs-rx__del');
+    if (del && o.jiggle !== undefined) { del.classList.add('is-on'); del.classList.toggle('is-jiggle', o.jiggle); }
+    if (del && o.remove) { del.classList.remove('is-jiggle'); del.classList.add('is-on', 'is-gone'); }
     if (o.clear !== undefined && say.dataset.id === String(o.clear)) say.replaceChildren();
     if (o.say !== undefined) write(o.say, o.id!);
   };
@@ -113,13 +116,14 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   const reset = (intro = false) => {
     fig.classList.add('is-resetting');
     fig.classList.toggle('is-alone', intro); centre();
-    char.classList.remove('is-wide', 'is-q', 'is-rising');
+    char.classList.remove('is-meh', 'is-rising');
     char.classList.toggle('no-face', intro); char.classList.toggle('no-hands', intro);
     bubble.dataset.b = intro ? '0' : '3';
     look(LOOK.d); close(0); char.dataset.arm = 'rest';
     slides.forEach((s) => {
       s.querySelector('.cs-rx__veil')?.classList.remove('is-on');
       s.querySelector('.cs-rx__zoom')?.classList.remove('is-on');
+      s.querySelector('.cs-rx__del')?.classList.remove('is-on', 'is-jiggle', 'is-gone');
       s.querySelectorAll<HTMLElement>('[data-layer]').forEach((l) => l.classList.toggle('is-on', l.dataset.on !== undefined));
       const load = s.querySelector<HTMLElement>('.cs-rx__load');
       if (load) { load.hidden = false; load.style.setProperty('--p', '0%'); }

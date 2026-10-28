@@ -1,5 +1,5 @@
 ---
-// A slideshow: the old screen in the middle; on its left the small line-drawn character with a phone reacts with his
+// A slideshow: the old screen in the middle; on its left YoupieMan, the small line-drawn character with a phone, reacts with his
 // eyes, what he thinks shown in a thought bubble above him, while one problem on the screen is highlighted (the rest
 // dimmed or blurred). An intro slide starts with only him, in the middle, until he steps aside. It plays by itself and stays under the
 // reader's control: previous / next, dots, swipe, the arrow keys, a counter and pause. With reduced motion every
@@ -39,10 +39,16 @@ const slides = await Promise.all(data.slides.map(async (s) => {
     return { name, on: l.on, fade: l.fade, src: (await getImage({ src: lsrc, width: 640, format: 'webp' })).src };
   }));
   // the installing app's icon, in % of the screen
-  // the small print to zoom: that part of the screenshot, where it is
-  const zoom = s.zoom && (([x1, x2, y1, y2]) => `left:${(x1 / W) * 100}%;top:${(y1 / H) * 100}%;width:${((x2 - x1) / W) * 100}%;height:${((y2 - y1) / H) * 100}%;background-image:url(${full.src});background-size:${(W / (x2 - x1)) * 100}% ${(H / (y2 - y1)) * 100}%;background-position:${(x1 / (W - (x2 - x1))) * 100}% ${(y1 / (H - (y2 - y1))) * 100}%`)(s.zoom);
+  // a part of a screenshot, where it is on the screen
+  const place = ([x1, x2, y1, y2]: number[]) => `left:${(x1 / W) * 100}%;top:${(y1 / H) * 100}%;width:${((x2 - x1) / W) * 100}%;height:${((y2 - y1) / H) * 100}%`;
+  const crop = (url: string, [x1, x2, y1, y2]: number[]) => `background-image:url(${url});background-size:${(W / (x2 - x1)) * 100}% ${(H / (y2 - y1)) * 100}%;background-position:${(x1 / (W - (x2 - x1))) * 100}% ${(y1 / (H - (y2 - y1))) * 100}%`;
+  // the small print to zoom, and the app to delete (its icon and name over a patch of the black home screen)
+  const zoom = s.zoom && `${place(s.zoom)};${crop(full.src, s.zoom)}`;
+  const delSrc = s.del && assetImage(s.del.src);
+  if (s.del && !delSrc) throw new Error(`Reactions: image not found in src/assets: ${s.del.src}`);
+  const del = s.del && delSrc && { place: place(s.del.at), crop: crop((await getImage({ src: delSrc, width: Math.min(delSrc.width, 1200), format: 'webp' })).src, s.del.at) };
   const load = s.load && `left:${(s.load[0] / W) * 100}%;top:${(s.load[1] / H) * 100}%;width:${(s.load[2] / W) * 100}%;height:${(s.load[2] / H) * 100}%`;
-  return { ...s, view: view.src, full: full.src, layers, load, zoom, mask: maskOf(s.holes) };
+  return { ...s, view: view.src, full: full.src, layers, load, zoom, del, mask: maskOf(s.holes) };
 }));
 const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, intro: s.intro, eyes: s.eyes, steps: s.steps, caption: s.caption })));
 ---
@@ -59,6 +65,7 @@ const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, intro: s.i
             <img src={s.view} data-full={s.full} alt={s.alt} width={W} height={H} loading="lazy" decoding="async" />
             {s.load && <span class="cs-rx__load" style={s.load} aria-hidden="true"></span>}
             {s.layers.map((l) => <img class="cs-rx__layer" data-layer={l.name} data-on={l.on ? '' : undefined} style={l.fade ? `transition-duration:${l.fade}s` : undefined} src={l.src} alt="" width={W} height={H} loading="lazy" decoding="async" />)}
+            {s.del && <span class="cs-rx__del" style={s.del.place} aria-hidden="true"><span style={s.del.crop}></span></span>}
             {(s.holes.length > 0 || s.zoom) && <span class:list={['cs-rx__veil', `cs-rx__veil--${s.mode}`]} style={`--mask:${s.mask}`} aria-hidden="true"></span>}
           </div>
           {s.zoom && <span class="cs-rx__zoom" style={s.zoom} aria-hidden="true"></span>}

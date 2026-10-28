@@ -316,10 +316,10 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 :root[data-theme='dark'] :is(.rx-char, .rx-bubble) .i-w { fill: #1f1f1f; }
 /* no gliding: every change is a jump, like the face icons */
 .rx-eye { transform-box: view-box; }
-.rx-char.is-wide .rx-eye { scale: 1.15; }
-.rx-q { transform-box: view-box; visibility: hidden; }
-.rx-char.is-q .rx-q { visibility: visible; animation: rx-pop 0.36s steps(1, end); }
-@keyframes rx-pop { 0% { scale: 0.5; rotate: -12deg; } 33% { scale: 1.25; rotate: 8deg; } 66% { scale: 0.92; rotate: -4deg; } 100% { scale: 1; rotate: 0deg; } }
+/* his disappointed face, -_-': eyes shut to lines, a smaller mouth, a sweat drop sliding down and fading in */
+.rx-char:not(.is-meh) :is(.rx-meh, .rx-drop), .rx-char.is-meh :is(.rx-eyes, .rx-mouth) { visibility: hidden; }
+.rx-char.is-meh .rx-drop { animation: rx-drop 1.1s ease-out both; }
+@keyframes rx-drop { from { translate: 0 -9px; opacity: 0; } to { translate: 0 3px; opacity: 1; } }
 /* his thought bubble: one size for every thought; on the first slide it builds up: the small circle, the bigger one,
    then the bubble. Each thought rises into the middle line by line, each line from behind its own mask in a few
    jumps like his hands; later it's simply gone */
@@ -336,7 +336,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .rx-char .rx-arm { visibility: hidden; }
 .rx-char:not([data-arm]) .rx-arm--rest, .rx-char[data-arm='rest'] .rx-arm--rest, .rx-char[data-arm='up'] .rx-arm--up, .rx-char[data-arm='press'] .rx-arm--press, .rx-char[data-arm='low'] .rx-arm--low { visibility: visible; }
 /* his face shows first, then his hands and phone rise from below in a few jumps */
-.rx-char.no-face :is(.rx-face, .rx-q) { visibility: hidden; }
+.rx-char.no-face .rx-face { visibility: hidden; }
 .rx-char.no-hands .rx-hands { translate: 0 150px; }
 .rx-char.is-rising .rx-hands { animation: rx-rise 0.4s steps(1, end); }
 @keyframes rx-rise { 0% { translate: 0 150px; } 25% { translate: 0 95px; } 50% { translate: 0 45px; } 75% { translate: 0 12px; } 100% { translate: 0 0; } }
@@ -358,7 +358,15 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-rx.is-alone .cs-rx__side { translate: var(--rx-dx, 0) 0; }
 .cs-rx__screens { transition: opacity 0.6s ease 0.3s; }
 .cs-rx.is-alone .cs-rx__screens { opacity: 0; }
-.cs-rx.is-resetting :is(.cs-rx__side, .cs-rx__screens, .cs-rx__layer, .cs-rx__veil, .cs-rx__zoom) { transition: none; }
+/* an app being deleted: its icon (and name) jiggles with a minus badge, then shrinks away, leaving the black screen */
+.cs-rx__del { position: absolute; background: #000; visibility: hidden; }
+.cs-rx__del.is-on { visibility: visible; }
+.cs-rx__del > span { position: absolute; inset: 0; background-repeat: no-repeat; transform-origin: 50% 40%; transition: scale 0.35s ease-in, opacity 0.35s ease-in; }
+.cs-rx__del.is-jiggle > span { animation: rx-jiggle 0.16s ease-in-out infinite alternate; }
+.cs-rx__del.is-jiggle > span::after { content: '\2212'; position: absolute; left: 3%; top: 0; display: grid; place-items: center; width: 22%; aspect-ratio: 1; border-radius: 50%; background: #8e8e93; color: #fff; font: 600 5cqw/1 -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; }
+.cs-rx__del.is-gone > span { scale: 0; opacity: 0; }
+@keyframes rx-jiggle { from { rotate: -2.5deg; } to { rotate: 2.5deg; } }
+.cs-rx.is-resetting :is(.cs-rx__side, .cs-rx__screens, .cs-rx__layer, .cs-rx__veil, .cs-rx__zoom, .cs-rx__del > span) { transition: none; }
 /* small print zoomed as it is: once the rest of the screen has blurred, that part of the screenshot grows over it
    (past the phone's edges if need be) */
 .cs-rx__slide { position: relative; }
@@ -375,7 +383,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-rx.is-paused .cs-rx__i-play { display: block; }
 .cs-rx__count { min-width: 3.5em; margin-left: 6px; font-family: var(--sans); font-size: var(--small); color: var(--cs-caption); font-variant-numeric: tabular-nums; }
 .cs-simple .a-story .cs-rx figcaption { margin-top: 8px; text-align: center; }
-@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-q .rx-q, .rx-char.is-rising .rx-hands, .cs-rx__in { animation: none; } .cs-rx__side, .cs-rx__screens, .cs-rx__layer, .cs-rx__zoom { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-meh .rx-drop, .rx-char.is-rising .rx-hands, .cs-rx__in { animation: none; } .cs-rx__side, .cs-rx__screens, .cs-rx__layer, .cs-rx__zoom, .cs-rx__del > span { transition: none; } .cs-rx__del.is-jiggle > span { animation: none; } }
 /* phones: no room for him beside a centred screen, so the screen goes right and he takes the space on its left */
 @media (max-width: 767px) {
   .cs-simple .a-story .cs-rx { --rx-h: min(64vh, 470px); }
