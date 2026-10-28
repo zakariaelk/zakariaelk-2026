@@ -6,15 +6,17 @@
 // drop, eyes fall back down), q (question mark), say (what he thinks, rising into his bubble line by line), face (his
 // face shows), hands (hands and phone rise into view), bubble (1 small circle, 2 bigger circle, 3 the bubble), move
 // (he steps aside and the screen fades in), show / hide (one of the slide's layers), load (the app installing: its
-// progress fills in this many seconds).
+// progress fills in this many seconds), zoom (the slide's small print shown big, in one go; false: gone), tap (his thumb taps the phone), swipe (his thumb
+// swipes up).
 // A slide with intro: true starts with nothing of him shown, alone in the middle with no screen, so its steps bring
 // him in. A slide's layers: screens over its own, hidden until shown (on: shown from the start; fade: seconds to fade
-// in or out). load: where the installing app's icon is (x, y, size in the screenshot's pixels).
+// in or out). load: where the installing app's icon is (x, y, size in the screenshot's pixels). zoom: small print
+// on the slide (its middle y in the screenshot's pixels, its words) to show big over the dimmed screen.
 
 export type Look = 'c' | 'd' | 'dd' | 'l' | 'r' | 'u' | 'ur';
-export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; roll?: boolean; q?: boolean; say?: string; face?: boolean; hands?: boolean; bubble?: 1 | 2 | 3; move?: boolean; show?: string; hide?: string; load?: number }
+export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; roll?: boolean; q?: boolean; say?: string; face?: boolean; hands?: boolean; bubble?: 1 | 2 | 3; move?: boolean; show?: string; hide?: string; load?: number; zoom?: boolean; tap?: boolean; swipe?: boolean }
 export interface ReactionLayer { src: string; fade?: number; on?: boolean }
-export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; intro?: boolean; layers?: Record<string, ReactionLayer>; load?: [number, number, number]; steps: ReactionStep[] }
+export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; intro?: boolean; layers?: Record<string, ReactionLayer>; load?: [number, number, number]; zoom?: { y: number; text: string }; steps: ReactionStep[] }
 export interface ReactionSet { label: string; width: number; height: number; slides: ReactionSlide[] }
 
 const DIR = 'projects/mitigating-risk-with-location-based-alerts/login-problems/';
@@ -26,7 +28,7 @@ export const REACTIONS: Record<string, ReactionSet> = {
     height: 1626,
     slides: [
       {
-        screen: DIR + 'home-screen.png',
+        screen: DIR + 'home-screen-dark.png',
         alt: 'A phone\'s home screen with the INSO app on it, still downloading.',
         mode: 'overlay',
         holes: [],
@@ -44,7 +46,7 @@ export const REACTIONS: Record<string, ReactionSet> = {
         ],
       },
       {
-        screen: DIR + 'home-screen.png',
+        screen: DIR + 'home-screen-dark.png',
         alt: 'The INSO app installs, then opens on a white screen with the INSO logo in the middle.',
         mode: 'overlay',
         holes: [],
@@ -55,37 +57,31 @@ export const REACTIONS: Record<string, ReactionSet> = {
         steps: [
           { t: 0.4, load: 3.6 },
           { t: 0.8, say: 'Alright, almost done...' },
-          { t: 4.4, show: 'open' },
+          { t: 4.1, tap: true }, { t: 4.4, show: 'open' },
           { t: 5, show: 'logo' },
           { t: 6.4, say: "Good, let's see what you got" },
         ],
       },
       {
         screen: DIR + 'old-login.png',
-        alt: 'The old login: the INSO logo, email and password fields, a pale LOGIN button and a small note, and nothing else.',
+        alt: 'The old login: the INSO logo, email and password fields, a pale LOGIN button and a tiny note: your account must already be registered with the INSO Partner\'s Portal; to become a partner, contact the country director of your organisation. No intro, no sign-up, no password reset. Then the system asks for his location.',
         mode: 'overlay',
         holes: [],
-        caption: 'A login form, and nothing saying what the app is for.',
-        end: 8.8,
+        caption: 'The login: no intro, a tiny note on how to get an account, no password reset.',
+        end: 28.4,
+        zoom: { y: 882, text: '* Your account must already be registered with the INSO Partner\'s Portal to login to this app. To become an INSO Partner please contact the country director of your organisation' },
+        layers: { prompt: { src: DIR + 'old-login-location.png' } },
         steps: [
-          { t: 0.3, look: 'l', say: 'Huh?' },
-          { t: 1.3, look: 'r' }, { t: 2.3, look: 'dd' }, { t: 3.3, look: 'l' }, { t: 4.3, look: 'r' },
-          { t: 5.3, look: 'c', say: 'What is this?' },
-        ],
-      },
-      {
-        screen: DIR + 'old-login.png',
-        alt: 'The old login. Under the LOGIN button, a small note: your account must already be registered with the INSO Partner\'s Portal; to become a partner, contact the country director of your organisation.',
-        mode: 'overlay',
-        holes: [[28, 708, 845, 918]],
-        caption: 'How to get an account is a tiny note. No link, no contact.',
-        end: 10.8,
-        steps: [
-          { t: 0, look: 'd', say: 'OK. How do I sign up?' },
-          { t: 2.2, look: 'dd' }, { t: 3.2, look: 'd' },
-          { t: 4.2, hi: true, lids: 0.4, say: 'This tiny note?' },
-          { t: 6.4, roll: true },
-          { t: 7.3, say: 'Contact who, exactly?' },
+          { t: 0.3, look: 'l', say: 'Huh? No intro?' },
+          { t: 1.5, look: 'r' }, { t: 2.6, look: 'd' },
+          { t: 3.8, look: 'dd', say: 'Hmm...' },
+          { t: 6, look: 'c', say: 'Which account should I use here?' },
+          { t: 9.4, look: 'dd', say: 'Oh wait, maybe this tiny text can help' },
+          { t: 12.3, tap: true }, { t: 12.6, hi: true, zoom: true },
+          { t: 16.4, hi: false, zoom: false, look: 'd', say: 'I see now' },
+          { t: 19.6, lids: 0.3, say: "but I don't remember my password here..." },
+          { t: 23, lids: 0, look: 'dd', say: 'Do I have to contact INSO to reset my password?' },
+          { t: 24.6, show: 'prompt' },
         ],
       },
       {

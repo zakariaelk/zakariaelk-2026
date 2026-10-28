@@ -332,6 +332,9 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-rx__in { display: inline-block; animation: rx-text-in 0.3s steps(1, end) both; }
 @keyframes rx-text-in { 0% { translate: 0 105%; } 33% { translate: 0 62%; } 66% { translate: 0 22%; } 100% { translate: 0 0; } }
 :root[data-theme='dark'] .cs-rx__say { color: #ededed; }
+/* his right thumb: one pose at a time (rest, lifted, pressing, low), so a tap or swipe is a few jumps */
+.rx-char .rx-arm { visibility: hidden; }
+.rx-char:not([data-arm]) .rx-arm--rest, .rx-char[data-arm='rest'] .rx-arm--rest, .rx-char[data-arm='up'] .rx-arm--up, .rx-char[data-arm='press'] .rx-arm--press, .rx-char[data-arm='low'] .rx-arm--low { visibility: visible; }
 /* his face shows first, then his hands and phone rise from below in a few jumps */
 .rx-char.no-face :is(.rx-face, .rx-q) { visibility: hidden; }
 .rx-char.no-hands .rx-hands { translate: 0 150px; }
@@ -341,7 +344,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-rx__screens { display: grid; }
 .cs-rx__slide { grid-area: 1 / 1; }
 .cs-rx__slide[hidden] { display: none; }
-.cs-rx__screen { position: relative; height: var(--rx-h); aspect-ratio: 750 / 1626; overflow: hidden; border-radius: 14px; box-shadow: 0 0 0 1px rgb(0 0 0 / 0.1), 0 20px 44px -20px rgb(0 0 0 / 0.5); }
+.cs-rx__screen { position: relative; container-type: inline-size; height: var(--rx-h); aspect-ratio: 750 / 1626; overflow: hidden; border-radius: 14px; box-shadow: 0 0 0 1px rgb(0 0 0 / 0.1), 0 20px 44px -20px rgb(0 0 0 / 0.5); }
 .cs-rx__screen img { display: block; width: 100%; height: 100%; }
 /* screens over the slide's own (the app opening, the location prompt), shown and hidden by its steps */
 .cs-rx__layer { position: absolute; inset: 0; opacity: 0; transition: opacity 0s ease; }
@@ -356,6 +359,11 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-rx__screens { transition: opacity 0.6s ease 0.3s; }
 .cs-rx.is-alone .cs-rx__screens { opacity: 0; }
 .cs-rx.is-resetting :is(.cs-rx__side, .cs-rx__screens, .cs-rx__layer, .cs-rx__veil) { transition: none; }
+/* small print zoomed up over the dimmed screen in one go: the same words, big, on a white card, popping out of where
+   they are in a few jumps */
+.cs-rx__zoom { position: absolute; left: 6%; right: 6%; translate: 0 -50%; padding: 5cqw 5.5cqw; border-radius: 3cqw; background: #fff; color: #333; font: 400 5.4cqw/1.4 -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; box-shadow: 0 0 0 0.6cqw #161616, 0 18px 36px -12px rgb(0 0 0 / 0.6); visibility: hidden; }
+.cs-rx__zoom.is-on { visibility: visible; animation: rx-zoom 0.3s steps(1, end); }
+@keyframes rx-zoom { 0% { scale: 0.35; } 33% { scale: 0.8; } 66% { scale: 1.06; } 100% { scale: 1; } }
 .cs-rx__veil { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease; -webkit-mask: var(--mask) 0 0 / 100% 100% no-repeat; mask: var(--mask) 0 0 / 100% 100% no-repeat; pointer-events: none; }
 .cs-rx__veil.is-on { opacity: 1; }
 .cs-rx__veil--overlay { background: rgb(0 0 0 / 0.55); }
@@ -367,7 +375,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-rx.is-paused .cs-rx__i-play { display: block; }
 .cs-rx__count { min-width: 3.5em; margin-left: 6px; font-family: var(--sans); font-size: var(--small); color: var(--cs-caption); font-variant-numeric: tabular-nums; }
 .cs-simple .a-story .cs-rx figcaption { margin-top: 8px; text-align: center; }
-@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-q .rx-q, .rx-char.is-rising .rx-hands, .cs-rx__in { animation: none; } .cs-rx__side, .cs-rx__screens, .cs-rx__layer { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .cs-rx .cs-rx__pause { display: none; } .cs-rx__veil { transition: none; } .rx-char.is-q .rx-q, .rx-char.is-rising .rx-hands, .cs-rx__in { animation: none; } .cs-rx__side, .cs-rx__screens, .cs-rx__layer { transition: none; } .cs-rx__zoom { animation: none; } }
 /* phones: no room for him beside a centred screen, so the screen goes right and he takes the space on its left */
 @media (max-width: 767px) {
   .cs-simple .a-story .cs-rx { --rx-h: min(64vh, 470px); }

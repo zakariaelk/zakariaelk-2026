@@ -3,7 +3,8 @@
 // face icons' flipbooks: the eyes, the eye roll (right, up, lids drop, eyes fall back down), his hands and phone
 // rising into view, his bubble building up circle by circle, each thought rising into it line by line, each line from
 // behind its own mask, held 2.5 s, then gone at once before the next one rises; on the first slide he stands alone in
-// the middle, then steps aside and the screen fades in; an app's install progress fills in jumps. Pointing at it or focusing it only holds the next slide back; the
+// the middle, then steps aside and the screen fades in; an app's install progress fills in jumps; small print zooms up
+// big in one go; his thumb taps or swipes the phone in a few poses. Pointing at it or focusing it only holds the next slide back; the
 // pause button stops the clock, character included. With reduced motion: no clock, each slide a still with the
 // highlight on, the character in his last pose and his last thought. After the last slide it stops.
 import type { Look, ReactionStep } from '../lib/reactions';
@@ -16,11 +17,14 @@ const LINE = 0.2, RISE = 0.8, HOLD = 2.5; // a line every 0.2 s; a thought about
 
 // one step becomes timed jumps: a roll its frames; a thought rises in, is held, then is gone (if the next thought
 // comes sooner, the one shown goes first)
-type Op = { t: number; look?: Look; lids?: number; wide?: boolean; hi?: boolean; q?: boolean; face?: boolean; hands?: boolean; bubble?: number; move?: boolean; show?: string; hide?: string; load?: number; say?: string; id?: number; clear?: number };
+type Arm = 'rest' | 'up' | 'press' | 'low';
+type Op = { t: number; arm?: Arm; look?: Look; lids?: number; wide?: boolean; hi?: boolean; q?: boolean; face?: boolean; hands?: boolean; bubble?: number; move?: boolean; show?: string; hide?: string; load?: number; zoom?: boolean; say?: string; id?: number; clear?: number };
 const expand = (steps: ReactionStep[]): Op[] => {
   let shown = -1, until = -Infinity;
   return steps.flatMap((s, k) => {
-    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, hi: s.hi, q: s.q, face: s.face, hands: s.hands, bubble: s.bubble, move: s.move, show: s.show, hide: s.hide, load: s.load }];
+    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, hi: s.hi, q: s.q, face: s.face, hands: s.hands, bubble: s.bubble, move: s.move, show: s.show, hide: s.hide, load: s.load, zoom: s.zoom }];
+    if (s.tap) ops.push({ t: s.t, arm: 'up' }, { t: s.t + 0.15, arm: 'press' }, { t: s.t + 0.35, arm: 'up' }, { t: s.t + 0.5, arm: 'rest' });
+    if (s.swipe) ops.push({ t: s.t, arm: 'low' }, { t: s.t + 0.12, arm: 'press' }, { t: s.t + 0.24, arm: 'up' }, { t: s.t + 0.45, arm: 'rest' });
     if (s.roll) ops.push({ t: s.t, look: 'r' }, { t: s.t + 0.18, look: 'ur' }, { t: s.t + 0.36, look: 'u' }, { t: s.t + 0.6, lids: 0.4 }, { t: s.t + 1, look: 'd', lids: 0.5 });
     if (s.say) {
       if (s.t < until) ops.push({ t: s.t, clear: shown });
@@ -65,13 +69,16 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     el.style.setProperty('--p', `${p * 100}%`);
     if (p >= 1) { el.hidden = true; loading = null; }
   };
-  // a thought: laid out once to find its lines (balanced), then each line in its own mask, rising after the one above
+  // a thought: laid out once to find its lines (balanced, and small enough to fit), then each line in its own mask, rising after the one above
   const write = (text: string, id: number) => {
     const box = document.createElement('div');
     box.className = 'cs-rx__lines';
     const words = text.split(' ').map((w) => { const s = document.createElement('span'); s.textContent = w; return s; });
     words.forEach((w, k) => box.append(w, k < words.length - 1 ? ' ' : ''));
     say.replaceChildren(box);
+    // a long thought gets smaller writing until it fits the bubble
+    say.style.fontSize = '';
+    for (let k = 0; k < 4 && box.offsetHeight > say.clientHeight; k++) say.style.fontSize = `${parseFloat(getComputedStyle(say).fontSize) * 0.9}px`;
     const lines: string[][] = [];
     let top = -1;
     words.forEach((w) => { if (w.offsetTop !== top) { lines.push([]); top = w.offsetTop; } lines[lines.length - 1].push(w.textContent!); });
@@ -84,10 +91,11 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     say.dataset.id = String(id);
   };
   const apply = (o: Op) => {
+    if (o.arm) char.dataset.arm = o.arm;
     if (o.look) look(LOOK[o.look]);
     if (o.lids !== undefined) close(o.lids);
     if (o.wide !== undefined) char.classList.toggle('is-wide', o.wide);
-    if (o.hi) veil()?.classList.add('is-on');
+    if (o.hi !== undefined) veil()?.classList.toggle('is-on', o.hi);
     if (o.q) char.classList.add('is-q');
     if (o.face) char.classList.remove('no-face');
     if (o.hands) { char.classList.remove('no-hands'); char.classList.add('is-rising'); }
@@ -96,6 +104,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     if (o.show) layer(o.show)?.classList.add('is-on');
     if (o.hide) layer(o.hide)?.classList.remove('is-on');
     if (o.load) loading = { from: o.t, dur: o.load };
+    if (o.zoom !== undefined) slides[i].querySelector('.cs-rx__zoom')?.classList.toggle('is-on', o.zoom);
     if (o.clear !== undefined && say.dataset.id === String(o.clear)) say.replaceChildren();
     if (o.say !== undefined) write(o.say, o.id!);
   };
@@ -107,9 +116,10 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     char.classList.remove('is-wide', 'is-q', 'is-rising');
     char.classList.toggle('no-face', intro); char.classList.toggle('no-hands', intro);
     bubble.dataset.b = intro ? '0' : '3';
-    look(LOOK.d); close(0);
+    look(LOOK.d); close(0); char.dataset.arm = 'rest';
     slides.forEach((s) => {
       s.querySelector('.cs-rx__veil')?.classList.remove('is-on');
+      s.querySelector('.cs-rx__zoom')?.classList.remove('is-on');
       s.querySelectorAll<HTMLElement>('[data-layer]').forEach((l) => l.classList.toggle('is-on', l.dataset.on !== undefined));
       const load = s.querySelector<HTMLElement>('.cs-rx__load');
       if (load) { load.hidden = false; load.style.setProperty('--p', '0%'); }
