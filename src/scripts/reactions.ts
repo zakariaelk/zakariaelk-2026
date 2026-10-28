@@ -3,8 +3,8 @@
 // face icons' flipbooks: the eyes, the eye roll (right, up, lids drop, eyes fall back down), his hands and phone
 // rising into view, his bubble building up circle by circle, each thought rising into it line by line, each line from
 // behind its own mask, held 2.5 s, then gone at once before the next one rises; on the first slide he stands alone in
-// the middle, then steps aside and the screen fades in; an app's install progress fills in jumps; small print zooms up
-// big in one go; his thumb taps or swipes the phone in a few poses. Pointing at it or focusing it only holds the next slide back; the
+// the middle, then steps aside and the screen fades in; an app's install progress fills in jumps; the rest of the screen
+// blurs and small print grows, as it is; his thumb taps or swipes the phone in a few poses. Pointing at it or focusing it only holds the next slide back; the
 // pause button stops the clock, character included. With reduced motion: no clock, each slide a still with the
 // highlight on, the character in his last pose and his last thought. After the last slide it stops.
 import type { Look, ReactionStep } from '../lib/reactions';

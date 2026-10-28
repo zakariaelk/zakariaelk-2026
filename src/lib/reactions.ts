@@ -6,17 +6,17 @@
 // drop, eyes fall back down), q (question mark), say (what he thinks, rising into his bubble line by line), face (his
 // face shows), hands (hands and phone rise into view), bubble (1 small circle, 2 bigger circle, 3 the bubble), move
 // (he steps aside and the screen fades in), show / hide (one of the slide's layers), load (the app installing: its
-// progress fills in this many seconds), zoom (the slide's small print shown big, in one go; false: gone), tap (his thumb taps the phone), swipe (his thumb
+// progress fills in this many seconds), zoom (the rest of the screen blurs and the slide's small print grows, as it is; false: back), tap (his thumb taps the phone), swipe (his thumb
 // swipes up).
 // A slide with intro: true starts with nothing of him shown, alone in the middle with no screen, so its steps bring
 // him in. A slide's layers: screens over its own, hidden until shown (on: shown from the start; fade: seconds to fade
-// in or out). load: where the installing app's icon is (x, y, size in the screenshot's pixels). zoom: small print
-// on the slide (its middle y in the screenshot's pixels, its words) to show big over the dimmed screen.
+// in or out). load: where the installing app's icon is (x, y, size in the screenshot's pixels). zoom: the small
+// print to zoom (x1, x2, y1, y2 in the screenshot's pixels).
 
 export type Look = 'c' | 'd' | 'dd' | 'l' | 'r' | 'u' | 'ur';
 export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; roll?: boolean; q?: boolean; say?: string; face?: boolean; hands?: boolean; bubble?: 1 | 2 | 3; move?: boolean; show?: string; hide?: string; load?: number; zoom?: boolean; tap?: boolean; swipe?: boolean }
 export interface ReactionLayer { src: string; fade?: number; on?: boolean }
-export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; intro?: boolean; layers?: Record<string, ReactionLayer>; load?: [number, number, number]; zoom?: { y: number; text: string }; steps: ReactionStep[] }
+export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; intro?: boolean; layers?: Record<string, ReactionLayer>; load?: [number, number, number]; zoom?: [number, number, number, number]; steps: ReactionStep[] }
 export interface ReactionSet { label: string; width: number; height: number; slides: ReactionSlide[] }
 
 const DIR = 'projects/mitigating-risk-with-location-based-alerts/login-problems/';
@@ -65,11 +65,11 @@ export const REACTIONS: Record<string, ReactionSet> = {
       {
         screen: DIR + 'old-login.png',
         alt: 'The old login: the INSO logo, email and password fields, a pale LOGIN button and a tiny note: your account must already be registered with the INSO Partner\'s Portal; to become a partner, contact the country director of your organisation. No intro, no sign-up, no password reset. Then the system asks for his location.',
-        mode: 'overlay',
+        mode: 'blur',
         holes: [],
         caption: 'The login: no intro, a tiny note on how to get an account, no password reset.',
         end: 28.4,
-        zoom: { y: 882, text: '* Your account must already be registered with the INSO Partner\'s Portal to login to this app. To become an INSO Partner please contact the country director of your organisation' },
+        zoom: [22, 714, 842, 922],
         layers: { prompt: { src: DIR + 'old-login-location.png' } },
         steps: [
           { t: 0.3, look: 'l', say: 'Huh? No intro?' },
