@@ -29,32 +29,20 @@ export const REACTIONS: Record<string, ReactionSet> = {
     slides: [
       {
         screen: DIR + 'home-screen-dark.png',
-        alt: 'A phone\'s home screen with the INSO app on it, about to download.',
+        alt: 'A phone\'s home screen: the INSO app downloads, then opens on a white screen with the INSO logo in the middle.',
         mode: 'overlay',
         holes: [],
-        caption: 'A new partner gets the INSO app.',
-        end: 3.2,
-        load: [229, 160, 120],
-        steps: [
-          { t: 0.25, say: "Let's download the INSO App" },
-          { t: 2.4, tap: true },
-        ],
-      },
-      {
-        screen: DIR + 'home-screen-dark.png',
-        alt: 'The INSO app installs, then opens on a white screen with the INSO logo in the middle.',
-        mode: 'overlay',
-        holes: [],
-        caption: 'It installs, then opens on its logo.',
-        end: 8,
+        caption: 'A new partner gets the INSO app. It opens on its logo.',
+        end: 7.6,
         load: [229, 160, 120],
         layers: { open: { src: DIR + 'old-splash-blank.png' }, logo: { src: DIR + 'old-splash.png', fade: 1.2 } },
         steps: [
-          { t: 0.2, load: 2 },
-          { t: 1.2, say: 'Alright, almost done...' }, // halfway
-          { t: 2.8, tap: true }, { t: 3.05, show: 'open' },
-          { t: 3.55, show: 'logo' },
-          { t: 4.75, say: "Good, let's see what you got" },
+          { t: 0.25, say: "Let's download the INSO App" },
+          { t: 1.2, tap: true }, { t: 1.4, load: 2 },
+          { t: 2.4, say: 'Alright, almost done...' }, // halfway
+          { t: 3.6, tap: true }, { t: 3.85, show: 'open' },
+          { t: 4.3, show: 'logo' },
+          { t: 5.1, say: "Good, let's see what you got" },
         ],
       },
       {
