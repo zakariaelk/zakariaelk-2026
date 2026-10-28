@@ -39,7 +39,6 @@ export const REACTIONS: Record<string, ReactionSet> = {
         steps: [
           { t: 0.25, say: "Let's download the INSO App" },
           { t: 1.2, tap: true }, { t: 1.4, load: 2 },
-          { t: 2.4, say: 'Alright, almost done...' }, // halfway
           { t: 3.6, tap: true }, { t: 3.85, show: 'open' },
           { t: 4.3, show: 'logo' },
           { t: 5.1, say: "Good, let's see what you got" },
