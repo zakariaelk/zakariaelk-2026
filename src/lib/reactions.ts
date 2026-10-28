@@ -33,7 +33,7 @@ export const REACTIONS: Record<string, ReactionSet> = {
         caption: 'A new partner gets the INSO app.',
         end: 7.2,
         intro: true,
-        load: [57, 880, 120],
+        load: [229, 160, 120],
         steps: [
           { t: 0.3, face: true, look: 'c' },
           { t: 0.9, hands: true },
@@ -50,7 +50,7 @@ export const REACTIONS: Record<string, ReactionSet> = {
         holes: [],
         caption: 'It installs, then opens on its logo.',
         end: 10.2,
-        load: [57, 880, 120],
+        load: [229, 160, 120],
         layers: { open: { src: DIR + 'old-splash-blank.png' }, logo: { src: DIR + 'old-splash.png', fade: 1.2 } },
         steps: [
           { t: 0.4, load: 3.6 },
