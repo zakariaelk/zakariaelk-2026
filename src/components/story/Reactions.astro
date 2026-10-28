@@ -1,7 +1,7 @@
 ---
 // A slideshow: the old screen in the middle; on its left the small line-drawn character with a phone reacts with his
 // eyes, what he thinks shown in a thought bubble above him, while one problem on the screen is highlighted (the rest
-// dimmed or blurred). It plays by itself and stays under the
+// dimmed or blurred). An intro slide starts with only him, in the middle, until he steps aside. It plays by itself and stays under the
 // reader's control: previous / next, dots, swipe, the arrow keys, a counter and pause. With reduced motion every
 // slide is a still: highlight on, the character in his last pose. The slides are in lib/reactions.ts, the character
 // in character/character.svg (docs/icons/character.mjs), and scripts/reactions.ts plays them.
@@ -32,11 +32,15 @@ const slides = await Promise.all(data.slides.map(async (s) => {
   const src = assetImage(s.screen);
   if (!src) throw new Error(`Reactions: image not found in src/assets: ${s.screen}`);
   const [view, full] = await Promise.all([getImage({ src, width: 640, format: 'webp' }), getImage({ src, width: Math.min(src.width, 1200), format: 'webp' })]);
-  // a screen shown first, until a step reveals the slide's own (e.g. the login before its location prompt)
-  const firstSrc = s.first ? assetImage(s.first) : undefined;
-  if (s.first && !firstSrc) throw new Error(`Reactions: image not found in src/assets: ${s.first}`);
-  const first = firstSrc ? (await getImage({ src: firstSrc, width: 640, format: 'webp' })).src : undefined;
-  return { ...s, view: view.src, full: full.src, first, mask: maskOf(s.holes) };
+  // screens over the slide's own, hidden until a step shows them (e.g. the location prompt over the login)
+  const layers = await Promise.all(Object.entries(s.layers ?? {}).map(async ([name, l]) => {
+    const lsrc = assetImage(l.src);
+    if (!lsrc) throw new Error(`Reactions: image not found in src/assets: ${l.src}`);
+    return { name, on: l.on, fade: l.fade, src: (await getImage({ src: lsrc, width: 640, format: 'webp' })).src };
+  }));
+  // the installing app's icon, in % of the screen
+  const load = s.load && `left:${(s.load[0] / W) * 100}%;top:${(s.load[1] / H) * 100}%;width:${(s.load[2] / W) * 100}%;height:${(s.load[2] / H) * 100}%`;
+  return { ...s, view: view.src, full: full.src, layers, load, mask: maskOf(s.holes) };
 }));
 const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, intro: s.intro, eyes: s.eyes, steps: s.steps, caption: s.caption })));
 ---
@@ -51,7 +55,8 @@ const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, intro: s.i
         <div class="cs-rx__slide" role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${n}`} hidden={i > 0}>
           <div class="cs-rx__screen">
             <img src={s.view} data-full={s.full} alt={s.alt} width={W} height={H} loading="lazy" decoding="async" />
-            {s.first && <img class="cs-rx__first" src={s.first} alt="" width={W} height={H} loading="lazy" decoding="async" />}
+            {s.load && <span class="cs-rx__load" style={s.load} aria-hidden="true"></span>}
+            {s.layers.map((l) => <img class="cs-rx__layer" data-layer={l.name} data-on={l.on ? '' : undefined} style={l.fade ? `transition-duration:${l.fade}s` : undefined} src={l.src} alt="" width={W} height={H} loading="lazy" decoding="async" />)}
             {s.holes.length > 0 && <span class:list={['cs-rx__veil', `cs-rx__veil--${s.mode}`]} style={`--mask:${s.mask}`} aria-hidden="true"></span>}
           </div>
         </div>
