@@ -3,8 +3,8 @@
 // face icons' flipbooks: the eyes, his disappointed face (its sweat drop slides down), each thought rising into his
 // bubble line by line, each line from behind its own mask, held 2.5 s, then gone at once before the next one rises; an
 // app's install progress fills in jumps; the rest of the screen blurs and small print grows, as it is; an app jiggles,
-// then shrinks away as it's deleted; his thumb taps or swipes the phone in a few poses. Pointing at it or focusing it
-// only holds the next slide back; the pause button stops the clock, character included. With reduced motion: no
+// then shrinks away as it's deleted; his thumb taps or swipes the phone in a few poses. The pause button stops the
+// clock, character included. With reduced motion: no
 // clock, each slide a still with the highlight on, the character in his last pose and his last thought. After the
 // last slide it stops, and his Yes button plays it again from the start.
 import type { Look, ReactionStep } from '../lib/reactions';
@@ -18,7 +18,7 @@ const LINE = 0.2, RISE = 0.8, HOLD = 2.5; // a line every 0.2 s; a thought about
 // one step becomes timed jumps: a tap or swipe its thumb poses; a thought rises in, is held, then is gone (if the next
 // thought comes sooner, the one shown goes first; with stay it stays)
 type Arm = 'rest' | 'up' | 'press' | 'low';
-type Op = { t: number; arm?: Arm; look?: Look; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; hi?: boolean; show?: string; hide?: string; load?: number; zoom?: boolean; del?: 'jiggle' | 'gone' | 'off'; again?: boolean; say?: string; id?: number; clear?: number };
+type Op = { t: number; arm?: Arm; look?: Look; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; hi?: boolean; show?: string; hide?: string; load?: number; zoom?: string | false; del?: 'jiggle' | 'gone' | 'off'; again?: boolean; say?: string; id?: number; clear?: number };
 const expand = (steps: ReactionStep[]): Op[] => {
   let shown = -1, until = -Infinity;
   return steps.flatMap((s, k) => {
@@ -99,7 +99,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     if (o.show) layer(o.show)?.classList.add('is-on');
     if (o.hide) layer(o.hide)?.classList.remove('is-on');
     if (o.load) loading = { from: o.t, dur: o.load };
-    if (o.zoom !== undefined) slides[i].querySelector('.cs-rx__zoom')?.classList.toggle('is-on', o.zoom);
+    if (o.zoom !== undefined) slides[i].querySelectorAll<HTMLElement>('.cs-rx__zoom').forEach((z) => z.classList.toggle('is-on', z.dataset.zoom === o.zoom));
     const del = slides[i].querySelector<HTMLElement>('.cs-rx__del');
     if (del && o.del) { del.classList.toggle('is-on', o.del !== 'off'); del.classList.toggle('is-jiggle', o.del === 'jiggle'); del.classList.toggle('is-gone', o.del === 'gone'); }
     if (o.again) { again.hidden = false; say.classList.add('has-again'); }
@@ -115,7 +115,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     look(LOOK.d); close(0); char.dataset.arm = 'rest';
     slides.forEach((s) => {
       s.querySelector('.cs-rx__veil')?.classList.remove('is-on');
-      s.querySelector('.cs-rx__zoom')?.classList.remove('is-on');
+      s.querySelectorAll('.cs-rx__zoom').forEach((z) => z.classList.remove('is-on'));
       s.querySelector('.cs-rx__del')?.classList.remove('is-on', 'is-jiggle', 'is-gone');
       s.querySelectorAll<HTMLElement>('[data-layer]').forEach((l) => l.classList.toggle('is-on', l.dataset.on !== undefined));
       const load = s.querySelector<HTMLElement>('.cs-rx__load');
@@ -127,7 +127,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   };
 
   // the slideshow
-  let i = 0, t = 0, fired = 0, playing = !reduce, visible = false, held = false, last = 0;
+  let i = 0, t = 0, fired = 0, playing = !reduce, visible = false, last = 0;
   const show = (k: number) => {
     slides[i].hidden = true; dots[i].removeAttribute('aria-current');
     i = (k + n) % n;
@@ -144,7 +144,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
       const ops = timeline[i];
       while (fired < ops.length && ops[fired].t <= t) apply(ops[fired++]);
       fill(t);
-      if (t >= data[i].end && !held && i < n - 1) show(i + 1);
+      if (t >= data[i].end && i < n - 1) show(i + 1);
     }
     requestAnimationFrame(tick);
   };
@@ -165,9 +165,6 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     if (e.key === 'ArrowRight') { e.preventDefault(); show(i + 1); }
     else if (e.key === 'ArrowLeft') { e.preventDefault(); show(i - 1); }
   });
-  // pointing at it, focusing it or touching it holds the next slide back (the current one still plays)
-  const hold = () => { held = fig.matches(':hover') || fig.contains(document.activeElement); };
-  ['pointerenter', 'pointerleave', 'focusin', 'focusout'].forEach((ev) => fig.addEventListener(ev, () => requestAnimationFrame(hold)));
   // swipe: a horizontal drag of 40px or more
   let x0: number | null = null, y0 = 0;
   stage.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') { x0 = e.clientX; y0 = e.clientY; } });

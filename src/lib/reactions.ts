@@ -4,19 +4,19 @@
 // the character's steps in seconds. Step keys: look (c centre, at the reader; d bottom, on the phone; dd further down;
 // l, r), hi (highlight on), lids (share of the eye closed), wide (eyes wide open), drop (a sweat drop on his
 // usual face), meh (his disappointed face, -_-', or back to his usual one), say (what he thinks, rising into his bubble line by line; stay: it stays up), show / hide (one of the slide's
-// layers), load (the app installing: its progress fills in this many seconds), zoom (the rest of the screen blurs and
-// the slide's small print grows, as it is; false: back), tap (his thumb taps the phone), swipe (his thumb swipes up),
+// layers), load (the app installing: its progress fills in this many seconds), zoom (one of the slide's zooms: that part of
+// the screen grows, as it is; false: back), tap (his thumb taps the phone), swipe (his thumb swipes up),
 // thumb (his thumb held in a pose: rest, up, press, low), del (the app to delete: jiggle, with its minus badge; gone,
 // shrunk away; off, no longer shown), again (the button to play the slideshow again).
 // A slide's layers: screens over its own, hidden until shown (on: shown from the start; fade: seconds to fade in or
-// out). load: where the installing app's icon is (x, y, size in the screenshot's pixels). zoom: the small print to
-// zoom (x1, x2, y1, y2 in the screenshot's pixels). del: an app on a screen to delete (that image, and x1, x2, y1, y2
+// out). load: where the installing app's icon is (x, y, size in the screenshot's pixels). zooms: parts of the screen
+// to zoom (x1, x2, y1, y2 in the screenshot's pixels; size: the share of the full zoom, for a smaller one). del: an app on a screen to delete (that image, and x1, x2, y1, y2
 // around its icon and name).
 
 export type Look = 'c' | 'd' | 'dd' | 'l' | 'r';
-export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; say?: string; stay?: boolean; show?: string; hide?: string; load?: number; zoom?: boolean; tap?: boolean; swipe?: boolean; thumb?: 'rest' | 'up' | 'press' | 'low'; del?: 'jiggle' | 'gone' | 'off'; again?: boolean }
+export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; say?: string; stay?: boolean; show?: string; hide?: string; load?: number; zoom?: string | false; tap?: boolean; swipe?: boolean; thumb?: 'rest' | 'up' | 'press' | 'low'; del?: 'jiggle' | 'gone' | 'off'; again?: boolean }
 export interface ReactionLayer { src: string; fade?: number; on?: boolean }
-export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; layers?: Record<string, ReactionLayer>; load?: [number, number, number]; zoom?: [number, number, number, number]; del?: { src: string; at: [number, number, number, number] }; steps: ReactionStep[] }
+export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; layers?: Record<string, ReactionLayer>; load?: [number, number, number]; zooms?: Record<string, { at: [number, number, number, number]; size?: number }>; del?: { src: string; at: [number, number, number, number] }; steps: ReactionStep[] }
 export interface ReactionSet { label: string; width: number; height: number; slides: ReactionSlide[] }
 
 const DIR = 'projects/mitigating-risk-with-location-based-alerts/login-problems/';
@@ -51,7 +51,7 @@ export const REACTIONS: Record<string, ReactionSet> = {
         holes: [],
         caption: 'The login: no intro, a tiny note on how to get an account, no password reset.',
         end: 25.8,
-        zoom: [22, 714, 842, 922],
+        zooms: { note: { at: [22, 714, 842, 922] }, password: { at: [26, 724, 546, 664], size: 0.4 } },
         layers: { prompt: { src: DIR + 'old-login-location.png' } },
         steps: [
           { t: 0.25, look: 'l', say: 'Huh? No intro?' },
@@ -59,10 +59,10 @@ export const REACTIONS: Record<string, ReactionSet> = {
           { t: 3.25, look: 'dd', say: 'Hmm...' },
           { t: 5.1, look: 'c', say: 'Which account should I use here?' },
           { t: 8, look: 'dd', say: 'Oh wait, maybe this tiny text can help' },
-          { t: 10.45, tap: true }, { t: 10.7, hi: true, zoom: true },
+          { t: 10.45, tap: true }, { t: 10.7, hi: true, zoom: 'note' },
           { t: 16.5, hi: false, zoom: false, look: 'd', say: 'I see now' }, // the zoom held 5.8 s
-          { t: 19.2, lids: 0.3, say: "but I don't remember my password here..." },
-          { t: 22.1, lids: 0, look: 'dd', say: 'Do I have to contact INSO to reset my password?' }, { t: 22.7, meh: true },
+          { t: 19.2, lids: 0.3, say: "but I don't remember my password here..." }, { t: 19.4, zoom: 'password' },
+          { t: 22.1, lids: 0, look: 'dd', zoom: false, say: 'Do I have to contact INSO to reset my password?' }, { t: 22.7, meh: true },
           { t: 23.45, show: 'prompt' }, { t: 23.65, meh: false, wide: true, look: 'c' },
           { t: 24.6, wide: false, lids: 0.5, drop: true },
         ],

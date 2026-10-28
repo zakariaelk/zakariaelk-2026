@@ -365,10 +365,10 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 @keyframes rx-jiggle { from { rotate: -2.5deg; } to { rotate: 2.5deg; } }
 .cs-rx.is-resetting :is(.cs-rx__layer, .cs-rx__veil, .cs-rx__zoom, .cs-rx__del > span) { transition: none; }
 /* small print zoomed as it is: once the rest of the screen has blurred, that part of the screenshot grows over it
-   (past the phone's edges, mostly into the free space on its right) */
+   (past the phone's edges, mostly into the free space on its right); --zk: a share of that zoom, for a smaller one */
 .cs-rx__slide { position: relative; }
 .cs-rx__zoom { --zs: 1.75; position: absolute; transform-origin: 20% 50%; border-radius: 6px; background-repeat: no-repeat; visibility: hidden; transition: scale 0.4s ease, box-shadow 0.4s ease, visibility 0s 0.4s; pointer-events: none; }
-.cs-rx__zoom.is-on { visibility: visible; scale: var(--zs); box-shadow: 0 0 0 1px rgb(0 0 0 / 0.12), 0 18px 36px -14px rgb(0 0 0 / 0.55); transition: scale 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s, box-shadow 0.7s ease 0.4s, visibility 0s; }
+.cs-rx__zoom.is-on { visibility: visible; scale: calc(1 + (var(--zs) - 1) * var(--zk, 1)); box-shadow: 0 0 0 1px rgb(0 0 0 / 0.12), 0 18px 36px -14px rgb(0 0 0 / 0.55); transition: scale 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s, box-shadow 0.7s ease 0.4s, visibility 0s; }
 .cs-rx__veil { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease; -webkit-mask: var(--mask) 0 0 / 100% 100% no-repeat; mask: var(--mask) 0 0 / 100% 100% no-repeat; pointer-events: none; }
 .cs-rx__veil.is-on { opacity: 1; }
 .cs-rx__veil--overlay { background: rgb(0 0 0 / 0.55); }
