@@ -1,7 +1,7 @@
 ---
-// A slideshow on the old design's brown panel: the small line-drawn character, on the left with a phone, reacts with
-// his eyes to an old screen on the right, what he thinks written above him on paper snippets, while one problem on
-// the screen is highlighted (the rest dimmed or blurred). It plays by itself and stays under the
+// A slideshow: the small line-drawn character, on the left with a phone, reacts with his eyes to an old screen on the
+// right, what he thinks shown in a thought bubble above him, while one problem on the screen is highlighted (the rest
+// dimmed or blurred). It plays by itself and stays under the
 // reader's control: previous / next, dots, swipe, the arrow keys, a counter and pause. With reduced motion every
 // slide is a still: highlight on, the character in his last pose. The slides are in lib/reactions.ts, the character
 // in character/character.svg (docs/icons/character.mjs), and scripts/reactions.ts plays them.
@@ -9,6 +9,7 @@ import { getImage } from 'astro:assets';
 import { assetImage } from '../../lib/media';
 import { REACTIONS } from '../../lib/reactions';
 import character from './character/character.svg?raw';
+import bubble from './character/bubble.svg?raw';
 import '@fontsource-variable/caveat'; // his thoughts, in handwriting
 
 interface Props { set: string }
@@ -38,7 +39,7 @@ const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, steps: s.s
 <figure class="cs-rx" data-rx={timeline} aria-roledescription="carousel" aria-label={data.label}>
   <div class="cs-rx__stage" tabindex="0" aria-label={`${data.label}: use the arrow keys to move between slides`}>
     <div class="cs-rx__side">
-      <p class="cs-rx__say" aria-hidden="true"></p>
+      <div class="cs-rx__bubble" aria-hidden="true"><Fragment set:html={bubble} /><p class="cs-rx__say"></p></div>
       <div class="cs-rx__char" set:html={character} />
     </div>
     <div class="cs-rx__screens">
