@@ -1,0 +1,9 @@
+---
+// A table that can be folded away: open by default, its toggle under it says what it does (Hide table / Show table).
+interface Props { label?: string }
+const { label = 'table' } = Astro.props;
+---
+<details class="cs-tbl" open>
+  <slot />
+  <summary><span class="cs-tbl__hide">Hide {label}</span><span class="cs-tbl__show">Show {label}</span></summary>
+</details>

@@ -6,11 +6,14 @@
 // images: paths in src/assets, comma-separated; alts: one per screen, separated by |;
 // frame: a BEFORE / AFTER / both (compare) tag; landscape: wide slides (default: phone screens);
 // captions: one per screen, separated by | (the caption follows the screen shown), instead of one caption.
+// thumbs: a strip of all the screens under the controls, the one shown marked; fulls: for each screen, another image
+// for the enlarged view (e.g. the whole of a long screen whose slide shows its top), separated by commas.
 import { getImage } from 'astro:assets';
 import { assetImage } from '../../lib/media';
 
-interface Props { images: string; alts?: string; caption?: string; captions?: string; frame?: '' | 'before' | 'after' | 'compare'; landscape?: boolean }
-const { images, alts = '', captions, frame = '', landscape = false } = Astro.props;
+interface Props { thumbs?: boolean; fulls?: string; images: string; alts?: string; caption?: string; captions?: string; frame?: '' | 'before' | 'after' | 'compare'; landscape?: boolean }
+const { images, alts = '', captions, frame = '', landscape = false, thumbs = false, fulls } = Astro.props;
+const fullList = fulls?.split(',').map((s) => s.trim());
 const capList = captions?.split('|').map((s) => s.trim());
 const caption = capList?.[0] ?? Astro.props.caption;
 const paths = images.split(',').map((s) => s.trim()).filter(Boolean);
@@ -18,8 +21,10 @@ const altList = alts.split('|').map((s) => s.trim());
 const screens = await Promise.all(paths.map(async (p, i) => {
   const src = assetImage(p);
   if (!src) throw new Error(`Sequence: image not found in src/assets: ${p}`);
-  const [view, full] = await Promise.all([getImage({ src, width: Math.min(src.width, landscape ? 1400 : 720), format: 'webp' }), getImage({ src, width: Math.min(src.width, 1600), format: 'webp' })]);
-  return { view: view.src, full: full.src, w: src.width, h: src.height, alt: altList[i] ?? '' };
+  const bigSrc = fullList?.[i] ? assetImage(fullList[i]) : src;
+  if (!bigSrc) throw new Error(`Sequence: image not found in src/assets: ${fullList?.[i]}`);
+  const [view, full, thumb] = await Promise.all([getImage({ src, width: Math.min(src.width, landscape ? 1400 : 720), format: 'webp' }), getImage({ src: bigSrc, width: Math.min(bigSrc.width, 1600), format: 'webp' }), thumbs ? getImage({ src, width: 160, format: 'webp' }) : undefined]);
+  return { view: view.src, full: full.src, thumb: thumb?.src, w: src.width, h: src.height, alt: altList[i] ?? '' };
 }));
 const n = screens.length;
 ---
@@ -37,9 +42,11 @@ const n = screens.length;
     <div class="cs-seq__nav">
       <button type="button" class="cs-seq__arrow" data-step="-1" aria-label="Previous screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6l-6 6 6 6" /></svg></button>
       <div class="cs-seq__dots">{screens.map((_, i) => <button type="button" aria-label={`Screen ${i + 1} of ${n}`} aria-current={i === 0 ? 'true' : undefined} />)}</div>
+      <span class="cs-seq__count" data-seq-count>1 of {n}</span>
       <button type="button" class="cs-seq__arrow" data-step="1" aria-label="Next screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6" /></svg></button>
     </div>
   )}
+  {thumbs && n > 1 && <div class="cs-seq__thumbs">{screens.map((s, i) => <button type="button" aria-label={`Screen ${i + 1} of ${n}`} aria-current={i === 0 ? 'true' : undefined}><img src={s.thumb} alt="" width="80" height={Math.round((80 * s.h) / s.w)} loading="lazy" decoding="async" /></button>)}</div>}
   <p class="sr-only" aria-live="polite" data-seq-status></p>
   {caption && <figcaption data-captions={capList ? JSON.stringify(capList) : undefined}>{(frame === 'before' || frame === 'after') && <span class="cs-cap__frame">{frame === 'before' ? 'Before' : 'After'}: </span>}<span data-cap-text>{caption}</span></figcaption>}
 </figure>

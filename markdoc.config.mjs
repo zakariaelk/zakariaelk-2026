@@ -37,6 +37,7 @@ export default defineMarkdocConfig({
       render: story('Figure'),
       selfClosing: true,
       attributes: {
+        badges: { type: String }, // numbered badges over the image: "x,y|x,y" in % of its width and height (1, 2…)
         src: { type: String, required: true },
         alt: { type: String, required: true },
         caption: { type: String },
@@ -64,10 +65,15 @@ export default defineMarkdocConfig({
         icon: { type: String, matches: ['eye', 'friction', 'did', 'testing', 'interviews', 'partners', 'pushback', 'bricks', 'face-confused', 'face-bulb', 'face-smiling', 'face-introspect', 'face-happy', 'face-satisfied', 'face-sad', 'face-doubtful'] }, // optional: each icon is used once
         title: { type: String }, // optional: an icon can sit beside a plain paragraph
         source: { type: String },
+        result: { type: Boolean }, // a finding with no source line
       },
     },
     // a flow shown one screen at a time, like a short video (images: src/assets paths, comma-separated; alts: |)
-    sequence: { render: story('Sequence'), selfClosing: true, attributes: { images: { type: String, required: true }, alts: { type: String }, caption: { type: String }, captions: { type: String }, frame: { type: String, matches: ['', 'before', 'after', 'compare'] }, landscape: { type: Boolean } } },
+    // a table that can be folded away (open by default); label: what the toggle names
+    tablebox: { render: story('TableBox'), attributes: { label: { type: String } } },
+    // a numbered badge in the text, matching one on a visual
+    n: { render: story('Num'), inline: true, selfClosing: true, attributes: { v: { type: String, required: true } } },
+    sequence: { render: story('Sequence'), selfClosing: true, attributes: { thumbs: { type: Boolean }, fulls: { type: String }, images: { type: String, required: true }, alts: { type: String }, caption: { type: String }, captions: { type: String }, frame: { type: String, matches: ['', 'before', 'after', 'compare'] }, landscape: { type: Boolean } } },
     // the character reacting to old screens, one problem highlighted per slide (slides in lib/reactions.ts)
     reactions: { render: story('Reactions'), selfClosing: true, attributes: { set: { type: String, required: true } } },
     // text kept for review, struck through

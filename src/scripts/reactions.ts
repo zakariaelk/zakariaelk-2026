@@ -6,11 +6,12 @@
 // then shrinks away as it's deleted; his thumb taps or swipes the phone in a few poses. The pause button stops the
 // clock, character included. With reduced motion: no
 // clock, each slide a still with the highlight on, the character in his last pose and his last thought. After the
-// last slide it stops, and his Yes button plays it again from the start.
+// last slide it stops, and his Yes button plays it again from the start. A set that plays once (a short scene, maybe
+// with no screen) starts when it is half in view, and its replay button plays it again.
 import type { Look, ReactionStep } from '../lib/reactions';
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const LOOK: Record<Look, [number, number]> = { c: [0, 0], d: [0, 9], dd: [0, 12], l: [-11, 0], r: [11, 0] };
+const LOOK: Record<Look, [number, number]> = { c: [0, 0], d: [0, 9], dd: [0, 12], l: [-11, 0], r: [11, 0], ul: [-9, -8], ur: [9, -8] };
 const EYE_H = 48; // the eye's height in the drawing; a lid closes by a share of it
 
 const LINE = 0.2, RISE = 0.8, HOLD = 2.5; // a line every 0.2 s; a thought about 0.8 s to rise, then held (seconds)
@@ -18,11 +19,11 @@ const LINE = 0.2, RISE = 0.8, HOLD = 2.5; // a line every 0.2 s; a thought about
 // one step becomes timed jumps: a tap or swipe its thumb poses; a thought rises in, is held, then is gone (if the next
 // thought comes sooner, the one shown goes first; with stay it stays)
 type Arm = 'rest' | 'up' | 'press' | 'low';
-type Op = { t: number; arm?: Arm; look?: Look; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; hi?: boolean; show?: string; hide?: string; load?: number; zoom?: string | false; del?: 'jiggle' | 'gone' | 'off'; again?: boolean; say?: string; id?: number; clear?: number };
+type Op = { t: number; smile?: boolean; pan?: number; panScale?: number; panFor?: number; arm?: Arm; look?: Look; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; hi?: boolean; show?: string; hide?: string; load?: number; zoom?: string | false; del?: 'jiggle' | 'gone' | 'off'; again?: boolean; say?: string; id?: number; clear?: number };
 const expand = (steps: ReactionStep[]): Op[] => {
   let shown = -1, until = -Infinity;
   return steps.flatMap((s, k) => {
-    const ops: Op[] = [{ t: s.t, look: s.look, lids: s.lids, wide: s.wide, drop: s.drop, meh: s.meh, hi: s.hi, show: s.show, hide: s.hide, load: s.load, zoom: s.zoom, arm: s.thumb, del: s.del, again: s.again }];
+    const ops: Op[] = [{ t: s.t, smile: s.smile, pan: s.pan, panScale: s.panScale, panFor: s.panFor, look: s.look, lids: s.lids, wide: s.wide, drop: s.drop, meh: s.meh, hi: s.hi, show: s.show, hide: s.hide, load: s.load, zoom: s.zoom, arm: s.thumb, del: s.del, again: s.again }];
     if (s.tap) ops.push({ t: s.t, arm: 'up' }, { t: s.t + 0.15, arm: 'press' }, { t: s.t + 0.35, arm: 'up' }, { t: s.t + 0.5, arm: 'rest' });
     if (s.swipe) ops.push({ t: s.t, arm: 'low' }, { t: s.t + 0.12, arm: 'press' }, { t: s.t + 0.24, arm: 'up' }, { t: s.t + 0.45, arm: 'rest' });
     if (s.say) {
@@ -48,20 +49,30 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   const slides = [...fig.querySelectorAll<HTMLElement>('.cs-rx__slide')];
   const dots = [...fig.querySelectorAll<HTMLButtonElement>('.cs-seq__dots button')];
   const stage = fig.querySelector<HTMLElement>('.cs-rx__stage')!;
-  const pauseBtn = fig.querySelector<HTMLButtonElement>('.cs-rx__pause')!;
-  const count = fig.querySelector<HTMLElement>('[data-rx-count]')!;
-  const caption = fig.querySelector<HTMLElement>('[data-rx-caption]')!;
+  const pauseBtn = fig.querySelector<HTMLButtonElement>('.cs-rx__pause');
+  const count = fig.querySelector<HTMLElement>('[data-rx-count]');
+  const caption = fig.querySelector<HTMLElement>('[data-rx-caption]');
+  const replay = fig.querySelector<HTMLButtonElement>('.cs-rx__replay');
+  const once = fig.dataset.once !== undefined;
 
   // the character and his thoughts
   const meh = char.querySelector<SVGGElement>('.rx-meh-eyes')!;
   const look = ([x, y]: [number, number]) => { pupils.forEach((p) => (p.style.translate = `${x}px ${y}px`)); meh.style.translate = `${x * 0.7}px 0`; }; // shut eyes glance sideways only
   const close = (share: number) => lids.forEach((l) => (l.style.translate = `0 ${share * EYE_H}px`));
-  const veil = () => slides[i].querySelector<HTMLElement>('.cs-rx__veil');
-  const layer = (name: string) => slides[i].querySelector<HTMLElement>(`[data-layer="${name}"]`);
+  const veil = () => slides[i]?.querySelector<HTMLElement>('.cs-rx__veil');
+  const layer = (name: string) => slides[i]?.querySelector<HTMLElement>(`[data-layer="${name}"]`);
+  // a tall screen: zoomed in (scale), showing a share of its height (the zoom's origin), moving there in a few seconds
+  const pan = (share: number, scale: number, secs: number) => {
+    const img = slides[i]?.querySelector<HTMLElement>('.cs-rx__screen.is-tall > img');
+    if (!img) return;
+    img.style.transitionDuration = `${secs}s`;
+    img.style.transformOrigin = `0 ${share * 100}%`; // from the left edge, where the text starts
+    img.style.scale = String(scale);
+  };
   // the app installing: its progress in eighths, then the icon is ready
   let loading: { from: number; dur: number } | null = null;
   const fill = (now: number) => {
-    const el = slides[i].querySelector<HTMLElement>('.cs-rx__load');
+    const el = slides[i]?.querySelector<HTMLElement>('.cs-rx__load');
     if (!loading || !el) return;
     const p = Math.min(1, Math.floor(((now - loading.from) / loading.dur) * 8) / 8);
     el.style.setProperty('--p', `${p * 100}%`);
@@ -71,6 +82,8 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   const write = (text: string, id: number) => {
     const box = document.createElement('div');
     box.className = 'cs-rx__lines';
+    const forced = text.includes('\n') ? text.split('\n') : null; // its own lines, one under the other
+    if (forced) text = forced.join(' ');
     const words = text.split(' ').map((w) => { const s = document.createElement('span'); s.textContent = w; return s; });
     words.forEach((w, k) => box.append(w, k < words.length - 1 ? ' ' : ''));
     say.replaceChildren(box);
@@ -79,7 +92,8 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     for (let k = 0; k < 4 && box.offsetHeight > say.clientHeight; k++) say.style.fontSize = `${parseFloat(getComputedStyle(say).fontSize) * 0.9}px`;
     const lines: string[][] = [];
     let top = -1;
-    words.forEach((w) => { if (w.offsetTop !== top) { lines.push([]); top = w.offsetTop; } lines[lines.length - 1].push(w.textContent!); });
+    if (forced) forced.forEach((l) => lines.push([l]));
+    else words.forEach((w) => { if (w.offsetTop !== top) { lines.push([]); top = w.offsetTop; } lines[lines.length - 1].push(w.textContent!); });
     box.replaceChildren(...lines.map((ws, k) => {
       const mask = document.createElement('span'), inner = document.createElement('span');
       mask.className = 'cs-rx__mask'; inner.className = 'cs-rx__in';
@@ -95,12 +109,14 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     if (o.wide !== undefined) char.classList.toggle('is-wide', o.wide);
     if (o.drop !== undefined) char.classList.toggle('is-drop', o.drop);
     if (o.meh !== undefined) char.classList.toggle('is-meh', o.meh);
+    if (o.smile !== undefined) char.classList.toggle('is-smile', o.smile);
+    if (o.pan !== undefined) pan(o.pan, o.panScale ?? 1, o.panFor ?? 0.6);
     if (o.hi !== undefined) veil()?.classList.toggle('is-on', o.hi);
     if (o.show) layer(o.show)?.classList.add('is-on');
     if (o.hide) layer(o.hide)?.classList.remove('is-on');
     if (o.load) loading = { from: o.t, dur: o.load };
-    if (o.zoom !== undefined) slides[i].querySelectorAll<HTMLElement>('.cs-rx__zoom').forEach((z) => z.classList.toggle('is-on', z.dataset.zoom === o.zoom));
-    const del = slides[i].querySelector<HTMLElement>('.cs-rx__del');
+    if (o.zoom !== undefined) slides[i]?.querySelectorAll<HTMLElement>('.cs-rx__zoom').forEach((z) => z.classList.toggle('is-on', z.dataset.zoom === o.zoom));
+    const del = slides[i]?.querySelector<HTMLElement>('.cs-rx__del');
     if (del && o.del) { del.classList.toggle('is-on', o.del !== 'off'); del.classList.toggle('is-jiggle', o.del === 'jiggle'); del.classList.toggle('is-gone', o.del === 'gone'); }
     if (o.again) { again.hidden = false; say.classList.add('has-again'); }
     if (o.clear !== undefined && say.dataset.id === String(o.clear)) say.replaceChildren();
@@ -110,7 +126,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   // all at once (no fades)
   const reset = () => {
     fig.classList.add('is-resetting');
-    char.classList.remove('is-meh', 'is-wide', 'is-drop');
+    char.classList.remove('is-meh', 'is-wide', 'is-drop', 'is-smile');
     again.hidden = true; say.classList.remove('has-again');
     look(LOOK.d); close(0); char.dataset.arm = 'rest';
     slides.forEach((s) => {
@@ -118,6 +134,8 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
       s.querySelectorAll('.cs-rx__zoom').forEach((z) => z.classList.remove('is-on'));
       s.querySelector('.cs-rx__del')?.classList.remove('is-on', 'is-jiggle', 'is-gone');
       s.querySelectorAll<HTMLElement>('[data-layer]').forEach((l) => l.classList.toggle('is-on', l.dataset.on !== undefined));
+      const tall = s.querySelector<HTMLElement>('.cs-rx__screen.is-tall > img');
+      if (tall) { tall.style.scale = ''; tall.style.transformOrigin = ''; }
       const load = s.querySelector<HTMLElement>('.cs-rx__load');
       if (load) { load.hidden = false; load.style.setProperty('--p', '0%'); }
     });
@@ -129,11 +147,13 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   // the slideshow
   let i = 0, t = 0, fired = 0, playing = !reduce, visible = false, last = 0;
   const show = (k: number) => {
-    slides[i].hidden = true; dots[i].removeAttribute('aria-current');
+    if (slides[i]) slides[i].hidden = true;
+    dots[i]?.removeAttribute('aria-current');
     i = (k + n) % n;
-    slides[i].hidden = false; dots[i].setAttribute('aria-current', 'true');
-    count.textContent = `${i + 1} of ${n}`;
-    caption.textContent = data[i].caption;
+    if (slides[i]) slides[i].hidden = false;
+    dots[i]?.setAttribute('aria-current', 'true');
+    if (count) count.textContent = `${i + 1} of ${n}`;
+    if (caption) caption.textContent = data[i].caption ?? '';
     reset(); t = 0; fired = 0;
     if (reduce) { timeline[i].filter((o) => o.clear === undefined).forEach(apply); fill(Infinity); fired = timeline[i].length; } // the last thought stays
   };
@@ -151,13 +171,14 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   const setPlaying = (on: boolean) => {
     playing = on;
     fig.classList.toggle('is-paused', !on);
-    pauseBtn.setAttribute('aria-label', on ? 'Pause the slideshow' : 'Play the slideshow');
+    pauseBtn?.setAttribute('aria-label', on ? 'Pause the slideshow' : 'Play the slideshow');
   };
   setPlaying(playing);
   show(0);
   if (!reduce) requestAnimationFrame(tick);
 
-  pauseBtn.addEventListener('click', () => setPlaying(!playing));
+  pauseBtn?.addEventListener('click', () => setPlaying(!playing));
+  replay?.addEventListener('click', () => { show(0); if (!reduce) setPlaying(true); });
   again.addEventListener('click', () => { show(0); if (!reduce) setPlaying(true); stage.focus(); });
   fig.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((b) => b.addEventListener('click', () => show(i + Number(b.dataset.step))));
   dots.forEach((d, k) => d.addEventListener('click', () => show(k)));
@@ -176,5 +197,5 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   stage.addEventListener('pointercancel', () => { x0 = null; });
   // load the screens once it comes near; the clock runs while it's well on screen
   new IntersectionObserver(([e], io) => { if (e.isIntersecting) { fig.querySelectorAll<HTMLImageElement>('img').forEach((s) => (s.loading = 'eager')); io.disconnect(); } }, { rootMargin: '600px 0px' }).observe(fig);
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.4 }).observe(fig);
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: once ? 0.5 : 0.4 }).observe(fig);
 });

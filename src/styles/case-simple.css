@@ -218,6 +218,60 @@ svg[data-frame="28"] > [data-f="28"], svg[data-frame="29"] > [data-f="29"], svg[
 .lbz__frame { overflow: visible; }
 .lbz .cs-zoom { opacity: 1; }
 html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
+/* from a slideshow: previous / next at the sides */
+.lbz__arrow { position: fixed; top: 50%; z-index: 3; display: grid; place-items: center; width: 44px; height: 44px; margin-top: -22px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #161616; box-shadow: 0 1px 4px rgb(0 0 0 / 0.25); cursor: pointer; }
+.lbz__arrow[hidden] { display: none; }
+.lbz__arrow--prev { left: 16px; }
+.lbz__arrow--next { right: 16px; }
+.lbz__arrow svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.lbz__arrow:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+/* a long screen: a readable width, scrolled */
+.lbz.is-tall .lbz__stage { display: block; overflow-y: auto; padding: 24px 0; cursor: default; }
+.lbz.is-tall .lbz__frame { width: min(84vw, 560px); margin: 0 auto; }
+.lbz.is-tall .lbz__img { width: 100%; max-width: none; max-height: none; }
+.lbz.is-tall .cs-zoom { position: fixed; right: 20px; bottom: 20px; top: auto; }
+
+/* ---------- Numbered badges: on a former visual and in its table's rows (the orange of the highlight) ---------- */
+.cs-num { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: #e8590c; color: #fff; font: 700 13px/1 var(--sans); font-variant-numeric: tabular-nums; vertical-align: 1px; margin-right: 8px; }
+.cs-badges { position: absolute; inset: 0; pointer-events: none; }
+.cs-badges .cs-num { position: absolute; width: 5%; height: auto; aspect-ratio: 1; margin: 0; translate: -50% -50%; font-size: clamp(11px, 1.6cqw, 20px); box-shadow: 0 0 0 2px #fff, 0 2px 6px rgb(0 0 0 / 0.3); }
+.cs-media:has(.cs-badges), .lbz__frame:has(.cs-badges) { container-type: inline-size; }
+.lbz__frame .cs-badges .cs-num { font-size: 1.9cqw; }
+
+/* ---------- A table that can be folded away (components/story/TableBox.astro): open, its toggle under it ---------- */
+.cs-simple .a-story .cs-tbl { max-width: var(--col); margin: 32px auto 40px; }
+.cs-simple .a-story .cs-tbl > table { width: 100%; margin: 0; border-collapse: collapse; font-family: var(--sans); font-size: 15px; line-height: 22px; color: var(--cs-text); }
+.cs-simple .a-story .cs-tbl :is(th, td) { padding: 14px 16px 14px 0; border: 0; border-bottom: 1px solid var(--cs-rule); text-align: left; vertical-align: top; }
+.cs-simple .a-story .cs-tbl thead th { font-weight: 600; color: var(--cs-title); border-bottom-color: var(--cs-rule-strong); }
+.cs-tbl > summary { display: inline-flex; margin-top: 12px; font-family: var(--sans); font-size: var(--small); color: var(--cs-caption); cursor: pointer; list-style: none; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.cs-tbl > summary::-webkit-details-marker { display: none; }
+.cs-tbl:not([open]) .cs-tbl__hide, .cs-tbl[open] .cs-tbl__show { display: none; }
+.cs-tbl:not([open]) > summary { margin-top: 0; }
+@media (max-width: 599px) {
+  .cs-simple .a-story :is(.cs-tbl > table, article > table) :is(thead, tbody, tr, th, td) { display: block; }
+  .cs-simple .a-story :is(.cs-tbl > table, article > table) thead { display: none; }
+  .cs-simple .a-story :is(.cs-tbl > table, article > table) td { padding: 0; border: 0; }
+  .cs-simple .a-story :is(.cs-tbl > table, article > table) td:first-child { padding-top: 14px; font-weight: 600; color: var(--cs-title); }
+  .cs-simple .a-story :is(.cs-tbl > table, article > table) td:last-child { padding: 4px 0 14px; border-bottom: 1px solid var(--cs-rule); }
+}
+
+/* captions of the redesign's visuals don't start with "After:" (the old ones keep "Before:") */
+.cs-simple .a-story .cs-frame--after .cs-cap__frame { display: none; }
+
+/* ---------- A slideshow's counter and thumbnails ---------- */
+.cs-seq__count { display: none; }
+.cs-simple .cs-seq__count { display: inline; min-width: 3.5em; margin-left: 6px; font-family: var(--sans); font-size: var(--small); color: var(--cs-caption); font-variant-numeric: tabular-nums; }
+@media (max-width: 599px) { .cs-simple .cs-seq__nav .cs-seq__dots { display: none; } } /* phones: the counter, arrows and swipe */
+.cs-seq__thumbs { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+.cs-seq__thumbs button { padding: 0; border: 2px solid transparent; border-radius: 6px; background: none; cursor: pointer; opacity: 0.6; }
+.cs-seq__thumbs button[aria-current] { border-color: var(--cs-title); opacity: 1; }
+.cs-seq__thumbs button:hover { opacity: 1; }
+.cs-seq__thumbs button:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 2px; }
+.cs-seq__thumbs img { display: block; width: 64px; height: auto; border-radius: 4px; }
+
+/* ---------- Temporary: text the author is reviewing (pale yellow; remove the class to drop it) ---------- */
+.cs-simple .a-story .cs-review { background: #fff6bf; box-shadow: 0 0 0 8px #fff6bf; border-radius: 2px; }
+:root[data-theme='dark'] .cs-simple .a-story .cs-review { background: #4a4420; box-shadow: 0 0 0 8px #4a4420; }
 
 /* the versions tooltip: at the right edge of the title column, level with the client label */
 .cs-simple .a-versions { top: 0; right: max(var(--side), calc((100% - var(--col)) / 2)); margin: 0; max-width: none; }
@@ -374,6 +428,24 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-rx__veil--overlay { background: rgb(0 0 0 / 0.55); }
 .cs-rx__veil--blur { background: rgb(0 0 0 / 0.06); -webkit-backdrop-filter: blur(6px) brightness(0.7); backdrop-filter: blur(6px) brightness(0.7); }
 .cs-rx__nav { margin-top: 10px; }
+/* the result he is thinking about follows him closely */
+.cs-simple .a-story .cs-rx--solo + .cs-block--result { margin-top: 20px; }
+/* a set that plays once: a small replay button instead of the controls */
+.cs-rx__nav--once { display: flex; justify-content: center; }
+.cs-rx__replay { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px 5px 9px; border: 1px solid var(--cs-rule-strong); border-radius: 999px; background: none; color: var(--cs-caption); font: 400 var(--small) / 1 var(--sans); cursor: pointer; }
+.cs-rx__replay svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cs-rx__replay:hover { color: var(--cs-title); border-color: var(--cs-title); }
+.cs-rx__replay:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 2px; }
+/* on his own above a result: centred, with clear space above (about twice the gap around a visual) */
+.cs-simple .a-story .cs-rx--solo { margin: 80px auto 12px; }
+.cs-rx--solo .cs-rx__stage { grid-template-columns: 1fr; justify-items: center; }
+.cs-rx--solo .cs-rx__side { grid-column: 1; justify-self: center; margin-right: 0; }
+.cs-rx--solo .cs-rx__screens { display: none; }
+/* a long screen, whole in the phone's window; pan steps zoom into it */
+.cs-rx__screen.is-tall img { height: auto; transform-origin: 0 0; transition-property: scale, transform-origin; transition-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95); }
+.cs-rx.is-resetting .cs-rx__screen.is-tall img { transition: none; }
+/* his slight smile */
+.rx-char:not(.is-smile) .rx-smile, .rx-char.is-smile .rx-mouth, .rx-char.is-meh .rx-smile { visibility: hidden; }
 .cs-rx__pause svg path { stroke: currentColor; }
 .cs-rx__i-play { display: none; fill: currentColor; stroke: none; }
 .cs-rx.is-paused .cs-rx__i-pause { display: none; }

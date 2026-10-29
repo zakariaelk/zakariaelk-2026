@@ -3,33 +3,64 @@
 // 95% of the window, on a dark backdrop); there the button is a magnifier-minus, and a click anywhere, it, or Esc
 // closes. Focus goes into the view and back to the button; the page doesn't scroll while it's open. On touch screens
 // the image itself zooms: pinch, or double-tap a spot (again to fit); one finger moves a zoomed image around; a tap
-// outside the image (or the button) closes. No animation.
+// outside the image (or the button) closes. No animation. From a slideshow it has previous / next arrows (and the arrow
+// keys), which move the slideshow too; a long screen is shown at a readable width and scrolls; numbered badges on an
+// image come along.
 const PLUS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3 20 20M7.5 10.5h6M10.5 7.5v6"/></svg>';
 const MINUS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3 20 20M7.5 10.5h6"/></svg>';
 
 const dlg = document.createElement('dialog');
 dlg.className = 'lbz';
 dlg.setAttribute('aria-label', 'Enlarged image');
-dlg.innerHTML = `<div class="lbz__stage"><div class="lbz__frame"><img class="lbz__img" alt=""><button type="button" class="cs-zoom" aria-label="Close enlarged image">${MINUS}</button></div></div>`;
+const ARROW = (d: string) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
+dlg.innerHTML = `<div class="lbz__stage"><div class="lbz__frame"><img class="lbz__img" alt=""><button type="button" class="cs-zoom" aria-label="Close enlarged image">${MINUS}</button></div></div>`
+  + `<button type="button" class="lbz__arrow lbz__arrow--prev" data-lbz-step="-1" aria-label="Previous screen" hidden>${ARROW('M14.5 6l-6 6 6 6')}</button>`
+  + `<button type="button" class="lbz__arrow lbz__arrow--next" data-lbz-step="1" aria-label="Next screen" hidden>${ARROW('M9.5 6l6 6-6 6')}</button>`;
 document.body.append(dlg);
 const big = dlg.querySelector<HTMLImageElement>('.lbz__img')!;
 const close = dlg.querySelector<HTMLButtonElement>('.cs-zoom')!;
 let opener: HTMLElement | null = null;
+let seq: HTMLElement | null = null; // the slideshow it was opened from
+const arrows = [...dlg.querySelectorAll<HTMLButtonElement>('[data-lbz-step]')];
+const frameEl = dlg.querySelector<HTMLElement>('.lbz__frame')!;
+// the image, its badges, and the long-screen view
+const fill = (img: HTMLImageElement) => {
+  big.src = largest(img);
+  big.alt = img.alt;
+  frameEl.querySelector('.cs-badges')?.remove();
+  const badges = img.closest('.cs-media')?.querySelector('.cs-badges');
+  if (badges) frameEl.append(badges.cloneNode(true));
+  const tall = () => dlg.classList.toggle('is-tall', big.naturalHeight / big.naturalWidth > 2.4);
+  if (big.complete) tall(); else big.addEventListener('load', tall, { once: true });
+  dlg.querySelector('.lbz__stage')!.scrollTop = 0;
+};
 
 // the largest version of an image: data-full, else the widest candidate in its srcset
 const largest = (el: HTMLImageElement) => el.dataset.full || el.srcset.split(',').map((c) => c.trim().split(/\s+/)).sort((a, b) => parseInt(b[1] ?? '0') - parseInt(a[1] ?? '0'))[0]?.[0] || el.currentSrc || el.src;
 const open = (img: HTMLImageElement, from: HTMLElement) => {
   opener = from;
-  big.src = largest(img);
-  big.alt = img.alt;
+  seq = from.closest<HTMLElement>('.cs-simple [data-seq]'); // the Simple case's slideshows
+  arrows.forEach((a) => (a.hidden = !seq || seq.querySelectorAll('.cs-seq__slide').length < 2));
+  fill(img);
   reset();
   document.documentElement.classList.add('is-lbz-open');
   dlg.showModal();
   close.focus();
 };
 // mouse: a click anywhere closes (the image and the button included); touch: a tap outside the image closes
+const step = (d: number) => {
+  if (!seq) return;
+  seq.dispatchEvent(new CustomEvent('ze:seq-step', { detail: d }));
+  const img = seq.querySelector<HTMLImageElement>('.cs-seq__slide:not([hidden]) img');
+  if (img) { fill(img); reset(); }
+};
+arrows.forEach((a) => a.addEventListener('click', (e) => { e.stopPropagation(); step(Number(a.dataset.lbzStep)); }));
+dlg.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' && seq) { e.preventDefault(); step(1); }
+  else if (e.key === 'ArrowLeft' && seq) { e.preventDefault(); step(-1); }
+});
 dlg.addEventListener('click', (e) => {
-  if (touched && e.target === big) return;
+  if ((touched || dlg.classList.contains('is-tall')) && e.target === big) return; // a long screen is scrolled, not closed
   dlg.close();
 });
 

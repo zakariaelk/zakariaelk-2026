@@ -4,11 +4,12 @@
 // is the title, the numbers are told in the paragraph, and a source line follows. No labels, no box. The icon is
 // optional (each one is used once on a page), and so is the title (an icon can sit beside a plain paragraph).
 // Icons: cut-paper flipbooks (./icons, made by docs/icons/build.mjs), played once by the page's script.
-interface Props { icon?: string; title?: string; source?: string }
-const { icon, title, source } = Astro.props;
+// result: a finding with no source line, styled as one
+interface Props { icon?: string; title?: string; source?: string; result?: boolean }
+const { icon, title, source, result } = Astro.props;
 const icons = import.meta.glob<string>('./icons/*.svg', { query: '?raw', import: 'default', eager: true });
 ---
-<section class:list={['cs-block', icon && `cs-block--${icon}`, !title && 'cs-block--untitled', source && 'cs-block--result']}>
+<section class:list={['cs-block', icon && `cs-block--${icon}`, !title && 'cs-block--untitled', (source || result) && 'cs-block--result']}>
   <div class="cs-block__head">
     {icon && <span class="cs-block__icon" aria-hidden="true" set:html={icons[`./icons/${icon}.svg`]} />}
     {title && <p class="cs-block__title">{title}</p>}

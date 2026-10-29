@@ -7,8 +7,10 @@ import { Image, getImage } from 'astro:assets';
 import { assetImage, posterFor } from '../../lib/media';
 
 // related: the visual shows the data of the result just above it, so it stays close to it
-interface Props { src: string; alt: string; caption?: string; frame?: string; size?: string; notes?: string; related?: boolean }
-const { src, alt, caption, frame = '', size = 'wide', notes, related = false } = Astro.props;
+// badges: numbered badges over the image ("x,y|x,y", in % of its size), matching the numbered rows of a table
+interface Props { src: string; alt: string; caption?: string; frame?: string; size?: string; notes?: string; related?: boolean; badges?: string }
+const { src, alt, caption, frame = '', size = 'wide', notes, related = false, badges } = Astro.props;
+const badgeList = badges?.split('|').map((b) => b.split(',').map((v) => v.trim())) ?? [];
 const isVideo = /\.mp4$/i.test(src);
 const img = isVideo ? undefined : assetImage(src);
 if (!isVideo && !img) throw new Error(`Figure: image not found in src/assets: ${src}`);
@@ -34,6 +36,7 @@ const label = frame === 'before' ? 'Before' : frame === 'after' ? 'After' : '';
     ) : (
       <Image src={img!} alt={alt} widths={[640, 960, 1280, 1680]} sizes={sizes} loading="lazy" decoding="async" />
     )}
+    {badgeList.length > 0 && <div class="cs-badges" aria-hidden="true">{badgeList.map(([x, y], i) => <span class="cs-num" style={`left:${x}%;top:${y}%`}>{i + 1}</span>)}</div>}
   </div>
   {noteList.length > 0 && <ol class="cs-notes" aria-label="What changed">{noteList.map((n) => <li>{n}</li>)}</ol>}
   {caption && <figcaption>{label && <span class="cs-cap__frame">{label}: </span>}{caption}</figcaption>}

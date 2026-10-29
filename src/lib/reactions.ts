@@ -7,19 +7,25 @@
 // layers), load (the app installing: its progress fills in this many seconds), zoom (one of the slide's zooms: that part of
 // the screen grows, as it is; false: back), tap (his thumb taps the phone), swipe (his thumb swipes up),
 // thumb (his thumb held in a pose: rest, up, press, low), del (the app to delete: jiggle, with its minus badge; gone,
-// shrunk away; off, no longer shown), again (the button to play the slideshow again).
+// shrunk away; off, no longer shown), again (the button to play the slideshow again), smile (a slight smile, or back),
+// pan (a tall screen zooms in, panScale, and moves to show this share of its height: 0 its top, 0.5 its middle, in
+// panFor seconds). Looks ul / ur: up and
+// aside, thinking. A thought's \n starts a new line.
 // A slide's layers: screens over its own, hidden until shown (on: shown from the start; fade: seconds to fade in or
 // out). load: where the installing app's icon is (x, y, size in the screenshot's pixels). zooms: parts of the screen
 // to zoom (x1, x2, y1, y2 in the screenshot's pixels; size: the share of the full zoom, for a smaller one). del: an app on a screen to delete (that image, and x1, x2, y1, y2
-// around its icon and name).
+// around its icon and name). tall: a long screen, shown whole in a phone-shaped window, that pan steps zoom into.
+// A set's solo: YoupieMan and his bubble on their own, centred, no screen (a short scene above a result); once: it
+// plays once when it comes into view and stops, with a replay button instead of the slideshow's controls.
 
-export type Look = 'c' | 'd' | 'dd' | 'l' | 'r';
-export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; say?: string; stay?: boolean; show?: string; hide?: string; load?: number; zoom?: string | false; tap?: boolean; swipe?: boolean; thumb?: 'rest' | 'up' | 'press' | 'low'; del?: 'jiggle' | 'gone' | 'off'; again?: boolean }
+export type Look = 'c' | 'd' | 'dd' | 'l' | 'r' | 'ul' | 'ur';
+export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; say?: string; stay?: boolean; show?: string; hide?: string; load?: number; zoom?: string | false; tap?: boolean; swipe?: boolean; thumb?: 'rest' | 'up' | 'press' | 'low'; del?: 'jiggle' | 'gone' | 'off'; again?: boolean; smile?: boolean; pan?: number; panScale?: number; panFor?: number }
 export interface ReactionLayer { src: string; fade?: number; on?: boolean }
-export interface ReactionSlide { screen: string; alt: string; mode: 'overlay' | 'blur'; holes: [number, number, number, number][]; caption: string; end: number; layers?: Record<string, ReactionLayer>; load?: [number, number, number]; zooms?: Record<string, { at: [number, number, number, number]; size?: number }>; del?: { src: string; at: [number, number, number, number] }; steps: ReactionStep[] }
-export interface ReactionSet { label: string; width: number; height: number; slides: ReactionSlide[] }
+export interface ReactionSlide { screen?: string; alt?: string; mode?: 'overlay' | 'blur'; holes?: [number, number, number, number][]; tall?: boolean; caption?: string; end: number; layers?: Record<string, ReactionLayer>; load?: [number, number, number]; zooms?: Record<string, { at: [number, number, number, number]; size?: number }>; del?: { src: string; at: [number, number, number, number] }; steps: ReactionStep[] }
+export interface ReactionSet { label: string; width?: number; height?: number; solo?: boolean; once?: boolean; slides: ReactionSlide[] }
 
 const DIR = 'projects/mitigating-risk-with-location-based-alerts/login-problems/';
+const SIMPLE = 'projects/mitigating-risk-with-location-based-alerts/simple/';
 
 export const REACTIONS: Record<string, ReactionSet> = {
   'inso-login': {
@@ -96,4 +102,33 @@ export const REACTIONS: Record<string, ReactionSet> = {
       },
     ],
   },
+  // Alert detail: the former screen, read from the top down to about halfway
+  'inso-alert-detail': {
+    label: 'What was wrong with the old alert detail',
+    width: 2048,
+    height: 4438,
+    once: true,
+    slides: [
+      {
+        screen: SIMPLE + 'alert-details/single-alert-old.jpg',
+        alt: 'The old alert detail: a dark title bar, a big map with two pins and no legend, a teal ALERT_UPDATE banner with an email address, then short fields in large type (an empty Update, the date again) and justified text under headings that look like body text.',
+        tall: true,
+        end: 19.6,
+        steps: [
+          { t: 0.3, look: 'd', say: "Okay, let's see." }, { t: 0.9, look: 'dd', pan: 0, panScale: 1.5, panFor: 0.8 }, { t: 1.8, pan: 0.5, panScale: 1.5, panFor: 2.4 },
+          { t: 4.3, wide: true, look: 'c', say: 'Ay, ay, ay, where should I start?' },
+          { t: 6.9, wide: false, meh: true, say: 'Ah, any designer can do better than this.' },
+          { t: 9.8, meh: false, look: 'c' }, { t: 10.4, look: 'ul', say: 'But you know what? This was made by an engineer at first, who focused on…' },
+          { t: 13.9, say: 'many\nmany\nmany' },
+          { t: 16, look: 'ur', say: "things a designer can't even begin to comprehend.", stay: true },
+          { t: 18.4, look: 'c', smile: true },
+        ],
+      },
+    ],
+  },
+  // short scenes above a result: YoupieMan on his own, thinking one thing
+  'inso-login-result': { label: 'How did the new onboarding and login perform?', solo: true, once: true, slides: [{ end: 2.6, steps: [{ t: 0.2, look: 'ul' }, { t: 0.5, say: 'How did this perform?', stay: true }, { t: 1.6, look: 'c' }] }] },
+  'inso-alerts-result': { label: 'Test, test, test', solo: true, once: true, slides: [{ end: 2.4, steps: [{ t: 0.2, look: 'd' }, { t: 0.4, say: 'Test\nTest\nTest', stay: true }, { t: 1.6, look: 'c' }] }] },
+  'inso-proximity-unsure': { label: "I'm not sure about this one", solo: true, once: true, slides: [{ end: 2.6, steps: [{ t: 0.2, look: 'ul', lids: 0.3 }, { t: 0.5, say: "I'm not sure about this one", stay: true }] }] },
+  'inso-proximity-maybe': { label: 'This could be it', solo: true, once: true, slides: [{ end: 3.4, steps: [{ t: 0.2, look: 'c' }, { t: 0.8, look: 'r' }, { t: 1.6, look: 'c', smile: true }, { t: 1.9, say: 'This could be it', stay: true }] }] },
 };
