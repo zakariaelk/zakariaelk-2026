@@ -102,10 +102,10 @@
 .a-type.is-on .a-type__caret { display: inline-block; animation: a-caret 1.06s steps(1, end) infinite; }
 .a-type.is-typing .a-type__caret { animation: none; }
 @keyframes a-caret { 50% { opacity: 0; } }
-.a-type__face { display: inline-block; width: 0.92em; height: 1.05em; margin-block: -0.08em; vertical-align: -0.18em; } /* the head only, within the line */
-.a-type__white { fill: var(--bg); }
-.a-type__pupil { fill: currentColor; transition: transform 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95); }
-.a-type.is-thinking .a-type__pupil { transform: translate(20px, -8px); }
+.a-type__face { display: inline-block; width: 1.3em; height: 1.16em; margin-block: -0.14em; margin-right: 0.04em; vertical-align: -0.24em; overflow: visible; } /* YoupieMan's face, within the line */
+.a-type__face .i-k { fill: currentColor; }
+.a-type__face .i-w { fill: var(--bg); }
+.a-type__face :is(.rx-meh, .rx-drop, .rx-smile, [clip-path='url(#rx-hands-clip)']) { display: none; }
 /* phones: the headline in the featured titles' type and size (weight 600, line height 1.15, -0.01em), smaller only
    where its longest line ("Sometimes a front-end dev too", retyped, 12.9em) would not fit on one line, ~3% to spare:
    the titles' 28px from ~400px wide, 26px at 375, 22px at 320 */

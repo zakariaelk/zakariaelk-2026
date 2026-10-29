@@ -231,8 +231,8 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .lbz.is-tall .lbz__img { width: 100%; max-width: none; max-height: none; }
 .lbz.is-tall .cs-zoom { position: fixed; right: 20px; bottom: 20px; top: auto; }
 
-/* ---------- Numbered badges: on a former visual and in its table's rows (the orange of the highlight) ---------- */
-.cs-num { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: #e8590c; color: #fff; font: 700 13px/1 var(--sans); font-variant-numeric: tabular-nums; vertical-align: 1px; margin-right: 8px; }
+/* ---------- Numbered badges: on a former visual and in its table's rows (the site's blue, black numbers) ---------- */
+.cs-num { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--blue, #accff6); color: #161616; font: 700 13px/1 var(--sans); font-variant-numeric: tabular-nums; vertical-align: 1px; margin-right: 8px; }
 .cs-badges { position: absolute; inset: 0; pointer-events: none; }
 .cs-badges .cs-num { position: absolute; width: 5%; height: auto; aspect-ratio: 1; margin: 0; translate: -50% -50%; font-size: clamp(11px, 1.6cqw, 20px); box-shadow: 0 0 0 2px #fff, 0 2px 6px rgb(0 0 0 / 0.3); }
 .cs-media:has(.cs-badges), .lbz__frame:has(.cs-badges) { container-type: inline-size; }
@@ -373,6 +373,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 /* eyes wide open; his disappointed face, -_-': eyes shut to lines, a smaller mouth; a sweat drop (with that face or
    his usual one) sliding down and fading in */
 .rx-char.is-wide .rx-eye { scale: 1.15; }
+.rx-char.is-wide .rx-eye .i-w { fill: #ffbd7a; } /* surprised or shocked: his eyes go light orange */
 .rx-char:not(.is-meh) .rx-meh, .rx-char:not(.is-meh, .is-drop) .rx-drop, .rx-char.is-meh :is(.rx-eyes, .rx-mouth) { visibility: hidden; }
 .rx-char:is(.is-meh, .is-drop) .rx-drop { animation: rx-drop 1.1s ease-out both; }
 @keyframes rx-drop { from { translate: 0 -9px; opacity: 0; } to { translate: 0 3px; opacity: 1; } }
@@ -432,7 +433,8 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story .cs-rx--solo + .cs-block--result { margin-top: 20px; }
 /* a set that plays once: a small replay button instead of the controls */
 .cs-rx__nav--once { display: flex; justify-content: center; }
-.cs-rx__replay { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px 5px 9px; border: 1px solid var(--cs-rule-strong); border-radius: 999px; background: none; color: var(--cs-caption); font: 400 var(--small) / 1 var(--sans); cursor: pointer; }
+.cs-rx__replay { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 1px solid var(--cs-rule); border-radius: 50%; background: none; color: var(--cs-caption); cursor: pointer; opacity: 0.7; }
+.cs-rx__replay:hover { opacity: 1; }
 .cs-rx__replay svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .cs-rx__replay:hover { color: var(--cs-title); border-color: var(--cs-title); }
 .cs-rx__replay:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 2px; }

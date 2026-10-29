@@ -17,7 +17,13 @@ interface Props { set: string }
 const data = REACTIONS[Astro.props.set];
 if (!data) throw new Error(`Reactions: no set "${Astro.props.set}" in lib/reactions.ts`);
 const { width: W = 750, height: H = 1626, solo, once } = data;
-const n = data.slides.length;
+// the reader's slides: one per thought (or cut) in each scene, from that moment to the next (a scene's first thought
+// belongs to its start)
+const segs = data.slides.flatMap((sc, k) => {
+  const cuts = [0, ...[...new Set(sc.steps.filter((st) => (st.say || st.cut) && st.t >= 0.6).map((st) => st.t))].sort((a, b) => a - b)];
+  return cuts.map((from, j) => ({ s: k, from, to: cuts[j + 1] ?? sc.end }));
+});
+const n = segs.length;
 // everything but the holes: a mask that is opaque where the veil shows and has rounded holes where the screen
 // stays clear (a mask works on transparency, so the holes are cut out of one shape)
 const PAD = 22;
@@ -51,7 +57,7 @@ const slides = solo ? [] : await Promise.all(data.slides.map(async (s) => {
   const load = s.load && `left:${(s.load[0] / W) * 100}%;top:${(s.load[1] / H) * 100}%;width:${(s.load[2] / W) * 100}%;height:${(s.load[2] / H) * 100}%`;
   return { ...s, view: view.src, full: full.src, layers, load, zooms, del, mask: maskOf(s.holes) };
 }));
-const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, steps: s.steps, caption: s.caption })));
+const timeline = JSON.stringify({ scenes: data.slides.map((s) => ({ end: s.end, steps: s.steps, caption: s.caption })), segs });
 ---
 <figure class:list={['cs-rx', solo && 'cs-rx--solo', once && 'cs-rx--once']} data-rx={timeline} data-once={once ? '' : undefined} aria-roledescription={once ? undefined : 'carousel'} aria-label={data.label}>
   <div class="cs-rx__stage" tabindex={once ? undefined : 0} aria-label={once ? data.label : `${data.label}: use the arrow keys to move between slides`}>
@@ -64,7 +70,7 @@ const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, steps: s.s
     </div>
     <div class="cs-rx__screens">
       {slides.map((s, i) => (
-        <div class="cs-rx__slide" role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${n}`} hidden={i > 0}>
+        <div class="cs-rx__slide" hidden={i > 0}>
           <div class:list={['cs-rx__screen', s.tall && 'is-tall']}>
             <img src={s.view} data-full={s.full} alt={s.alt} width={W} height={H} loading="lazy" decoding="async" />
             {s.load && <span class="cs-rx__load" style={s.load} aria-hidden="true"></span>}
@@ -78,12 +84,12 @@ const timeline = JSON.stringify(data.slides.map((s) => ({ end: s.end, steps: s.s
     </div>
   </div>
   {once ? (
-    <div class="cs-rx__nav cs-rx__nav--once"><button type="button" class="cs-rx__replay" aria-label={`Play again: ${data.label}`}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 1 0 2.1-5" /><path d="M5 4.5V8h3.5" /></svg>Replay</button></div>
+    <div class="cs-rx__nav cs-rx__nav--once"><button type="button" class="cs-rx__replay" aria-label={`Play again: ${data.label}`}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 1 0 2.1-5" /><path d="M5 4.5V8h3.5" /></svg></button></div>
   ) : (
     <div class="cs-seq__nav cs-rx__nav">
       <button type="button" class="cs-seq__arrow cs-rx__pause" aria-label="Pause the slideshow"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="cs-rx__i-pause" d="M8.5 6v12M15.5 6v12" /><path class="cs-rx__i-play" d="M8 5.5v13l11-6.5z" /></svg></button>
       <button type="button" class="cs-seq__arrow" data-step="-1" aria-label="Previous slide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6l-6 6 6 6" /></svg></button>
-      <div class="cs-seq__dots">{slides.map((_, i) => <button type="button" aria-label={`Slide ${i + 1} of ${n}`} aria-current={i === 0 ? 'true' : undefined} />)}</div>
+      <div class="cs-seq__dots">{segs.map((_, i) => <button type="button" aria-label={`Slide ${i + 1} of ${n}`} aria-current={i === 0 ? 'true' : undefined} />)}</div>
       <button type="button" class="cs-seq__arrow" data-step="1" aria-label="Next slide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6" /></svg></button>
       <span class="cs-rx__count" data-rx-count>1 of {n}</span>
     </div>

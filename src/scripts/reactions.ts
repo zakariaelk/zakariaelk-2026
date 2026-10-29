@@ -5,8 +5,9 @@
 // app's install progress fills in jumps; the rest of the screen blurs and small print grows, as it is; an app jiggles,
 // then shrinks away as it's deleted; his thumb taps or swipes the phone in a few poses. The pause button stops the
 // clock, character included. With reduced motion: no
-// clock, each slide a still with the highlight on, the character in his last pose and his last thought. After the
-// last slide it stops, and his Yes button plays it again from the start. A set that plays once (a short scene, maybe
+// clock, each slide a still with the highlight on, the character in his last pose and his last thought. A slide is one
+// of his thoughts: going to one plays its scene up to that moment at once, then on; from one thought to the next in the
+// same scene it just carries on. After the last slide it stops, and his Yes button plays it again from the start. A set that plays once (a short scene, maybe
 // with no screen) starts when it is half in view, and its replay button plays it again.
 import type { Look, ReactionStep } from '../lib/reactions';
 
@@ -38,9 +39,9 @@ const expand = (steps: ReactionStep[]): Op[] => {
 };
 
 document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
-  const data: { end: number; steps: ReactionStep[]; caption: string }[] = JSON.parse(fig.dataset.rx!);
+  const { scenes: data, segs }: { scenes: { end: number; steps: ReactionStep[]; caption?: string }[]; segs: { s: number; from: number; to: number }[] } = JSON.parse(fig.dataset.rx!);
   const timeline = data.map((d) => expand(d.steps));
-  const n = data.length;
+  const n = segs.length; // the reader's slides: a scene's thoughts one by one
   const char = fig.querySelector<SVGElement>('.rx-char')!;
   const pupils = [...char.querySelectorAll<SVGGElement>('.rx-pupil')];
   const lids = [...char.querySelectorAll<SVGGElement>('.rx-lid')];
@@ -144,18 +145,29 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
     void fig.offsetWidth; fig.classList.remove('is-resetting');
   };
 
-  // the slideshow
-  let i = 0, t = 0, fired = 0, playing = !reduce, visible = false, last = 0;
-  const show = (k: number) => {
+  // the slideshow: k is the reader's slide, i the scene (its screen) it belongs to
+  let k = 0, i = 0, t = 0, fired = 0, playing = !reduce, visible = false, last = 0;
+  const mark = (to: number) => {
+    dots[k]?.removeAttribute('aria-current');
+    k = to;
+    dots[k]?.setAttribute('aria-current', 'true');
+    if (count) count.textContent = `${k + 1} of ${n}`;
+  };
+  // a slide: its scene from the start, everything before the slide's moment done at once (no fades), then on from there
+  const show = (to: number) => {
+    to = (to + n) % n;
     if (slides[i]) slides[i].hidden = true;
-    dots[i]?.removeAttribute('aria-current');
-    i = (k + n) % n;
+    i = segs[to].s;
     if (slides[i]) slides[i].hidden = false;
-    dots[i]?.setAttribute('aria-current', 'true');
-    if (count) count.textContent = `${i + 1} of ${n}`;
+    mark(to);
     if (caption) caption.textContent = data[i].caption ?? '';
-    reset(); t = 0; fired = 0;
-    if (reduce) { timeline[i].filter((o) => o.clear === undefined).forEach(apply); fill(Infinity); fired = timeline[i].length; } // the last thought stays
+    reset(); t = segs[to].from; fired = 0;
+    const ops = timeline[i];
+    const until = reduce ? segs[to].to : t; // with reduced motion: the slide's last pose and thought
+    fig.classList.add('is-resetting');
+    while (fired < ops.length && ops[fired].t < until) { const o = ops[fired++]; if (!(reduce && o.clear !== undefined)) apply(o); }
+    fill(until);
+    void fig.offsetWidth; fig.classList.remove('is-resetting');
   };
   const tick = (now: number) => {
     const dt = last ? Math.min(0.1, (now - last) / 1000) : 0; last = now;
@@ -164,7 +176,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
       const ops = timeline[i];
       while (fired < ops.length && ops[fired].t <= t) apply(ops[fired++]);
       fill(t);
-      if (t >= data[i].end && i < n - 1) show(i + 1);
+      if (t >= segs[k].to && k < n - 1) { if (segs[k + 1].s === i) mark(k + 1); else show(k + 1); } // the same scene carries on
     }
     requestAnimationFrame(tick);
   };
@@ -180,11 +192,11 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   pauseBtn?.addEventListener('click', () => setPlaying(!playing));
   replay?.addEventListener('click', () => { show(0); if (!reduce) setPlaying(true); });
   again.addEventListener('click', () => { show(0); if (!reduce) setPlaying(true); stage.focus(); });
-  fig.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((b) => b.addEventListener('click', () => show(i + Number(b.dataset.step))));
-  dots.forEach((d, k) => d.addEventListener('click', () => show(k)));
+  fig.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((b) => b.addEventListener('click', () => show(k + Number(b.dataset.step))));
+  dots.forEach((d, j) => d.addEventListener('click', () => show(j)));
   stage.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') { e.preventDefault(); show(i + 1); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); show(i - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(k + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); show(k - 1); }
   });
   // swipe: a horizontal drag of 40px or more
   let x0: number | null = null, y0 = 0;
@@ -192,7 +204,7 @@ document.querySelectorAll<HTMLElement>('[data-rx]').forEach((fig) => {
   stage.addEventListener('pointerup', (e) => {
     if (x0 === null) return;
     const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) show(i + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) show(k + (dx < 0 ? 1 : -1));
   });
   stage.addEventListener('pointercancel', () => { x0 = null; });
   // load the screens once it comes near; the clock runs while it's well on screen

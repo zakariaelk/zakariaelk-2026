@@ -7,10 +7,10 @@ headline: "Keeping humanitarian workers informed on the move"
 lede:
   - "INSO shares real-time safety alerts with NGOs working in high-risk areas, traditionally by SMS and email. This is the mobile app that brings them into one place, and how I redesigned it as the sole designer."
 deliverables:
-  - "Heuristic evaluation"
-  - "UX/UI"
-  - "Testing"
-  - "Launch assets"
+  - "Heuristic evaluation, interviews"
+  - "UI design, prototypes, in-app tutorials"
+  - "Usability testing"
+  - "Launch assets, promotional website"
 intro: "Helping humanitarian workers stay informed on the move, by redesigning how safety alerts are read, mapped and sent"
 showIntro: false
 tagline: "a safety alert app for humanitarian workers"
@@ -76,9 +76,11 @@ Those sessions were the only research behind the app, and the engineers had most
 
 ## Where it started
 
-**The app existed, but it didn't feel made for the people using it**
+**The app existed, but wasn't made for the people who could benefit from it**
 
-The idea was simple: take alerts out of SMS and email and put them in one place, with a map, filters and updates people can follow on the move. My way in was pure curiosity after hearing the developers talk about it for a while. One look and my admittedly biased designer brain went "what is this, and who is it for?" There was no INSO blue (our main brand colour) anywhere, just brown and beige, and the screens felt built for engineers more than for someone reading an alert under pressure.
+The idea was simple: take alerts out of SMS and email and put them in one place, with a map, filters and updates people can follow on the move.
+
+My way in was pure curiosity after hearing the developers talk about it for a while. One look and my admittedly biased designer brain went "what is this, and who is it for?" There was no INSO blue (INSO's main brand colour) anywhere, brown and beige were occupying the majority of the design, and the screens felt built for engineers more than for someone reading an alert under pressure.
 
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-former-version.jpg" frame="before" alt="The app when I joined: a dense dark list of alerts in capitals, an alert detail packed with text under a small map, and a map that shows a single alert pin." caption="Visuals showing what the App looked like when I joined the project team." /%}
 
@@ -139,10 +141,6 @@ Most partners found getting started easy.
 Eight alerts were squeezed on one screen, with titles of 12 to 16 words in a tiny column and small dates and distances fighting for attention. The engineers' idea was to show as much as possible without scrolling, so the question became: see everything at once, or read each alert easily? My first thought was "where should I be looking?" There was no way to search by place either, and no profile or way to reach terms, FAQs or info about the app, just a settings icon at the top right.
 {% /block %}
 
-{% block title="Built for scanning, not for seeing everything" %}
-Scanning came first, with more space and a clear order of location, title and time. Then search at the top, a simpler filter and a list/map toggle. Fewer alerts per screen does mean more scrolling, but with search and filters you can go straight to a place, so it matters much less. The map-and-listings idea came from apps like Airbnb, and country office colleagues found it familiar straight away.
-{% /block %}
-
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-old-alerts-screen.jpg" frame="before" size="text" alt="The old alerts list, annotated: inconsistent typography, low spacing between items, and location, distance and time not prioritised." caption="Alerts screen before redesign, showing density and unclear hierarchy" /%}
 
 {% tablebox label="table" %}
@@ -154,6 +152,10 @@ Scanning came first, with more space and a clear order of location, title and ti
 | No search, no filter and no account area, just an unlabelled orange circle and a settings icon | Search at the top, a simpler filter, and an entry for the profile, terms and help |
 | Every alert had the same warning icon, with no cue for new or unseen alerts and no way to save | A marker for unseen alerts, a Recent Alerts block, and a save button on each alert |
 {% /tablebox %}
+
+{% block title="Built for scanning, not for seeing everything" %}
+Scanning came first, with more space and a clear order of location, title and time. Then search at the top, a simpler filter and a list/map toggle. Fewer alerts per screen does mean more scrolling, but with search and filters you can go straight to a place, so it matters much less. The map-and-listings idea came from apps like Airbnb, and country office colleagues found it familiar straight away.
+{% /block %}
 
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/02-alerts_list_instruct_01.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/03-alerts_search_typing.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/04-alerts_search_results.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/05-alerts_list_instruct_02.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/06-alerts_filter_off.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/07-alerts_filter_date_picker.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/08-alerts_filtered.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/09-alerts_list_instruct_03.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/10-map_explore_loading.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/11-map_explore_loaded.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/12-map_explore_alert-selected.jpg" landscape=true frame="after" alts="The new alerts list: location first, then a short title, then time.|In-app guide, 1 of 3: search anything in alerts.|Typing a search.|Search results for Ukraine.|In-app guide, 2 of 3: filter alerts by date.|The filter: programmes and regions, and a date range.|The date picker, with quick options like last week.|The list, filtered.|In-app guide, 3 of 3: explore alerts in a map view.|The map opens in Explore mode.|The map with the alerts in the area.|An alert opened on the map." caption="The new alerts list: built for scanning, with search at the top, a simpler filter and a list/map toggle." /%}
 
@@ -198,9 +200,7 @@ Alerts are sensitive, so what people can copy or see was a long conversation wit
 
 **Seeing incidents on a map changes everything**
 
-The old map had two tools, Proximity and Polygon. To look anywhere else, you had to open a single alert from the list and jump to its location. There was no way to move around the map and see what was happening. Also, you could only see one alert at a time on the map, and each map mode setting sat behind an icon in another window. Settings belong inside the feature they change, so each of the three map modes now holds its own. In the first version I tested, each mode was explained with one small pop-up.
-
-{% sequence images="projects/mitigating-risk-with-location-based-alerts/sequences/map-old-1.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/map-old-2.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/map-old-3.jpg" alts="The old alerts list.|The old map: one alert at a time.|The old map settings, behind an icon in another window." caption="In the former design, users could only view the location of a single alert on the map. Exploring alerts geographically, on the other hand, wasn’t straightforward." frame="before" /%}
+The old map had two tools, Proximity and Polygon. To look anywhere else, you had to open a single alert from the list and jump to its location.
 
 ### Explore: what's happening along my route?
 

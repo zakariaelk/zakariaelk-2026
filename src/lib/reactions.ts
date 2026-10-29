@@ -10,7 +10,8 @@
 // shrunk away; off, no longer shown), again (the button to play the slideshow again), smile (a slight smile, or back),
 // pan (a tall screen zooms in, panScale, and moves to show this share of its height: 0 its top, 0.5 its middle, in
 // panFor seconds). Looks ul / ur: up and
-// aside, thinking. A thought's \n starts a new line.
+// aside, thinking. A thought's \n starts a new line. The slideshow has a slide for each thought (and each cut: a
+// reaction with no thought of its own), so the reader can step through them; a scene's screen carries on across them.
 // A slide's layers: screens over its own, hidden until shown (on: shown from the start; fade: seconds to fade in or
 // out). load: where the installing app's icon is (x, y, size in the screenshot's pixels). zooms: parts of the screen
 // to zoom (x1, x2, y1, y2 in the screenshot's pixels; size: the share of the full zoom, for a smaller one). del: an app on a screen to delete (that image, and x1, x2, y1, y2
@@ -19,7 +20,7 @@
 // plays once when it comes into view and stops, with a replay button instead of the slideshow's controls.
 
 export type Look = 'c' | 'd' | 'dd' | 'l' | 'r' | 'ul' | 'ur';
-export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; say?: string; stay?: boolean; show?: string; hide?: string; load?: number; zoom?: string | false; tap?: boolean; swipe?: boolean; thumb?: 'rest' | 'up' | 'press' | 'low'; del?: 'jiggle' | 'gone' | 'off'; again?: boolean; smile?: boolean; pan?: number; panScale?: number; panFor?: number }
+export interface ReactionStep { t: number; look?: Look; hi?: boolean; lids?: number; wide?: boolean; drop?: boolean; meh?: boolean; say?: string; stay?: boolean; show?: string; hide?: string; load?: number; zoom?: string | false; tap?: boolean; swipe?: boolean; thumb?: 'rest' | 'up' | 'press' | 'low'; del?: 'jiggle' | 'gone' | 'off'; again?: boolean; cut?: boolean; smile?: boolean; pan?: number; panScale?: number; panFor?: number }
 export interface ReactionLayer { src: string; fade?: number; on?: boolean }
 export interface ReactionSlide { screen?: string; alt?: string; mode?: 'overlay' | 'blur'; holes?: [number, number, number, number][]; tall?: boolean; caption?: string; end: number; layers?: Record<string, ReactionLayer>; load?: [number, number, number]; zooms?: Record<string, { at: [number, number, number, number]; size?: number }>; del?: { src: string; at: [number, number, number, number] }; steps: ReactionStep[] }
 export interface ReactionSet { label: string; width?: number; height?: number; solo?: boolean; once?: boolean; slides: ReactionSlide[] }
@@ -68,7 +69,7 @@ export const REACTIONS: Record<string, ReactionSet> = {
           { t: 13.05, say: 'Okay, I see now' }, { t: 14.05, hi: false, zoom: false, look: 'd' }, // the zoom held 5.8 s
           { t: 15.75, lids: 0.3, say: "but I don't remember my password here..." }, { t: 15.95, zoom: 'password' },
           { t: 18.65, lids: 0, look: 'dd', zoom: false, say: 'And there is no way to reset it!' }, { t: 19.25, meh: true },
-          { t: 20.25, show: 'prompt' }, { t: 20.45, meh: false, wide: true, look: 'c' },
+          { t: 20.25, show: 'prompt', cut: true }, { t: 20.45, meh: false, wide: true, look: 'c' },
           { t: 21.4, wide: false, lids: 0.5, drop: true },
         ],
       },
@@ -113,15 +114,16 @@ export const REACTIONS: Record<string, ReactionSet> = {
         screen: SIMPLE + 'alert-details/single-alert-old.jpg',
         alt: 'The old alert detail: a dark title bar, a big map with two pins and no legend, a teal ALERT_UPDATE banner with an email address, then short fields in large type (an empty Update, the date again) and justified text under headings that look like body text.',
         tall: true,
-        end: 19.6,
+        end: 20.9,
         steps: [
           { t: 0.3, look: 'd', say: "Okay, let's see." }, { t: 0.9, look: 'dd', pan: 0, panScale: 1.5, panFor: 0.8 }, { t: 1.8, pan: 0.5, panScale: 1.5, panFor: 2.4 },
           { t: 4.3, wide: true, look: 'c', say: 'Ay, ay, ay, where should I start?' },
           { t: 6.9, wide: false, meh: true, say: 'Ah, any designer can do better than this.' },
-          { t: 9.8, meh: false, look: 'c' }, { t: 10.4, look: 'ul', say: 'But you know what? This was made by an engineer at first, who focused on…' },
-          { t: 13.9, say: 'many\nmany\nmany' },
-          { t: 16, look: 'ur', say: "things a designer can't even begin to comprehend.", stay: true },
-          { t: 18.4, look: 'c', smile: true },
+          { t: 9.8, meh: false, look: 'c' }, { t: 10.4, look: 'ul', say: 'But you know what?' },
+          { t: 12.2, say: 'This was made by an engineer at first, who focused on…' },
+          { t: 15.2, say: 'many\nmany\nmany' },
+          { t: 17.3, look: 'ur', say: "things a designer can't even begin to comprehend.", stay: true },
+          { t: 19.7, look: 'c', smile: true },
         ],
       },
     ],
