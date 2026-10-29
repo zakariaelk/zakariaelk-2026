@@ -50,7 +50,7 @@ export const REACTIONS: Record<string, ReactionSet> = {
         mode: 'blur',
         holes: [],
         caption: 'The login: no intro, a tiny note on how to get an account, no password reset.',
-        end: 25.8,
+        end: 22.6,
         zooms: { note: { at: [22, 714, 842, 922] }, password: { at: [26, 724, 546, 664], size: 0.4 } },
         layers: { prompt: { src: DIR + 'old-login-location.png' } },
         steps: [
@@ -58,13 +58,12 @@ export const REACTIONS: Record<string, ReactionSet> = {
           { t: 1.3, look: 'r' }, { t: 2.2, look: 'd' },
           { t: 3.25, look: 'dd', say: 'Hmm...' },
           { t: 5.1, look: 'c', say: 'Which account should I use here?' },
-          { t: 8, look: 'dd', say: 'Oh wait, maybe this tiny text can help' },
-          { t: 10.45, tap: true }, { t: 10.7, hi: true, zoom: 'note' },
-          { t: 16.5, hi: false, zoom: false, look: 'd', say: 'I see now' }, // the zoom held 5.8 s
-          { t: 19.2, lids: 0.3, say: "but I don't remember my password here..." }, { t: 19.4, zoom: 'password' },
-          { t: 22.1, lids: 0, look: 'dd', zoom: false, say: 'Do I have to contact INSO to reset my password?' }, { t: 22.7, meh: true },
-          { t: 23.45, show: 'prompt' }, { t: 23.65, meh: false, wide: true, look: 'c' },
-          { t: 24.6, wide: false, lids: 0.5, drop: true },
+          { t: 8, look: 'dd', say: 'Oh wait, maybe here', tap: true }, { t: 8.25, hi: true, zoom: 'note' },
+          { t: 13.05, say: 'Okay, I see now' }, { t: 14.05, hi: false, zoom: false, look: 'd' }, // the zoom held 5.8 s
+          { t: 15.75, lids: 0.3, say: "but I don't remember my password here..." }, { t: 15.95, zoom: 'password' },
+          { t: 18.65, lids: 0, look: 'dd', zoom: false, say: 'And there is no way to reset it!' }, { t: 19.25, meh: true },
+          { t: 20.25, show: 'prompt' }, { t: 20.45, meh: false, wide: true, look: 'c' },
+          { t: 21.4, wide: false, lids: 0.5, drop: true },
         ],
       },
       {
