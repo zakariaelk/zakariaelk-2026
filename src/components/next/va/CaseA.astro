@@ -14,6 +14,7 @@ import FramedMedia from '../FramedMedia.astro';
 import CaseStudyVideo from '../../video/CaseStudyVideo.astro';
 import ContactA from './ContactA.astro';
 import CaseComments from '../../CaseComments.astro';
+import BackToTop from '../../BackToTop.astro';
 import type { CollectionEntry } from 'astro:content';
 import { caseHref } from '../../../lib/versions';
 import { cutLine, unevenRect } from '../../../lib/papercut';
@@ -146,6 +147,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
 
   <ContactA />
   {simple && <CaseComments />}
+  <BackToTop />
   <slot />
 </Next>
 

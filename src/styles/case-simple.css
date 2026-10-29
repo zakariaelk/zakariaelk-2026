@@ -230,9 +230,9 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 /* "Take a look", centred under the usage chart, with room around it */
 .cs-simple .a-story .cs-cta { margin: 56px auto var(--sec-gap); text-align: center; }
 
-/* ---------- Comments anywhere (components/CaseComments.astro): a paper pin at the middle right ---------- */
+/* ---------- Comments anywhere (components/CaseComments.astro): a paper pin at the bottom right ---------- */
 .cs-simple main { position: relative; }
-.cc { position: fixed; right: 18px; top: 50%; z-index: 45; translate: 0 -50%; }
+.cc { position: fixed; right: 18px; bottom: 18px; z-index: 45; } /* bottom right, under back to top */
 .cc[hidden] { display: none; }
 .cc-pin { display: block; width: 42px; height: 42px; padding: 0; border: 0; background: none; cursor: grab; touch-action: none; filter: drop-shadow(0 6px 12px rgb(0 0 0 / 0.22)); }
 .cc-pin svg, .cc-dropped svg { display: block; width: 100%; height: 100%; }
@@ -242,7 +242,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cc.is-quiet .cc-pin:is(:hover, :focus-visible), .cc.is-dragging .cc-pin { opacity: 1; }
 .cc.is-dragging .cc-pin { cursor: grabbing; }
 .cc-pin:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 4px; border-radius: 50%; }
-.cc-hint { position: absolute; right: calc(100% + 12px); top: 50%; width: 240px; padding: 14px 16px; translate: 0 -50%; background: #fff; color: var(--cs-text); font-family: var(--sans); font-size: 15px; line-height: 21px; clip-path: polygon(1% 3%, 99% 0, 100% 97%, 0 100%); filter: drop-shadow(0 10px 22px rgb(0 0 0 / 0.18)); }
+.cc-hint { position: absolute; right: calc(100% + 12px); bottom: 0; width: 240px; padding: 14px 16px; background: #fff; color: var(--cs-text); font-family: var(--sans); font-size: 15px; line-height: 21px; clip-path: polygon(1% 3%, 99% 0, 100% 97%, 0 100%); filter: drop-shadow(0 10px 22px rgb(0 0 0 / 0.18)); }
 .cc-hint[hidden] { display: none; }
 .cc-hint p { margin: 0 0 10px; }
 .cc-hint__ok { padding: 4px 12px; border: 1px solid var(--cs-rule-strong); border-radius: 999px; background: none; font: inherit; font-size: 14px; cursor: pointer; }
@@ -267,7 +267,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cc-status { min-height: 18px; margin: 8px 0 0; font-size: 13px; color: var(--cs-muted); }
 .cc-hidden { position: absolute; left: -9999px; }
 :root[data-theme='dark'] :is(.cc-hint, .cc-card, .cc-field :is(textarea, input)) { background: #232323; }
-@media (max-width: 767px) { .cc { right: 10px; } .cc-pin { width: 38px; height: 38px; } .cc-hint { width: 200px; font-size: 14px; } }
+@media (max-width: 767px) { .cc { right: 10px; bottom: 12px; } .cc-pin { width: 38px; height: 38px; } .cc-hint { width: 200px; font-size: 14px; } }
 /* a section label straight followed by a heading: the label-to-title space, not a heading's */
 .cs-simple .a-story h2 + h3, .cs-simple .a-story h2 + .cs-sec-icon:has(+ h3) { margin-top: 0; }
 

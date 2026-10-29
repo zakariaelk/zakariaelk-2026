@@ -1,0 +1,20 @@
+---
+// Back to top on the case pages: a light paper-cut circle with a dark arrow at the bottom right (above the comment
+// pin where there is one), shown once the reader has scrolled about a screen. Smooth, instant with reduced motion.
+import { blob } from '../lib/papercut';
+const icon = `<svg viewBox="0 0 100 100" aria-hidden="true"><path class="a-top__paper" d="${blob(43, 50, 50, 46)}"/><path class="a-top__arrow" d="M50 70V31M34 46l16-16 16 16"/></svg>`;
+---
+<button type="button" class="a-top" aria-label="Back to top" hidden set:html={icon} />
+
+<script>
+  const top = document.querySelector<HTMLButtonElement>('.a-top');
+  if (top) {
+    const toggle = () => { top.hidden = scrollY < innerHeight * 0.9; };
+    addEventListener('scroll', toggle, { passive: true });
+    toggle();
+    top.addEventListener('click', () => {
+      const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      scrollTo({ top: 0, behavior: still ? 'instant' : 'smooth' });
+    });
+  }
+</script>

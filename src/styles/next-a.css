@@ -9,12 +9,10 @@
 .v-a body { background-image: none; }
 .v-a body.is-home { background-image: var(--paper); }
 .v-a .n-band:not(.a-band--contact) { background-image: none; }
-/* home: one flat sheet in the case studies' colour from the first project to the footer; a torn edge only where it
-   leaves the intro, and the footer's own */
+/* home: one flat sheet in the case studies' colour from the first project to the footer, with a torn edge above
+   every featured project and above "Other work" */
 :root.v-a body.is-home :is(.a-band, .a-band--gray) { --band: var(--bg); }
 :root.v-a body.is-home :is(.a-band, .a-band--gray) .n-cut { background-image: none; }
-:root.v-a body.is-home :is(.a-band ~ .a-band, .a-band--gray) { filter: none; }
-:root.v-a body.is-home :is(.a-band ~ .a-band, .a-band--gray) .n-cut { display: none; }
 :root[data-palette][data-theme='dark'].v-a { --surface: #1a1a1a; } /* a touch darker for white text */
 .v-a {
   --a-gap: clamp(120px, calc(120px + 120 * (100vw - 390px) / 1050), 240px); /* between blocks */
@@ -78,7 +76,7 @@
 @media (min-width: 701px) and (max-width: 1023px) { .a-hero:has(.a-more) { min-height: min(54.17vw, calc(84svh - var(--head-h))); } }
 /* home: the first sentence ~1.28× the featured titles (36 / 46 / 54px); the second at the case
    studies' body size on large screens, never below the phone's 28px */
-.a-statement.a-lead { font-size: calc(var(--a-title) * 1.28); line-height: 1.2; }
+.a-statement.a-lead { font-size: calc(var(--a-title) * 1.28); font-weight: 600; line-height: 1.2; } /* the case pages' title weight */
 /* laptops and up: the featured titles 32px at 1024, 36px at ~1260, 40px at most */
 @media (min-width: 1024px) {
   .v-a { --a-title: clamp(32px, calc(32px + 4 * (100vw - 1024px) / 236), 40px); }
@@ -89,6 +87,9 @@
 }
 .a-more { margin: 1.25em 0 0; font-family: var(--serif); font-weight: 500; font-size: max(28px, var(--t-body)); line-height: 1.3; letter-spacing: -0.01em; text-wrap: pretty; }
 .a-hero > :is(.a-lead, .a-more) { max-width: 1120px; }
+/* my name: "happens to be" on larger screens, "is" on phones */
+.a-more__m { display: none; }
+@media (max-width: 700px) { .a-more__d { display: none; } .a-more__m { display: inline; } }
 /* the second paragraph: at most ~65 characters a line on tablets (28em at 28px); on laptops and up
    three lines as wide as the first sentence (in ems, so the breaks hold at every size); phones get
    the same text */
@@ -105,10 +106,11 @@
 .a-type__white { fill: var(--bg); }
 .a-type__pupil { fill: currentColor; transition: transform 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95); }
 .a-type.is-thinking .a-type__pupil { transform: translate(20px, -8px); }
-/* phones: the headline in the featured titles' type (weight 500, line height 1.15, -0.01em), sized so its
-   longest line ("Sometimes a frontend developer too", retyped) still fits on one line, ~3% to spare */
+/* phones: the headline in the featured titles' type and size (weight 600, line height 1.15, -0.01em), smaller only
+   where its longest line ("Sometimes a front-end dev too", retyped, 12.9em) would not fit on one line, ~3% to spare:
+   the titles' 28px from ~400px wide, 26px at 375, 22px at 320 */
 @media (max-width: 700px) {
-  .a-statement.a-lead, .a-more { font-size: min(var(--a-title), calc((100vw - 2 * var(--pad)) / 15.3)); font-weight: 500; line-height: 1.15; letter-spacing: -0.01em; }
+  .a-statement.a-lead, .a-more { font-size: min(var(--a-title), calc((100vw - 2 * var(--pad)) / 13.3)); font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; }
   .a-more { margin-top: 0.95em; font-size: var(--t-body); font-weight: 470; line-height: 1.3; } /* my name: the smaller type, the case body size (20px) */
 }
 /* /v1/: the earlier intro, one sentence in two parts at one size; three lines on desktop, the font
@@ -171,7 +173,7 @@
   text-decoration: none;
 }
 .a-feat__client { grid-column: 1; margin: 0 0 16px; font-family: var(--sans); font-size: var(--t-meta); line-height: 1.15; color: var(--muted); }
-.a-feat__title { grid-column: 1; margin: 0; font-family: var(--serif); font-weight: 500; font-size: var(--a-title); line-height: 1.15; letter-spacing: -0.01em; text-wrap: balance; }
+.a-feat__title { grid-column: 1; margin: 0; font-family: var(--serif); font-weight: 600; font-size: var(--a-title); line-height: 1.15; letter-spacing: -0.01em; text-wrap: balance; }
 .a-feat__meta { grid-column: 1; grid-row: 3; align-self: end; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin: 40px 0 0; }
 /* "See case study": the paper button (media-a.css) at the end of the facts */
 .a-feat__cta { flex: none; }

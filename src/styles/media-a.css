@@ -2,6 +2,27 @@
 
 /* A paper button like the phone menu's: dark on the light page, light in dark mode, its rough edge
    circling round on hover (scripts/paper-ring.ts) while the shape stays put */
-.a-cta { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; padding: 15px 26px; font-family: var(--sans); font-weight: 430; font-size: 18px; letter-spacing: -0.2px; line-height: 1.2; color: var(--on-brown); text-decoration: none; white-space: nowrap; }
+.a-cta { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; padding: clamp(10px, calc(10px + 2 * (100vw - 390px) / 890), 12px) clamp(16px, calc(16px + 2 * (100vw - 390px) / 890), 18px); font-family: var(--sans); font-weight: 430; font-size: 18px; letter-spacing: -0.2px; line-height: 1.2; color: var(--on-brown); text-decoration: none; white-space: nowrap; }
 .a-cta__paper { position: absolute; inset: 0; z-index: -1; background-color: var(--brown); }
+/* the cut-paper eye of the INSO case's Reality check, open (its third frame), in the button's colours */
+.a-cta__eye { display: contents; }
+.a-cta .a-cta__eye svg { width: 26px; height: auto; stroke: none; }
+.a-cta__eye [data-f] { display: none; }
+.a-cta__eye [data-f='3'] { display: inline; }
+.a-cta__eye .i-k { fill: currentColor; }
+.a-cta__eye .i-w { fill: var(--brown); }
 .a-cta svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Back to top (components/BackToTop.astro), case pages: a light paper circle with a dark arrow at the bottom right,
+   above the comment pin when there is one (same size, right margin and gap) */
+.a-top { position: fixed; right: 18px; bottom: 18px; z-index: 45; width: 42px; height: 42px; padding: 0; border: 0; background: none; cursor: pointer; filter: drop-shadow(0 6px 12px rgb(0 0 0 / 0.22)); }
+.a-top[hidden] { display: none; }
+.a-top svg { display: block; width: 100%; height: 100%; }
+.a-top__paper { fill: #f4f2ec; }
+.a-top__arrow { fill: none; stroke: #1f1f1f; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+.a-top:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 50%; }
+body:has(.cc:not([hidden])) .a-top { bottom: 72px; }
+@media (max-width: 767px) {
+  .a-top { right: 10px; bottom: 12px; width: 38px; height: 38px; }
+  body:has(.cc:not([hidden])) .a-top { bottom: 60px; }
+}

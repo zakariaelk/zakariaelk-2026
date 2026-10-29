@@ -22,6 +22,7 @@ import { workList, caseHref, LIST_LINES, SHORT_TITLES } from '../../../lib/versi
 import '../../../styles/next-a.css';
 import '../../../styles/next-a-looks.css';
 import '../../../styles/media-a.css';
+import eye from '../../story/icons/eye.svg?raw'; // the cut-paper eye of the INSO case's Reality check
 
 type Featured = 'split' | 'client' | 'screen-1' | 'screen-2' | 'screen-3';
 // intro: the opening animation (the home page only, not the tests)
@@ -50,7 +51,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
       <h1 class="a-statement" aria-label={sentence}><span class="a-s1">I'm Zakaria El Khachi<span class="a-say-a">a<button type="button" class="n-say a-say" aria-label="Hear how to say Zakaria El Khachia" data-audio="/audio/zakaria-el-khachia.mp3"><svg class="a-say__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-4v13L7 14.5H4z" /><path class="wave" d="M15 9.2a4 4 0 0 1 0 5.6" /><path class="wave" d="M17.8 6.6a7.6 7.6 0 0 1 0 10.8" /></svg></button></span>, a product <span class:list={mark}>designer</span> and <span class:list={mark}>builder</span>.</span> <span class="a-s2">I spent the last five years at <a href="https://ngosafety.org" target="_blank" rel="noopener">INSO</a> making safety information<br class="a-br-d" /> accessible and clearer for humanitarian workers in conflict zones.</span></h1>
     ) : (<Fragment>
     <h1 class="a-statement a-lead" aria-label={sentence}><span class="a-type" data-type><span class="a-type__text">Web and mobile app</span><span class="a-type__caret"></span></span> <span class:list={mark}>designer</span><br /> Sometimes a <span class:list={['a-type', mark]} data-type><span class="a-type__text">builder</span><span class="a-type__caret"></span></span> too</h1>
-    <p class="a-more">My name happens to be Zakaria El <span class="a-say-a">Khachia<button type="button" class="n-say a-say" aria-label="Hear how to say Zakaria El Khachia" data-audio="/audio/zakaria-el-khachia.mp3"><svg class="a-say__bg" viewBox="0 0 100 100" aria-hidden="true"><path d={blob(61, 50, 50, 47)} /></svg><svg class="a-say__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-4v13L7 14.5H4z" /><path class="wave" d="M15 9.2a4 4 0 0 1 0 5.6" /><path class="wave" d="M17.8 6.6a7.6 7.6 0 0 1 0 10.8" /></svg></button></span></p>
+    <p class="a-more">My name <span class="a-more__d">happens to be</span><span class="a-more__m">is</span> Zakaria El <span class="a-say-a">Khachia<button type="button" class="n-say a-say" aria-label="Hear how to say Zakaria El Khachia" data-audio="/audio/zakaria-el-khachia.mp3"><svg class="a-say__bg" viewBox="0 0 100 100" aria-hidden="true"><path d={blob(61, 50, 50, 47)} /></svg><svg class="a-say__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3l4.5-4v13L7 14.5H4z" /><path class="wave" d="M15 9.2a4 4 0 0 1 0 5.6" /><path class="wave" d="M17.8 6.6a7.6 7.6 0 0 1 0 10.8" /></svg></button></span></p>
     </Fragment>)}
   </section>
 
@@ -89,7 +90,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
                       {p.data.role && <div><dt>Role</dt><dd>{p.data.role}</dd></div>}
                       {layout === 'split' && p.data.sector && <div><dt>Industry</dt><dd>{p.data.sector}</dd></div>}
                     </dl>
-                    {button && <a class="a-cta a-feat__cta" href={caseHref(caseRoot, p.id)}><span class="a-cta__paper" data-ring={String(41 + i * 6)} aria-hidden="true"></span>See case study<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg></a>}
+                    {button && <a class="a-cta a-feat__cta" href={caseHref(caseRoot, p.id)}><span class="a-cta__paper" data-ring={String(41 + i * 6)} aria-hidden="true"></span>View case study<span class="a-cta__eye" set:html={eye} /></a>}
                   </div>
                   <div class="a-feat__visual">
                     <ProjectTeaser cut={unevenRect(31 + i * 7, 0.8)} src={leadVideo} poster={leadPoster ?? ''} caseHref={caseHref(caseRoot, p.id)} fullHref={`${caseHref(caseRoot, p.id)}?play=1#full-video`} label="Play the full INSO alerts video" />
@@ -106,7 +107,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
                     {p.data.role && <div><dt>Role</dt><dd>{p.data.role}</dd></div>}
                     {layout === 'split' && p.data.sector && <div><dt>Industry</dt><dd>{p.data.sector}</dd></div>}
                   </dl>
-                  {button && <span class="a-cta a-feat__cta" aria-hidden="true"><span class="a-cta__paper" data-ring={String(41 + i * 6)}></span>See case study<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg></span>}
+                  {button && <span class="a-cta a-feat__cta" aria-hidden="true"><span class="a-cta__paper" data-ring={String(41 + i * 6)}></span>View case study<span class="a-cta__eye" set:html={eye} /></span>}
                 </div>
                 <div class="a-feat__visual">
                   <FramedMedia frame={false} cut={unevenRect(31 + i * 7, 0.8)} image={poster ?? p.data.cover} video={video} posterSrc={posterSrc} alt={`${orgOf(p)}: ${p.data.projectName ?? p.data.title}`} sizes="(min-width: 900px) 54vw, 92vw" eager={i === 0} />
@@ -158,7 +159,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
   const marks = document.querySelectorAll<HTMLElement>('[data-mark-in-view]');
   const seen = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-drawn'); seen.unobserve(e.target); } }), { rootMargin: '-45% 0px -45% 0px' });
   marks.forEach((m) => seen.observe(m));
-  import '../../../scripts/paper-ring'; // the "See case study" buttons
+  import '../../../scripts/paper-ring'; // the "View case study" buttons
   import '../../../scripts/hero-type'; // "Web and mobile app" and "builder" retyped in turn
   // highlight: the marker is drawn once the hero text is in ("builder" follows "designer")
   const draw = () => window.setTimeout(() => document.querySelectorAll('.a-hero .a-mark').forEach((m) => m.classList.add('is-drawn')), 300);

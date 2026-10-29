@@ -3,7 +3,7 @@
 // words are deleted with a slightly uneven backspace and the next option typed: Software, UX/UI, UX (only "/UI"
 // goes), Product, Just, my face (its pupil drifting from the centre to the top right, thinking), and back to
 // "Web and mobile app". After every second change there, the second line changes instead: builder, frontend
-// developer, website developer, and back to builder. Only one line changes at a time; the caret moves with it.
+// developer, website developer (front-end dev and website dev on phones), and back to builder. Only one line changes at a time; the caret moves with it.
 // After a full round the opening sentence rests, then it all starts again.
 // Typing rhythm: keystroke studies put the average gap between keys at ~0.24s (Dhakal et al., CHI 2018,
 // 136M keystrokes); a word start takes a little longer, so the space between words gets ~0.35s here.
@@ -11,6 +11,9 @@
 const FACE = 'face';
 const FIRST = ['Web and mobile app', 'Software', 'UX/UI', 'UX', 'Product', 'Just', FACE, 'Web and mobile app'];
 const SECOND = ['builder', 'frontend developer', 'website developer', 'builder'];
+// phones: "dev" instead of "developer", so the sentence stays on one line while it changes
+const PHONE = matchMedia('(max-width: 700px)');
+const short = (word: string) => (PHONE.matches ? ({ 'frontend developer': 'front-end dev', 'website developer': 'website dev' } as Record<string, string>)[word] ?? word : word);
 
 const KEY = 140; // ms between typed keys, ±40%
 const WORD = 350; // ms extra before a new word, ±30%
@@ -76,7 +79,7 @@ if (boxes.length === 2 && !window.matchMedia('(prefers-reduced-motion: reduce)')
       for (const [i, next] of FIRST.slice(1).entries()) {
         await one(next);
         await wait(vary(READ, 0.15));
-        if (i % 2 === 1 && s < SECOND.length) { await two(SECOND[s++]); await wait(vary(READ, 0.15)); }
+        if (i % 2 === 1 && s < SECOND.length) { await two(short(SECOND[s++])); await wait(vary(READ, 0.15)); }
       }
       await wait(REST);
     }
