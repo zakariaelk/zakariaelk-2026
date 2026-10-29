@@ -2,7 +2,7 @@
 // The page opens on "Web and mobile app designer / Sometimes a builder too". A moment later the first line's
 // words are deleted with a slightly uneven backspace and the next option typed: Software, UX/UI, UX (only "/UI"
 // goes), Product, Just, then YoupieMan's face pops in between "Just" and "designer" and looks around, confused (left,
-// right, back, lids half closed, twice), and back to "Web and mobile app". After every second change there, the second line changes instead: builder, frontend
+// right, back, lids half closed), and back to "Web and mobile app". After every second change there, the second line changes instead: builder, frontend
 // developer, website developer (front-end dev and website dev on phones), and back to builder. Only one line changes at a time; the caret moves with it.
 // After a full round the opening sentence rests, then it all starts again.
 // Typing rhythm: keystroke studies put the average gap between keys at ~0.24s (Dhakal et al., CHI 2018,
@@ -37,15 +37,13 @@ function typer(box: HTMLElement, first: string) {
   const text = box.querySelector<HTMLElement>('.a-type__text')!;
   let current = first;
   const render = () => { if (current === FACE) text.innerHTML = `Just ${FACE_SVG}`; else text.textContent = current; };
-  // his confused look: the eyes go left, right, back, then the lids half close; twice
+  // his confused look: the eyes go left, right, back, then the lids half close
   const confused = async () => {
     const pupils = [...text.querySelectorAll<SVGGElement>('.rx-pupil')], lids = [...text.querySelectorAll<SVGGElement>('.rx-lid')];
     const look = (k: keyof typeof LOOK) => pupils.forEach((p) => (p.style.translate = LOOK[k]));
     const close = (share: number) => lids.forEach((l) => (l.style.translate = `0 ${share * 48}px`));
-    for (let round = 0; round < 2; round++) {
-      await wait(500); look('l'); await wait(700); look('r'); await wait(700); look('c');
-      await wait(500); close(0.5); await wait(1100); close(0);
-    }
+    await wait(500); look('l'); await wait(700); look('r'); await wait(700); look('c');
+    await wait(500); close(0.5); await wait(1100); close(0);
   };
   return async (next: string) => {
     boxes.forEach((b) => b.classList.toggle('is-on', b === box)); // the caret is where the typing is
