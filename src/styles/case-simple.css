@@ -43,7 +43,7 @@
 
 /* ---------- The story: one column, body, paragraph gap 22px ---------- */
 .cs-simple .a-story.a-wrap { padding-top: var(--sec-gap); padding-inline: var(--side); font-family: var(--serif); font-weight: 400; font-size: var(--body); line-height: var(--body-lh); color: var(--cs-text); }
-.cs-simple .a-story article > * { max-width: var(--col); margin-inline: auto; }
+.cs-simple .a-story :is(article, .cs-fold__body) > * { max-width: var(--col); margin-inline: auto; }
 .cs-simple .a-story p { margin-top: 0; margin-bottom: 22px; }
 .cs-simple .a-story strong { font-weight: 600; color: var(--cs-title); }
 /* section title: a small kicker; between sections 96px (80px on phones); kicker to paragraph title 12px */
@@ -57,9 +57,9 @@
 /* map-mode titles (and the other headings inside a section): the one title setting, 64px above, 20px below */
 .cs-simple .a-story h3 { margin: 64px auto 20px; font-family: var(--serif); font-weight: 600; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; color: var(--cs-title); text-wrap: pretty; }
 /* lists: 14px between items */
-.cs-simple .a-story article > :is(ul, ol) { margin: 0 auto 22px; padding-left: 1.3em; }
-.cs-simple .a-story article > :is(ul, ol) > li + li { margin-top: 14px; }
-.cs-simple .a-story article > ol > li > p { margin: 0 0 8px; }
+.cs-simple .a-story :is(article, .cs-fold__body) > :is(ul, ol) { margin: 0 auto 22px; padding-left: 1.3em; }
+.cs-simple .a-story :is(article, .cs-fold__body) > :is(ul, ol) > li + li { margin-top: 14px; }
+.cs-simple .a-story :is(article, .cs-fold__body) > ol > li > p { margin: 0 0 8px; }
 
 /* ---------- Blocks: an icon beside a paragraph, no title of their own ---------- */
 .cs-simple .a-story .cs-block { margin: 0 auto 22px; }
@@ -159,7 +159,7 @@ svg[data-frame="28"] > [data-f="28"], svg[data-frame="29"] > [data-f="29"], svg[
 
 /* the chart and its table: always the column; the table with hairlines only */
 .cs-simple .a-story .cs-chart__table { margin-top: 16px; }
-.cs-simple .a-story .cs-chart__table table, .cs-simple .a-story article > table { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 15px; line-height: 22px; color: var(--cs-text); }
+.cs-simple .a-story .cs-chart__table table, .cs-simple .a-story :is(article, .cs-fold__body) > table { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 15px; line-height: 22px; color: var(--cs-text); }
 .cs-simple .a-story :is(.cs-chart__table, article) :is(th, td) { padding: 14px 16px 14px 0; border: 0; border-bottom: 1px solid var(--cs-rule); text-align: left; }
 .cs-simple .a-story :is(.cs-chart__table, article) thead th { font-weight: 600; color: var(--cs-title); border-bottom-color: var(--cs-rule-strong); }
 
@@ -248,11 +248,11 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-tbl:not([open]) .cs-tbl__hide, .cs-tbl[open] .cs-tbl__show { display: none; }
 .cs-tbl:not([open]) > summary { margin-top: 0; }
 @media (max-width: 599px) {
-  .cs-simple .a-story :is(.cs-tbl > table, article > table) :is(thead, tbody, tr, th, td) { display: block; }
-  .cs-simple .a-story :is(.cs-tbl > table, article > table) thead { display: none; }
-  .cs-simple .a-story :is(.cs-tbl > table, article > table) td { padding: 0; border: 0; }
-  .cs-simple .a-story :is(.cs-tbl > table, article > table) td:first-child { padding-top: 14px; font-weight: 600; color: var(--cs-title); }
-  .cs-simple .a-story :is(.cs-tbl > table, article > table) td:last-child { padding: 4px 0 14px; border-bottom: 1px solid var(--cs-rule); }
+  .cs-simple .a-story :is(.cs-tbl > table, article > table, .cs-fold__body > table) :is(thead, tbody, tr, th, td) { display: block; }
+  .cs-simple .a-story :is(.cs-tbl > table, article > table, .cs-fold__body > table) thead { display: none; }
+  .cs-simple .a-story :is(.cs-tbl > table, article > table, .cs-fold__body > table) td { padding: 0; border: 0; }
+  .cs-simple .a-story :is(.cs-tbl > table, article > table, .cs-fold__body > table) td:first-child { padding-top: 14px; font-weight: 600; color: var(--cs-title); }
+  .cs-simple .a-story :is(.cs-tbl > table, article > table, .cs-fold__body > table) td:last-child { padding: 4px 0 14px; border-bottom: 1px solid var(--cs-rule); }
 }
 
 /* captions of the redesign's visuals don't start with "After:" (the old ones keep "Before:") */
@@ -352,7 +352,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story .carousel-control--prev { left: 12px; }
 .cs-simple .a-story .carousel-control--next { right: 12px; }
 @media (max-width: 767px) { .cs-simple .a-story .carousel-chapter { max-width: none; margin-inline: calc(-1 * var(--side)); } .cs-simple .a-story .carousel-desc { padding-inline: var(--side); } }
-.cs-simple .a-story article > table { max-width: var(--col); margin: 32px auto 40px; }
+.cs-simple .a-story :is(article, .cs-fold__body) > table { max-width: var(--col); margin: 32px auto 40px; }
 
 /* ---------- The character reacting to old screens (components/story/Reactions.astro, scripts/reactions.ts) ---------- */
 /* the old screen in the middle of the column; on its left the small character with his thought bubble above, a
@@ -464,4 +464,30 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
   .cs-rx__say { font-size: 15px; }
   .cs-rx__zoom { --zs: 1.4; transform-origin: 100% 50%; } /* the screen is at the right edge: it grows leftwards */
   .cs-rx__again { padding: 2px 9px; font-size: 10px; }
+}
+
+/* ---------- INSO: the sections from Login on, folded (scripts/case-folds.ts), like the home's "Other work" rows ---------- */
+.cs-simple .a-story .cs-fold { max-width: var(--col); margin: 0 auto; border-bottom: 1px solid var(--cs-rule-strong); interpolate-size: allow-keywords; }
+.cs-simple .a-story .cs-fold--first { margin-top: var(--sec-gap); border-top: 1px solid var(--cs-rule-strong); }
+.cs-fold__head { display: grid; grid-template-columns: 150px 1fr 24px; align-items: baseline; gap: 4px 20px; padding: 22px 0; list-style: none; cursor: pointer; }
+.cs-fold__head::-webkit-details-marker { display: none; }
+.cs-simple .a-story .cs-fold__head h2 { grid-column: 1; margin: 0; }
+.cs-simple .a-story .cs-fold__head .cs-fold__lead { grid-column: 2; margin: 0; font-family: var(--serif); font-weight: 400; font-size: var(--body); line-height: 1.35; color: var(--cs-title); text-wrap: pretty; }
+.cs-simple .a-story .cs-fold__head .cs-fold__lead strong { font-weight: 400; }
+.cs-simple .a-story .cs-fold[open] .cs-fold__lead strong, .cs-simple .a-story .cs-fold__head:hover .cs-fold__lead strong { font-weight: 600; }
+.cs-fold__plus { grid-column: 3; position: relative; align-self: center; width: 16px; height: 16px; justify-self: end; }
+.cs-fold__plus::before, .cs-fold__plus::after { content: ''; position: absolute; left: 0; top: 7px; width: 16px; height: 2px; background: var(--cs-title); transition: rotate 0.3s ease; }
+.cs-fold__plus::after { rotate: 90deg; }
+.cs-fold[open] .cs-fold__plus::after { rotate: 0deg; }
+.cs-fold__head:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 4px; }
+.cs-fold__body { padding: 8px 0 var(--sec-gap); }
+.cs-fold__body > :first-child { margin-top: 0; }
+/* opening: the section unrolls */
+.cs-fold::details-content { block-size: 0; overflow-y: clip; transition: block-size 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), content-visibility 0.6s allow-discrete; }
+.cs-fold[open]::details-content { block-size: auto; }
+@media (prefers-reduced-motion: reduce) { .cs-fold::details-content, .cs-fold__plus::after { transition: none; } }
+@media (max-width: 767px) {
+  .cs-fold__head { grid-template-columns: 1fr 24px; padding: 18px 0; }
+  .cs-simple .a-story .cs-fold__head .cs-fold__lead { grid-column: 1; font-size: 18px; }
+  .cs-fold__plus { grid-row: 1 / span 2; grid-column: 2; }
 }

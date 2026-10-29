@@ -1,6 +1,9 @@
 // The simple reading format of the case studies (components/next/va/CaseA.astro, styles/case-simple.css): slideshows,
-// the enlarge view, video play/pause buttons, the titles variants of the INSO case, headings, and the icons.
+// the enlarge view, video play/pause buttons, the titles variants of the INSO case, headings, the icons, and INSO's
+// sections from Login on folded away (scripts/case-folds.ts).
 // Runs only on pages in that format (.cs-simple on <body>).
+import { fold } from './case-folds';
+
 if (document.body.classList.contains('cs-simple')) {
   void Promise.all([import('./sequence'), import('./lightbox'), import('./video-controls'), import('./reactions')]); // after case-enhance has marked the images
 
@@ -58,4 +61,8 @@ if (document.body.classList.contains('cs-simple')) {
       block.addEventListener('mouseenter', () => play(svg));
     });
   }
+
+  // INSO: from Login to the end, each section a row that opens
+  const login = document.querySelector<HTMLElement>('.a-story h2#login');
+  if (login) fold(login);
 }
