@@ -3,7 +3,9 @@
 // the reader has scrolled a bit, with a hint shown once; dragging it onto a paragraph, heading or visual leaves a copy
 // there and opens a short form (a click or Enter opens it for the paragraph being read). The pin then goes back to its
 // place, dimmed. Comments go to Netlify Forms ("case-comments"; the static form below is what Netlify detects), with
-// the section and the text they were dropped on. scripts/case-comments.ts runs it.
+// the section and the text they were dropped on. With ?review (remembered on the device, ?review=off ends it) the
+// card takes a note only, notes stay on the device, and a bar copies them all as one list to paste to Claude.
+// scripts/case-comments.ts runs it.
 import { blob } from '../lib/papercut';
 const pin = `<svg viewBox="0 0 100 100" aria-hidden="true"><path class="cc-paper" d="${blob(37, 50, 50, 46)}"/><path class="cc-glyph" d="M31 34h38a6 6 0 0 1 6 6v18a6 6 0 0 1-6 6H48l-11 9v-9h-6a6 6 0 0 1-6-6V40a6 6 0 0 1 6-6z"/></svg>`;
 ---
@@ -13,6 +15,12 @@ const pin = `<svg viewBox="0 0 100 100" aria-hidden="true"><path class="cc-paper
     <p id="cc-hint-text">Have a comment or a question? Drag this onto any paragraph or visual and drop me a note.</p>
     <button type="button" class="cc-hint__ok">Got it</button>
   </div>
+</div>
+
+<div class="cc-review" hidden>
+  <span data-cc-count></span>
+  <button type="button" class="cc-copy">Copy all for Claude</button>
+  <button type="button" class="cc-clear">Clear</button>
 </div>
 
 <template id="cc-dropped"><span class="cc-dropped" aria-hidden="true" set:html={pin} /></template>

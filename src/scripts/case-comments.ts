@@ -13,11 +13,52 @@ if (root && card) {
   const seen = () => { try { return localStorage.getItem('cc-hint') === '1'; } catch { return false; } };
   const remember = () => { try { localStorage.setItem('cc-hint', '1'); } catch {} };
 
+  // review mode (?review, remembered on this device; ?review=off ends it): a note only, kept on this device, and a
+  // bar that copies all the notes as one list to paste to Claude, instead of the form sent to Netlify
+  const param = new URLSearchParams(location.search).get('review');
+  try { if (param === 'off') localStorage.removeItem('cc-review'); else if (param !== null) localStorage.setItem('cc-review', '1'); } catch {}
+  const review = (param !== null && param !== 'off') || (() => { try { return localStorage.getItem('cc-review') === '1'; } catch { return false; } })();
+  type Note = { page: string; section: string; quote: string; comment: string };
+  let notes: Note[] = [];
+  try { notes = JSON.parse(localStorage.getItem('cc-notes') ?? '[]'); } catch {}
+  const save = () => { try { localStorage.setItem('cc-notes', JSON.stringify(notes)); } catch {} };
+  const bar = document.querySelector<HTMLElement>('.cc-review')!;
+  const count = () => { bar.querySelector('[data-cc-count]')!.textContent = notes.length === 1 ? '1 note' : `${notes.length} notes`; };
+  if (review) {
+    card.querySelector('.cc-card__title')!.textContent = 'Note for Claude';
+    card.querySelector('.cc-row')!.remove();
+    form.querySelector('textarea')!.placeholder = 'Your note';
+    form.querySelector('.cc-send')!.textContent = 'Save';
+    bar.hidden = false;
+    count();
+    const list = () => notes.map((n, i) => `${i + 1}. ${n.page} · ${n.section}\n   On: "${n.quote.slice(0, 160)}${n.quote.length > 160 ? '…' : ''}"\n   Note: ${n.comment}`).join('\n\n');
+    const copyBtn = bar.querySelector<HTMLButtonElement>('.cc-copy')!;
+    const said = (t: string) => { copyBtn.textContent = t; window.setTimeout(() => { copyBtn.textContent = 'Copy all for Claude'; }, 2000); };
+    copyBtn.addEventListener('click', async () => {
+      if (!notes.length) return said('No notes yet');
+      const text = `Review notes (${notes.length})\n\n${list()}`;
+      // copied straight away, while the tap still counts (phones); the clipboard API only if that fails
+      const ta = Object.assign(document.createElement('textarea'), { value: text, readOnly: true });
+      ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+      document.body.append(ta); ta.select(); ta.setSelectionRange(0, text.length);
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch {}
+      ta.remove();
+      if (!ok) { try { await navigator.clipboard.writeText(text); ok = true; } catch {} }
+      said(ok ? 'Copied' : 'Couldn\'t copy');
+    });
+    bar.querySelector('.cc-clear')!.addEventListener('click', () => {
+      if (!notes.length || !confirm(`Delete all ${notes.length} notes on this device?`)) return;
+      notes = []; save(); count();
+      document.querySelectorAll('.cc-dropped').forEach((d) => d.remove());
+    });
+  }
+
   // shown once the reader has scrolled a bit; the hint only the first time
   const reveal = () => {
-    if (scrollY < 700) return;
+    if (scrollY < 700 && !review) return;
     root.hidden = false;
-    if (!seen()) hint.hidden = false; else root.classList.add('is-quiet');
+    if (!seen() && !review) hint.hidden = false; else root.classList.add('is-quiet');
     removeEventListener('scroll', reveal);
   };
   addEventListener('scroll', reveal, { passive: true });
@@ -68,6 +109,7 @@ if (root && card) {
     card.hidden = true;
     target?.classList.remove('cc-target');
     if (!keep) { dropped?.remove(); dropped = null; }
+    else if (review) dropped = null; // each saved note keeps its pin
     pin.focus({ preventScroll: true });
   };
   card.querySelector('.cc-cancel')!.addEventListener('click', () => closeCard(false));
@@ -117,9 +159,19 @@ if (root && card) {
     openCard(el, r.right - 8, r.top + 12);
   });
 
-  // send to Netlify Forms
+  // send to Netlify Forms (in review mode: keep the note on this device)
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (review) {
+      const field = (n: string) => (form.elements.namedItem(n) as HTMLInputElement).value;
+      notes.push({ page: field('page'), section: field('section'), quote: field('quote'), comment: field('comment').trim() });
+      save(); count();
+      status.textContent = 'Saved on this device.';
+      dropped?.classList.add('is-sent');
+      form.reset();
+      window.setTimeout(() => closeCard(true), 900);
+      return;
+    }
     const send = form.querySelector<HTMLButtonElement>('.cc-send')!;
     send.disabled = true;
     status.textContent = 'Sending…';
