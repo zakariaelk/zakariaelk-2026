@@ -29,6 +29,7 @@ if (root && card) {
     card.querySelector('.cc-row')!.remove();
     form.querySelector('textarea')!.placeholder = 'Your note';
     form.querySelector('.cc-send')!.textContent = 'Save';
+    root.classList.add('is-review'); // the pin stays at full strength, ready for the next note
     bar.hidden = false;
     count();
     const list = () => notes.map((n, i) => `${i + 1}. ${n.page} · ${n.section}\n   On: "${n.quote.slice(0, 160)}${n.quote.length > 160 ? '…' : ''}"\n   Note: ${n.comment}`).join('\n\n');
@@ -166,10 +167,10 @@ if (root && card) {
       const field = (n: string) => (form.elements.namedItem(n) as HTMLInputElement).value;
       notes.push({ page: field('page'), section: field('section'), quote: field('quote'), comment: field('comment').trim() });
       save(); count();
-      status.textContent = 'Saved on this device.';
+      status.textContent = `Saved, ${notes.length === 1 ? '1 note' : `${notes.length} notes`} so far. Drag the pin again for the next one.`;
       dropped?.classList.add('is-sent');
       form.reset();
-      window.setTimeout(() => closeCard(true), 900);
+      window.setTimeout(() => closeCard(true), 1600);
       return;
     }
     const send = form.querySelector<HTMLButtonElement>('.cc-send')!;
