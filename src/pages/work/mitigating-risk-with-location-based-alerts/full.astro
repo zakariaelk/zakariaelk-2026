@@ -1,0 +1,12 @@
+---
+// The INSO case in full (src/content/lab/inso-app-simple.mdoc), linked from the end of its 3-minute version at
+// /work/mitigating-risk-with-location-based-alerts/. Under review: the parts proposed for cutting are marked ({% cut %}).
+import { getEntry } from 'astro:content';
+import CaseA from '../../../components/next/va/CaseA.astro';
+import { getProjects } from '../../../lib/data';
+
+const projects = await getProjects();
+const project = (await getEntry('lab', 'inso-app-simple'))!;
+const next = projects.find((p) => p.id === 'ngosafety-website-redesign')!;
+---
+<CaseA project={project} next={next} base="/" look="blue" fullVideo={{ src: '/video/inso/one-alert-story-v17.mp4', poster: '/video/inso/one-alert-story-cover.jpg', length: '1:27', caption: 'Watch: How does INSO alerts help humanitarian workers stay safe on the job?' }} />

@@ -272,6 +272,19 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 /* ---------- Temporary: text the author is reviewing (pale yellow; remove the class to drop it) ---------- */
 .cs-simple .a-story .cs-review { background: #fff6bf; box-shadow: 0 0 0 8px #fff6bf; border-radius: 2px; }
 :root[data-theme='dark'] .cs-simple .a-story .cs-review { background: #4a4420; box-shadow: 0 0 0 8px #4a4420; }
+/* key numbers at the top of the INSO short case: sized for the text column */
+.cs-simple .a-story .cs-stats--strip { margin-top: 8px; margin-bottom: 40px; padding: 0; gap: 16px; }
+.cs-simple .a-story .cs-stats--strip > li + li { margin-top: 0; }
+.cs-simple .a-story .cs-stats--strip .cs-stat { padding: 20px; gap: 8px; }
+@media (max-width: 767px) { .cs-simple .a-story .cs-stats--strip { gap: 10px; } .cs-simple .a-story .cs-stats--strip .cs-stat { padding: 14px 16px; gap: 4px; } }
+.cs-simple .a-story .cs-stat__value { font-size: clamp(32px, calc(32px + 8 * (100vw - 768px) / 512), 40px); white-space: nowrap; }
+.cs-simple .a-story .cs-stat__label { font-size: 16px; line-height: 22px; }
+/* parts proposed for cutting (story/Cut.astro), while the INSO full case is reviewed */
+.cs-simple .a-story .cs-cut-note { margin-top: 48px; margin-bottom: 12px; padding: 8px 12px; border-radius: 4px; background: #ffd9d2; color: #6b1d10; font-family: var(--sans); font-size: 15px; line-height: 22px; }
+.cs-simple .a-story .cs-cut { background: #fff0ed; box-shadow: 0 0 0 10px #fff0ed; border-radius: 2px; }
+.cs-simple .a-story .cs-cut-end { height: 0; margin: 0; }
+:root[data-theme='dark'] .cs-simple .a-story .cs-cut-note { background: #5a2a22; color: #ffd9d2; }
+:root[data-theme='dark'] .cs-simple .a-story .cs-cut { background: #3a2420; box-shadow: 0 0 0 10px #3a2420; }
 
 /* the versions tooltip: at the right edge of the title column, level with the client label */
 .cs-simple .a-versions { top: 0; right: max(var(--side), calc((100% - var(--col)) / 2)); margin: 0; max-width: none; }

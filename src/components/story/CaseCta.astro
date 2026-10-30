@@ -1,15 +1,17 @@
 ---
 // The case's "Take a look" button (the paper cut-out of components/next/va/CaseA.astro), placed in the story
-// (the Simple INSO case: under the usage chart). Opens the product in a new tab.
+// (the Simple INSO case: under the usage chart). Opens the product in a new tab; a link within the site (the INSO
+// short version's "Read the full case study") opens in place.
 interface Props { href: string; label?: string }
 const { href, label = 'Take a look' } = Astro.props;
+const external = /^https?:/i.test(href);
 const host = href.replace(/^https?:\/\/(www\.)?/i, '').replace(/\/$/, '');
 ---
 <p class="cs-cta">
-  <a class="a-cta" href={href} target="_blank" rel="noopener">
+  <a class="a-cta" href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
     <span class="a-cta__paper" data-ring="11" aria-hidden="true"></span>
     {label}
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg>
-    <span class="sr-only"> at {host} (opens in a new tab)</span>
+    {external && <span class="sr-only"> at {host} (opens in a new tab)</span>}
   </a>
 </p>

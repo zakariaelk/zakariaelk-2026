@@ -76,6 +76,8 @@ export default defineMarkdocConfig({
     sequence: { render: story('Sequence'), selfClosing: true, attributes: { thumbs: { type: Boolean }, fulls: { type: String }, images: { type: String, required: true }, alts: { type: String }, caption: { type: String }, captions: { type: String }, frame: { type: String, matches: ['', 'before', 'after', 'compare'] }, landscape: { type: Boolean } } },
     // the character reacting to old screens, one problem highlighted per slide (slides in lib/reactions.ts)
     reactions: { render: story('Reactions'), selfClosing: true, attributes: { set: { type: String, required: true } } },
+    // a part proposed for cutting, for review: a labelled start marker and an end marker (story/Cut.astro)
+    cut: { render: story('Cut'), selfClosing: true, attributes: { note: { type: String }, end: { type: Boolean } } },
     // text kept for review, struck through
     del: { render: 'del', inline: true },
     // the "Take a look" button, wherever the case places it

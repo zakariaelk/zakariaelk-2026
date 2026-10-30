@@ -1,9 +1,8 @@
 // The simple reading format of the case studies (components/next/va/CaseA.astro, styles/case-simple.css): slideshows,
-// the enlarge view, video play/pause buttons, the titles variants of the INSO case, headings, the icons, and INSO's
-// sections from Login on folded away (scripts/case-folds.ts).
+// the enlarge view, video play/pause buttons, the titles variants of the INSO case, headings, the icons, and the
+// parts of the INSO full case proposed for cutting. INSO's folded sections (scripts/case-folds.ts) are off while
+// its full case is reviewed with everything open.
 // Runs only on pages in that format (.cs-simple on <body>).
-import { fold } from './case-folds';
-
 if (document.body.classList.contains('cs-simple')) {
   void Promise.all([import('./sequence'), import('./lightbox'), import('./video-controls'), import('./reactions')]); // after case-enhance has marked the images
 
@@ -62,7 +61,9 @@ if (document.body.classList.contains('cs-simple')) {
     });
   }
 
-  // INSO: from Login to the end, each section a row that opens
-  const login = document.querySelector<HTMLElement>('.a-story h2#login');
-  if (login) fold(login);
+  // parts proposed for cutting (story/Cut.astro): everything between a cut's label and its end marker, the section
+  // icons moved above their headings included
+  document.querySelectorAll('.a-story .cs-cut-note').forEach((note) => {
+    for (let el = note.nextElementSibling; el && !el.matches('.cs-cut-end'); el = el.nextElementSibling) el.classList.add('cs-cut');
+  });
 }

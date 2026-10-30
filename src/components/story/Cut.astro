@@ -1,0 +1,8 @@
+---
+// A part of the INSO full case proposed for cutting, for review: {% cut note="…" /%} opens it with a label saying
+// why, {% cut end=true /%} closes it, and scripts/case-simple.ts marks everything in between (.cs-cut). Remove both
+// markers to keep the part, or the part with its markers to cut it.
+interface Props { note?: string; end?: boolean }
+const { note, end } = Astro.props;
+---
+{end ? <div class="cs-cut-end" aria-hidden="true"></div> : <p class="cs-cut-note"><strong>Proposed cut</strong> {note}</p>}
