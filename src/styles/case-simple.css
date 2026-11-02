@@ -537,3 +537,32 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
   .cs-simple .a-story .cs-fold__head .cs-fold__lead { grid-column: 1; font-size: 18px; }
   .cs-fold__plus { grid-row: 1 / span 2; grid-column: 2; }
 }
+
+/* ---------- Users: Who · Needs · Pains before the app (components/story/UserTable.astro) ---------- */
+/* the column's width at most; the table keeps its own width and scrolls sideways, with a scrollbar always showing */
+.cs-simple .a-story .cs-ut { --ut-pic: 84px; --ut-gap: 16px; --ut-pain: #a3624c; --ut-bar: #c9c6bf; max-width: var(--col); margin: 32px auto 40px; font-family: var(--sans); }
+:root[data-theme='dark'] .cs-simple .a-story .cs-ut { --ut-pain: #d79c84; --ut-bar: #555; }
+.cs-simple .a-story .cs-ut__label, .cs-simple .a-story .cs-ut thead th { font-weight: 500; font-size: 12px; line-height: 16px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cs-muted); }
+.cs-simple .a-story .cs-ut__label { margin: 0 0 6px; }
+.cs-simple .a-story .cs-ut__scroll { overflow-x: auto; padding-bottom: 10px; }
+.cs-simple .a-story .cs-ut__scroll:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 4px; }
+.cs-simple .a-story .cs-ut__scroll::-webkit-scrollbar { height: 8px; }
+.cs-simple .a-story .cs-ut__scroll::-webkit-scrollbar-track { background: var(--cs-rule); border-radius: 4px; }
+.cs-simple .a-story .cs-ut__scroll::-webkit-scrollbar-thumb { background: var(--ut-bar); border-radius: 4px; }
+@supports not selector(::-webkit-scrollbar) { .cs-simple .a-story .cs-ut__scroll { scrollbar-width: thin; scrollbar-color: var(--ut-bar) var(--cs-rule); } }
+.cs-simple .a-story .cs-ut table { width: 860px; margin: 0; border-collapse: collapse; table-layout: fixed; font-size: 15px; line-height: 22px; color: var(--cs-text); }
+.cs-simple .a-story .cs-ut :is(th, td) { padding: 16px 24px 16px 0; vertical-align: top; }
+.cs-simple .a-story .cs-ut :is(th, td):last-child { padding-right: 0; }
+.cs-simple .a-story .cs-ut th:first-child { width: 36%; }
+.cs-simple .a-story .cs-ut thead th:nth-child(3) { color: var(--ut-pain); }
+.cs-simple .a-story .cs-ut__who div { display: flex; gap: var(--ut-gap); align-items: flex-start; }
+.cs-simple .a-story .cs-ut__who img { flex: none; width: var(--ut-pic); height: var(--ut-pic); border-radius: 6px; object-fit: cover; }
+.cs-simple .a-story .cs-ut__who p { margin: 0; }
+.cs-simple .a-story .cs-ut__who--bare p { padding-left: calc(var(--ut-pic) + var(--ut-gap)); } /* "Shared": in line with the names above */
+.cs-simple .a-story .cs-ut__name { display: block; color: var(--cs-title); }
+.cs-simple .a-story .cs-ut__name strong { font-weight: 600; }
+.cs-simple .a-story .cs-ut__ctx { display: block; margin-top: 4px; font-size: 14px; line-height: 20px; color: var(--cs-muted); }
+.cs-simple .a-story .cs-ut__item { display: block; }
+.cs-simple .a-story .cs-ut__item + .cs-ut__item { margin-top: 8px; }
+.cs-simple .a-story .cs-ut + .cs-ut { margin-top: 8px; }
+@media (max-width: 699px) { .cs-simple .a-story .cs-ut { --ut-pic: 64px; --ut-gap: 12px; } .cs-simple .a-story .cs-ut table { width: 720px; } }

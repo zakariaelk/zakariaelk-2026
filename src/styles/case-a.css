@@ -45,6 +45,7 @@
 /* ---------- Top ---------- */
 .a-case { padding-top: clamp(20px, calc(20px + 18 * (100vw - 768px) / 492), 44px); } /* 38px at 1260 */
 .a-case__label { display: block; margin: 0; font-family: var(--sans); font-size: clamp(15px, calc(15px + 3 * (100vw - 768px) / 492), 19px); line-height: 1.2; color: var(--a-label); } /* the client: small, a light grey, so the headline leads */
+.a-case__review { margin: 0 0 12px; font-family: var(--sans); font-size: 14px; line-height: 1.3; color: var(--muted); } /* the frozen review copy's note */
 .a-case__title { max-width: 20em; margin: clamp(10px, calc(10px + 4 * (100vw - 768px) / 492), 16px) 0 0; font-family: var(--serif); font-weight: 470; font-size: clamp(32px, calc(32px + 20.5 * (100vw - 768px) / 492), 56px); line-height: 1.2; letter-spacing: -0.01em; text-wrap: balance; } /* 52.5px at 1260 */
 .a-case__hero { margin-top: clamp(20px, calc(20px + 7 * (100vw - 768px) / 492), 32px); } /* ≈46px from the headline's last line to the image at 1260 */
 .a-case__hero .v-frame img, .a-case__hero .v-frame video { aspect-ratio: auto; }

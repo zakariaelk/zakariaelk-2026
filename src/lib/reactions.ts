@@ -129,6 +129,7 @@ export const REACTIONS: Record<string, ReactionSet> = {
   // short scenes above a result: YoupieMan on his own, thinking one thing
   'inso-login-result': { label: 'How did the new onboarding and login perform?', solo: true, once: true, slides: [{ end: 2.6, steps: [{ t: 0.2, look: 'ul' }, { t: 0.5, say: 'How did this perform?', stay: true }, { t: 1.6, look: 'c' }] }] },
   'inso-alerts-result': { label: 'Test, test, test', solo: true, once: true, slides: [{ end: 2.4, steps: [{ t: 0.2, look: 'd' }, { t: 0.4, say: 'Test\nTest\nTest', stay: true }, { t: 1.6, look: 'c' }] }] },
+  'inso-alerts-please': { label: 'Test please', solo: true, once: true, slides: [{ end: 2.4, steps: [{ t: 0.2, look: 'd' }, { t: 0.4, say: 'Test please', stay: true }, { t: 1.6, look: 'c' }] }] }, // the full page; the one above stays on the review copy
   'inso-proximity-unsure': { label: "I'm not sure about this one", solo: true, once: true, slides: [{ end: 2.6, steps: [{ t: 0.2, look: 'ul', lids: 0.3 }, { t: 0.5, say: "I'm not sure about this one", stay: true }] }] },
   'inso-proximity-maybe': { label: 'This could be it', solo: true, once: true, slides: [{ end: 3.4, steps: [{ t: 0.2, look: 'c' }, { t: 0.8, look: 'r' }, { t: 1.6, look: 'c', smile: true }, { t: 1.9, say: 'This could be it', stay: true }] }] },
 };

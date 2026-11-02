@@ -24,7 +24,7 @@ const { title = 'Zakaria El Khachia · Product designer', description = 'Product
     <title>{title}</title>
     <meta name="description" content={description} />
     {canonical && <link rel="canonical" href={new URL(canonical, Astro.site)} />}
-    <link rel="icon" type="image/png" href="/img/favicon/z-logo.png" />
+    <link rel="icon" type="image/png" href="/img/favicon/z-logo.png?v=2" />
     {look === 'dmsans' && <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />}
     {look === 'dmsans' && <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500..600&display=swap" />}
     <!-- Theme before first paint: saved choice, else the system setting -->

@@ -72,6 +72,7 @@ export default defineMarkdocConfig({
     // a flow shown one screen at a time, like a short video (images: src/assets paths, comma-separated; alts: |)
     // a table that can be folded away (open by default); label: what the toggle names
     tablebox: { render: story('TableBox'), attributes: { label: { type: String } } },
+    usertable: { render: story('UserTable'), attributes: { label: { type: String }, photos: { type: String }, alts: { type: String } } }, // Users: Who · Needs · Pains, with photos
     // a numbered badge in the text, matching one on a visual
     n: { render: story('Num'), inline: true, selfClosing: true, attributes: { v: { type: String, required: true } } },
     sequence: { render: story('Sequence'), selfClosing: true, attributes: { thumbs: { type: Boolean }, fulls: { type: String }, images: { type: String, required: true }, alts: { type: String }, caption: { type: String }, captions: { type: String }, frame: { type: String, matches: ['', 'before', 'after', 'compare'] }, landscape: { type: Boolean } } },

@@ -28,8 +28,8 @@ import '../../../styles/case-simple.css'; // scoped to .cs-simple, so the classi
 // compare: a small "versions" tooltip beside the title, linking the full, short and simple versions of the INSO case
 // (remove with the older pages)
 // fullVideo: the case's full video as its cover (components/video/CaseStudyVideo.astro, #full-video)
-interface Props { project: CollectionEntry<'projects' | 'lab'>; next: CollectionEntry<'projects'>; base?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; format?: 'simple' | 'classic'; compare?: 'full' | 'short' | 'simple'; fullVideo?: { src: string; poster: string; length?: string; caption?: string }; canonical?: string; shortVersion?: string }
-const { project, next, base = '/next/a/', look, format = 'simple', compare, fullVideo, canonical, shortVersion } = Astro.props; // shortVersion: the 3-minute case a long one links back to
+interface Props { project: CollectionEntry<'projects' | 'lab'>; next: CollectionEntry<'projects'>; base?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; format?: 'simple' | 'classic'; compare?: 'full' | 'short' | 'simple'; fullVideo?: { src: string; poster: string; length?: string; caption?: string }; canonical?: string; shortVersion?: string; reviewNote?: string }
+const { project, next, base = '/next/a/', look, format = 'simple', compare, fullVideo, canonical, shortVersion, reviewNote } = Astro.props; // shortVersion: the 3-minute case a long one links back to; reviewNote: a grey line on a frozen review copy
 const simple = format === 'simple';
 // "Take a look": in the story ({% cta %}), or at its end when the text doesn't place it
 const ctaInText = (project.body ?? '').includes('{% cta');
@@ -65,6 +65,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
     </div>
   )}
   <header class="a-wrap a-case" id="top">
+    {reviewNote && <p class="a-case__review">{reviewNote}</p>}
     <p class="a-case__label">{labelOf(d)}</p>
     <h1 class="a-case__title">{d.headline}</h1>
     {compare && (

@@ -37,6 +37,8 @@ const caseRoot = caseBase ?? base;
 const { featured, more } = await workList();
 const screen = layout.startsWith('screen');
 const titleOf = (p: (typeof featured)[number]['p']) => SHORT_TITLES[p.id] ?? p.data.statement ?? p.data.intro;
+// reading time under each featured title, on INSO's yardstick (its 3-minute case, ~1,250 words, reads in 3 min)
+const READ_TIME: Record<string, string> = { 'mitigating-risk-with-location-based-alerts': '3 min read', 'ngosafety-website-redesign': '3 min read', '3e-international': '1 min read' };
 const orgOf = (p: (typeof featured)[number]['p']) => p.data.org ?? p.data.client;
 // covers for the list's hover preview, loaded on the first hover
 const peeks = await Promise.all(more.map(async (p) => (await getImage({ src: p.data.cover, width: 720, format: 'webp' })).src));
@@ -84,7 +86,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
               <article class="a-feat a-feat--lead a-feat--player">
                 <div class="a-feat__link">
                   {layout === 'client' && <p class="a-feat__client">{orgOf(p)}</p>}
-                  <h3 class="a-feat__title"><a href={caseHref(caseRoot, p.id)}>{titleOf(p)}</a>{p.id === 'mitigating-risk-with-location-based-alerts' && <span class="a-feat__tag">3 min read</span>}</h3>
+                  <h3 class="a-feat__title"><a href={caseHref(caseRoot, p.id)}>{titleOf(p)}</a>{READ_TIME[p.id] && <span class="a-feat__tag">{READ_TIME[p.id]}</span>}</h3>
                   <div class="a-feat__meta">
                     <dl class="a-meta">
                       {p.data.role && <div><dt>Role</dt><dd>{p.data.role}</dd></div>}
@@ -101,7 +103,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
             <article class:list={['a-feat', i === 0 && 'a-feat--lead']}>
               <a class="a-feat__link" href={caseHref(caseRoot, p.id)}>
                 {layout === 'client' && <p class="a-feat__client">{orgOf(p)}</p>}
-                <h3 class="a-feat__title">{titleOf(p)}</h3>
+                <h3 class="a-feat__title">{titleOf(p)}{READ_TIME[p.id] && <span class="a-feat__tag">{READ_TIME[p.id]}</span>}</h3>
                 <div class="a-feat__meta">
                   <dl class="a-meta">
                     {p.data.role && <div><dt>Role</dt><dd>{p.data.role}</dd></div>}

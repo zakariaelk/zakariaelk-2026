@@ -1,0 +1,37 @@
+---
+// The user groups as a table (Who · Needs · Pains before the app), written as a plain Markdown table in the content:
+// " · " in a cell separates its items, one per line; the first cell is "**Name** · one-line context".
+// photos/alts: one per row ("|"-separated, empty for none), shown left of the name. The table keeps its width and
+// scrolls sideways inside the text column, with a visible scrollbar.
+import { getImage } from 'astro:assets';
+import { assetImage } from '../../lib/media';
+
+interface Props { label?: string; photos?: string; alts?: string }
+const { label, photos = '', alts = '' } = Astro.props;
+const altList = alts.split('|').map((s) => s.trim());
+const pics = await Promise.all(photos.split('|').map(async (p) => {
+  const img = p.trim() ? assetImage(p.trim()) : undefined;
+  if (p.trim() && !img) throw new Error(`UserTable: image not found in src/assets: ${p}`);
+  return img ? await getImage({ src: img, width: 168, height: 168, format: 'webp' }) : undefined;
+}));
+const html = await Astro.slots.render('default');
+let row = -1;
+const out = html.replace(/<tr>([\s\S]*?)<\/tr>/g, (tr, inner: string) => {
+  if (inner.includes('<th')) return tr;
+  row++;
+  let col = -1;
+  return '<tr>' + inner.replace(/<td[^>]*>([\s\S]*?)<\/td>/g, (_, cell: string) => {
+    col++;
+    const items = cell.split(' · ').map((s) => s.trim());
+    if (col > 0) return `<td>${items.map((i) => `<span class="cs-ut__item">${i}</span>`).join('')}</td>`;
+    const [name, ...ctx] = items;
+    const pic = pics[row];
+    const img = pic ? `<img src="${pic.src}" alt="${altList[row] ?? ''}" width="84" height="84" loading="lazy" decoding="async" />` : '';
+    return `<td class="cs-ut__who${pic ? '' : ' cs-ut__who--bare'}"><div>${img}<p><span class="cs-ut__name">${name}</span><span class="cs-ut__ctx">${ctx.join(' · ')}</span></p></div></td>`;
+  }) + '</tr>';
+});
+---
+<div class="cs-ut">
+  {label && <p class="cs-ut__label">{label}</p>}
+  <div class="cs-ut__scroll" tabindex="0" role="region" aria-label={label ?? 'Table'}><Fragment set:html={out} /></div>
+</div>
