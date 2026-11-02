@@ -38,6 +38,7 @@ export default defineMarkdocConfig({
       selfClosing: true,
       attributes: {
         badges: { type: String }, // numbered badges over the image: "x,y|x,y" in % of its width and height (1, 2…)
+        spots: { type: String }, // with badges: the part each one points at ("x1,x2,y1,y2|…" in %), lit in turn under a dim overlay
         src: { type: String, required: true },
         alt: { type: String, required: true },
         caption: { type: String },

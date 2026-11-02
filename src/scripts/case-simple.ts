@@ -61,6 +61,29 @@ if (document.body.classList.contains('cs-simple')) {
     });
   }
 
+  // numbered parts of an old screen (story/Figure.astro, spots): shown clean, then dimmed, then each part lit in turn
+  // with its badge, once, when the image is well on screen; at the end the dim lifts and the badges stay
+  document.querySelectorAll<HTMLElement>('.a-story .cs-spots').forEach((layer) => {
+    const media = layer.closest<HTMLElement>('.cs-media')!;
+    const spot = layer.querySelector<HTMLElement>('.cs-spot')!;
+    const nums = [...media.querySelectorAll<HTMLElement>('.cs-badges .cs-num')];
+    const rects = layer.dataset.spots!.split('|').map((r) => r.split(',').map(Number));
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    media.classList.add('is-spotting');
+    const at = ([x1, x2, y1, y2]: number[]) => Object.assign(spot.style, { left: `${x1}%`, top: `${y1}%`, width: `${x2 - x1}%`, height: `${y2 - y1}%` });
+    at([50, 50, 50, 50]);
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    new IntersectionObserver(async ([e], io) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      await wait(900);
+      layer.classList.add('is-on');
+      await wait(700);
+      for (const [k, r] of rects.entries()) { at(r); await wait(450); nums[k]?.classList.add('is-on'); await wait(1500); }
+      layer.classList.remove('is-on');
+    }, { threshold: 0.6 }).observe(media);
+  });
+
   // parts proposed for cutting (story/Cut.astro): everything between a cut's label and its end marker, the section
   // icons moved above their headings included
   document.querySelectorAll('.a-story .cs-cut-note').forEach((note) => {

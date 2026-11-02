@@ -103,7 +103,7 @@ export const REACTIONS: Record<string, ReactionSet> = {
       },
     ],
   },
-  // Alert detail: the former screen, read from the top down to about halfway
+  // Alert detail: the former screen, its parts zoomed like the login's note: the top, Location, then the empty Update
   'inso-alert-detail': {
     label: 'What was wrong with the old alert detail',
     width: 2048,
@@ -113,17 +113,15 @@ export const REACTIONS: Record<string, ReactionSet> = {
       {
         screen: SIMPLE + 'alert-details/single-alert-old.jpg',
         alt: 'The old alert detail: a dark title bar, a big map with two pins and no legend, a teal ALERT_UPDATE banner with an email address, then short fields in large type (an empty Update, the date again) and justified text under headings that look like body text.',
-        tall: true,
-        end: 20.9,
+        mode: 'blur',
+        holes: [],
+        end: 11.6,
+        zooms: { top: { at: [40, 2010, 240, 480], size: 0.6 }, location: { at: [16, 1960, 1800, 2040], size: 0.6 }, update: { at: [16, 1100, 2050, 2270] } },
         steps: [
-          { t: 0.3, look: 'd', say: "Okay, let's see." }, { t: 0.9, look: 'dd', pan: 0, panScale: 1.5, panFor: 0.8 }, { t: 1.8, pan: 0.5, panScale: 1.5, panFor: 2.4 },
-          { t: 4.3, wide: true, look: 'c', say: 'Ay, ay, ay, where should I start?' },
-          { t: 6.9, wide: false, meh: true, say: 'Ah, any designer can do better than this.' },
-          { t: 9.8, meh: false, look: 'c' }, { t: 10.4, look: 'ul', say: 'But you know what?' },
-          { t: 12.2, say: 'This was made by an engineer at first, who focused on…' },
-          { t: 15.2, say: 'many\nmany\nmany' },
-          { t: 17.3, look: 'ur', say: "things a designer can't even begin to comprehend.", stay: true },
-          { t: 19.7, look: 'c', smile: true },
+          { t: 0.3, look: 'd', say: 'Hmm...' }, { t: 0.9, look: 'dd', hi: true, zoom: 'top' },
+          { t: 3.3, say: 'wait, hmm...' }, { t: 3.5, zoom: 'location' },
+          { t: 6, zoom: 'update' }, { t: 6.4, wide: true, look: 'c', say: 'What update?' },
+          { t: 8.8, hi: false, zoom: false, wide: false, meh: true, say: 'Where should I begin?', stay: true },
         ],
       },
     ],

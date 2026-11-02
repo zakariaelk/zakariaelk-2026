@@ -390,6 +390,7 @@ html.is-logo-spin .n-brand__logo :is(.n-logo__big-shape, .n-logo__small-shape) {
   .a-feat__meta .a-meta { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .a-feat__meta { flex-wrap: wrap; } /* the "See case study" button on its own line, under the facts */
   .a-feat__meta .a-meta { flex: 1 1 100%; }
+  .a-feat__meta .a-meta :is(dt, dd) { font-size: 18px; } /* the button's size */
 }
 
 /* ---------- Nav: a peach marker band slides in behind the lower half of the link on hover or

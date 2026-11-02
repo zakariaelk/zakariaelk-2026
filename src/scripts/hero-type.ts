@@ -1,8 +1,8 @@
 // Home hero: two words in the headline are rewritten as if someone were typing them and having doubts.
-// The page opens on "Web and mobile app designer / Sometimes a builder too". A moment later the first line's
-// words are deleted with a slightly uneven backspace and the next option typed: Software, UX/UI, UX (only "/UI"
-// goes), Product, Just, then YoupieMan's face pops in between "Just" and "designer" and looks around, confused (left,
-// right, back, lids half closed), and back to "Web and mobile app". After every second change there, the second line changes instead: builder, frontend
+// The page opens on "Product designer / Sometimes a builder too". A moment later the first line's
+// words are deleted with a slightly uneven backspace and the next option typed: UX/UI, UX (only "/UI" goes), Just,
+// then YoupieMan's face pops in between "Just" and "designer" and looks around, confused (left, right, back, lids
+// half closed), then Web and mobile app, Software, YoupieMan's face on its own, and back to "Product". After every second change there, the second line changes instead: builder, frontend
 // developer, website developer (front-end dev and website dev on phones), and back to builder. Only one line changes at a time; the caret moves with it.
 // After a full round the opening sentence rests, then it all starts again.
 // Typing rhythm: keystroke studies put the average gap between keys at ~0.24s (Dhakal et al., CHI 2018,
@@ -11,7 +11,8 @@
 import character from '../components/story/character/character.svg?raw';
 
 const FACE = 'Just\u00a0'; // "Just" with YoupieMan after it
-const FIRST = ['Web and mobile app', 'Software', 'UX/UI', 'UX', 'Product', 'Just', FACE, 'Web and mobile app'];
+const ALONE = '\u00a0'; // YoupieMan on his own
+const FIRST = ['Product', 'UX/UI', 'UX', 'Just', FACE, 'Web and mobile app', 'Software', ALONE, 'Product'];
 const SECOND = ['builder', 'frontend developer', 'website developer', 'builder'];
 // phones: "dev" instead of "developer", so the sentence stays on one line while it changes
 const PHONE = matchMedia('(max-width: 700px)');
@@ -36,7 +37,7 @@ const vary = (ms: number, by: number) => ms * (1 + (Math.random() * 2 - 1) * by)
 function typer(box: HTMLElement, first: string) {
   const text = box.querySelector<HTMLElement>('.a-type__text')!;
   let current = first;
-  const render = () => { if (current === FACE) text.innerHTML = `Just ${FACE_SVG}`; else text.textContent = current; };
+  const render = () => { if (current === FACE) text.innerHTML = `Just ${FACE_SVG}`; else if (current === ALONE) text.innerHTML = FACE_SVG; else text.textContent = current; };
   // his confused look: the eyes go left, right, back, then the lids half close
   const confused = async () => {
     const pupils = [...text.querySelectorAll<SVGGElement>('.rx-pupil')], lids = [...text.querySelectorAll<SVGGElement>('.rx-lid')];
@@ -47,25 +48,25 @@ function typer(box: HTMLElement, first: string) {
   };
   return async (next: string) => {
     boxes.forEach((b) => b.classList.toggle('is-on', b === box)); // the caret is where the typing is
-    const keep = next === FACE && current === 'Just' ? 'Just' : current !== FACE && current.startsWith(next) ? next : ''; // UX/UI → UX: only "/UI" goes; Just stays for YoupieMan
+    const keep = next === FACE && current === 'Just' ? 'Just' : current !== FACE && current !== ALONE && current.startsWith(next) ? next : ''; // UX/UI → UX: only "/UI" goes; Just stays for YoupieMan
     await wait(vary(DOUBT, 0.25));
     box.classList.add('is-typing');
     while (current !== keep) {
-      current = current === FACE ? 'Just' : current.slice(0, -1); // YoupieMan goes in one keystroke
+      current = current === FACE ? 'Just' : current === ALONE ? '' : current.slice(0, -1); // YoupieMan goes in one keystroke
       render();
       await wait(vary(BACKSPACE, 0.15));
     }
     box.classList.remove('is-typing');
     await wait(vary(WORD, 0.3));
     box.classList.add('is-typing');
-    if (next === FACE) { await wait(300); current = FACE; render(); }
+    if (next === FACE || next === ALONE) { await wait(300); current = next; render(); }
     else while (current.length < next.length) {
       current = next.slice(0, current.length + 1);
       render();
       await wait(vary(KEY, 0.4) + (current.endsWith(' ') ? vary(WORD, 0.3) : 0));
     }
     box.classList.remove('is-typing');
-    if (next === FACE) await confused();
+    if (next === FACE || next === ALONE) await confused();
   };
 }
 

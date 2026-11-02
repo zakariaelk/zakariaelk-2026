@@ -4,7 +4,7 @@
 // closes. Focus goes into the view and back to the button; the page doesn't scroll while it's open. On touch screens
 // the image itself zooms: pinch, or double-tap a spot (again to fit); one finger moves a zoomed image around; a tap
 // outside the image (or the button) closes. No animation. From a slideshow it has previous / next arrows (and the arrow
-// keys), which move the slideshow too; a long screen is shown at a readable width and scrolls; numbered badges on an
+// keys) and a strip of all its screens at the bottom, which move the slideshow too; a long screen is shown at a readable width and scrolls; numbered badges on an
 // image come along.
 const PLUS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3 20 20M7.5 10.5h6M10.5 7.5v6"/></svg>';
 const MINUS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3 20 20M7.5 10.5h6"/></svg>';
@@ -15,13 +15,20 @@ dlg.setAttribute('aria-label', 'Enlarged image');
 const ARROW = (d: string) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
 dlg.innerHTML = `<div class="lbz__stage"><div class="lbz__frame"><img class="lbz__img" alt=""><button type="button" class="cs-zoom" aria-label="Close enlarged image">${MINUS}</button></div></div>`
   + `<button type="button" class="lbz__arrow lbz__arrow--prev" data-lbz-step="-1" aria-label="Previous screen" hidden>${ARROW('M14.5 6l-6 6 6 6')}</button>`
-  + `<button type="button" class="lbz__arrow lbz__arrow--next" data-lbz-step="1" aria-label="Next screen" hidden>${ARROW('M9.5 6l6 6-6 6')}</button>`;
+  + `<button type="button" class="lbz__arrow lbz__arrow--next" data-lbz-step="1" aria-label="Next screen" hidden>${ARROW('M9.5 6l6 6-6 6')}</button>`
+  + '<div class="lbz__thumbs" hidden></div>';
 document.body.append(dlg);
 const big = dlg.querySelector<HTMLImageElement>('.lbz__img')!;
 const close = dlg.querySelector<HTMLButtonElement>('.cs-zoom')!;
 let opener: HTMLElement | null = null;
 let seq: HTMLElement | null = null; // the slideshow it was opened from
 const arrows = [...dlg.querySelectorAll<HTMLButtonElement>('[data-lbz-step]')];
+const strip = dlg.querySelector<HTMLElement>('.lbz__thumbs')!;
+strip.addEventListener('click', (e) => e.stopPropagation()); // a click between the thumbnails doesn't close
+// the slideshow's screens, and which one is shown
+const seqSlides = () => [...(seq?.querySelectorAll<HTMLElement>('.cs-seq__slide') ?? [])];
+const shown = () => seqSlides().findIndex((s) => !s.hidden);
+const markThumb = () => { const k = shown(); [...strip.children].forEach((b, j) => b.toggleAttribute('aria-current', j === k)); strip.children[k]?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); };
 const frameEl = dlg.querySelector<HTMLElement>('.lbz__frame')!;
 // the image, its badges, and the long-screen view
 const fill = (img: HTMLImageElement) => {
@@ -40,9 +47,21 @@ const largest = (el: HTMLImageElement) => el.dataset.full || el.srcset.split(','
 const open = (img: HTMLImageElement, from: HTMLElement) => {
   opener = from;
   seq = from.closest<HTMLElement>('.cs-simple [data-seq]'); // the Simple case's slideshows
-  arrows.forEach((a) => (a.hidden = !seq || seq.querySelectorAll('.cs-seq__slide').length < 2));
+  const many = seqSlides().length > 1;
+  arrows.forEach((a) => (a.hidden = !many));
+  strip.hidden = !many;
+  dlg.classList.toggle('has-thumbs', many);
+  strip.replaceChildren(...(many ? seqSlides() : []).map((s, k) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', `Screen ${k + 1} of ${seqSlides().length}`);
+    b.innerHTML = `<img src="${s.querySelector<HTMLImageElement>('img')?.dataset.thumb ?? ''}" alt="">`;
+    b.addEventListener('click', () => step(k - shown()));
+    return b;
+  }));
   fill(img);
   reset();
+  if (many) markThumb();
   document.documentElement.classList.add('is-lbz-open');
   dlg.showModal();
   close.focus();
@@ -52,7 +71,7 @@ const step = (d: number) => {
   if (!seq) return;
   seq.dispatchEvent(new CustomEvent('ze:seq-step', { detail: d }));
   const img = seq.querySelector<HTMLImageElement>('.cs-seq__slide:not([hidden]) img');
-  if (img) { fill(img); reset(); }
+  if (img) { fill(img); reset(); markThumb(); }
 };
 arrows.forEach((a) => a.addEventListener('click', (e) => { e.stopPropagation(); step(Number(a.dataset.lbzStep)); }));
 dlg.addEventListener('keydown', (e) => {

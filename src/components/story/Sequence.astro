@@ -6,7 +6,8 @@
 // images: paths in src/assets, comma-separated; alts: one per screen, separated by |;
 // frame: a BEFORE / AFTER / both (compare) tag; landscape: wide slides (default: phone screens);
 // captions: one per screen, separated by | (the caption follows the screen shown), instead of one caption.
-// thumbs: a strip of all the screens under the controls, the one shown marked; fulls: for each screen, another image
+// thumbs: a strip of all the screens under the controls, the one shown marked (the enlarged view always has one,
+// from each screen's data-thumb); fulls: for each screen, another image
 // for the enlarged view (e.g. the whole of a long screen whose slide shows its top), separated by commas.
 import { getImage } from 'astro:assets';
 import { assetImage } from '../../lib/media';
@@ -23,7 +24,7 @@ const screens = await Promise.all(paths.map(async (p, i) => {
   if (!src) throw new Error(`Sequence: image not found in src/assets: ${p}`);
   const bigSrc = fullList?.[i] ? assetImage(fullList[i]) : src;
   if (!bigSrc) throw new Error(`Sequence: image not found in src/assets: ${fullList?.[i]}`);
-  const [view, full, thumb] = await Promise.all([getImage({ src, width: Math.min(src.width, landscape ? 1400 : 720), format: 'webp' }), getImage({ src: bigSrc, width: Math.min(bigSrc.width, 1600), format: 'webp' }), thumbs ? getImage({ src, width: 160, format: 'webp' }) : undefined]);
+  const [view, full, thumb] = await Promise.all([getImage({ src, width: Math.min(src.width, landscape ? 1400 : 720), format: 'webp' }), getImage({ src: bigSrc, width: Math.min(bigSrc.width, 1600), format: 'webp' }), paths.length > 1 ? getImage({ src, width: 160, format: 'webp' }) : undefined]);
   return { view: view.src, full: full.src, thumb: thumb?.src, w: src.width, h: src.height, alt: altList[i] ?? '' };
 }));
 const n = screens.length;
@@ -33,7 +34,7 @@ const n = screens.length;
     {frame === 'compare' ? <p class="cs-frame__labels" aria-hidden="true"><span>Before</span><span>After</span></p> : frame && <p class="cs-frame__label" aria-hidden="true">{frame === 'before' ? 'Before' : 'After'}</p>}
     {screens.map((s, i) => (
       <div class="cs-seq__slide" role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${n}`} hidden={i > 0}>
-        <img class="cs-seq__screen" src={s.view} data-full={s.full} alt={s.alt} width={s.w} height={s.h} loading="lazy" decoding="async" />
+        <img class="cs-seq__screen" src={s.view} data-full={s.full} data-thumb={s.thumb} alt={s.alt} width={s.w} height={s.h} loading="lazy" decoding="async" />
       </div>
     ))}
     {n > 1 && <button type="button" class="cs-vbtn" aria-label="Pause the slideshow"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="cs-vbtn__pause" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /><path class="cs-vbtn__play" d="M8 5.5v13l11-6.5z" /></svg></button>}
