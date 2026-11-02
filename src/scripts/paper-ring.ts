@@ -17,3 +17,12 @@ document.querySelectorAll<HTMLElement>('[data-ring]').forEach((paper) => {
   host.addEventListener('focus', start);
   host.addEventListener('blur', stop);
 });
+
+// on touch screens (no hover) each button's eye opens when the button is fully on screen, and shuts again once it
+// has left, so it opens each time it comes back (the .is-eye class does what hover does, styles/media-a.css)
+if (window.matchMedia('(hover: none)').matches) {
+  const seen = new IntersectionObserver((entries) => entries.forEach((e) => {
+    e.target.closest('a')?.classList.toggle('is-eye', e.isIntersecting);
+  }), { threshold: 1 });
+  document.querySelectorAll('.a-cta__eye').forEach((eye) => seen.observe(eye.closest('.a-cta')!));
+}

@@ -11,12 +11,12 @@
 .a-cta .a-cta__eye svg { width: 26px; height: auto; stroke: none; }
 .a-cta__eye [data-f] { visibility: hidden; }
 .a-cta__eye [data-f='1'] { visibility: visible; }
-a:is(:hover, :focus-visible) .a-cta__eye [data-f='1'] { visibility: hidden; }
-a:is(:hover, :focus-visible) .a-cta__eye [data-f='2'] { animation: a-eye-half 0.26s steps(1) forwards; }
-a:is(:hover, :focus-visible) .a-cta__eye [data-f='3'] { animation: a-eye-open 0.26s steps(1) forwards; }
+a:is(:hover, :focus-visible, .is-eye) .a-cta__eye [data-f='1'] { visibility: hidden; }
+a:is(:hover, :focus-visible, .is-eye) .a-cta__eye [data-f='2'] { animation: a-eye-half 0.26s steps(1) forwards; }
+a:is(:hover, :focus-visible, .is-eye) .a-cta__eye [data-f='3'] { animation: a-eye-open 0.26s steps(1) forwards; }
 @keyframes a-eye-half { from { visibility: visible; } to { visibility: hidden; } }
 @keyframes a-eye-open { from { visibility: hidden; } to { visibility: visible; } }
-@media (prefers-reduced-motion: reduce) { a:is(:hover, :focus-visible) .a-cta__eye [data-f] { animation-duration: 0s; } }
+@media (prefers-reduced-motion: reduce) { a:is(:hover, :focus-visible, .is-eye) .a-cta__eye [data-f] { animation-duration: 0s; } }
 .a-cta__eye .i-k { fill: currentColor; }
 .a-cta__eye .i-w { fill: var(--brown); }
 /* on the dark button (light mode) the iris is filled, so the dark pupil shows inside it (lib/cta-eye.ts) */
