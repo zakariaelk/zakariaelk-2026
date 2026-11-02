@@ -180,7 +180,7 @@
 /* the first case with a video: the card isn't one link (it holds the "Full video" link), so only the
    title and the buttons lead to the case */
 .a-feat--player .a-feat__title a { color: inherit; text-decoration: none; }
-.a-feat__tag { display: block; margin-top: 14px; font-family: var(--sans); font-weight: 400; font-size: 13px; line-height: 1.3; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); } /* INSO: the 3-minute case, with the full one inside */
+.a-feat__tag { display: block; margin-top: 14px; font-family: var(--sans); font-weight: 400; font-size: 13px; line-height: 1.3; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); } /* INSO: the 3-minute case */
 .a-feat--player .a-feat__title a:hover, .a-feat--player .a-feat__title a:focus-visible { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.12em; }
 .a-feat--player .a-feat__link:hover .a-feat__title { text-decoration: none; }
 .a-feat__visual { grid-column: 2; grid-row: 1 / -1; }

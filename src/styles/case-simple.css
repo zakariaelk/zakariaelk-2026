@@ -295,7 +295,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 /* key numbers: dark cards across the text column, equal and top-aligned (number and label rows shared through subgrid) */
 .cs-simple .a-story article > .cs-stats--strip { grid-template-rows: auto auto; margin-top: 8px; margin-bottom: 40px; padding: 0; gap: 0 16px; }
 .cs-simple .a-story article > .cs-stats--strip > li + li { margin-top: 0; }
-.cs-simple .a-story .cs-stats--strip .cs-stat { grid-row: span 2; grid-template-rows: subgrid; align-content: start; gap: 10px; padding: 26px; background: #1f1f1f; color: #f4f2ec; }
+.cs-simple .a-story .cs-stats--strip .cs-stat { grid-row: span 2; grid-template-rows: subgrid; align-content: start; gap: 10px; padding: 26px; background: #1f1f1f; color: #f4f2ec; clip-path: var(--cut); } /* cut from paper, like the home page's visuals */
 .cs-simple .a-story .cs-stats--strip .cs-stat__value { color: #f4f2ec; }
 .cs-simple .a-story .cs-stats--strip .cs-stat__label { font-size: 17px; line-height: 24px; color: #cfcfcf; }
 :root[data-theme='dark'] .cs-simple .a-story .cs-stats--strip .cs-stat { background: #2a2a2a; }
