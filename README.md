@@ -10,7 +10,7 @@ npm run dev
 ```
 
 - Site: http://localhost:4321
-- Content editor: https://leiby-design-build.netlify.app/keystatic (log in with GitHub; saves are commits to this repo)
+- Content editor: https://zakariaelkhachia.com/keystatic (log in with GitHub; saves are commits to this repo)
 
 ## The site
 

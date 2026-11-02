@@ -8,7 +8,7 @@ import keystatic from '@keystatic/astro';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://leiby-design-build.netlify.app',
+  site: 'https://zakariaelkhachia.com',
   integrations: [react(), markdoc(), keystatic()],
   adapter: netlify({ imageCDN: false, devFeatures: { images: false, edgeFunctions: false, environmentVariables: false } }),
   // Pages from the earlier agency version.
