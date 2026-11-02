@@ -55,14 +55,24 @@ if (root && card) {
     });
   }
 
-  // shown once the reader has scrolled a bit, never on phones (no dragging there); no hint, the pin's label says
-  // what it does
+  // shown once the reader has scrolled a bit, never on phones (no dragging there), with the hint until it's been
+  // used or dismissed; the hint goes away on its own after another 1000px of scrolling (and comes back next visit)
   const phone = window.matchMedia('(max-width: 767px)');
   const reveal = () => {
     if ((scrollY < 700 && !review) || phone.matches) return;
     root.hidden = false;
     removeEventListener('scroll', reveal);
-    if (seen()) root.classList.add('is-quiet');
+    if (seen()) { root.classList.add('is-quiet'); return; }
+    hint.hidden = false;
+    const from = scrollY;
+    const away = () => {
+      if (hint.hidden) return removeEventListener('scroll', away);
+      if (Math.abs(scrollY - from) < 1000) return;
+      hint.hidden = true;
+      if (!review) root.classList.add('is-quiet');
+      removeEventListener('scroll', away);
+    };
+    addEventListener('scroll', away, { passive: true });
   };
   addEventListener('scroll', reveal, { passive: true });
   reveal();
