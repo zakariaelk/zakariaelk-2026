@@ -7,6 +7,7 @@
 // versions): a client label, headline, wide hero, facts, then the story in an 860px column with the rail.
 // Used by /work/<slug>/ and the /next/… and /tests variations: base = where the links stay,
 // look = their colour or type variation.
+import { ctaEye as eye } from '../../../lib/cta-eye'; // the paper eye of the buttons
 import { Image } from 'astro:assets';
 import { render } from 'astro:content';
 import Next from '../../../layouts/Next.astro';
@@ -102,7 +103,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
         <a class="a-cta a-case__cta" href={d.link} target="_blank" rel="noopener">
           <span class="a-cta__paper" data-ring="11" aria-hidden="true"></span>
           Take a look
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg>
+          <span class="a-cta__eye" set:html={eye()} />
           <span class="sr-only"> at {d.link.replace(/^https?:\/\/(www\.)?/i, '').replace(/\/$/, '')} (opens in a new tab)</span>
         </a>
       )}
@@ -129,7 +130,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
           <a class="a-cta" href={d.link} target="_blank" rel="noopener">
             <span class="a-cta__paper" data-ring="11" aria-hidden="true"></span>
             Take a look
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" /></svg>
+            <span class="a-cta__eye" set:html={eye()} />
             <span class="sr-only"> at {d.link.replace(/^https?:\/\/(www\.)?/i, '').replace(/\/$/, '')} (opens in a new tab)</span>
           </a>
         </p>

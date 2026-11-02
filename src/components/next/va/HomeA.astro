@@ -22,7 +22,7 @@ import { workList, caseHref, LIST_LINES, SHORT_TITLES } from '../../../lib/versi
 import '../../../styles/next-a.css';
 import '../../../styles/next-a-looks.css';
 import '../../../styles/media-a.css';
-import eye from '../../story/icons/eye.svg?raw'; // the cut-paper eye of the INSO case's Reality check
+import { ctaEye as eye } from '../../../lib/cta-eye'; // the paper eye of the buttons
 
 type Featured = 'split' | 'client' | 'screen-1' | 'screen-2' | 'screen-3';
 // intro: the opening animation (the home page only, not the tests)
@@ -92,7 +92,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
                       {p.data.role && <div><dt>Role</dt><dd>{p.data.role}</dd></div>}
                       {layout === 'split' && p.data.sector && <div><dt>Industry</dt><dd>{p.data.sector}</dd></div>}
                     </dl>
-                    {button && <a class="a-cta a-feat__cta" href={caseHref(caseRoot, p.id)}><span class="a-cta__paper" data-ring={String(41 + i * 6)} aria-hidden="true"></span>View case study<span class="a-cta__eye" set:html={eye} /></a>}
+                    {button && <a class="a-cta a-feat__cta" href={caseHref(caseRoot, p.id)}><span class="a-cta__paper" data-ring={String(41 + i * 6)} aria-hidden="true"></span>View case study<span class="a-cta__eye" set:html={eye()} /></a>}
                   </div>
                   <div class="a-feat__visual">
                     <ProjectTeaser cut={unevenRect(31 + i * 7, 0.8)} src={leadVideo} poster={leadPoster ?? ''} caseHref={caseHref(caseRoot, p.id)} fullHref={`${caseHref(caseRoot, p.id)}?play=1#full-video`} label="Play the full INSO alerts video" />
@@ -109,7 +109,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
                     {p.data.role && <div><dt>Role</dt><dd>{p.data.role}</dd></div>}
                     {layout === 'split' && p.data.sector && <div><dt>Industry</dt><dd>{p.data.sector}</dd></div>}
                   </dl>
-                  {button && <span class="a-cta a-feat__cta" aria-hidden="true"><span class="a-cta__paper" data-ring={String(41 + i * 6)}></span>View case study<span class="a-cta__eye" set:html={eye} /></span>}
+                  {button && <span class="a-cta a-feat__cta" aria-hidden="true"><span class="a-cta__paper" data-ring={String(41 + i * 6)}></span>View case study<span class="a-cta__eye" set:html={eye()} /></span>}
                 </div>
                 <div class="a-feat__visual">
                   <FramedMedia frame={false} cut={unevenRect(31 + i * 7, 0.8)} image={poster ?? p.data.cover} video={video} posterSrc={posterSrc} alt={`${orgOf(p)}: ${p.data.projectName ?? p.data.title}`} sizes="(min-width: 900px) 54vw, 92vw" eager={i === 0} />

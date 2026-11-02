@@ -4,14 +4,29 @@
    circling round on hover (scripts/paper-ring.ts) while the shape stays put */
 .a-cta { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; padding: clamp(10px, calc(10px + 2 * (100vw - 390px) / 890), 12px) clamp(16px, calc(16px + 2 * (100vw - 390px) / 890), 18px); font-family: var(--sans); font-weight: 430; font-size: 18px; letter-spacing: -0.2px; line-height: 1.2; color: var(--on-brown); text-decoration: none; white-space: nowrap; }
 .a-cta__paper { position: absolute; inset: 0; z-index: -1; background-color: var(--brown); }
-/* the cut-paper eye of the INSO case's Reality check, open (its third frame), in the button's colours */
+/* the cut-paper eye of the INSO case's Reality check, in the button's colours: closed (its first frame), and on
+   hover or focus of its link it opens like the case's icon, half open for a moment, then open (the third frame).
+   Frames hide with visibility, not display, so the clip paths inside them keep working */
 .a-cta__eye { display: contents; }
 .a-cta .a-cta__eye svg { width: 26px; height: auto; stroke: none; }
-.a-cta__eye [data-f] { display: none; }
-.a-cta__eye [data-f='3'] { display: inline; }
+.a-cta__eye [data-f] { visibility: hidden; }
+.a-cta__eye [data-f='1'] { visibility: visible; }
+a:is(:hover, :focus-visible) .a-cta__eye [data-f='1'] { visibility: hidden; }
+a:is(:hover, :focus-visible) .a-cta__eye [data-f='2'] { animation: a-eye-half 0.26s steps(1) forwards; }
+a:is(:hover, :focus-visible) .a-cta__eye [data-f='3'] { animation: a-eye-open 0.26s steps(1) forwards; }
+@keyframes a-eye-half { from { visibility: visible; } to { visibility: hidden; } }
+@keyframes a-eye-open { from { visibility: hidden; } to { visibility: visible; } }
+@media (prefers-reduced-motion: reduce) { a:is(:hover, :focus-visible) .a-cta__eye [data-f] { animation-duration: 0s; } }
 .a-cta__eye .i-k { fill: currentColor; }
 .a-cta__eye .i-w { fill: var(--brown); }
+/* on the dark button (light mode) the iris is filled, so the dark pupil shows inside it (lib/cta-eye.ts) */
+.a-cta__iris { fill: none; }
+:root:not([data-theme='dark']) .a-cta__iris { fill: currentColor; }
+:root:not([data-theme='dark']) .a-cta__eye [clip-path] .i-k:not(:first-of-type) { fill: var(--brown); }
+:root:not([data-theme='dark']) .a-cta__eye [clip-path] .i-w { fill: currentColor; }
 .a-cta svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.a-cta__arrow { transition: translate 0.25s ease; } /* a link within the site: the arrow nudges on hover */
+a:is(:hover, :focus-visible) .a-cta__arrow { translate: 3px 0; }
 
 /* Back to top (components/BackToTop.astro), case pages: a light paper circle with a dark arrow at the bottom right,
    above the comment pin when there is one (same size, right margin and gap) */
