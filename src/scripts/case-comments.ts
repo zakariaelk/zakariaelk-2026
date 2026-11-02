@@ -55,12 +55,23 @@ if (root && card) {
     });
   }
 
-  // shown once the reader has scrolled a bit; the hint only the first time
+  // shown once the reader has scrolled a bit, with the hint until it's been used or dismissed; the hint goes away on
+  // its own after another 1000px of scrolling (and comes back on the next visit)
   const reveal = () => {
     if (scrollY < 700 && !review) return;
     root.hidden = false;
-    if (!seen() && !review) hint.hidden = false; else root.classList.add('is-quiet');
     removeEventListener('scroll', reveal);
+    if (seen()) { root.classList.add('is-quiet'); return; }
+    hint.hidden = false;
+    const from = scrollY;
+    const away = () => {
+      if (hint.hidden) return removeEventListener('scroll', away);
+      if (Math.abs(scrollY - from) < 1000) return;
+      hint.hidden = true;
+      if (!review) root.classList.add('is-quiet');
+      removeEventListener('scroll', away);
+    };
+    addEventListener('scroll', away, { passive: true });
   };
   addEventListener('scroll', reveal, { passive: true });
   reveal();
