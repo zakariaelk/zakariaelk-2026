@@ -28,8 +28,8 @@ import '../../../styles/case-simple.css'; // scoped to .cs-simple, so the classi
 // compare: a small "versions" tooltip beside the title, linking the full, short and simple versions of the INSO case
 // (remove with the older pages)
 // fullVideo: the case's full video as its cover (components/video/CaseStudyVideo.astro, #full-video)
-interface Props { project: CollectionEntry<'projects' | 'lab'>; next: CollectionEntry<'projects'>; base?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; format?: 'simple' | 'classic'; compare?: 'full' | 'short' | 'simple'; fullVideo?: { src: string; poster: string; length?: string; caption?: string } }
-const { project, next, base = '/next/a/', look, format = 'simple', compare, fullVideo } = Astro.props;
+interface Props { project: CollectionEntry<'projects' | 'lab'>; next: CollectionEntry<'projects'>; base?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; format?: 'simple' | 'classic'; compare?: 'full' | 'short' | 'simple'; fullVideo?: { src: string; poster: string; length?: string; caption?: string }; canonical?: string; shortVersion?: string }
+const { project, next, base = '/next/a/', look, format = 'simple', compare, fullVideo, canonical, shortVersion } = Astro.props; // shortVersion: the 3-minute case a long one links back to
 const simple = format === 'simple';
 // "Take a look": in the story ({% cta %}), or at its end when the text doesn't place it
 const ctaInText = (project.body ?? '').includes('{% cta');
@@ -51,7 +51,7 @@ const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug,
 // the rail and the phone menu start with "Intro": the title and the cover
 const nav = [{ id: 'top', label: 'Intro' }, ...sections];
 ---
-<Next base={base} variant="a" logo look={look} bodyClass={simple ? 'cs-simple' : undefined} title={`${d.projectName ?? d.title} · Zakaria El Khachia`} description={d.statement ?? d.intro}>
+<Next base={base} variant="a" logo look={look} bodyClass={simple ? 'cs-simple' : undefined} title={`${d.projectName ?? d.title} · Zakaria El Khachia`} description={d.statement ?? d.intro} canonical={canonical}>
 
   {sections.length > 2 && (
     <div class="a-toc" data-toc>
@@ -90,6 +90,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
   <div class="a-wrap">
     <div class="a-col a-case__intro">
       {d.lede.map((p) => <p class="a-case__lede">{p}</p>)}
+      {shortVersion && <p class="a-case__lede">This is the long version of the 3-minute case study. <a href={shortVersion}>Back to the short version</a>.</p>}
       {rows.map((r, i) => (
         <Fragment>
           {i > 0 && <svg class="a-case__rule" viewBox="0 0 1000 24" preserveAspectRatio="none" aria-hidden="true"><path d={cutLine(37)} /></svg>}

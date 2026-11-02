@@ -5,7 +5,7 @@
 title: "Mitigating risk with location-based alerts"
 headline: "Keeping humanitarian workers informed on the move"
 lede:
-  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, traditionally by SMS and email. This is the mobile app that brings them into one place, as an alternative to SMS, and how I designed it as the only designer in a small engineering team."
+  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, traditionally by SMS and email. This is the mobile app that brings them into one place, as an alternative to SMS and email, and how I designed it as the only designer in a small engineering team."
 deliverables:
   - "Heuristic evaluation, interviews"
   - "UI design, prototypes, in-app tutorials"
@@ -65,11 +65,11 @@ featuredVideo: "/media/projects/mitigating-risk-with-location-based-alerts/inso-
 
 ## The problem
 
-**People needed to follow places, and alerts only told them what happened**
+**SMS and email gave people little say over which alerts they got and from where, and SMS was costly for INSO**
 
-INSO shares safety alerts with NGOs working in high-risk areas, by SMS and email. SMS is getting more expensive for the country offices, and it only carries text, when an alert is really about a place. Internet coverage and smartphone use were growing, and NGO workers carry a phone wherever they go. SMS still matters where there's no internet, so the app was meant as an alternative, not a replacement.
+INSO shares safety alerts with NGOs working in high-risk areas, by SMS and email, and an alert already said what happened, where and what to do. What people couldn't do was shape what reached them. Each NGO has one or two people managing its INSO account in the Partners Portal, a web application used on a laptop. They activate regions for teams, so a team in the south only gets alerts from the south, and regions were chosen in the Portal on a laptop. Nothing finer than a region existed: no area around you, no route, no single compound.
 
-The only way to choose what you received was the INSO Partners Portal, on a computer: pick some regions on your profile, then SMS, email or both. That was it. No radius, no route, no way to follow one compound, and nothing built for being on the move.
+SMS was also getting expensive for the country offices, and in some regions SMS and email were, and still are, the only way, so the app is an alternative, not a replacement. Teams still only see the regions activated for them, and can now choose which of those they're notified about from the app's settings, then narrow down further with the map modes, to an area, a radius or an exact shape. Alerts also sit in one place, not mixed in with every other SMS and email.
 
 It was slow on the sending side too. INSO colleagues wrote and sent alerts from a laptop through the same system, which is hard from the field and sometimes impossible.
 
@@ -77,7 +77,7 @@ It was slow on the sending side too. INSO colleagues wrote and sent alerts from 
 
 **Three groups, one sending and two receiving**
 
-**NGO field workers** travel between places, sometimes where there's no internet. They need to stay updated while they move, on the areas they chose: the road they're on, where they're going, where they sleep. With SMS and the Portal they could only pick regions, and only get text.
+**NGO field workers** travel between places, sometimes where there's no internet. They need to stay updated while they move, on the areas they chose: the road they're on, where they're going, where they sleep. Their regions were activated by their organisation's account admin and chosen in the Portal on a laptop, and nothing finer than a region existed.
 
 **Security and operations staff** are in an office, not travelling, and keep an eye on teams who are. They need as much information as possible about places they aren't in, to advise their teams and reach them by SMS or a call. There was no way to follow a custom area, like a radius around a place or around a compound where staff live.
 
@@ -91,9 +91,10 @@ It was slow on the sending side too. INSO colleagues wrote and sent alerts from 
 
 | Pain | What I designed |
 |---|---|
-| NGO workers on the move couldn't pick the places they cared about | Explore: move around the map, along a route |
+| NGO workers on the move couldn't narrow alerts down to the places they cared about | Explore: move around the map, along a route |
 | Security staff couldn't follow a place they weren't in | Proximity: a radius around your location or a pin you drop |
 | Nobody could follow a compound or exact area | Geofence: draw the area, get alerts from inside it |
+| Alerts got lost among every other SMS and email | One place for alerts, with updates marked and a Saved page for the ones you want to keep |
 | Sending an alert needed a laptop | Composing from the phone, saved offline and sent when the network is back |
 
 ## Where I came in
@@ -109,6 +110,8 @@ I joined to support the team. What first caught my eye was that it didn't look l
 That structure had limits. I was the only designer, with two other projects on my plate, and I couldn't reach partners, the actual end users, so country office colleagues stood in for them. I couldn't do research the traditional way, so I had to be realistic about where I could help: taking things from the first version that worked, even without data, and checking the rest through a heuristic evaluation, interviews and Maze tests with country office colleagues, then a survey with partners after launch. {% mark text="I decided to focus on design principles instead" /%} of a full research phase, and there would be no baseline to compare against.
 
 Not having that structure showed later. INSO colleagues, the senders, were left out of the first round because nobody had talked to them about their needs and weighed them against the others. Nobody objected, but sending came back later as a patch, and so did a few other things.
+
+{% sequence images="projects/mitigating-risk-with-location-based-alerts/sequences/product-1.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/product-2.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/product-3.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/product-4.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/product-5.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/product-6.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/product-7.jpg, projects/mitigating-risk-with-location-based-alerts/sequences/product-8.jpg" alts="The alerts list.|Filters: programmes and alerts with a location only.|The date picker with quick options.|The list, filtered.|The map in Explore mode.|An alert opened from the map.|Proximity: a radius around a place.|Geofence: an area drawn on the map." caption="High-level overview of the app structure and key interactions around alerts." /%}
 
 ## Login
 
@@ -177,6 +180,8 @@ Scanning came first, with more space and a clear order of location, title and ti
 
 {% cut end=true /%}
 
+Saved alerts weren't in the first draft. I asked the country office colleagues, who stood in for partners, how people could keep track of the alerts they care about when they all mix together, and we landed on pinning them. It started as one Saved page in the bottom menu, next to Alerts and Settings.
+
 {% cut note="Trim from 12 to 6 slides." /%}
 
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/02-alerts_list_instruct_01.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/03-alerts_search_typing.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/04-alerts_search_results.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/05-alerts_list_instruct_02.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/06-alerts_filter_off.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/07-alerts_filter_date_picker.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/08-alerts_filtered.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/09-alerts_list_instruct_03.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/10-map_explore_loading.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/11-map_explore_loaded.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/12-map_explore_alert-selected.jpg" landscape=true frame="after" alts="The new alerts list: location first, then a short title, then time.|In-app guide, 1 of 3: search anything in alerts.|Typing a search.|Search results for Ukraine.|In-app guide, 2 of 3: filter alerts by date.|The filter: programmes and regions, and a date range.|The date picker, with quick options like last week.|The list, filtered.|In-app guide, 3 of 3: explore alerts in a map view.|The map opens in Explore mode.|The map with the alerts in the area.|An alert opened on the map." caption="The new alerts list: built for scanning, with search at the top, a simpler filter and a list/map toggle." /%}
@@ -234,7 +239,9 @@ Alerts are sensitive, so what people can copy or see was a long conversation wit
 
 ## Maps
 
-**Seeing incidents on a map changes everything**
+**A map adds the where, for people who need it**
+
+Most people never open the map. By default the app does what SMS and email did: it sends you the alerts from the regions you subscribed to, and that is the main use. On top of that it adds a map layer and more control, like choosing the areas you want alerts from and the map mode that fits what you're doing. The map is for people who need to see where an alert comes from, follow one area, or explore during a mission, and who would otherwise need another map tool. About 1 in 6 people who used the app have opened a map.
 
 The old map had two tools, Proximity and Polygon. To look anywhere else, you had to open a single alert from the list and jump to its location.
 
@@ -342,7 +349,7 @@ The project didn't stop here, since continuous feedback from country office coll
 
 This was part of the problem from the start, but we agreed to focus on the NGO side first. Once the prototype showed map modes work fine on a small screen, a few colleagues asked if they could post from the app too, as field monitors often hear about something while far from a laptop.
 
-With management sign-off I designed the first version in early 2025, and it was released in September 2025 together with login through an INSO account: a simple form with a map pin and distribution lists, plus updates to existing alerts. A later round added offline composing, which sends the alert as soon as the network is back.
+With management sign-off I designed the first version in early 2025, and it was released in September 2025 together with login through an INSO account: a simple form with a map pin and distribution lists, plus updates to existing alerts. A later round added offline composing, which sends the alert as soon as the network is back. Later still, after I left, it became its own page in the menu, which I wasn't involved in.
 
 {% cut end=true /%}
 

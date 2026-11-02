@@ -84,7 +84,7 @@ const mark = highlight ? ['a-mark', highlight === 'peach' && 'a-mark--peach'] : 
               <article class="a-feat a-feat--lead a-feat--player">
                 <div class="a-feat__link">
                   {layout === 'client' && <p class="a-feat__client">{orgOf(p)}</p>}
-                  <h3 class="a-feat__title"><a href={caseHref(caseRoot, p.id)}>{titleOf(p)}</a></h3>
+                  <h3 class="a-feat__title"><a href={caseHref(caseRoot, p.id)}>{titleOf(p)}</a>{p.id === 'mitigating-risk-with-location-based-alerts' && <span class="a-feat__tag">3 min read · full case study inside</span>}</h3>
                   <div class="a-feat__meta">
                     <dl class="a-meta">
                       {p.data.role && <div><dt>Role</dt><dd>{p.data.role}</dd></div>}

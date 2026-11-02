@@ -11,8 +11,9 @@ import NextHeader from '../components/next/NextHeader.astro';
 // intro: the home page's opening animation (version A) may play; decided here, before the first paint
 // look: a colour or type variation of version A (data-look on <html>); 'dmsans' also loads DM Sans
 // bodyClass: a class on <body> scoping one page's own styles (cs-simple: the Simple INSO case)
-interface Props { title?: string; description?: string; palette?: 'paper' | 'mono'; base?: string; variant?: string; logo?: boolean; work?: string; intro?: boolean; enter?: boolean; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; bodyClass?: string }
-const { title = 'Zakaria El Khachia · Product designer', description = 'Product designer with a frontend development background.', palette = 'mono', base = '/next/', variant, logo = false, work, intro = false, enter = false, look, bodyClass } = Astro.props;
+// canonical: the page search engines should treat as the original (the INSO full case points to its 3-minute one)
+interface Props { title?: string; description?: string; palette?: 'paper' | 'mono'; base?: string; variant?: string; logo?: boolean; work?: string; intro?: boolean; enter?: boolean; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; bodyClass?: string; canonical?: string }
+const { title = 'Zakaria El Khachia · Product designer', description = 'Product designer with a frontend development background.', palette = 'mono', base = '/next/', variant, logo = false, work, intro = false, enter = false, look, bodyClass, canonical } = Astro.props;
 ---
 <!doctype html>
 <html lang="en" data-palette={palette} data-look={look} class={variant ? `v-${variant}` : undefined}>
@@ -22,6 +23,7 @@ const { title = 'Zakaria El Khachia · Product designer', description = 'Product
     <meta name="robots" content="noindex, nofollow" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={new URL(canonical, Astro.site)} />}
     <link rel="icon" type="image/png" href="/img/favicon/z-logo.png" />
     {look === 'dmsans' && <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />}
     {look === 'dmsans' && <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500..600&display=swap" />}

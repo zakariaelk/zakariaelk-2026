@@ -28,6 +28,7 @@
 .cs-simple .a-case__title { margin-top: 12px; font-family: var(--serif); font-weight: 600; font-size: var(--h1); line-height: var(--h1-lh); letter-spacing: -0.01em; color: var(--cs-title); }
 .cs-simple .a-case__intro { max-width: var(--col); margin-top: 48px; }
 .cs-simple .a-case__lede { margin: 0 0 var(--lede-gap); font-family: var(--serif); font-weight: 400; font-size: var(--body); line-height: var(--body-lh); color: var(--cs-text); }
+.cs-simple .a-case__lede:has(+ .a-case__lede) { margin-bottom: 22px; } /* the full case's note back to the short one, under the intro */
 .cs-simple .a-case__meta { margin-top: 0; gap: 24px 32px; }
 .cs-simple .a-case__meta dt { margin-bottom: 16px; }
 .cs-simple .a-case__meta dd { margin: 0; font-family: var(--serif); font-weight: 400; font-size: var(--meta); line-height: var(--meta-lh); color: var(--cs-text); }
@@ -291,10 +292,14 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story .cs-review { background: #fff6bf; box-shadow: 0 0 0 8px #fff6bf; border-radius: 2px; }
 :root[data-theme='dark'] .cs-simple .a-story .cs-review { background: #4a4420; box-shadow: 0 0 0 8px #4a4420; }
 /* key numbers at the top of the INSO short case: sized for the text column */
-.cs-simple .a-story .cs-stats--strip { margin-top: 8px; margin-bottom: 40px; padding: 0; gap: 16px; }
-.cs-simple .a-story .cs-stats--strip > li + li { margin-top: 0; }
-.cs-simple .a-story .cs-stats--strip .cs-stat { padding: 20px; gap: 8px; }
-@media (max-width: 767px) { .cs-simple .a-story .cs-stats--strip { gap: 10px; } .cs-simple .a-story .cs-stats--strip .cs-stat { padding: 14px 16px; gap: 4px; } }
+/* key numbers: dark cards across the text column, equal and top-aligned (number and label rows shared through subgrid) */
+.cs-simple .a-story article > .cs-stats--strip { grid-template-rows: auto auto; margin-top: 8px; margin-bottom: 40px; padding: 0; gap: 0 16px; }
+.cs-simple .a-story article > .cs-stats--strip > li + li { margin-top: 0; }
+.cs-simple .a-story .cs-stats--strip .cs-stat { grid-row: span 2; grid-template-rows: subgrid; align-content: start; gap: 10px; padding: 26px; background: #1f1f1f; color: #f4f2ec; }
+.cs-simple .a-story .cs-stats--strip .cs-stat__value { color: #f4f2ec; }
+.cs-simple .a-story .cs-stats--strip .cs-stat__label { font-size: 17px; line-height: 24px; color: #cfcfcf; }
+:root[data-theme='dark'] .cs-simple .a-story .cs-stats--strip .cs-stat { background: #2a2a2a; }
+@media (max-width: 699px) { .cs-simple .a-story article > .cs-stats--strip { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; gap: 10px; } .cs-simple .a-story .cs-stats--strip .cs-stat { grid-row: auto; grid-template-rows: none; padding: 20px 24px; gap: 6px; } }
 .cs-simple .a-story .cs-stat__value { font-size: clamp(32px, calc(32px + 8 * (100vw - 768px) / 512), 40px); white-space: nowrap; }
 .cs-simple .a-story .cs-stat__label { font-size: 16px; line-height: 22px; }
 /* parts proposed for cutting (story/Cut.astro), while the INSO full case is reviewed */

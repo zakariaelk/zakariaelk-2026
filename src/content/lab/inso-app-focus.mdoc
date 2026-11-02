@@ -5,7 +5,7 @@
 title: "Mitigating risk with location-based alerts"
 headline: "Keeping humanitarian workers informed on the move"
 lede:
-  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, traditionally by SMS and email. This is the mobile app that brings them into one place, as an alternative to SMS, and how I designed it as the only designer in a small engineering team."
+  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, traditionally by SMS and email. This is the mobile app that brings them into one place, as an alternative to SMS and email, and how I designed it as the only designer in a small engineering team."
 deliverables:
   - "Heuristic evaluation, interviews"
   - "UI design, prototypes, in-app tutorials"
@@ -42,20 +42,20 @@ featuredVideo: "/media/projects/mitigating-risk-with-location-based-alerts/inso-
 ---
 
 {% stats variant="strip" label="Key numbers" %}
-{% stat value="24 of 31" label="partners rated getting started 4 or 5 out of 5" /%}
 {% stat value="100,000+" label="alerts opened from notifications in three years" /%}
-{% stat value="8 in 10" label="monthly users are returning users" /%}
+{% stat value="85%" label="of monthly users are returning users" /%}
+{% stat value="1 in 6" label="people who used the app also opened a map, a layer SMS never had" /%}
 {% /stats %}
 
 This is the 3-minute version. [The full case study](/work/mitigating-risk-with-location-based-alerts/full/) (13 min) also covers login, the alert list, alert details and Geofence step by step.
 
 ## The problem
 
-**People needed to follow places, and alerts only told them what happened**
+**SMS and email gave people little say over which alerts they got and from where, and SMS was costly for INSO**
 
-INSO shares safety alerts with NGOs working in high-risk areas, by SMS and email. SMS is costly and only carries text, when an alert is really about a place. The only way to choose what you received was the Partners Portal, on a laptop: pick some regions, then SMS, email or both. No radius, no route, no way to follow one compound, and nothing built for being on the move. Sending alerts needed a laptop too.
+INSO shares safety alerts with NGOs working in high-risk areas, by SMS and email, and an alert already said what happened, where and what to do. What people couldn't do was shape what reached them. Each NGO has one or two people managing its INSO account in the Partners Portal, on a laptop, who activate regions for teams. Nothing finer than a region existed: no area around you, no route, no single compound. SMS was also costly, and alerts got lost among every other SMS and email. Sending alerts needed a laptop too.
 
-NGO field workers needed to stay updated while travelling, security staff needed to follow places they weren't in, and INSO colleagues needed to send alerts from anywhere. The app is an alternative to SMS, which stays for areas without internet.
+NGO field workers needed to stay updated while travelling, security staff needed to follow places they weren't in, and INSO colleagues needed to send alerts from anywhere. The app is an alternative to SMS and email, which are still the only way in some regions.
 
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-former-version.jpg" frame="before" alt="The app when I joined: a dense dark list of alerts in capitals, an alert detail packed with text under a small map, and a map that shows a single alert pin." caption="The app when I joined the project team." /%}
 
@@ -63,7 +63,9 @@ The first version was an engineers' initiative, built from conversations with co
 
 ## Maps
 
-**Seeing incidents on a map changes everything**
+**A map adds the where, for people who need it**
+
+Most people never open the map. By default the app does what SMS and email did: it sends you the alerts from the regions you subscribed to, and that is the main use. On top of that it adds a map layer and more control, like choosing the areas you want alerts from and the map mode that fits what you're doing. The map is for people who need to see where an alert comes from, follow one area, or explore during a mission, and who would otherwise need another map tool. About 1 in 6 people who used the app have opened a map.
 
 The old map had two tools, Proximity and Polygon. To look anywhere else, you had to open a single alert from the list and jump to its location. A heuristic evaluation turned up three gaps:
 
@@ -109,10 +111,13 @@ Across releases, Explore takes most of the map traffic, with Proximity and Geofe
 
 - **Login.** The app asked for location before anyone had logged in and never said what it was for. Two short onboarding screens now come first, and location is asked after.
 - **Alert list.** Eight dense alerts per screen became a list built for scanning: location first, then a short title, then time, with search at the top. 10 of 10 testers filtered alerts by location in 22 seconds on average (ease 9.3/10).
+- **Saved alerts.** Not in the first draft. We asked country office colleagues how people could keep track of the alerts they care about when everything mixes together, and landed on pinning them to a Saved page in the bottom menu.
 - **Alert detail.** A summary first (what, where, when, how far), then the latest update and advice, in the order the interviews showed.
 - **Geofence.** Saving meant pressing Back. It now has a Confirm button, a three-step tutorial, and a name that says what it does.
 
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/onboarding-login/inso-app-onboarding-03.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alert-details/01-single-alert.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-geo/10-map_view_geofence_1_step_2-1.jpg" fulls="projects/mitigating-risk-with-location-based-alerts/simple/onboarding-login/inso-app-onboarding-03.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alert-details/01-single-alert-full.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-geo/10-map_view_geofence_1_step_2-1.jpg" landscape=true frame="after" alts="Onboarding: stay informed and safe while on the move.|The new alerts list: location first, then a short title, then time.|The redesigned alert detail: the place, title, date, time and distance on top, then the latest update and advice.|Geofence: the area confirmed, with its alerts, Clear all and Edit geofence." captions="Login: two short onboarding screens say what the app is for before anything is asked.|Alert list: location first, then a short title, then time, with search at the top.|Alert detail: a summary first, then the latest update and advice. Enlarge to see the whole screen.|Geofence: a Confirm button, the alerts in the area, and labelled buttons." /%}
+
+Want the detail behind login, the alert list, alert details and Geofence? [Read the full case study](/work/mitigating-risk-with-location-based-alerts/full/) (13 min).
 
 ## Outcome
 
