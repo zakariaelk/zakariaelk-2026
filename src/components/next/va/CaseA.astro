@@ -91,7 +91,12 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
 
   <div class="a-wrap">
     <div class="a-col a-case__intro">
-      {d.lede.map((p) => <p class="a-case__lede">{p}</p>)}
+      {d.ledeB ? (
+        <Fragment>
+          <div class="ab" data-version="a">{d.lede.map((p) => <p class="a-case__lede">{p}</p>)}</div>
+          <div class="ab" data-version="b" hidden>{d.ledeB.map((p) => <p class="a-case__lede">{p}</p>)}</div>
+        </Fragment>
+      ) : d.lede.map((p) => <p class="a-case__lede">{p}</p>)}
       {shortVersion && <p class="a-case__lede">This is the long version of the 3-minute case study. <a href={shortVersion}>Back to the short version</a>.</p>}
       {rows.map((r, i) => (
         <Fragment>
@@ -158,6 +163,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
   import '../../../scripts/case-enhance';
   import '../../../scripts/case-simple'; // the simple format's slideshows, enlarge view, icons, video buttons
   import '../../../scripts/paper-ring'; // the "Take a look" button
+  import '../../../scripts/ab-switch'; // the A/B wording switch, only with ?compare=1 on a page that has A/B blocks
   // highlighted sentences ({% mark %}) are drawn in once they are well into the screen
   const marks = document.querySelectorAll<HTMLElement>('.cs-mark');
   const seen = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-drawn'); seen.unobserve(e.target); } }), { rootMargin: '0px 0px -25% 0px' });

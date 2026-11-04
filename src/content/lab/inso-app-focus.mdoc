@@ -5,7 +5,9 @@
 title: "Mitigating risk with location-based alerts"
 headline: "Keeping humanitarian workers informed on the move"
 lede:
-  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, traditionally by SMS and email. This is the mobile app that brings them into one place, as an alternative to SMS and email, and how I designed it as the only designer in a small engineering team."
+  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, mostly by SMS and email. This is how I designed a mobile app that lets people choose which alerts reach them, and shows INSO how its alerts are actually used, as the only designer in a small engineering team."
+ledeB:
+  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, mostly by SMS and email. As the only designer in a small engineering team, I designed a mobile app that lets people choose which alerts reach them, and shows INSO how its alerts are actually used."
 deliverables:
   - "Heuristic evaluation, interviews"
   - "UI design, prototypes, in-app tutorials"
@@ -41,7 +43,7 @@ featuredVideo: "/media/projects/mitigating-risk-with-location-based-alerts/inso-
 ---
 ---
 
-{% stats variant="strip" label="Key numbers" %}
+{% stats variant="strip" label="Key numbers" caption="From usage tracking set up at launch, something SMS and email couldn't offer." %}
 {% stat value="100,000+" label="alerts opened from notifications in three years" /%}
 {% stat value="85%" label="of monthly users are returning users" /%}
 {% stat value="1 in 6" label="people who used the app also opened a map, a layer SMS never had" /%}
@@ -51,21 +53,37 @@ This is the 3-minute version. [The full case study](/work/mitigating-risk-with-l
 
 ## The problem
 
-**SMS and email gave people little say over which alerts they got and from where, and SMS was costly for INSO**
+**SMS and email gave people little say over which alerts reached them, and gave INSO no way to see how its alerts were used**
 
-An alert by SMS or email already said what happened, where and what to do. What people couldn't do was shape what reached them.
+{% ab v="a" %}
+INSO has always sent alerts by SMS and email, and still does, as the most reliable way to reach people where internet coverage is patchy or absent. An alert already said what happened, where and what to do. What people couldn't do was shape what reached them, and INSO couldn't see what happened to an alert once it was sent.
+{% /ab %}
 
-**Only whole regions.** Each NGO has one or two people managing its INSO account in the Partners Portal, on a laptop, who activate regions for teams. Nothing finer than a region existed: no area around you, no route, no single compound.
+{% ab v="b" %}
+INSO has always sent alerts by SMS and email, and still does, because in some countries they're the most reliable way to reach people, with patchy or no internet coverage at all. An alert already said what happened, where and what to do. What people couldn't do was shape what reached them, and INSO couldn't see what happened to an alert once it was sent.
+{% /ab %}
 
-**Costly, and easy to miss.** SMS was also costly, and alerts got lost among every other SMS and email.
+**Only whole regions.** Each NGO's account admins activate regions for teams in the Partners Portal, on a laptop. Nothing finer than a region existed: no area around you, no route, no single compound.
 
-**Composing and sending meant a laptop.** INSO staff needed a laptop to compose and send alerts.
+**No way to see how alerts were used.** Emails weren't always opened, and SMS has no real read receipts, so country offices only learned how their alerts did by asking.
 
-The app is an alternative to SMS and email, which are still the only way in some regions. It brings both sides into one place: composing and sending alerts, and seeing how they appear in the feed.
+{% ab v="a" %}
+**Composing and sending meant a laptop.** INSO staff needed a laptop to compose and send alerts, and every SMS cost money.
+{% /ab %}
+
+{% ab v="b" %}
+**Composing and sending meant a laptop.** INSO staff wrote and sent alerts from a laptop through the same system, which is hard from the field and sometimes impossible. And every SMS cost the country offices money.
+{% /ab %}
 
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-former-version.jpg" frame="before" alt="The app when I joined: a dense dark list of alerts in capitals, an alert detail packed with text under a small map, and a map that shows a single alert pin." caption="The app when I joined the project team." /%}
 
-The first version was an engineers' initiative, built from conversations with country offices and nothing documented. I joined as the only designer, with no access to partners, so country office colleagues stood in for them. I combined a heuristic evaluation with interviews and Maze tests, and checked with partners after launch.
+{% ab v="a" %}
+When I joined, the app was a first draft on TestFlight, built by the engineers from conversations with country offices, with no clear scope, requirements or data. Growing coverage, smartphones as work phones and costly SMS called for an app, not for the sake of it, but to give people a say over what reaches them and to see how alerts are used. So I pushed for usage tracking from launch, since country offices only learned about their alerts by asking. As the only designer, with no access to partners, I worked with country office colleagues as stand-ins: a heuristic evaluation, interviews and Maze tests, then a partner survey after launch. The receiving side came first, the sending side once management gave the green light.
+{% /ab %}
+
+{% ab v="b" %}
+I joined when the app was a first draft on TestFlight, built by the engineers from conversations with country offices, with no clear scope, requirements or data. Growing coverage, smartphones as work phones and costly SMS called for an app, but not for the sake of it: it was the way to give people a say over what reaches them and to see how alerts are used. So I pushed for usage tracking from launch, since country offices only learned about their alerts by asking, and for testing each feature and agreeing on a course of action before building. As the only designer, with no access to partners, I worked with country office colleagues as stand-ins: a heuristic evaluation, interviews and Maze tests, then a partner survey after launch. The receiving side came first, the sending side once management gave the green light.
+{% /ab %}
 
 ## Users
 
@@ -82,7 +100,7 @@ The first version was an engineers' initiative, built from conversations with co
 {% usertable label="Send – user group" photos="projects/mitigating-risk-with-location-based-alerts/users/03-user-inso-staff.jpg" alts="An INSO staff member writing an alert on a laptop" %}
 | Who | Needs | Pains before the app |
 |---|---|---|
-| **INSO staff in the country offices** · Collect, validate, compose and send the alerts | Compose and send quickly, from anywhere, with or without data · Reduce the cost of SMS | Composing and sending meant a laptop and the Partners Portal, hard from the field · SMS was costly |
+| **INSO staff in the country offices** · Collect, validate, compose and send the alerts | Compose and send quickly, from anywhere, with or without data · See how partners use and experience the alerts, maps, filters and saved alerts, without having to ask · Reduce the cost of SMS | Composing and sending meant a laptop and the Partners Portal, hard from the field · No way to tell whether alerts were read or used, only what people said when asked · SMS was costly |
 {% /usertable %}
 
 ## Maps
@@ -101,7 +119,13 @@ The old map had two tools, Proximity and Polygon. To look anywhere else, you had
 
 ### Explore: what's happening along my route?
 
-Explore fixes all three. You can move around the map freely, tap an alert to read it there, and go to any place and switch back to the list to load the alerts from that area. The idea came from colleagues in the country offices, who raised it when we tested.
+{% ab v="a" %}
+Explore fixes all three. You can move around the map freely, tap an alert to read it there, and go to any place and switch back to the list to load the alerts from that area. Colleagues in the country offices raised the same things when we tested.
+{% /ab %}
+
+{% ab v="b" %}
+I designed Explore to fix all three. You can move around the map freely, tap an alert to read it there, and go to any place and switch back to the list to load the alerts from that area. Colleagues in the country offices raised the same things when we tested.
+{% /ab %}
 
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/map-explore/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/02-alerts_list_instruct_03.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/03-map_explore_loading.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/04-map_explore_loaded.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/05-map_explore_alert-selected.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/06-last-visual-alerts_list_view_explore-enabled.jpg" landscape=true frame="after" alts="The alerts list, with a Map button at the bottom.|The guide: explore alerts in a map view.|The map opens in Explore mode, loading.|The map with the alerts in the area.|An alert tapped on the map, its details in a card.|Back on the list, Explore is enabled: the list shows the alerts of the area chosen on the map." caption="Explore: move around the map freely, tap an alert to read it there, and switch back to the list for that area." /%}
 
@@ -155,7 +179,7 @@ After the launch peak of about 1,600 users, a steady base settled in: around 800
 Most partners found the app easy to use.
 {% /block %}
 
-**What I can't say.** Nothing was measured before the new design, so I can't say whether it made the app better, only that it's used and that people keep coming back.
+**What I can't say.** Nothing could be measured before the app, since SMS and email can't be tracked, so I can't say whether it made things better, only that it's used and that people keep coming back. The partner survey below is the asking side, the support layer.
 
 {% cta href="https://app.ngosafety.org/" label="Take a look" /%}
 
@@ -163,6 +187,6 @@ Most partners found the app easy to use.
 
 **Test whether people can do it, not whether they understand it**
 
-Proximity taught me the most: testers explained the mode back to me correctly and still struggled to use it. Next time I'd also set baseline metrics before designing, so the outcome can be compared, not just observed.
+Proximity taught me the most: testers explained the mode back to me correctly and still struggled to use it.
 
 {% cta href="/work/mitigating-risk-with-location-based-alerts/full/" label="Read the full case study (13 min)" /%}

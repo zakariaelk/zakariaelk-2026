@@ -11,6 +11,8 @@ const projectSchema = ({ image }: SchemaContext) =>
       headline: z.string(),
       // Case page top (layout sketch v4): the intro under the hero, the facts
       lede: z.array(z.string()).default([]),
+      // Version B of the intro, for the A/B review (?compare=1); delete with the {% ab v="b" %} blocks
+      ledeB: z.array(z.string()).optional(),
       // case facts: one line, or a list (one item a line); team items can be "Name – role" or { name, role, url }
       deliverables: facts,
       summary: z.string(),

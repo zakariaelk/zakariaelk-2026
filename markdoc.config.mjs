@@ -21,7 +21,7 @@ export default defineMarkdocConfig({
     glance: { render: story('Glance') },
     stats: {
       render: story('Stats'),
-      attributes: { variant: { type: String, matches: ['panel', 'strip'] }, label: { type: String } },
+      attributes: { variant: { type: String, matches: ['panel', 'strip'] }, label: { type: String }, caption: { type: String } },
     },
     stat: {
       render: story('Stat'),
@@ -79,6 +79,7 @@ export default defineMarkdocConfig({
     // the character reacting to old screens, one problem highlighted per slide (slides in lib/reactions.ts)
     reactions: { render: story('Reactions'), selfClosing: true, attributes: { set: { type: String, required: true } } },
     // a part proposed for cutting, for review: a labelled start marker and an end marker (story/Cut.astro)
+    ab: { render: story('Ab'), attributes: { v: { type: String, required: true, matches: ['a', 'b'] } } }, // A/B wording pair, for review
     cut: { render: story('Cut'), selfClosing: true, attributes: { note: { type: String }, end: { type: Boolean } } },
     // text kept for review, struck through
     del: { render: 'del', inline: true },

@@ -566,3 +566,22 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story .cs-ut__item + .cs-ut__item { margin-top: 8px; }
 .cs-simple .a-story .cs-ut + .cs-ut { margin-top: 8px; }
 @media (max-width: 699px) { .cs-simple .a-story .cs-ut { --ut-pic: 64px; --ut-gap: 12px; } .cs-simple .a-story .cs-ut table { width: 720px; } }
+
+/* ---------- A/B wording review (components/story/Ab.astro, scripts/ab-switch.ts; only with ?compare=1) ---------- */
+.ab[hidden] { display: none !important; }
+.cs-simple .a-case__intro .ab:has(~ .a-case__lede) > .a-case__lede:last-child { margin-bottom: 22px; } /* as before the pair: the note back to the short version follows */
+.ab.is-flash { animation: ab-flash 1.5s ease-out; }
+@keyframes ab-flash { from { background-color: rgb(255 221 120 / 0.45); } to { background-color: transparent; } }
+:root[data-theme='dark'] .ab.is-flash { animation-name: ab-flash-dark; }
+@keyframes ab-flash-dark { from { background-color: rgb(255 221 120 / 0.16); } to { background-color: transparent; } }
+.ab-switch { position: fixed; left: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 45; display: flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); box-shadow: 0 6px 16px rgb(0 0 0 / 0.12); font: 500 14px/1 var(--sans); }
+.ab-switch.is-lifted { bottom: calc(76px + env(safe-area-inset-bottom)); } /* above the comments' review bar */
+.ab-switch button { min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: none; color: var(--ink); font: inherit; cursor: pointer; }
+.ab-switch button[aria-pressed='true'] { background: var(--ink); color: var(--bg); }
+.ab-switch button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+@media (max-width: 767px) {
+  .ab-switch { left: 10px; bottom: calc(12px + env(safe-area-inset-bottom)); font-size: 13px; }
+  .ab-switch button { padding: 0 12px; }
+  .ab-switch.is-lifted { bottom: calc(66px + env(safe-area-inset-bottom)); }
+  html.has-ab body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); } /* the control never covers the last lines */
+}

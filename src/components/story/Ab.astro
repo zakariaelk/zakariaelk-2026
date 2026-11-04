@@ -1,0 +1,8 @@
+---
+// One wording of an A/B pair on the INSO case, for review (docs/claude-code-instructions-version-switch.md):
+// {% ab v="a" %}…{% /ab %} right before {% ab v="b" %}…{% /ab %}. B stays hidden; scripts/ab-switch.ts shows the
+// switch only with ?compare=1. To keep one wording later: delete the other's blocks and unwrap the kept ones.
+interface Props { v: 'a' | 'b' }
+const { v } = Astro.props;
+---
+<div class="ab" data-version={v} hidden={v === 'b'}><slot /></div>
