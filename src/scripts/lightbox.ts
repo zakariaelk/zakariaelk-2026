@@ -70,7 +70,7 @@ const open = (img: HTMLImageElement, from: HTMLElement) => {
 const step = (d: number) => {
   if (!seq) return;
   seq.dispatchEvent(new CustomEvent('ze:seq-step', { detail: d }));
-  const img = seq.querySelector<HTMLImageElement>('.cs-seq__slide:not([hidden]) img');
+  const img = seq.querySelector<HTMLImageElement>('.cs-seq__slide:not([hidden], .is-leaving) img');
   if (img) { fill(img); reset(); markThumb(); }
 };
 arrows.forEach((a) => a.addEventListener('click', (e) => { e.stopPropagation(); step(Number(a.dataset.lbzStep)); }));

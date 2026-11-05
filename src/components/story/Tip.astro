@@ -1,0 +1,35 @@
+---
+// A term with a short note (docs/claude-code-review-notes-5nov.md item 12): {% tip text="all three gaps" note="…" /%}.
+// Dotted underline; the note opens on hover and focus, and on tap on touch screens; Esc, a tap outside or blur close it.
+interface Props { text: string; note: string }
+const { text, note } = Astro.props;
+const id = `tip-${Math.random().toString(36).slice(2, 9)}`;
+---
+<span class="cs-tip"><button type="button" class="cs-tip__term" aria-describedby={id} aria-expanded="false">{text}</button><span class="cs-tip__note" role="tooltip" id={id}>{note}</span></span>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.cs-tip').forEach((tip) => {
+    const term = tip.querySelector<HTMLButtonElement>('.cs-tip__term')!;
+    const note = tip.querySelector<HTMLElement>('.cs-tip__note')!;
+    const set = (on: boolean) => {
+      tip.classList.toggle('is-open', on);
+      term.setAttribute('aria-expanded', String(on));
+      if (!on) return;
+      // kept inside the viewport (phones): shift it sideways if it would spill over
+      note.style.translate = '';
+      const r = note.getBoundingClientRect(), pad = 12;
+      const dx = r.left < pad ? pad - r.left : r.right > innerWidth - pad ? innerWidth - pad - r.right : 0;
+      if (dx) note.style.translate = `${dx}px 0`;
+    };
+    let touch = false, opened = 0;
+    term.addEventListener('pointerdown', (e) => { touch = e.pointerType !== 'mouse'; });
+    tip.addEventListener('mouseenter', () => { if (!touch) set(true); });
+    tip.addEventListener('mouseleave', () => { if (document.activeElement !== term) set(false); });
+    term.addEventListener('focus', () => { set(true); opened = Date.now(); });
+    term.addEventListener('blur', () => set(false));
+    // a tap opens it (the focus that comes with it already did); a second tap closes it
+    term.addEventListener('click', () => { if (touch && Date.now() - opened > 400) set(!tip.classList.contains('is-open')); touch = false; });
+    term.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
+    document.addEventListener('pointerdown', (e) => { if (!tip.contains(e.target as Node)) set(false); });
+  });
+</script>

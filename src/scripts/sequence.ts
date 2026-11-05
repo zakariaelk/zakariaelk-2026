@@ -18,10 +18,28 @@ document.querySelectorAll<HTMLElement>('[data-seq]').forEach((fig) => {
   const caps: string[] | null = cap ? JSON.parse(cap.dataset.captions!) : null;
   if (n < 2) return;
   let i = 0, timer = 0, visible = false, playing = !reduce;
+  // cross-fade (350 ms): the outgoing slide stays in the same box and fades out while the next fades in; instant with
+  // reduced motion. A new step before the fade ends finishes the previous one first.
+  let fading: { el: HTMLElement; anims: Animation[] } | null = null;
+  const FADE = { duration: 350, easing: 'ease-in-out' };
   const show = (k: number, announce = false) => {
-    slides[i].hidden = true; dots[i]?.removeAttribute('aria-current'); thumbs[i]?.removeAttribute('aria-current');
+    if (fading) { fading.anims.forEach((a) => a.finish()); }
+    const out = slides[i];
+    dots[i]?.removeAttribute('aria-current'); thumbs[i]?.removeAttribute('aria-current');
     i = (k + n) % n;
-    slides[i].hidden = false; dots[i]?.setAttribute('aria-current', 'true'); thumbs[i]?.setAttribute('aria-current', 'true');
+    const next = slides[i];
+    next.hidden = false; dots[i]?.setAttribute('aria-current', 'true'); thumbs[i]?.setAttribute('aria-current', 'true');
+    if (out !== next && reduce) out.hidden = true;
+    else if (out !== next) {
+      out.classList.add('is-leaving');
+      const anims = [out.animate([{ opacity: 1 }, { opacity: 0 }], FADE), next.animate([{ opacity: 0 }, { opacity: 1 }], FADE)];
+      const f = fading = { el: out, anims };
+      anims[0].finished.catch(() => {}).finally(() => {
+        if (slides[i] !== out) out.hidden = true;
+        out.classList.remove('is-leaving');
+        if (fading === f) fading = null;
+      });
+    }
     if (count) count.textContent = `${i + 1} of ${n}`;
     if (cap && caps?.[i]) (cap.querySelector('[data-cap-text]') ?? cap).textContent = caps[i]; // a caption per screen
     if (announce) status.textContent = `Screen ${i + 1} of ${n}`;

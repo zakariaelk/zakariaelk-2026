@@ -23,6 +23,11 @@ if (root && card) {
   try { notes = JSON.parse(localStorage.getItem('cc-notes') ?? '[]'); } catch {}
   const save = () => { try { localStorage.setItem('cc-notes', JSON.stringify(notes)); } catch {} };
   const bar = document.querySelector<HTMLElement>('.cc-review')!;
+  // on the local dev server, review notes become threads (scripts/review-threads.ts, saved in docs/review/ through
+  // the dev server). import.meta.env.DEV is false in the build, so none of it is in there.
+  let threads: typeof import('./review-threads') | null = null;
+  if (import.meta.env.DEV && review) import('./review-threads').then((m) => { threads = m; card.querySelector('.cc-card__title')!.textContent = 'New thread'; });
+  let selection = ''; // text selected on the page when the pin was picked up, to underline in the thread
   const count = () => { bar.querySelector('[data-cc-count]')!.textContent = notes.length === 1 ? '1 note' : `${notes.length} notes`; };
   if (review) {
     card.querySelector('.cc-card__title')!.textContent = 'Note for Claude';
@@ -135,7 +140,7 @@ if (root && card) {
 
   // drag the pin onto the page; a click (no drag) or the keyboard comments on the paragraph being read
   let drag: { id: number; x: number; y: number; moved: boolean } | null = null, over: HTMLElement | null = null, justDragged = false;
-  pin.addEventListener('pointerdown', (e) => { drag = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false }; pin.setPointerCapture(e.pointerId); });
+  pin.addEventListener('pointerdown', (e) => { selection = window.getSelection()?.toString().replace(/\s+/g, ' ').trim().slice(0, 300) ?? ''; drag = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false }; pin.setPointerCapture(e.pointerId); });
   pin.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
@@ -175,6 +180,22 @@ if (root && card) {
   // send to Netlify Forms (in review mode: keep the note on this device)
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (review && threads && target) {
+      const field = (n: string) => (form.elements.namedItem(n) as HTMLInputElement).value;
+      const send = form.querySelector<HTMLButtonElement>('.cc-send')!;
+      send.disabled = true;
+      status.textContent = 'Saving…';
+      try {
+        await threads.create(target, field('comment').trim(), field('quote'), field('section'), selection || undefined);
+        status.textContent = 'Saved as a thread. Drag the pin again for the next one.';
+        form.reset();
+        window.setTimeout(() => { closeCard(false); }, 900);
+      } catch (err) {
+        status.textContent = `Couldn't save: ${(err as Error).message}`;
+        send.disabled = false;
+      }
+      return;
+    }
     if (review) {
       const field = (n: string) => (form.elements.namedItem(n) as HTMLInputElement).value;
       notes.push({ page: field('page'), section: field('section'), quote: field('quote'), comment: field('comment').trim() });

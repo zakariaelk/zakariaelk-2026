@@ -2,7 +2,8 @@
 // The user groups as a table (Who · Needs · Pains before the app), written as a plain Markdown table in the content:
 // " · " in a cell separates its items, one per line; the first cell is "**Name** · one-line context".
 // photos/alts: one per row ("|"-separated, empty for none), shown left of the name. The table keeps its width and
-// scrolls sideways inside the text column, with a visible scrollbar.
+// scrolls sideways inside the text column, with a visible scrollbar and arrow buttons at its edges when it overflows
+// (docs/claude-code-review-notes-5nov.md item 7). On phones (below 700px) each row is a stacked card instead.
 import { getImage } from 'astro:assets';
 import { assetImage } from '../../lib/media';
 
@@ -15,6 +16,8 @@ const pics = await Promise.all(photos.split('|').map(async (p) => {
   return img ? await getImage({ src: img, width: 168, height: 168, format: 'webp' }) : undefined;
 }));
 const html = await Astro.slots.render('default');
+// the column names, repeated above the items in the phone cards
+const heads = [...(html.match(/<thead>[\s\S]*?<\/thead>/)?.[0] ?? '').matchAll(/<th[^>]*>([\s\S]*?)<\/th>/g)].map((m) => m[1].replace(/<[^>]+>/g, '').trim());
 let row = -1;
 const out = html.replace(/<tr>([\s\S]*?)<\/tr>/g, (tr, inner: string) => {
   if (inner.includes('<th')) return tr;
@@ -23,7 +26,7 @@ const out = html.replace(/<tr>([\s\S]*?)<\/tr>/g, (tr, inner: string) => {
   return '<tr>' + inner.replace(/<td[^>]*>([\s\S]*?)<\/td>/g, (_, cell: string) => {
     col++;
     const items = cell.split(' · ').map((s) => s.trim());
-    if (col > 0) return `<td>${items.map((i) => `<span class="cs-ut__item">${i}</span>`).join('')}</td>`;
+    if (col > 0) return `<td data-label="${heads[col] ?? ''}">${items.map((i) => `<span class="cs-ut__item">${i}</span>`).join('')}</td>`;
     const [name, ...ctx] = items;
     const pic = pics[row];
     const img = pic ? `<img src="${pic.src}" alt="${altList[row] ?? ''}" width="84" height="84" loading="lazy" decoding="async" />` : '';
@@ -33,5 +36,33 @@ const out = html.replace(/<tr>([\s\S]*?)<\/tr>/g, (tr, inner: string) => {
 ---
 <div class="cs-ut">
   {label && <p class="cs-ut__label">{label}</p>}
-  <div class="cs-ut__scroll" tabindex="0" role="region" aria-label={label ?? 'Table'}><Fragment set:html={out} /></div>
+  <div class="cs-ut__frame">
+    <div class="cs-ut__scroll" tabindex="0" role="region" aria-label={label ?? 'Table'}><Fragment set:html={out} /></div>
+    <button type="button" class="cs-ut__more cs-ut__more--left" aria-label="Scroll table left" data-dir="-1" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6l-6 6 6 6" /></svg></button>
+    <button type="button" class="cs-ut__more cs-ut__more--right" aria-label="Scroll table right" data-dir="1" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6" /></svg></button>
+  </div>
 </div>
+
+<script>
+  // the arrow buttons: shown only while the table overflows, the left one once it's scrolled, the right one until the end
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  document.querySelectorAll<HTMLElement>('.cs-ut__frame').forEach((frame) => {
+    const box = frame.querySelector<HTMLElement>('.cs-ut__scroll')!;
+    const [left, right] = frame.querySelectorAll<HTMLButtonElement>('.cs-ut__more');
+    const update = () => {
+      const over = box.scrollWidth - box.clientWidth > 2;
+      left.hidden = !over || box.scrollLeft < 2;
+      right.hidden = !over || box.scrollLeft > box.scrollWidth - box.clientWidth - 2;
+    };
+    // about one column: the width of the second header cell
+    const step = () => box.querySelector<HTMLElement>('th:nth-child(2)')?.offsetWidth ?? box.clientWidth * 0.4;
+    [left, right].forEach((b) => b.addEventListener('click', () => {
+      box.scrollBy({ left: Number(b.dataset.dir) * step(), behavior: calm.matches ? 'instant' : 'smooth' });
+      // the button that just hid hands focus to the other one
+      window.setTimeout(() => { if (b.hidden) (b === left ? right : left).focus({ preventScroll: true }); }, calm.matches ? 0 : 450);
+    }));
+    box.addEventListener('scroll', update, { passive: true });
+    new ResizeObserver(update).observe(box);
+    update();
+  });
+</script>

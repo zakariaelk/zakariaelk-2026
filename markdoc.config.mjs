@@ -58,6 +58,8 @@ export default defineMarkdocConfig({
       attributes: { note: { type: String, required: true }, label: { type: String } },
     },
     // one sentence in the site's orange marker highlight, drawn in when it reaches the middle of the screen
+    // a term with a short note on hover, focus or tap (dotted underline)
+    tip: { render: story('Tip'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true }, note: { type: String, required: true } } },
     mark: { render: story('Mark'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true } } },
     // Simple INSO case: icon + narrative title + paragraph (results: + a source line)
     block: {

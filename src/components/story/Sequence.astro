@@ -28,9 +28,12 @@ const screens = await Promise.all(paths.map(async (p, i) => {
   return { view: view.src, full: full.src, thumb: thumb?.src, w: src.width, h: src.height, alt: altList[i] ?? '' };
 }));
 const n = screens.length;
+// ==word== in the caption: that word in the grey of the Before tag, which then replaces the "Before:" prefix
+const capParts = caption?.split(/==(.+?)==/) ?? [];
+const capPlain = caption?.replace(/==(.+?)==/g, '$1');
 ---
-<figure class:list={['cs-seq', landscape && 'cs-seq--landscape', frame && `cs-frame--${frame}`]} data-seq data-orient={landscape ? 'landscape' : 'portrait'} aria-roledescription="carousel" aria-label={caption ?? 'Screens'}>
-  <div class="cs-seq__stage" tabindex="0" aria-label={`${caption ?? 'Screens'}: use the arrow keys to move between screens`}>
+<figure class:list={['cs-seq', landscape && 'cs-seq--landscape', frame && `cs-frame--${frame}`]} data-seq data-orient={landscape ? 'landscape' : 'portrait'} aria-roledescription="carousel" aria-label={capPlain ?? 'Screens'}>
+  <div class="cs-seq__stage" tabindex="0" aria-label={`${capPlain ?? 'Screens'}: use the arrow keys to move between screens`}>
     {frame === 'compare' ? <p class="cs-frame__labels" aria-hidden="true"><span>Before</span><span>After</span></p> : frame && <p class="cs-frame__label" aria-hidden="true">{frame === 'before' ? 'Before' : 'After'}</p>}
     {screens.map((s, i) => (
       <div class="cs-seq__slide" role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${n}`} hidden={i > 0}>
@@ -49,5 +52,5 @@ const n = screens.length;
   )}
   {thumbs && n > 1 && <div class="cs-seq__thumbs">{screens.map((s, i) => <button type="button" aria-label={`Screen ${i + 1} of ${n}`} aria-current={i === 0 ? 'true' : undefined}><img src={s.thumb} alt="" width="80" height={Math.round((80 * s.h) / s.w)} loading="lazy" decoding="async" /></button>)}</div>}
   <p class="sr-only" aria-live="polite" data-seq-status></p>
-  {caption && <figcaption data-captions={capList ? JSON.stringify(capList) : undefined}>{(frame === 'before' || frame === 'after') && <span class="cs-cap__frame">{frame === 'before' ? 'Before' : 'After'}: </span>}<span data-cap-text>{caption}</span></figcaption>}
+  {caption && <figcaption data-captions={capList ? JSON.stringify(capList) : undefined}>{(frame === 'before' || frame === 'after') && capParts.length < 2 && <span class="cs-cap__frame">{frame === 'before' ? 'Before' : 'After'}: </span>}<span data-cap-text>{capParts.map((t, i) => (i % 2 ? <mark class="cs-cap__mark">{t}</mark> : t))}</span></figcaption>}
 </figure>

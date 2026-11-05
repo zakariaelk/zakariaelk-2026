@@ -5,9 +5,9 @@
 title: "Mitigating risk with location-based alerts"
 headline: "Keeping humanitarian workers informed on the move"
 lede:
-  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, mostly by SMS and email. This is how I designed a mobile app that lets people choose which alerts reach them, and shows INSO how its alerts are actually used, as the only designer in a small engineering team."
+  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, mostly by SMS and email. This is how I designed a mobile app that lets people personalise the alerts that reach them, and shows INSO how its alerts are actually used, as the only designer in a small engineering team."
 ledeB:
-  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, mostly by SMS and email. As the only designer in a small engineering team, I designed a mobile app that lets people choose which alerts reach them, and shows INSO how its alerts are actually used."
+  - "INSO shares real-time safety alerts with NGOs working in high-risk areas, mostly by SMS and email. As the only designer in a small engineering team, I designed a mobile app that lets people personalise the alerts that reach them, and shows INSO how its alerts are actually used."
 deliverables:
   - "Heuristic evaluation, interviews"
   - "UI design, prototypes, in-app tutorials"
@@ -69,19 +69,19 @@ featuredVideo: "/media/projects/mitigating-risk-with-location-based-alerts/inso-
 
 **SMS and email gave people little say over which alerts reached them, and gave INSO no way to see how its alerts were used**
 
-INSO has always sent alerts by SMS and email, and still does, because in some countries they're the most reliable way to reach people, with patchy or no internet coverage at all. An alert already said what happened, where and what to do. What people couldn't do was shape what reached them, and INSO couldn't see what happened to an alert once it was sent.
+INSO operates in 20+ countries, many with regions where internet coverage is patchy or missing altogether. To send out alerts, the organisation relied on SMS, and on email for the longer format, and still does. An alert already said what happened, where and what to do. What people couldn't do was shape what reached them, and INSO couldn't see what happened to an alert once it was sent.
 
-**Only whole regions.** Each NGO has one or two people managing its INSO account in the Partners Portal, a web application used on a laptop. They activate regions for teams, so a team in the south only gets alerts from the south. Nothing finer than a region existed: no area around you, no route, no single compound.
+**Only whole regions.** NGOs registered with INSO manage their account in the Partners Portal, a web application where admins decide which team members get access, and which regions they receive INSO services from: alerts, reports, trainings. But regions are big, and a worker covering several couldn't narrow alerts down to one city, one compound, or their own location while on a mission.
 
-**No way to see how alerts were used.** Emails weren't always opened, some never, and SMS has no real read receipts. Country offices learned how their alerts did only by asking: interviewing NGO workers, asking partner NGOs directly and running satisfaction surveys.
+**No way to see how alerts were used.** Emails weren't always opened, and SMS has no real read receipts. So country offices only learned how their alerts did by asking.
 
-**Composing and sending meant a laptop.** INSO staff wrote and sent alerts from a laptop through the same system, which is hard from the field and sometimes impossible. And every SMS cost the country offices money.
+**Composing and sending meant a laptop.** INSO staff wrote and sent alerts from a laptop through the same system, which they found impractical when they were on the move themselves, in meetings or at events, and sometimes without internet. And every SMS cost the country offices money.
 
 ## Users
 
 **Three groups, one sending and two receiving**
 
-{% usertable label="Receive – user groups" photos="projects/mitigating-risk-with-location-based-alerts/users/01-user-ngo-field-worker.jpg|projects/mitigating-risk-with-location-based-alerts/users/02-user-security-ops-staff.jpg|" alts="An NGO field worker with a backpack walking across a car park|A security officer on a satellite phone next to a field vehicle|" %}
+{% usertable label="The receiving user groups" photos="projects/mitigating-risk-with-location-based-alerts/users/01-user-ngo-field-worker.jpg|projects/mitigating-risk-with-location-based-alerts/users/02-user-security-ops-staff.jpg|" alts="An NGO field worker with a backpack walking across a car park|A security officer on a satellite phone next to a field vehicle|" %}
 | Who | Needs | Pains before the app |
 |---|---|---|
 | **NGO field workers** · In the field, on the move, exposed to risk, sometimes with no internet | Stay updated while moving · Focus only on what affects their safety: the road, where they're going, where they sleep | Only whole regions, activated by their NGO's account admin on a laptop · Alerts lost among every other SMS and email |
@@ -89,10 +89,10 @@ INSO has always sent alerts by SMS and email, and still does, because in some co
 | **Shared** · Both groups | Quickly understand what's happening nearby · Trust the accuracy of alerts · Stay updated in real time | High pressure, little time to read · Unclear alerts reduce trust · Phone checks are a security risk |
 {% /usertable %}
 
-{% usertable label="Send – user group" photos="projects/mitigating-risk-with-location-based-alerts/users/03-user-inso-staff.jpg" alts="An INSO staff member writing an alert on a laptop" %}
+{% usertable label="The sending user group" photos="projects/mitigating-risk-with-location-based-alerts/users/03-user-inso-staff.jpg" alts="An INSO staff member writing an alert on a laptop" %}
 | Who | Needs | Pains before the app |
 |---|---|---|
-| **INSO staff in the country offices** · Collect, validate, compose and send the alerts | Compose and send quickly, from anywhere, with or without data · See how partners use and experience the alerts, maps, filters and saved alerts, without having to ask · Reduce the cost of SMS | Composing and sending meant a laptop and the Partners Portal, hard from the field · No way to tell whether alerts were read or used, only what people said when asked · SMS was costly |
+| **INSO staff in the country offices** · Collect, validate, compose and send the alerts | Compose and send quickly, from anywhere, with or without data · See how partners use and experience the alerts, maps, filters and saved alerts, without having to ask · Reduce the cost of SMS | Composing and sending meant a laptop and the Partners Portal, impractical on the move · No way to tell whether alerts were read or used, only what people said when asked · SMS was costly |
 {% /usertable %}
 
 ## Where I came in
@@ -111,7 +111,7 @@ I joined when the engineers had a first draft of the app, only on TestFlight for
 What first stood out was that it didn't look like INSO, with brown and beige everywhere and no INSO blue. But the more I looked, the clearer it became that the problem itself needed structure, so that's where I started.
 {% /ab %}
 
-{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-former-version.jpg" frame="before" alt="The app when I joined: a dense dark list of alerts in capitals, an alert detail packed with text under a small map, and a map that shows a single alert pin." caption="The app when I joined the project team." /%}
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-former-version.jpg" frame="before" alt="The app when I joined: a dense dark list of alerts in capitals, an alert detail packed with text under a small map, and a map that shows a single alert pin." caption="The app demo built by the engineers ==before== I joined the project team." /%}
 
 {% ab v="a" %}
 The engineers had already explored part of the problem: SMS was costly, more and more NGO workers were using smartphones as work phones, and internet coverage was growing in several of INSO's countries. That combination opened up several opportunities that called for an INSO Alerts mobile app. Not another app for the sake of having an app, people don't need that, but the one way to give people a say over what reaches them, to let INSO staff compose and send from anywhere, and to see how alerts are actually used. It's an alternative to SMS and email, not a replacement.
@@ -180,7 +180,7 @@ Most partners found getting started easy.
 Eight alerts were squeezed on one screen, with titles of 12 to 16 words in a tiny column and small dates and distances fighting for attention. The engineers' idea was to show as much as possible without scrolling, so the question became: see everything at once, or read each alert easily? My first thought was "where should I be looking?" There was no way to search by place either, and no profile or way to reach terms, FAQs or info about the app, just a settings icon at the top right.
 {% /block %}
 
-{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-old-alerts-screen.jpg" frame="before" size="text" alt="The old alerts list, annotated: inconsistent typography, low spacing between items, and location, distance and time not prioritised." caption="Alerts screen before redesign, showing density and unclear hierarchy" /%}
+{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-old-alerts-screen.jpg" frame="before" size="text" alt="The old alerts list, annotated: inconsistent typography, low spacing between items, and location, distance and time not prioritised." caption="Alerts screen ==before== redesign, showing density and unclear hierarchy" /%}
 
 {% tablebox label="table" %}
 | Alerts list, former design | Redesign approach |
@@ -241,14 +241,14 @@ A heuristic evaluation of the old map turned up three things that mattered here.
 My heuristic evaluation of the old map turned up three things that mattered here. You couldn't explore freely, because the map only opened as a tool for setting a radius or drawing an area. You couldn't select an alert on the map and read it there. And you couldn't move around the map and then switch back to the list to see only the alerts from the place you had moved to.
 {% /ab %}
 
-{% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-1.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-2.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-3.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-4.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-5.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-6.jpg" landscape=true frame="before" alts="The old alerts list.|The old map, dark, before any alert is chosen.|The old map: Proximity, a radius around your location.|The old map settings.|A note on the old map: it had two tools, Proximity and Polygon, and to look anywhere else you had to open a single alert from the list.|The old map: Polygon." caption="The former map: a tool for setting a radius or drawing an area, not for exploring." /%}
+{% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-1.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-2.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-3.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-4.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-5.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-6.jpg" landscape=true frame="before" alts="The old alerts list.|The old map, dark, before any alert is chosen.|The old map: Proximity, a radius around your location.|The old map settings.|A note on the old map: it had two tools, Proximity and Polygon, and to look anywhere else you had to open a single alert from the list.|The old map: Polygon." caption="The ==former== map: a tool for setting a radius or drawing an area, not for exploring." /%}
 
 {% ab v="a" %}
-Explore fixes all three. You can move around the map freely, tap an alert to read its details on the map and open each one separately, and go to any place and switch back to the list to load the alerts from that area. None of this was possible in the former design, and colleagues in the country offices raised the same things when we tested. Testing also caught two smaller things: scrolling an alert also moved the map, and alerts without a location never showed up on it, so list and map counts didn't match.
+Explore fixes all three. You can move around the map freely, tap an alert to read its details on the map and open each one separately, and go to any place and switch back to the list to load the alerts from that area. None of this was possible in the former design. Testing also caught two smaller things: scrolling an alert also moved the map, and alerts without a location never showed up on it, so list and map counts didn't match.
 {% /ab %}
 
 {% ab v="b" %}
-I designed Explore to fix all three. You can move around the map freely, tap an alert to read its details on the map and open each one separately, and go to any place and switch back to the list to load the alerts from that area. None of this was possible in the former design, and colleagues in the country offices raised the same things when we tested. Testing also caught two smaller things: scrolling an alert also moved the map, and alerts without a location never showed up on it, so list and map counts didn't match.
+I designed Explore to fix all three. You can move around the map freely, tap an alert to read its details on the map and open each one separately, and go to any place and switch back to the list to load the alerts from that area. None of this was possible in the former design. Testing also caught two smaller things: scrolling an alert also moved the map, and alerts without a location never showed up on it, so list and map counts didn't match.
 {% /ab %}
 
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/map-explore/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/02-alerts_list_instruct_03.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/03-map_explore_loading.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/04-map_explore_loaded.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/05-map_explore_alert-selected.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/06-last-visual-alerts_list_view_explore-enabled.jpg" landscape=true frame="after" alts="The alerts list, with a Map button at the bottom.|The guide: explore alerts in a map view.|The map opens in Explore mode, loading.|The map with the alerts in the area.|An alert tapped on the map, its details in a card.|Back on the list, Explore is enabled: the list shows the alerts of the area chosen on the map." caption="Explore: move around the map freely, tap an alert to read it there, and switch back to the list for that area." /%}
@@ -287,7 +287,7 @@ The tutorial cleared up the difference between live and custom location, and col
 
 Let's take an organisation that wants to follow what happens around the compound where its staff live. They can draw a shape on the map to cover the exact area, and keep getting alerts from inside it.
 
-{% figure src="projects/mitigating-risk-with-location-based-alerts/simple/map-geo/former-geofence.jpg" frame="before" size="text" badges="37,86.3|50,30.5|57.2,43.7|61.5,79|60.9,14.5" spots="38.3,61.8,83.6,89.4|30.4,69.8,21,40|45,65.4,40.5,53.2|63.2,69.2,77.6,89.2|40,60,15.4,19.4" alt="The former Polygon screen: a map with a drawn shape, two unlabelled orange buttons, a grey note saying press the back button to save the polygon filter, and a Proximity / Polygon switch at the top." caption="The former Polygon mode, numbered to match the table below." /%}
+{% figure src="projects/mitigating-risk-with-location-based-alerts/simple/map-geo/former-geofence.jpg" frame="before" size="text" badges="37,86.3|50,30.5|57.2,43.7|61.5,79|60.9,14.5" spots="38.3,61.8,83.6,89.4|30.4,69.8,21,40|45,65.4,40.5,53.2|63.2,69.2,77.6,89.2|40,60,15.4,19.4" alt="The former Polygon screen: a map with a drawn shape, two unlabelled orange buttons, a grey note saying press the back button to save the polygon filter, and a Proximity / Polygon switch at the top." caption="The ==former== Polygon mode, numbered to match the table below." /%}
 
 **Polygon mode (Geofence)**
 

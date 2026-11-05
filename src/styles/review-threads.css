@@ -1,0 +1,81 @@
+/* Review threads (scripts/review-threads.ts): dev only, loaded with the script, so never in the build. Site tokens,
+   light and dark. Only a quick fade, and none with reduced motion. */
+.rt-pins { position: absolute; top: 0; left: 0; width: 0; height: 0; z-index: 40; }
+.rt-pin { position: absolute; display: grid; place-items: center; min-width: 26px; height: 26px; padding: 0 6px; border: 1.5px solid var(--cs-title); border-radius: 13px; background: var(--cs-title); color: var(--bg); font: 600 12px/1 var(--sans); cursor: pointer; box-shadow: 0 2px 6px rgb(0 0 0 / 0.18); }
+.rt-pin.is-resolved { background: var(--bg); color: var(--cs-title); box-shadow: none; }
+.rt-pin.is-active { outline: 3px solid rgb(255 190 70 / 0.8); outline-offset: 1px; }
+.rt-pin[hidden] { display: none; }
+.rt-pin:focus-visible, .rt-ui button:focus-visible, .rt-ui textarea:focus-visible, .rt-open:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 2px; }
+
+/* the block a thread is about, while the thread is open; the words it was dropped on, underlined */
+.rt-hl { background-color: rgb(255 214 102 / 0.2); box-shadow: 0 0 0 6px rgb(255 214 102 / 0.2); border-radius: 2px; }
+:root[data-theme='dark'] .rt-hl { background-color: rgb(255 214 102 / 0.08); box-shadow: 0 0 0 6px rgb(255 214 102 / 0.08); }
+::highlight(rt-sel) { background-color: rgb(255 170 60 / 0.3); text-decoration: underline 2px rgb(220 120 20); }
+
+/* Before: the old words in place, dashed, with a small tag */
+.rt-before { position: relative; outline: 1.5px dashed var(--cs-title); outline-offset: 6px; }
+.rt-before::after { content: 'Before'; position: absolute; top: -26px; right: -6px; padding: 3px 7px; border-radius: 3px; background: var(--cs-title); color: var(--bg); font: 500 11px/1 var(--sans); letter-spacing: 0.04em; }
+
+/* the thread card: a popover beside its pin, a bottom sheet on phones */
+.rt-card { position: absolute; z-index: 60; width: 340px; max-height: min(70vh, 620px); overflow: auto; padding: 14px 16px 12px; border: 1px solid var(--cs-rule-strong); border-radius: 10px; background: var(--bg); color: var(--cs-text); font: 400 14px/20px var(--sans); box-shadow: 0 14px 36px rgb(0 0 0 / 0.18); animation: rt-in 0.12s ease-out; }
+.rt-card[hidden], .rt-panel[hidden] { display: none; }
+.rt-card:focus { outline: none; }
+.rt-card__head, .rt-panel__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.rt-card__title, .rt-panel__title { margin: 2px 0 0; font-weight: 600; color: var(--cs-title); }
+.rt-x { flex: none; width: 32px; height: 32px; margin: -6px -8px 0 0; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--cs-title); font: 400 22px/1 var(--sans); cursor: pointer; }
+.rt-x:hover { background: var(--cs-rule); }
+.rt-card__on { margin: 4px 0 10px; color: var(--cs-muted); font-size: 13px; line-height: 18px; }
+.rt-tag { display: inline-block; padding: 2px 6px; border: 1px solid var(--cs-rule-strong); border-radius: 3px; font: 600 10px/1.2 var(--sans); letter-spacing: 0.06em; color: var(--cs-title); vertical-align: 1px; }
+.rt-tag--done { border-color: transparent; background: var(--cs-rule); }
+.rt-bn { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--cs-rule-strong); border-radius: 999px; }
+.rt-bn button { min-height: 32px; padding: 0 14px; border: 0; border-radius: 999px; background: none; color: var(--cs-title); font: 500 13px/1 var(--sans); cursor: pointer; }
+.rt-bn button[aria-pressed='true'] { background: var(--cs-title); color: var(--bg); }
+.rt-bn button:disabled { opacity: 0.4; cursor: default; }
+.rt-diff { margin: 10px 0 12px; padding: 10px 12px; border-radius: 6px; background: var(--cs-rule); color: var(--cs-text); font-size: 13px; line-height: 19px; }
+.rt-diff del { color: var(--cs-muted); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.rt-diff ins { text-decoration: underline; text-decoration-thickness: 2px; text-decoration-color: rgb(220 120 20); text-underline-offset: 3px; color: var(--cs-title); }
+.rt-msgs { margin: 0; padding: 0; list-style: none; }
+.rt-msg { padding: 10px 0; border-top: 1px solid var(--cs-rule); }
+.rt-msg__meta { margin: 0 0 4px; color: var(--cs-muted); font-size: 12px; line-height: 16px; }
+.rt-msg__meta strong { color: var(--cs-title); font-weight: 600; }
+.rt-msg--claude .rt-msg__meta strong { color: rgb(196 100 20); }
+:root[data-theme='dark'] .rt-msg--claude .rt-msg__meta strong { color: rgb(240 160 80); }
+.rt-msg__text { color: var(--cs-text); overflow-wrap: anywhere; }
+.rt-reply textarea { display: block; width: 100%; box-sizing: border-box; margin-top: 8px; padding: 8px 10px; border: 1px solid var(--cs-rule-strong); border-radius: 6px; background: var(--bg); color: var(--cs-text); font: inherit; resize: vertical; }
+.rt-actions { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; }
+.rt-btn { min-height: 36px; padding: 0 14px; border: 1px solid var(--cs-rule-strong); border-radius: 999px; background: none; color: var(--cs-title); font: 500 13px/1 var(--sans); cursor: pointer; }
+.rt-btn--main { border-color: var(--cs-title); background: var(--cs-title); color: var(--bg); }
+.rt-status { margin: 6px 0 0; color: var(--cs-muted); font-size: 12px; }
+.rt-status:empty { display: none; }
+
+/* the panel: every thread on the page, grouped by section */
+.rt-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 70; width: 360px; overflow: auto; padding: 16px 18px 90px; border-left: 1px solid var(--cs-rule-strong); background: var(--bg); color: var(--cs-text); font: 400 14px/20px var(--sans); box-shadow: -10px 0 30px rgb(0 0 0 / 0.08); animation: rt-in 0.12s ease-out; }
+.rt-panel:focus { outline: none; }
+.rt-filter { display: inline-flex; gap: 2px; margin: 12px 0 8px; padding: 2px; border: 1px solid var(--cs-rule-strong); border-radius: 999px; }
+.rt-filter button { min-height: 32px; padding: 0 14px; border: 0; border-radius: 999px; background: none; color: var(--cs-title); font: 500 13px/1 var(--sans); cursor: pointer; }
+.rt-filter button[aria-pressed='true'] { background: var(--cs-title); color: var(--bg); }
+.rt-check { display: flex; align-items: center; gap: 8px; min-height: 32px; color: var(--cs-text); font-size: 13px; cursor: pointer; }
+.rt-import { margin: 8px 0 4px; }
+.rt-import[hidden] { display: none; }
+.rt-import button { min-height: 36px; padding: 0 14px; border: 1px solid var(--cs-title); border-radius: 999px; background: var(--cs-title); color: var(--bg); font: 500 13px/1 var(--sans); cursor: pointer; }
+.rt-import button[hidden] { display: none; }
+.rt-import__status { margin: 6px 0 0; color: var(--cs-muted); font-size: 13px; }
+.rt-group { margin-top: 18px; }
+.rt-group__name { margin: 0 0 6px; color: var(--cs-muted); font: 500 11px/16px var(--sans); letter-spacing: 0.08em; text-transform: uppercase; }
+.rt-group ol { margin: 0; padding: 0; list-style: none; }
+.rt-item { display: flex; gap: 10px; width: 100%; padding: 10px 6px; border: 0; border-top: 1px solid var(--cs-rule); background: none; color: var(--cs-text); font: inherit; text-align: left; cursor: pointer; }
+.rt-item:hover { background: var(--cs-rule); }
+.rt-item__num { flex: none; display: grid; place-items: center; min-width: 24px; height: 24px; padding: 0 5px; border: 1.5px solid var(--cs-title); border-radius: 12px; background: var(--cs-title); color: var(--bg); font: 600 11px/1 var(--sans); box-sizing: border-box; }
+.rt-item.is-resolved .rt-item__num { background: none; color: var(--cs-title); }
+.rt-item__meta { display: block; margin-top: 4px; color: var(--cs-muted); font-size: 12px; line-height: 16px; }
+.rt-empty { margin-top: 18px; color: var(--cs-muted); }
+.rt-open { background: #f4f2ec !important; color: #1f1f1f !important; }
+
+@keyframes rt-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .rt-card, .rt-panel { animation: none; } }
+
+@media (max-width: 767px) {
+  .rt-pin { min-width: 24px; height: 24px; }
+  .rt-card { position: fixed; left: 0 !important; right: 0; top: auto !important; bottom: 0; width: auto; max-height: 75vh; border-radius: 14px 14px 0 0; border-width: 1px 0 0; padding-bottom: calc(64px + env(safe-area-inset-bottom)); } /* clear of the Astro dev toolbar */
+  .rt-panel { width: 100%; border-left: 0; }
+}

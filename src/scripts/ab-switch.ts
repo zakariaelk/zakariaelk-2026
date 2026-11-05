@@ -38,6 +38,7 @@ if (blocks.length && params.get('compare') === '1') {
     url.searchParams.set('v', v);
     history.replaceState(history.state, '', url);
     try { localStorage.setItem(KEY, v); } catch {}
+    document.dispatchEvent(new CustomEvent('ab:change', { detail: v })); // the review threads move their pins
   };
 
   // the element the reader is on: the first block-level piece of the page whose bottom is below the top bar

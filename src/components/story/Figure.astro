@@ -26,6 +26,8 @@ const noteList = notes?.split('|').map((s) => s.trim()).filter(Boolean) ?? [];
 const dims = isVideo ? poster : img;
 const orient = dims && dims.width / dims.height < 1.1 ? 'portrait' : 'landscape';
 const label = frame === 'before' ? 'Before' : frame === 'after' ? 'After' : '';
+// ==word== in a caption: that word in the grey of the Before tag, which then replaces the "Before:" prefix
+const capParts = caption?.split(/==(.+?)==/) ?? [];
 ---
 <figure class:list={['cs-figure', `cs-figure--${size}`, frame && `cs-frame--${frame}`]} data-orient={orient} data-related={related ? '' : undefined}>
   {label && <p class="cs-frame__label">{label}</p>}
@@ -42,5 +44,5 @@ const label = frame === 'before' ? 'Before' : frame === 'after' ? 'After' : '';
     {badgeList.length > 0 && <div class="cs-badges" aria-hidden="true">{badgeList.map(([x, y], i) => <span class="cs-num" style={`left:${x}%;top:${y}%`}>{i + 1}</span>)}</div>}
   </div>
   {noteList.length > 0 && <ol class="cs-notes" aria-label="What changed">{noteList.map((n) => <li>{n}</li>)}</ol>}
-  {caption && <figcaption>{label && <span class="cs-cap__frame">{label}: </span>}{caption}</figcaption>}
+  {caption && <figcaption>{label && capParts.length < 2 && <span class="cs-cap__frame">{label}: </span>}{capParts.map((t, i) => (i % 2 ? <mark class="cs-cap__mark">{t}</mark> : t))}</figcaption>}
 </figure>

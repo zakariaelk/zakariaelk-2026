@@ -585,3 +585,44 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
   .ab-switch.is-lifted { bottom: calc(66px + env(safe-area-inset-bottom)); }
   html.has-ab body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); } /* the control never covers the last lines */
 }
+
+/* ---------- Review notes of 5 Nov (docs/claude-code-review-notes-5nov.md) ---------- */
+/* 4: a ==word== in a caption, in the grey of the Before tag (it replaces the "Before:" prefix) */
+.cs-cap__mark { padding: 1px 5px; border-radius: 2px; background: rgb(138 133 144 / 0.22); color: inherit; font-weight: 500; } /* the old design's grey, see .cs-frame--before */
+/* 12: a term with a note (components/story/Tip.astro) */
+.cs-tip { position: relative; }
+.cs-tip__term { padding: 0; border: 0; background: none; color: inherit; font: inherit; text-decoration: underline dotted; text-decoration-thickness: 1.5px; text-underline-offset: 4px; cursor: help; }
+.cs-tip__term:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 2px; border-radius: 2px; }
+.cs-tip__note { position: absolute; left: 50%; bottom: calc(100% + 8px); z-index: 30; width: max-content; max-width: min(320px, calc(100vw - 24px)); padding: 10px 14px; border-radius: 6px; background: var(--cs-title); color: var(--bg); font: 400 15px/22px var(--sans); text-align: left; transform: translateX(-50%); box-shadow: 0 8px 20px rgb(0 0 0 / 0.18); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s ease, visibility 0.15s; }
+.cs-tip.is-open .cs-tip__note { opacity: 1; visibility: visible; }
+@media (prefers-reduced-motion: reduce) { .cs-tip__note { transition: none; } }
+/* 9: the slide fading out stays in the same box, out of the way */
+.cs-seq__slide.is-leaving { pointer-events: none; }
+/* 10: a finding right after a visual reads as part of it: half the usual space above it */
+.cs-simple .a-story :is(.cs-figure, .cs-seq, .cs-pair, .cs-chart, .is-media, .media-video) + .cs-block--result { margin-top: calc(var(--sec-gap) / 2); }
+.cs-simple .a-story :is(.cs-figure, .cs-seq, .cs-pair, .cs-chart, .is-media, .media-video):has(+ .cs-block--result) { margin-bottom: calc(var(--sec-gap) / 2); }
+/* 7: the users tables: arrow buttons over a fade at the edges while they scroll sideways */
+.cs-simple .a-story .cs-ut__frame { position: relative; }
+.cs-simple .a-story .cs-ut__more { position: absolute; top: 0; bottom: 10px; z-index: 2; display: flex; align-items: center; width: 64px; min-width: 44px; padding: 0; border: 0; color: var(--cs-title); cursor: pointer; }
+.cs-simple .a-story .cs-ut__more[hidden] { display: none; }
+.cs-simple .a-story .cs-ut__more--right { right: 0; justify-content: flex-end; background: linear-gradient(to right, transparent, var(--bg) 70%); }
+.cs-simple .a-story .cs-ut__more--left { left: 0; justify-content: flex-start; background: linear-gradient(to left, transparent, var(--bg) 70%); }
+.cs-simple .a-story .cs-ut__more svg { width: 36px; height: 36px; padding: 8px; border: 1px solid var(--cs-rule-strong); border-radius: 50%; background: var(--bg); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; box-sizing: border-box; }
+.cs-simple .a-story .cs-ut__more:hover svg { border-color: var(--cs-title); }
+.cs-simple .a-story .cs-ut__more:focus-visible { outline: none; }
+.cs-simple .a-story .cs-ut__more:focus-visible svg { outline: 2px solid var(--cs-title); outline-offset: 2px; }
+/* phones: each row a stacked card (photo, name and context, then Needs, then Pains before the app), no sideways scroll */
+@media (max-width: 699px) {
+  .cs-simple .a-story .cs-ut__more { display: none; }
+  .cs-simple .a-story .cs-ut__scroll { overflow: visible; padding-bottom: 0; }
+  .cs-simple .a-story .cs-ut :is(table, tbody, tr, td) { display: block; width: auto; }
+  .cs-simple .a-story .cs-ut thead { display: none; }
+  .cs-simple .a-story .cs-ut tr { padding: 20px 0; border-bottom: 1px solid var(--cs-rule); }
+  .cs-simple .a-story .cs-ut tr:first-child { border-top: 1px solid var(--cs-rule-strong); }
+  .cs-simple .a-story .cs-ut td { padding: 0; border: 0; }
+  .cs-simple .a-story .cs-ut td + td { margin-top: 16px; }
+  .cs-simple .a-story .cs-ut td[data-label]::before { content: attr(data-label); display: block; margin-bottom: 6px; font-weight: 500; font-size: 12px; line-height: 16px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cs-muted); }
+  .cs-simple .a-story .cs-ut td:nth-child(3)::before { color: var(--ut-pain); }
+  .cs-simple .a-story .cs-ut__who--bare p { padding-left: 0; }
+}
+.cs-simple .a-story h3 + .cs-block--result { margin-top: 20px; } /* 14: a finding right under its small lead */
