@@ -207,19 +207,77 @@ const render = () => {
   if (openId) { const t = threads.find((x) => x.id === openId); if (t && !card.hidden) fillCard(t); }
 };
 
-// ---------- the thread card ----------
-let shown: { el: HTMLElement; nodes: Node[] } | null = null; // the block's own words while Before is on
-const now = () => { if (!shown) return; shown.el.replaceChildren(...shown.nodes); shown.el.classList.remove('rt-before'); shown = null; };
+// ---------- Before / Now: the old words back in place ----------
+// The change's After is looked up in the block's visible words (a tooltip's note and screen-reader text left out) and
+// only that stretch goes back to Before; if it isn't there, the whole text does. "x / y" pairs, and After paragraphs
+// past the first (found in the blocks that follow, then hidden), are handled part by part. An After in brackets means
+// the words were removed: Before puts them back at the end. The page's own nodes are kept aside and put back on Now.
+const SKIP = '.cs-tip__note, .sr-only, .cs-cap__frame';
+const flat = (s: string) => s.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
+const rangeOf = (el: HTMLElement, text: string) => {
+  const frags = flat(plain(text)).replace(/\s+/g, ' ').split('…').map((f) => f.trim()).filter(Boolean);
+  if (!frags.length) return null;
+  let s = '';
+  const at: [Text, number][] = []; // where each character of s sits
+  const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement?.closest(SKIP) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+  for (let n = walk.nextNode() as Text | null; n; n = walk.nextNode() as Text | null) {
+    for (let k = 0; k < n.data.length; k++) {
+      if (/\s/.test(n.data[k])) { if (s && !s.endsWith(' ')) { s += ' '; at.push([n, k]); } }
+      else { s += flat(n.data[k]); at.push([n, k]); }
+    }
+  }
+  let from = -1, end = 0;
+  for (const f of frags) { const k = s.indexOf(f, end); if (k < 0) return null; if (from < 0) from = k; end = k + f.length; }
+  const r = new Range();
+  r.setStart(...at[from]);
+  r.setEnd(at[end - 1][0], at[end - 1][1] + 1);
+  return r;
+};
+const html = (s: string) => { const tpl = document.createElement('template'); tpl.innerHTML = md(s); return tpl.content; };
+let shown: { saved: Map<HTMLElement, Node[]>; hid: HTMLElement[] } | null = null;
+const now = () => {
+  if (!shown) return;
+  shown.saved.forEach((nodes, el) => { el.replaceChildren(...nodes); el.classList.remove('rt-before'); });
+  shown.hid.forEach((el) => { el.hidden = false; });
+  shown = null;
+};
+// returns false when there was nothing to swap (Before is what the page already says, in this version)
 const before = (t: Thread) => {
   const block = blockOf(t);
-  if (!block || !t.change || shown) return;
-  const el = textOf(block);
-  shown = { el, nodes: [...el.childNodes] };
-  const tpl = document.createElement('template');
-  tpl.innerHTML = md(t.change.before);
-  el.replaceChildren(tpl.content);
-  el.classList.add('rt-before');
+  if (!block || !t.change || shown) return true;
+  const saved = new Map<HTMLElement, Node[]>(), hid: HTMLElement[] = [];
+  // edit a copy, so the page's own nodes (and their listeners) come back untouched on Now
+  const edit = (el: HTMLElement, fn: (copy: HTMLElement) => boolean) => {
+    const copy = el.cloneNode(true) as HTMLElement;
+    if (!fn(copy)) return false;
+    if (!saved.has(el)) saved.set(el, [...el.childNodes]);
+    el.replaceChildren(...copy.childNodes);
+    el.classList.add('rt-before');
+    return true;
+  };
+  const swap = (a: string, b: string) => (copy: HTMLElement) => { const r = rangeOf(copy, a); if (!r) return false; r.deleteContents(); r.insertNode(html(b)); return true; };
+  const main = textOf(block);
+  const after = t.change.after.replace(/^\((?:A|B)\)\s*/, '').trim(), old = t.change.before;
+  if (/^\([^]*\)$/.test(after)) edit(main, (c) => { c.append(' ', html(old)); return true; });
+  else {
+    const split = (s: string) => (s.includes(' / ') ? s.split(' / ') : s.split(/\n\s*\n/));
+    const A = split(after), B = split(old);
+    const pairs: [string, string | null][] = A.length === B.length ? A.map((a, i) => [a, B[i]]) : [[A[0], old], ...A.slice(1).map((a): [string, null] => [a, null])];
+    const next = [...document.querySelectorAll<HTMLElement>('[data-rid]')].filter((e) => e !== block && !e.closest('[hidden]') && block.compareDocumentPosition(e) & Node.DOCUMENT_POSITION_FOLLOWING).slice(0, 40);
+    const spots: [HTMLElement, HTMLElement][] = [[block, main], ...next.map((e): [HTMLElement, HTMLElement] => [e, textOf(e)])];
+    pairs.forEach(([a, b], i) => {
+      const spot = spots.find(([, el]) => rangeOf(el, a));
+      if (spot && b === null) { spot[0].hidden = true; hid.push(spot[0]); }
+      else if (spot) edit(spot[1], swap(a, b!));
+      else if (i === 0 && !rangeOf(main, B[0])) edit(main, (c) => { c.replaceChildren(html(old)); return true; }); // not found: the whole text
+    });
+  }
+  if (!saved.size && !hid.length) return false;
+  shown = { saved, hid };
+  return true;
 };
+
+// ---------- the thread card ----------
 const placeCard = () => {
   const pin = pinsEl.querySelector<HTMLElement>(`.rt-pin[data-id="${openId}"]`);
   if (phone.matches) { card.style.left = card.style.top = ''; return; }
@@ -287,8 +345,11 @@ card.addEventListener('click', async (e) => {
   if (el.closest('[data-close]')) return closeCard();
   const bn = el.closest<HTMLElement>('[data-bn]')?.dataset.bn;
   if (bn) {
-    if (bn === 'before') before(t); else now();
-    card.querySelectorAll('[data-bn]').forEach((b) => b.setAttribute('aria-pressed', String((b as HTMLElement).dataset.bn === bn)));
+    const same = bn === 'before' && !before(t);
+    if (bn === 'now') now();
+    card.querySelector('.rt-status')!.textContent = same ? 'Nothing to swap: the page already says the Before here (this version).' : '';
+    const mode = shown ? 'before' : 'now';
+    card.querySelectorAll('[data-bn]').forEach((b) => b.setAttribute('aria-pressed', String((b as HTMLElement).dataset.bn === mode)));
     return;
   }
   if (el.closest('[data-status]')) {
