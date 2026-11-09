@@ -215,7 +215,8 @@ const render = () => {
 const SKIP = '.cs-tip__note, .sr-only, .cs-cap__frame';
 const flat = (s: string) => s.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
 const rangeOf = (el: HTMLElement, text: string) => {
-  const frags = flat(plain(text)).replace(/\s+/g, ' ').split('…').map((f) => f.trim()).filter(Boolean);
+  // a tooltip written into the change, "(ⓘ…)" or "[ⓘ…]", isn't in the words on the page
+  const frags = flat(plain(text)).replace(/\s*(\(ⓘ[^)]*\)|\[ⓘ[^\]]*\])/g, '').replace(/\s+/g, ' ').split('…').map((f) => f.trim()).filter(Boolean);
   if (!frags.length) return null;
   let s = '';
   const at: [Text, number][] = []; // where each character of s sits
@@ -262,7 +263,9 @@ const before = (t: Thread) => {
   else {
     const split = (s: string) => (s.includes(' / ') ? s.split(' / ') : s.split(/\n\s*\n/));
     const A = split(after), B = split(old);
-    const pairs: [string, string | null][] = A.length === B.length ? A.map((a, i) => [a, B[i]]) : [[A[0], old], ...A.slice(1).map((a): [string, null] => [a, null])];
+    // more After paragraphs than Before ones: the extra ones hide; "x / y" lists that don't pair up: only the first part
+    const pairs: [string, string | null][] = A.length === B.length ? A.map((a, i) => [a, B[i]])
+      : after.includes(' / ') ? [[A[0], B[0]]] : [[A[0], old], ...A.slice(1).map((a): [string, null] => [a, null])];
     const next = [...document.querySelectorAll<HTMLElement>('[data-rid]')].filter((e) => e !== block && !e.closest('[hidden]') && block.compareDocumentPosition(e) & Node.DOCUMENT_POSITION_FOLLOWING).slice(0, 40);
     const spots: [HTMLElement, HTMLElement][] = [[block, main], ...next.map((e): [HTMLElement, HTMLElement] => [e, textOf(e)])];
     pairs.forEach(([a, b], i) => {

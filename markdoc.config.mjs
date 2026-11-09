@@ -60,6 +60,8 @@ export default defineMarkdocConfig({
     // one sentence in the site's orange marker highlight, drawn in when it reaches the middle of the screen
     // a term with a short note on hover, focus or tap (dotted underline)
     tip: { render: story('Tip'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true }, note: { type: String, required: true } } },
+    // a small grey source line under a list item (review notes item 26): {% sourceline text="…" /%}
+    sourceline: { render: story('SourceLine'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true } } },
     mark: { render: story('Mark'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true } } },
     // Simple INSO case: icon + narrative title + paragraph (results: + a source line)
     block: {
@@ -69,6 +71,7 @@ export default defineMarkdocConfig({
         title: { type: String }, // optional: an icon can sit beside a plain paragraph
         source: { type: String },
         result: { type: Boolean }, // a finding with no source line
+        note: { type: Boolean }, // a tinted box pointing elsewhere (review notes item 26)
       },
     },
     // a flow shown one screen at a time, like a short video (images: src/assets paths, comma-separated; alts: |)

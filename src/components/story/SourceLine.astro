@@ -1,0 +1,6 @@
+---
+// A small grey source line under a list item (docs/claude-code-review-notes-5nov.md item 26): {% sourceline text="…" /%}
+interface Props { text: string }
+const { text } = Astro.props;
+---
+<span class="cs-srcline">{text}</span>

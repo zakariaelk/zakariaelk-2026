@@ -65,28 +65,27 @@ menu:
 featuredVideo: "/media/projects/mitigating-risk-with-location-based-alerts/inso-app-product-intro-02.mp4"
 ---
 
-## The problem
+## Framing the problem
 
 **SMS and email gave people little say over which alerts reached them, and gave INSO no way to see how its alerts were used**
 
-INSO operates in 20+ countries, many with regions where internet coverage is patchy or missing altogether. To send out alerts, the organisation relied on SMS, and on email for the longer format, and still does. An alert already said what happened, where and what to do. What people couldn't do was shape what reached them, and INSO couldn't see what happened to an alert once it was sent.
+INSO operates in 20+ countries, many with patchy or no internet coverage, so alerts go out by SMS, and by email for longer formats. The alerts themselves were clear. Four things around them were missing:
 
-**Only whole regions.** NGOs registered with INSO manage their account in the Partners Portal, a web application where admins decide which team members get access, and which regions they receive INSO services from: alerts, reports, trainings. But regions are big, and a worker covering several couldn't narrow alerts down to one city, one compound, or their own location while on a mission.
-
-**No way to see how alerts were used.** Emails weren't always opened, and SMS has no real read receipts. So country offices only learned how their alerts did by asking.
-
-**Composing and sending meant a laptop.** INSO staff wrote and sent alerts from a laptop through the same system, which they found impractical when they were on the move themselves, in meetings or at events, and sometimes without internet. And every SMS cost the country offices money.
+1. **People couldn't shape what reached them.** NGOs registered with INSO managed their account in the Partners Portal, where admins chose which regions their teams received services from. Regions are big, and nothing finer existed: no city, no compound, no live location.
+2. **Alerts couldn't show where.** Knowing where an alert is, and what's happening around it, matters to the people receiving it. SMS and email couldn't show that, so people turned to third-party maps, which meant extra steps and time.
+3. **INSO couldn't see how alerts were used.** Emails weren't always opened, and SMS has no real read receipts, so {% tip text="country offices" note="INSO has 23 country offices. A team there is generally a director, a deputy, operations and finance staff, information management staff and field monitoring personnel. As of May 2026." /%} only learned how their alerts did by asking.
+4. **Composing and sending meant a laptop.** INSO staff wrote and sent alerts through the same system, which they found impractical on the move, in meetings or at events, and sometimes without internet. And every SMS cost the country offices money.
 
 ## Users
 
-**Three groups, one sending and two receiving**
+**Three groups: two receive alerts, one sends them**
 
 {% usertable label="The receiving user groups" photos="projects/mitigating-risk-with-location-based-alerts/users/01-user-ngo-field-worker.jpg|projects/mitigating-risk-with-location-based-alerts/users/02-user-security-ops-staff.jpg|" alts="An NGO field worker with a backpack walking across a car park|A security officer on a satellite phone next to a field vehicle|" %}
 | Who | Needs | Pains before the app |
 |---|---|---|
 | **NGO field workers** · In the field, on the move, exposed to risk, sometimes with no internet | Stay updated while moving · Focus only on what affects their safety: the road, where they're going, where they sleep | Only whole regions, activated by their NGO's account admin on a laptop · Alerts lost among every other SMS and email |
 | **Security and operations staff** · In an office, keeping an eye on teams who travel, advising them by SMS or a call | Monitor specific areas remotely · Track patterns and ongoing situations | Couldn't follow a place they weren't in · No radius or custom area, like the compound where staff live |
-| **Shared** · Both groups | Quickly understand what's happening nearby · Trust the accuracy of alerts · Stay updated in real time | High pressure, little time to read · Unclear alerts reduce trust · Phone checks are a security risk |
+| **Shared** · Both groups | Quickly understand what's happening nearby · Trust the accuracy of alerts · Stay updated in real time | High pressure, little time to read · Trust depends on alerts that are quick to read · Phone checks are a security risk |
 {% /usertable %}
 
 {% usertable label="The sending user group" photos="projects/mitigating-risk-with-location-based-alerts/users/03-user-inso-staff.jpg" alts="An INSO staff member writing an alert on a laptop" %}
@@ -95,9 +94,9 @@ INSO operates in 20+ countries, many with regions where internet coverage is pat
 | **INSO staff in the country offices** · Collect, validate, compose and send the alerts | Compose and send quickly, from anywhere, with or without data · See how partners use and experience the alerts, maps, filters and saved alerts, without having to ask · Reduce the cost of SMS | Composing and sending meant a laptop and the Partners Portal, impractical on the move · No way to tell whether alerts were read or used, only what people said when asked · SMS was costly |
 {% /usertable %}
 
-## Where I came in
+## Where I started
 
-**A first draft existed, and I came in to bring some structure**
+**Starting from a working first draft**
 
 {% ab v="a" %}
 When I joined, the engineers had a first draft of the app, only on TestFlight for iOS. It worked, but it hadn't been piloted or tested, and there was no clear scope, requirements, data or timeline. Its features came from conversations with country office colleagues about what could be useful, so they were tied to real needs, but none of it was documented.
@@ -142,11 +141,11 @@ We also chose an order. The receiving side came first, NGO field workers and sec
 **Users were asked to act before understanding what the app does**
 
 {% ab v="a" %}
-A quick heuristic evaluation of the startup and login screen turned up a few serious problems. The app opened straight on a login form and asked for location access before anyone had logged in, with no hint of why. It never said what the app was for. The login itself was hard to use too, with a barely visible button, an "Invalid email" error before anyone had typed, how to get an account explained in a tiny note, and no way to reset a password. Country office colleagues believed a welcome email would be enough to explain things, but someone could install the app today and only open it a month later when an alert comes in, and by then that email is long gone. So the explanation had to live inside the app.
+A quick heuristic evaluation of the startup and login screen turned up a few things to fix. The app opened straight on a login form and asked for location access before anyone had logged in, with no hint of why. It never said what the app was for. The login itself was hard to use too, with a barely visible button, an "Invalid email" error before anyone had typed, how to get an account explained in a tiny note, and no way to reset a password. Country office colleagues believed a welcome email would be enough to explain things, but someone could install the app today and only open it a month later when an alert comes in, and by then that email is long gone. So the explanation had to live inside the app.
 {% /ab %}
 
 {% ab v="b" %}
-I ran a quick heuristic evaluation of the startup and login screen, and it turned up a few serious problems. The app opened straight on a login form and asked for location access before anyone had logged in, with no hint of why. It never said what the app was for. The login itself was hard to use too, with a barely visible button, an "Invalid email" error before anyone had typed, how to get an account explained in a tiny note, and no way to reset a password. Country office colleagues believed a welcome email would be enough to explain things. I disagreed: someone could install the app today and only open it a month later when an alert comes in, and by then that email is long gone. So the explanation had to live inside the app.
+I ran a quick heuristic evaluation of the startup and login screen, and it turned up a few things to fix. The app opened straight on a login form and asked for location access before anyone had logged in, with no hint of why. It never said what the app was for. The login itself was hard to use too, with a barely visible button, an "Invalid email" error before anyone had typed, how to get an account explained in a tiny note, and no way to reset a password. Country office colleagues believed a welcome email would be enough to explain things. I disagreed: someone could install the app today and only open it a month later when an alert comes in, and by then that email is long gone. So the explanation had to live inside the app.
 {% /ab %}
 
 {% reactions set="inso-login" /%}
@@ -176,8 +175,8 @@ Most partners found getting started easy.
 
 **The main screen had all the information, but it was hard to read and scan**
 
-{% block title="Eight alerts squeezed on one screen" %}
-Eight alerts were squeezed on one screen, with titles of 12 to 16 words in a tiny column and small dates and distances fighting for attention. The engineers' idea was to show as much as possible without scrolling, so the question became: see everything at once, or read each alert easily? My first thought was "where should I be looking?" There was no way to search by place either, and no profile or way to reach terms, FAQs or info about the app, just a settings icon at the top right.
+{% block title="Eight alerts shared one screen" %}
+Eight alerts shared one screen, with titles of 12 to 16 words in a tiny column and small dates and distances competing for attention. The engineers' idea was to show as much as possible without scrolling, so the question became: see everything at once, or read each alert easily? My first thought was "where should I be looking?" There was no way to search by place either, and no profile or way to reach terms, FAQs or info about the app, just a settings icon at the top right.
 {% /block %}
 
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-old-alerts-screen.jpg" frame="before" size="text" alt="The old alerts list, annotated: inconsistent typography, low spacing between items, and location, distance and time not prioritised." caption="Alerts screen ==before== redesign, showing density and unclear hierarchy" /%}
@@ -293,7 +292,7 @@ Let's take an organisation that wants to follow what happens around the compound
 
 | Geofence (Polygon) former design | Redesign approach (see slideshow below) |
 |---|---|
-| {% n v="1" /%}Saving meant pressing the Back button ("Press the back button to save the polygon filter"). It was hidden and backwards, since Back normally cancels. | An explicit Confirm button, and a "Geofence established" message afterwards |
+| {% n v="1" /%}Saving meant pressing the Back button ("Press the back button to save the polygon filter"). It was hard to find, and Back normally cancels. | An explicit Confirm button, and a "Geofence established" message afterwards |
 | {% n v="2" /%}No instructions. The first screen was just a map, with no hint to tap to drop pins, or that zooming first matters. | A three-step tutorial: zoom, drop pins, confirm |
 | {% n v="3" /%}No result feedback. You drew a shape but couldn't tell how many alerts it contained. | "76 alerts in the selected area", with the alert markers inside the shape |
 | {% n v="4" /%}Two unlabelled orange buttons (an undo arrow and a "+"). Their purpose wasn't clear, and orange didn't match the rest of the app. | An undo button, plus labelled "Clear all" and "Edit geofence" buttons |
@@ -359,7 +358,7 @@ This is the kind of data that didn't exist with SMS and email, and the reason I 
 
 {% cta href="https://app.ngosafety.org/" label="Take a look" /%}
 
-**What I can't say.** Nothing could be measured before the app, since SMS and email can't be tracked, so I can't say whether it made things better, only that it's used and that people keep coming back. The partner survey below is the asking side, the support layer.
+**What I can't say.** Nothing could be measured before the app, since SMS and email can't be tracked, so I can't say {% mark text="how much impact it had on the safety and security of humanitarian workers" /%}, only that it's used and that people keep coming back. The partner survey below is the asking side, the support layer.
 
 {% block result=true %}
 In a post-launch survey of 31 partners, the 29 who rated ease of use gave it an average score of 4.1/5.
@@ -372,6 +371,7 @@ The weakest score was whether the app helped them reach their goal: 21 of 31 gav
 ## Takeaways
 
 {% ab v="a" %}
+- **Ask for the users early, and plan around what you get.** I couldn't reach partners directly, so country office colleagues stood in, generously and not always easily. Next time I'd make the case for end-user access from the first week, with a clear idea of what it would change. Where it still isn't possible, I'd plan the research around that limit, and accept that some decisions come without their reasons.
 - **Design for the worst connection first.** Weak networks, stress and no time to learn shaped most decisions, from animated tutorials instead of video to a list you can scan in seconds.
 - **Test with proxies, then check with the real people.** Country office colleagues before launch, partners after.
 - **Security and usability pull against each other.** Blocking copy and screenshots keeps alerts safe, but partners named it their biggest frustration.
@@ -380,6 +380,7 @@ The weakest score was whether the app helped them reach their goal: 21 of 31 gav
 {% /ab %}
 
 {% ab v="b" %}
+- **Ask for the users early, and plan around what you get.** I couldn't reach partners directly, so country office colleagues stood in, generously and not always easily. Next time I'd make the case for end-user access from the first week, with a clear idea of what it would change. Where it still isn't possible, I'd plan the research around that limit, and accept that some decisions come without their reasons.
 - **Design for the worst connection first.** Weak networks, stress and no time to learn shaped most decisions, from animated tutorials instead of video to a list you can scan in seconds.
 - **Test with proxies, then check with the real people.** Country office colleagues before launch, partners after.
 - **Security and usability pull against each other.** Blocking copy and screenshots keeps alerts safe, but partners named it their biggest frustration.

@@ -1,11 +1,12 @@
 ---
-// A term with a short note (docs/claude-code-review-notes-5nov.md item 12): {% tip text="all three gaps" note="…" /%}.
-// Dotted underline; the note opens on hover and focus, and on tap on touch screens; Esc, a tap outside or blur close it.
+// A term with a short note (docs/claude-code-review-notes-5nov.md items 12 and 15): {% tip text="all three gaps" note="…" /%}.
+// Dotted underline and a small ⓘ after the term; the note opens above it on hover and focus, and on tap on touch
+// screens; Esc, a tap outside or blur close it.
 interface Props { text: string; note: string }
 const { text, note } = Astro.props;
 const id = `tip-${Math.random().toString(36).slice(2, 9)}`;
 ---
-<span class="cs-tip"><button type="button" class="cs-tip__term" aria-describedby={id} aria-expanded="false">{text}</button><span class="cs-tip__note" role="tooltip" id={id}>{note}</span></span>
+<span class="cs-tip"><button type="button" class="cs-tip__term" aria-describedby={id} aria-expanded="false">{text}<svg class="cs-tip__i" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="4.9" r="1" fill="currentColor"/><path d="M8 7.2v4.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><span class="cs-tip__note" role="tooltip" id={id}>{note}</span></span>
 
 <script>
   document.querySelectorAll<HTMLElement>('.cs-tip').forEach((tip) => {

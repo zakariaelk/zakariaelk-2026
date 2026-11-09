@@ -274,8 +274,8 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
   .cs-simple .a-story :is(.cs-tbl > table, article > table, .cs-fold__body > table) td:last-child { padding: 4px 0 14px; border-bottom: 1px solid var(--cs-rule); }
 }
 
-/* captions of the redesign's visuals don't start with "After:" (the old ones keep "Before:") */
-.cs-simple .a-story .cs-frame--after .cs-cap__frame { display: none; }
+/* no caption starts with "After:" or "Before:" (review notes 5 Nov, item 4) */
+.cs-simple .a-story :is(.cs-frame--after, .cs-frame--before) .cs-cap__frame { display: none; }
 
 /* ---------- A slideshow's counter and thumbnails ---------- */
 .cs-seq__count { display: none; }
@@ -626,3 +626,14 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
   .cs-simple .a-story .cs-ut__who--bare p { padding-left: 0; }
 }
 .cs-simple .a-story h3 + .cs-block--result { margin-top: 20px; } /* 14: a finding right under its small lead */
+
+/* Review notes 5 Nov, item 15: the info tooltip's small ⓘ after the term (Tip.astro) */
+.cs-tip__i { display: inline-block; width: 0.6em; height: 0.6em; margin-left: 0.15em; vertical-align: 0.5em; opacity: 0.65; }
+.cs-tip__term:hover .cs-tip__i, .cs-tip.is-open .cs-tip__i { opacity: 1; }
+/* item 26: a small grey source line under a list item, and the tinted "In this version" box */
+.cs-simple .a-story .cs-srcline { display: block; margin-top: 4px; font: 400 var(--small)/var(--small-lh) var(--sans); color: var(--cs-muted); }
+.cs-simple .a-story .cs-block--note { padding: 18px 22px; border-radius: 8px; background: color-mix(in srgb, var(--cs-title) 6%, transparent); }
+.cs-simple .a-story .cs-block--note p { margin: 0; }
+/* a closed tooltip note near the right edge still takes up room: no sideways scroll on phones (an open one is kept
+   inside the screen by Tip.astro, so the clip never cuts it) */
+@media (max-width: 767px) { .cs-simple .a-story { overflow-x: clip; } }
