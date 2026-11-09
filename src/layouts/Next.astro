@@ -27,11 +27,11 @@ const { title = 'Zakaria El Khachia · Product designer', description = 'Product
     <link rel="icon" type="image/png" href="/img/favicon/z-logo.png?v=2" />
     {look === 'dmsans' && <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />}
     {look === 'dmsans' && <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500..600&display=swap" />}
-    <!-- Theme before first paint: saved choice, else the system setting -->
+    <!-- Theme before first paint: the choice made in this visit, else the browser's setting (light unless it's dark) -->
     <script is:inline>
       (function () {
         var saved = null;
-        try { saved = localStorage.getItem('ze-theme'); } catch (e) {}
+        try { localStorage.removeItem('ze-theme'); saved = sessionStorage.getItem('ze-theme'); } catch (e) {}
         var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
       })();
