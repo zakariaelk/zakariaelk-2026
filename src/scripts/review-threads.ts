@@ -146,6 +146,15 @@ bar?.querySelector('[data-cc-count]')?.setAttribute('hidden', '');
 const clearBtn = bar?.querySelector<HTMLButtonElement>('.cc-clear');
 if (clearBtn) clearBtn.textContent = 'Clear local notes';
 bar?.prepend(openBtn);
+// the highlights on blocks with open threads (and the underlined words) switch off, to read the page as a visitor
+let hl = store.get('rt-hl') !== 'off';
+const hlBtn = document.createElement('button');
+hlBtn.type = 'button';
+hlBtn.className = 'rt-hl-toggle';
+hlBtn.textContent = 'Highlights';
+openBtn.after(hlBtn);
+const setHl = () => { document.documentElement.classList.toggle('rt-no-hl', !hl); hlBtn.setAttribute('aria-pressed', String(hl)); underline(); };
+hlBtn.addEventListener('click', () => { hl = !hl; store.set('rt-hl', hl ? 'on' : 'off'); setHl(); });
 const localNotes = () => { try { return JSON.parse(store.get('cc-notes') ?? '[]') as { page: string; section: string; quote: string; comment: string }[]; } catch { return []; } };
 
 // ---------- pins ----------
@@ -171,6 +180,7 @@ const relayout = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(
 
 const underline = () => {
   if (!('highlights' in CSS)) return;
+  if (!hl) { (CSS as any).highlights.delete('rt-sel'); return; }
   const ranges: Range[] = [];
   threads.filter((t) => t.selection && t.status === 'open' && pinned(t)).forEach((t) => {
     const block = blockOf(t)!;
@@ -480,6 +490,7 @@ async function importNotes() {
 
 // ---------- start ----------
 assignRids();
+setHl();
 document.addEventListener('ab:change', () => { if (shown) closeCard(false); render(); });
 addEventListener('resize', relayout);
 new ResizeObserver(relayout).observe(document.body);
