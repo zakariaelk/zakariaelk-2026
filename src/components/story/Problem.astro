@@ -1,0 +1,14 @@
+---
+// A numbered problem (docs/claude-code-review-notes-5nov.md item 33): {% problem n="1" title="…" %}paragraph{% /problem %}.
+// The title in the headline style, its number in a paper-cut dark circle like the comments pin, outside the text
+// column on the left and level with the top of the title (above it on phones).
+import { blob } from '../../lib/papercut';
+interface Props { n: string; title: string }
+const { n, title } = Astro.props;
+const paper = blob(37 + Number(n) * 11, 50, 50, 46);
+---
+<section class="cs-problem">
+  <svg class="cs-problem__n" viewBox="0 0 100 100" aria-hidden="true"><path d={paper} /><text x="50" y="52" text-anchor="middle" dominant-baseline="middle">{n}</text></svg>
+  <p class="cs-problem__title"><span class="sr-only">Problem {n}: </span>{title}</p>
+  <slot />
+</section>

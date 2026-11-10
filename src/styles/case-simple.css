@@ -627,7 +627,6 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
   .cs-simple .a-story .cs-ut td:nth-child(3)::before { color: var(--ut-pain); }
   .cs-simple .a-story .cs-ut__who--bare p { padding-left: 0; }
 }
-.cs-simple .a-story h3 + .cs-block--result { margin-top: 20px; } /* 14: a finding right under its small lead */
 
 /* Review notes 5 Nov, item 15: the info tooltip's small ⓘ after the term (Tip.astro) */
 .cs-tip__i { display: inline-block; width: 0.6em; height: 0.6em; margin-left: 0.15em; vertical-align: 0.5em; opacity: 0.65; }
@@ -639,3 +638,20 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 /* a closed tooltip note near the right edge still takes up room: no sideways scroll on phones (an open one is kept
    inside the screen by Tip.astro, so the clip never cuts it) */
 @media (max-width: 767px) { .cs-simple .a-story { overflow-x: clip; } }
+/* Review notes item 33: numbered problems. The number's paper circle sits outside the column, level with the title */
+.cs-simple .a-story .cs-problem { position: relative; max-width: var(--col); margin: 56px auto 0; }
+.cs-simple .a-story .cs-problem + .cs-problem { margin-top: 64px; }
+.cs-simple .a-story .cs-problem__title { margin: 0 0 14px; font-family: var(--serif); font-weight: 600; font-size: var(--pt); line-height: var(--pt-lh); letter-spacing: -0.005em; color: var(--cs-title); text-wrap: pretty; }
+.cs-simple .a-story .cs-problem > p:not(.cs-problem__title) { margin: 0; }
+.cs-problem__n { position: absolute; top: calc((var(--pt-lh) - 48px) / 2); left: -68px; width: 48px; height: 48px; filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.18)); }
+.cs-problem__n path { fill: #1f1f1f; }
+.cs-problem__n text { fill: #f4f2ec; font: 600 46px/1 var(--serif); }
+:root[data-theme='dark'] .cs-problem__n path { fill: #f4f2ec; }
+:root[data-theme='dark'] .cs-problem__n text { fill: #1f1f1f; }
+@media (max-width: 899px) { .cs-problem__n { position: static; display: block; width: 42px; height: 42px; margin-bottom: 12px; } }
+/* Review notes items 44 and 46: callouts that belong together, the verdict right after them (.cs-verdict) and a
+   subheading over its callout sit at half the usual gap */
+.cs-simple .a-story .cs-block.cs-block--result:has(+ .cs-block--result, + .cs-verdict) { margin-bottom: calc(var(--sec-gap) / 2); }
+.cs-simple .a-story .cs-block--result + .cs-block.cs-block--result, .cs-simple .a-story h3 + .cs-block.cs-block--result { margin-top: calc(var(--sec-gap) / 2); }
+/* item 47: a titled block inside a map mode ("Illusion of Explanatory Depth"), one level below its subheading */
+.cs-simple .a-story h4 { margin: 40px auto 12px; font-family: var(--serif); font-weight: 600; font-size: var(--body); line-height: var(--body-lh); color: var(--cs-title); text-wrap: pretty; }

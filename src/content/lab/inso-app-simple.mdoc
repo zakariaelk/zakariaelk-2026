@@ -94,7 +94,7 @@ INSO operates in 20+ countries, many with patchy or no internet coverage, so ale
 | **INSO staff in the country offices** · Collect, validate, compose and send the alerts | Compose and send quickly, from anywhere, with or without data · See how partners use and experience the alerts, maps, filters and saved alerts, without having to ask · Reduce the cost of SMS | Composing and sending meant a laptop and the Partners Portal, impractical on the move · No way to tell whether alerts were read or used, only what people said when asked · SMS was costly |
 {% /usertable %}
 
-## Where I started
+## The project when I joined
 
 **Starting from a working first draft**
 
@@ -197,7 +197,7 @@ Saved alerts weren't in the first draft. I asked the country office colleagues, 
 
 {% reactions set="inso-alerts-please" /%}
 
-{% block source="10 of 10 filtered by location in 22 s on average, ease 9.3/10 · 13 filtered by date in 19 s, ease 8.2/10 · Maze tests with country office colleagues" %}
+{% block source="10 of 10 filtered by location in 22 s on average, ease 9.3/10 · 13 filtered by date in 19 s, ease 8.2/10 · From usability testing sessions and surveys with country offices, using a design prototype" %}
 Filtering was quick and easy: testers found alerts by place or by date in about 20 seconds.
 {% /block %}
 
@@ -252,7 +252,7 @@ I designed Explore to fix all three. You can move around the map freely, tap an 
 
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/map-explore/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/02-alerts_list_instruct_03.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/03-map_explore_loading.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/04-map_explore_loaded.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/05-map_explore_alert-selected.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/06-last-visual-alerts_list_view_explore-enabled.jpg" landscape=true frame="after" alts="The alerts list, with a Map button at the bottom.|The guide: explore alerts in a map view.|The map opens in Explore mode, loading.|The map with the alerts in the area.|An alert tapped on the map, its details in a card.|Back on the list, Explore is enabled: the list shows the alerts of the area chosen on the map." caption="Explore: move around the map freely, tap an alert to read it there, and switch back to the list for that area." /%}
 
-{% block source="8 of 8 completed · 33 s on average · ease 8.6/10 · Maze test with country office colleagues" %}
+{% block source="8 of 8 completed · 33 s on average · ease 8.6/10 · From usability testing sessions and surveys with country offices, using a design prototype" %}
 Testers found the map from the alerts list and explored it freely, with no drop-offs.
 {% /block %}
 
@@ -266,7 +266,7 @@ Proximity shows alerts within a radius of your live location, or of a pin you dr
 Proximity shows alerts within a radius of your live location, or of a pin you drop somewhere else. The first version had two ways to set that radius: on the map, and with a slider in the filter menu a bit like dating apps do. Most testers went to the map through the Map button on the alerts list, so I removed the slider and kept the radius in one place.
 {% /ab %}
 
-{% block source="Maze test with country office colleagues" %}
+{% block source="From usability testing sessions and surveys with country offices, using a design prototype" %}
 6 test participants were able to set a radius around a place they weren't in, in 53 seconds on average, with an ease score of 6.8 out of 10.
 {% /block %}
 
@@ -326,7 +326,6 @@ The project didn't stop here, since continuous feedback from country office coll
 The project didn't stop here. I kept shaping the app after launch with continuous feedback from country office colleagues:
 {% /ab %}
 
-- Notifications limited to your regions or to a saved map search, after a short survey with country office staff. People do open them: over 100,000 times from notifications in three years.
 - Unseen alerts pointed out, a new Recent Alerts block, and a restyled date picker with quick options (last 3 days, last week, last month) that shows clearly when a filter is on.
 - Animated tutorials in every map mode.
 
@@ -371,7 +370,7 @@ The weakest score was whether the app helped them reach their goal: 21 of 31 gav
 ## Takeaways
 
 {% ab v="a" %}
-- **Ask for the users early, and plan around what you get.** I couldn't reach partners directly, so country office colleagues stood in, generously and not always easily. Next time I'd make the case for end-user access from the first week, with a clear idea of what it would change. Where it still isn't possible, I'd plan the research around that limit, and accept that some decisions come without their reasons.
+- **Ask for the users early, and plan around what you get.** I couldn't reach partners directly, so country office colleagues operated as {% tip text="proxies" note="The reason behind this decision was not disclosed to me." /%}, generously and not always easily. If I was asked to work on this again, I'd make the case for end-user access from the first week, with a clear idea of what it would change. Where it still isn't possible, I'd plan the research around that limit, and accept that some decisions come without their reasons.
 - **Design for the worst connection first.** Weak networks, stress and no time to learn shaped most decisions, from animated tutorials instead of video to a list you can scan in seconds.
 - **Test with proxies, then check with the real people.** Country office colleagues before launch, partners after.
 - **Security and usability pull against each other.** Blocking copy and screenshots keeps alerts safe, but partners named it their biggest frustration.
@@ -380,7 +379,7 @@ The weakest score was whether the app helped them reach their goal: 21 of 31 gav
 {% /ab %}
 
 {% ab v="b" %}
-- **Ask for the users early, and plan around what you get.** I couldn't reach partners directly, so country office colleagues stood in, generously and not always easily. Next time I'd make the case for end-user access from the first week, with a clear idea of what it would change. Where it still isn't possible, I'd plan the research around that limit, and accept that some decisions come without their reasons.
+- **Ask for the users early, and plan around what you get.** I couldn't reach partners directly, so country office colleagues operated as {% tip text="proxies" note="The reason behind this decision was not disclosed to me." /%}, generously and not always easily. If I was asked to work on this again, I'd make the case for end-user access from the first week, with a clear idea of what it would change. Where it still isn't possible, I'd plan the research around that limit, and accept that some decisions come without their reasons.
 - **Design for the worst connection first.** Weak networks, stress and no time to learn shaped most decisions, from animated tutorials instead of video to a list you can scan in seconds.
 - **Test with proxies, then check with the real people.** Country office colleagues before launch, partners after.
 - **Security and usability pull against each other.** Blocking copy and screenshots keeps alerts safe, but partners named it their biggest frustration.

@@ -29,8 +29,10 @@ const screens = await Promise.all(paths.map(async (p, i) => {
 }));
 const n = screens.length;
 // ==word== in the caption: that word in the grey of the Before tag, which then replaces the "Before:" prefix
-const capParts = caption?.split(/==(.+?)==/) ?? [];
-const capPlain = caption?.replace(/==(.+?)==/g, '$1');
+// ==marker== and **bold** in a caption (review notes items 4 and 44); odd parts are the marked or bold ones
+const capParts = caption?.split(/(==.+?==|\*\*.+?\*\*)/) ?? [];
+const capPart = (t: string) => t.slice(2, -2);
+const capPlain = caption?.replace(/==(.+?)==|\*\*(.+?)\*\*/g, '$1$2');
 ---
 <figure class:list={['cs-seq', landscape && 'cs-seq--landscape', frame && `cs-frame--${frame}`]} data-seq data-orient={landscape ? 'landscape' : 'portrait'} aria-roledescription="carousel" aria-label={capPlain ?? 'Screens'}>
   <div class="cs-seq__stage" tabindex="0" aria-label={`${capPlain ?? 'Screens'}: use the arrow keys to move between screens`}>
@@ -52,5 +54,5 @@ const capPlain = caption?.replace(/==(.+?)==/g, '$1');
   )}
   {thumbs && n > 1 && <div class="cs-seq__thumbs">{screens.map((s, i) => <button type="button" aria-label={`Screen ${i + 1} of ${n}`} aria-current={i === 0 ? 'true' : undefined}><img src={s.thumb} alt="" width="80" height={Math.round((80 * s.h) / s.w)} loading="lazy" decoding="async" /></button>)}</div>}
   <p class="sr-only" aria-live="polite" data-seq-status></p>
-  {caption && <figcaption data-captions={capList ? JSON.stringify(capList) : undefined}>{(frame === 'before' || frame === 'after') && capParts.length < 2 && <span class="cs-cap__frame">{frame === 'before' ? 'Before' : 'After'}: </span>}<span data-cap-text>{capParts.map((t, i) => (i % 2 ? <mark class="cs-cap__mark">{t}</mark> : t))}</span></figcaption>}
+  {caption && <figcaption data-captions={capList ? JSON.stringify(capList) : undefined}>{(frame === 'before' || frame === 'after') && capParts.length < 2 && <span class="cs-cap__frame">{frame === 'before' ? 'Before' : 'After'}: </span>}<span data-cap-text>{capParts.map((t, i) => (i % 2 ? (t.startsWith('==') ? <mark class="cs-cap__mark">{capPart(t)}</mark> : <strong>{capPart(t)}</strong>) : t))}</span></figcaption>}
 </figure>

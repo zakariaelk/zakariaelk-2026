@@ -18,7 +18,7 @@ const store = { get: (k: string) => { try { return localStorage.getItem(k); } ca
 // Kinds: label (the section label), p, h (subheading), li, fig (figure or slideshow), finding, block, stats, and table
 // labels and cells (table1-label, table1-r2c3). The two wordings of an A/B pair get the same numbers, so a rid holds
 // in both versions, and the count after the pair goes on from the longer one.
-const SEL = '.a-case__lede, .a-story :is(h2, h3, p, li, figure, .cs-block, .cs-stats, .cs-ut__label, td)';
+const SEL = '.a-case__lede, .a-story :is(h2, h3, h4, p, li, figure, .cs-block, .cs-stats, .cs-ut__label, td)';
 const slug = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'section';
 
 export function assignRids(root: Document = document) {
@@ -43,7 +43,7 @@ export function assignRids(root: Document = document) {
       if (!ti) { ti = bump(`${sec}|table`); tables.set(t, ti); }
       rid = el.matches('td') ? `${sec}-table${ti}-r${(el.parentElement as HTMLTableRowElement).sectionRowIndex + 1}c${(el as HTMLTableCellElement).cellIndex + 1}` : `${sec}-table${ti}-label`;
     } else {
-      const kind = el.matches('h3') ? 'h' : el.matches('figure') ? 'fig' : el.matches('.cs-block') ? (el.matches('.cs-block--result') ? 'finding' : 'block') : el.matches('.cs-stats') ? 'stats' : el.matches('li') ? 'li' : 'p';
+      const kind = el.matches('h3, h4') ? 'h' : el.matches('figure') ? 'fig' : el.matches('.cs-block') ? (el.matches('.cs-block--result') ? 'finding' : 'block') : el.matches('.cs-stats') ? 'stats' : el.matches('li') ? 'li' : 'p';
       rid = `${sec}-${kind}${bump(`${sec}|${kind}`)}`;
     }
     el.dataset.rid = rid;

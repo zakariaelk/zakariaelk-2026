@@ -60,6 +60,8 @@ export default defineMarkdocConfig({
     // one sentence in the site's orange marker highlight, drawn in when it reaches the middle of the screen
     // a term with a short note on hover, focus or tap (dotted underline)
     tip: { render: story('Tip'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true }, note: { type: String, required: true } } },
+    // a numbered problem: title in the headline style, number in a paper-cut circle (review notes item 33)
+    problem: { render: story('Problem'), attributes: { n: { type: String, required: true }, title: { type: String, required: true } } },
     // a small grey source line under a list item (review notes item 26): {% sourceline text="…" /%}
     sourceline: { render: story('SourceLine'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true } } },
     mark: { render: story('Mark'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true } } },

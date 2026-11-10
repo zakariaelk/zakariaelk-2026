@@ -48,7 +48,8 @@ const meta = [
 ].filter((m) => m.items.length);
 const rows = [meta.slice(0, 2), meta.slice(2)].filter((r) => r.length);
 // rail: the body's section names (its h2s)
-const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug, label: h.text }));
+// the contents list names a section by its first part: "Filtering – Addressing problem 1" is "Filtering"
+const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug, label: h.text.split(' – ')[0] }));
 // the rail and the phone menu start with "Intro": the title and the cover
 const nav = [{ id: 'top', label: 'Intro' }, ...sections];
 ---
