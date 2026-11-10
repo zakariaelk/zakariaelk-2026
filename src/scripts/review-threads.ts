@@ -146,12 +146,13 @@ bar?.querySelector('[data-cc-count]')?.setAttribute('hidden', '');
 const clearBtn = bar?.querySelector<HTMLButtonElement>('.cc-clear');
 if (clearBtn) clearBtn.textContent = 'Clear local notes';
 bar?.prepend(openBtn);
-// the highlights on blocks with open threads (and the underlined words) switch off, to read the page as a visitor
+// the pins along the text, the highlights on blocks with open threads and the underlined words switch off, to read
+// the page as a visitor; the Threads list still opens any thread
 let hl = store.get('rt-hl') !== 'off';
 const hlBtn = document.createElement('button');
 hlBtn.type = 'button';
 hlBtn.className = 'rt-hl-toggle';
-hlBtn.textContent = 'Highlights';
+hlBtn.textContent = 'Pins & highlights';
 openBtn.after(hlBtn);
 const setHl = () => { document.documentElement.classList.toggle('rt-no-hl', !hl); hlBtn.setAttribute('aria-pressed', String(hl)); underline(); };
 hlBtn.addEventListener('click', () => { hl = !hl; store.set('rt-hl', hl ? 'on' : 'off'); setHl(); });
@@ -294,9 +295,10 @@ const before = (t: Thread) => {
 const placeCard = () => {
   const pin = pinsEl.querySelector<HTMLElement>(`.rt-pin[data-id="${openId}"]`);
   if (phone.matches) { card.style.left = card.style.top = ''; return; }
-  const w = card.offsetWidth, h = card.offsetHeight, vw = document.documentElement.clientWidth;
+  // the room to the left of the Threads panel when it's open, so the card never hides behind it
+  const w = card.offsetWidth, h = card.offsetHeight, vw = panel.hidden ? document.documentElement.clientWidth : panel.getBoundingClientRect().left;
   const block = blockOf(threads.find((x) => x.id === openId)!);
-  const r = pin && !pin.hidden ? pin.getBoundingClientRect() : (block ?? document.body).getBoundingClientRect();
+  const r = pin && pin.offsetParent ? pin.getBoundingClientRect() : (block ?? document.body).getBoundingClientRect();
   // beside the pin when there's room, otherwise under the block, so it never covers the words it's about
   if (r.right + 10 + w <= vw - 12) {
     card.style.left = `${r.right + 10 + scrollX}px`;

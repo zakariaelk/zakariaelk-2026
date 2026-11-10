@@ -80,10 +80,11 @@
   .rt-panel { width: 100%; border-left: 0; }
 }
 
-/* the Highlights switch in the review bar: off reads the page as a visitor would (pins stay) */
+/* the Pins & highlights switch in the review bar: off reads the page as a visitor would */
 .rt-hl-toggle { background: none !important; color: #f4f2ec !important; box-shadow: inset 0 0 0 1px rgb(244 242 236 / 0.35); }
 .rt-hl-toggle[aria-pressed='true'] { background: rgb(244 242 236 / 0.18) !important; }
 .rt-hl-toggle::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 7px; border-radius: 50%; background: rgb(255 190 70); vertical-align: 1px; }
 .rt-hl-toggle[aria-pressed='false']::before { background: none; box-shadow: inset 0 0 0 1.5px rgb(244 242 236 / 0.6); }
 .rt-hl-toggle:focus-visible { outline: 2px solid #f4f2ec; outline-offset: 2px; }
 :root.rt-no-hl .rt-hl { background-color: transparent !important; box-shadow: none !important; }
+:root.rt-no-hl .rt-pins { display: none; }
