@@ -303,6 +303,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 :root[data-theme='dark'] .cs-simple .a-story .cs-stats--strip .cs-stat__label { color: #4a4a4a; }
 @media (max-width: 699px) { .cs-simple .a-story article > .cs-stats--strip { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; gap: 10px; } .cs-simple .a-story .cs-stats--strip .cs-stat { grid-row: auto; grid-template-rows: none; padding: 20px 24px; gap: 6px; } }
 .cs-simple .a-story .cs-stat__value { font-size: clamp(32px, calc(32px + 8 * (100vw - 768px) / 512), 40px); white-space: nowrap; }
+.cs-simple .a-story .cs-stat__value:is([data-wrap]) { white-space: normal; text-wrap: balance; } /* a range like "1:35 to 2:57": two lines when the tile is narrow */
 .cs-simple .a-story .cs-stat__label { font-size: 16px; line-height: 22px; }
 /* parts proposed for cutting (story/Cut.astro), while the INSO full case is reviewed */
 .cs-simple .a-story .cs-cut-note { margin-top: 48px; margin-bottom: 12px; padding: 8px 12px; border-radius: 4px; background: #ffd9d2; color: #6b1d10; font-family: var(--sans); font-size: 15px; line-height: 22px; }
@@ -561,6 +562,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story .cs-ut__who img { flex: none; width: var(--ut-pic); height: var(--ut-pic); border-radius: 6px; object-fit: cover; }
 .cs-simple .a-story .cs-ut__who p { margin: 0; }
 .cs-simple .a-story .cs-ut__who--bare p { padding-left: calc(var(--ut-pic) + var(--ut-gap)); } /* "Shared": in line with the names above */
+.cs-simple .a-story .cs-ut:not(:has(.cs-ut__who img)) .cs-ut__who--bare p { padding-left: 0; } /* a table without photos: no indent */
 .cs-simple .a-story .cs-ut__name { display: block; color: var(--cs-title); }
 .cs-simple .a-story .cs-ut__name strong { font-weight: 600; }
 .cs-simple .a-story .cs-ut__ctx { display: block; margin-top: 4px; font-size: 14px; line-height: 20px; color: var(--cs-muted); }
@@ -655,3 +657,24 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story .cs-block--result + .cs-block.cs-block--result, .cs-simple .a-story h3 + .cs-block.cs-block--result { margin-top: calc(var(--sec-gap) / 2); }
 /* item 47: a titled block inside a map mode ("Illusion of Explanatory Depth"), one level below its subheading */
 .cs-simple .a-story h4 { margin: 40px auto 12px; font-family: var(--serif); font-weight: 600; font-size: var(--body); line-height: var(--body-lh); color: var(--cs-title); text-wrap: pretty; }
+
+/* Usability results strip (story/Attempts.astro): a legend, then one row per task group with a dot per attempt.
+   Red dots are rings, so the three kinds read apart without colour. */
+.cs-simple .a-story .cs-att { max-width: var(--col); margin: 32px auto 40px; font-family: var(--sans); }
+.cs-simple .a-story .cs-att { --att-ok: #2f7a46; --att-hard: #d98a2b; --att-fail: #b23a2e; }
+:root[data-theme='dark'] .cs-simple .a-story .cs-att { --att-ok: #7fc796; --att-hard: #f0b26a; --att-fail: #f08f84; }
+.cs-simple .a-story .cs-att__legend { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 0 0 12px; padding: 0; list-style: none; font-size: 14px; line-height: 20px; color: var(--cs-muted); }
+.cs-simple .a-story .cs-att__legend li { display: flex; align-items: center; gap: 8px; margin: 0; }
+.cs-simple .a-story .cs-att__row { display: grid; grid-template-columns: minmax(0, 15rem) 1fr; gap: 6px 24px; align-items: center; padding: 14px 0; border-top: 1px solid var(--cs-rule); }
+.cs-simple .a-story .cs-att__row--total { border-top-color: var(--cs-rule-strong); }
+.cs-simple .a-story .cs-att__name { margin: 0; font-size: 16px; line-height: 22px; color: var(--cs-title); }
+.cs-simple .a-story .cs-att__row--total .cs-att__name { font-weight: 600; }
+.cs-simple .a-story .cs-att__name span { display: block; margin-top: 2px; font-size: 14px; line-height: 20px; color: var(--cs-muted); font-weight: 400; }
+.cs-simple .a-story .cs-att__dots { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+.cs-simple .a-story .cs-att__dot { flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--att-ok); }
+.cs-simple .a-story .cs-att__dot--hard { background: var(--att-hard); }
+.cs-simple .a-story .cs-att__dot--fail { background: none; box-shadow: inset 0 0 0 2.5px var(--att-fail); }
+.cs-simple .a-story .cs-att__cap { margin: 12px 0 0; font-family: var(--sans); font-size: var(--small); line-height: var(--small-lh); color: var(--cs-muted); }
+@media (max-width: 699px) {
+  .cs-simple .a-story .cs-att__row { grid-template-columns: 1fr; }
+}

@@ -79,6 +79,8 @@ export default defineMarkdocConfig({
     // a flow shown one screen at a time, like a short video (images: src/assets paths, comma-separated; alts: |)
     // a table that can be folded away (open by default); label: what the toggle names
     tablebox: { render: story('TableBox'), attributes: { label: { type: String } } },
+    // usability results: one row per task group, one dot per attempt (story/Attempts.astro)
+    attempts: { render: story('Attempts'), selfClosing: true, attributes: { rows: { type: String, required: true }, caption: { type: String } } },
     usertable: { render: story('UserTable'), attributes: { label: { type: String }, photos: { type: String }, alts: { type: String } } }, // Users: Who · Needs · Pains, with photos
     // a numbered badge in the text, matching one on a visual
     n: { render: story('Num'), inline: true, selfClosing: true, attributes: { v: { type: String, required: true } } },

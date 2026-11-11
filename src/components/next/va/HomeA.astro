@@ -38,7 +38,7 @@ const { featured, more } = await workList();
 const screen = layout.startsWith('screen');
 const titleOf = (p: (typeof featured)[number]['p']) => SHORT_TITLES[p.id] ?? p.data.statement ?? p.data.intro;
 // reading time under each featured title (INSO: its short case reads in 7 min, the full one in 14; review notes item 62)
-const READ_TIME: Record<string, string> = { 'mitigating-risk-with-location-based-alerts': '7 min read', 'ngosafety-website-redesign': '3 min read', '3e-international': '1 min read' };
+const READ_TIME: Record<string, string> = { 'mitigating-risk-with-location-based-alerts': '7 min read', 'ngosafety-website-redesign': '6 min read', '3e-international': '1 min read' };
 const orgOf = (p: (typeof featured)[number]['p']) => p.data.org ?? p.data.client;
 // covers for the list's hover preview, loaded on the first hover
 const peeks = await Promise.all(more.map(async (p) => (await getImage({ src: p.data.cover, width: 720, format: 'webp' })).src));

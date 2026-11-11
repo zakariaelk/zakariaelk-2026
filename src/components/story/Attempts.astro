@@ -1,0 +1,29 @@
+---
+// Usability results as a strip: one row per task group, one dot per attempt (green: completed at the first attempt,
+// orange: with difficulties, red: not completed), no names (docs/claude-code-notes-ngosafety.md item 6).
+// rows: "Group|tasks|green|orange|red", ";"-separated. Red dots are rings, so the three read apart without colour.
+interface Props { rows: string; caption?: string }
+const { rows, caption } = Astro.props;
+const list = rows.split(';').map((r) => {
+  const [name, tasks, g, o, r2] = r.split('|').map((s) => s.trim());
+  return { name, tasks: Number(tasks), counts: [Number(g), Number(o), Number(r2)] };
+});
+const kinds = ['ok', 'hard', 'fail'] as const;
+const words = ['completed at the first attempt', 'completed with difficulties', 'not completed'];
+const sum = (r: { counts: number[] }) => r.counts.reduce((a, b) => a + b, 0);
+const total = { name: 'All tasks', tasks: list.reduce((a, r) => a + r.tasks, 0), counts: [0, 1, 2].map((i) => list.reduce((a, r) => a + r.counts[i], 0)) };
+---
+<div class="cs-att">
+  <ul class="cs-att__legend">
+    {words.map((w, i) => <li><span class={`cs-att__dot cs-att__dot--${kinds[i]}`} aria-hidden="true" />{w[0].toUpperCase() + w.slice(1)}</li>)}
+  </ul>
+  {[...list, total].map((r, n) => (
+    <div class:list={['cs-att__row', n === list.length && 'cs-att__row--total']}>
+      <p class="cs-att__name">{r.name}<span>{r.tasks} tasks · {sum(r)} attempts</span></p>
+      <p class="cs-att__dots" role="img" aria-label={r.counts.map((c, i) => `${c} ${words[i]}`).join(', ')}>
+        {r.counts.map((c, i) => Array.from({ length: c }, () => <span class={`cs-att__dot cs-att__dot--${kinds[i]}`} />))}
+      </p>
+    </div>
+  ))}
+  {caption && <p class="cs-att__cap">{caption}</p>}
+</div>
