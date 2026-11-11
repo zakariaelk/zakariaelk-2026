@@ -1,0 +1,30 @@
+**From all alerts to the ones that matter to you**
+
+By default, the app does what SMS and email did: it sends you the alerts from the regions you subscribed to.
+
+{% figure src="projects/mitigating-risk-with-location-based-alerts/simple/problem-framing/email-sms-alerts.jpg" alt="Two phones in hand: an INSO alert open in an email, and INSO alerts as text messages, with the place names blurred." caption="An INSO alert as it arrives by email and by SMS." /%}
+
+{% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/former/former-filter-map-settings-01.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/former/former-filter-map-settings-02.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/former/former-filter-map-settings-03.jpg" landscape=true frame="before" alts="The engineers' settings page: programmes, my location, proximity, language and account on one screen.|The regions of a programme, in a pop-up over the settings.|Filter by date: a calendar in a pop-up over the settings." caption="The engineers' version from **before**: the region and date filters sat in the settings screen next to map and app settings." /%}
+
+In the above design, both filters (date and region) were already there but mixed up with app and map settings such as language, account and location. Settings change how the app behaves, while filters change what the list shows.
+
+Country offices also flagged that users need to be able to easily find information in the alert list. There was **no search** field on the screen.
+
+**Here is what I did here:**
+
+1. Search finds alerts by text or place.
+2. Programme, region and date now live in one filter menu, opened from the icon next to search. People with access to several programmes get one expandable menu per programme, and inside each one the regions, with a toggle to switch them on and off.
+3. The date range comes with quick options for the last 3 days, week or month.
+4. A three-step tutorial introduces search, the filters and the map the first time.
+
+{% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/02-alerts_list_instruct_01.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/03-alerts_search_typing.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/04-alerts_search_results.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/05-alerts_list_instruct_02.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/06-alerts_filter_off.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/07-alerts_filter_region.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/08-alerts_filter_region_selected.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/09-alerts_filter_date_picker.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/10-alerts_filter_on.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/11-alerts_filtered.jpg" landscape=true frame="after" alts="The new alerts list: location first, then a short title, then time.|Tutorial, 1 of 3: search anything in alerts, by place or keyword.|Typing a place in the search bar.|Search results for Ukraine.|Tutorial, 2 of 3: filter alerts by date and region.|The filter: programmes and regions, and a date range.|A programme open: Ukraine, with one of its five regions switched on.|A second region switched on.|The date picker, with quick options like last week.|The filter on: two of five regions and a date range.|The list, filtered." caption="Search and filters on the alerts list: programmes and regions, a date range with quick options, and a sign when a filter is on." /%}
+
+{% block source="From usability testing sessions and surveys with country offices, using a design prototype" %}
+10 participants {% mark text="all filtered alerts by location" color="green" /%} in 22 seconds on average, and gave an average ease score of 9.3 out of 10.
+{% /block %}
+
+{% block source="From usability testing sessions and surveys with country offices, using a design prototype" %}
+In another test, 13 participants filtered by date in 19 seconds on average, and gave an average ease score of 8.2 out of 10.
+{% /block %}
+
+As new features, and considering the user groups, the filters tested well. {% .cs-verdict %}

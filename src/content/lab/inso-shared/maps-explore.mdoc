@@ -1,0 +1,41 @@
+**From large regions to precise geographic locations**
+
+The map is for people who need to see where an alert comes from, follow one area, or look around during a mission without another map tool.
+
+The engineers' version only had Proximity and Polygon (now called Geofence). To look anywhere else, you had to open a single alert from the list and jump to its location. My heuristic evaluation turned up three gaps:
+
+1. You couldn't explore freely: the map only opened as a tool for setting a radius or drawing an area.
+2. You couldn't select an alert on the map and read it there.
+3. You couldn't move around the map, then switch back to the list to see only the alerts from that place.
+
+{% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-1.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-2.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-3.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-4.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-5.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-6.jpg" landscape=true frame="before" alts="The old alerts list.|The old map, dark, before any alert is chosen.|The old map: Proximity, a radius around your location.|The old map settings.|A note on the old map: it had two tools, Proximity and Polygon, and to look anywhere else you had to open a single alert from the list.|The old map: Polygon." caption="The ==former== map: a tool for setting a radius or drawing an area, not for exploring." /%}
+
+The above 3 gaps resonated with what country offices expressed as user needs from a map in the app.
+
+{% ab v="a" %}
+With this in mind, a new mode called **Explore** was designed.
+{% /ab %}
+
+{% ab v="b" %}
+With this in mind, I designed a new mode called **Explore**.
+{% /ab %}
+
+### Explore: where is this happening, and what's around it?
+
+The work group and country office colleagues supported the importance of tackling the 3 above mentioned gaps and suggested that exploring should be the default map mode.
+
+**Why:** When an NGO worker sees an alert, their first reflex is to ask where it's happening, and what else is happening {% tip text="around it" note="Based on information shared by country offices." /%}.
+
+{% ab v="a" %}
+The focus here was on allowing the users to move around the map freely, tap an alert to read it there, and go to any place and switch back to the list to load the {% tip text="alerts from that area" note="Half of the work here was designing & prototyping and the other half focused on collaborating with engineers in finding the best map integration & settings possible for the job." /%}.
+{% /ab %}
+
+{% ab v="b" %}
+I focused here on allowing the users to move around the map freely, tap an alert to read it there, and go to any place and switch back to the list to load the {% tip text="alerts from that area" note="Half of my work here was designing & prototyping and the other half focused on collaborating with engineers in finding the best map integration & settings possible for the job." /%}.
+{% /ab %}
+
+{% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/map-explore/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/02-alerts_list_instruct_03.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/03-map_explore_loading.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/04-map_explore_loaded.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/05-map_explore_alert-selected.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/06-last-visual-alerts_list_view_explore-enabled.jpg" landscape=true frame="after" alts="The alerts list, with a Map button at the bottom.|The guide: explore alerts in a map view.|The map opens in Explore mode, loading.|The map with the alerts in the area.|An alert tapped on the map, its details in a card.|Back on the list, Explore is enabled: the list shows the alerts of the area chosen on the map." caption="Explore: move around the map freely, tap an alert to read it there, and switch back to the list for that area." /%}
+
+{% block source="From usability testing sessions and surveys with country offices, using a design prototype" %}
+8 participants {% mark text="successfully found and used" color="green" /%} the Explore mode to show alerts from a specific geographic location in 33 seconds on average, and gave an average ease score of 8.6 out of 10.
+{% /block %}

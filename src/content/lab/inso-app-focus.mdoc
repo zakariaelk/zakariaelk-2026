@@ -45,23 +45,13 @@ featuredVideo: "/media/projects/mitigating-risk-with-location-based-alerts/inso-
 
 This is the 7-minute version. [The full case study](/work/mitigating-risk-with-location-based-alerts/full/) (14 min) also covers login and onboarding, the alert list, alert details, Geofence and other flows step by step.
 
-{% stats variant="strip" label="Key numbers" caption="From app usage data since launch, something SMS and email couldn't offer." %}
-{% stat value="100,000+" label="alerts opened from notifications in three years" /%}
-{% stat value="85%" label="of monthly users are returning users" /%}
-{% stat value="1 in 6" label="people who used the app also opened a map, a layer SMS never had" /%}
-{% /stats %}
+{% partial file="./inso-shared/numbers.mdoc" /%}
 
 ## Framing the problem
 
 INSO operates in 20+ countries, many with patchy or no internet coverage, so alerts go out by SMS, and by email for longer formats. The alerts themselves were clear. Around them, a few things were missing. This version follows these two.
 
-{% problem n="1" title="SMS and email gave people little way to filter by region or search for and inside the alerts most relevant to them" %}
-NGOs registered with INSO managed their account in the Partners Portal, where admins chose which regions their teams received {% tip text="services" note="Services consist of alerts, incident reports, safety & access reports, invitation to trainings among others." /%} from. For everyone else, filtering was out of reach, and there was no search for people who needed to find something inside a long list of alerts. {% sourceline text="Raised by partners, through the country offices." /%}
-{% /problem %}
-
-{% problem n="2" title="SMS and email described where an alert was, but couldn't show it" %}
-Knowing where an alert is, and what's happening around it, matters to the people receiving it. Without a map, people turned to third-party tools, which meant extra steps and time. Regions are also big, and nothing finer existed: no city, no compound, no live or remote location for users to select and receive alerts from. {% sourceline text="Raised by partners, through the country offices." /%}
-{% /problem %}
+{% partial file="./inso-shared/problems-1-2.mdoc" /%}
 
 ## Users
 
@@ -77,90 +67,15 @@ Knowing where an alert is, and what's happening around it, matters to the people
 
 ## The project when I joined
 
-**Starting from a working first draft**
-
-{% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-former-version.jpg" frame="before" alt="The app when I joined: a dense dark list of alerts in capitals, an alert detail packed with text under a small map, and a map that shows a single alert pin." caption="The app demo built by the engineers ==before== I joined the project team." /%}
-
-**A working demo lacking a plan and structure.** When I joined, the engineers had a demo of the app running on TestFlight, built from conversations with {% tip text="country offices" note="INSO has 23 country offices where the team is generally composed of a director, deputy, operations and financial staff, information management staff & field monitoring personnel. (updated 05-2026)" /%}. Scope, requirements and data were still to be defined.
-
-**Designing without direct access to partners.** Partners are the main end users, but I didn't have permission to contact them directly. The country offices offered to act as proxies and supported our research and testing, although it wasn't always straightforward, and the extra layer between us and the users made the process harder and affected the quality of the work. Partners had their say in a survey after launch.
+{% partial file="./inso-shared/project-when-i-joined.mdoc" /%}
 
 ## Filtering - Addressing problem 1
 
-**From all alerts to the ones that matter to you**
-
-By default, the app does what SMS and email did: it sends you the alerts from the regions you subscribed to.
-
-{% figure src="projects/mitigating-risk-with-location-based-alerts/simple/problem-framing/email-sms-alerts.jpg" alt="Two phones in hand: an INSO alert open in an email, and INSO alerts as text messages, with the place names blurred." caption="An INSO alert as it arrives by email and by SMS." /%}
-
-{% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/former/former-filter-map-settings-01.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/former/former-filter-map-settings-02.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/former/former-filter-map-settings-03.jpg" landscape=true frame="before" alts="The engineers' settings page: programmes, my location, proximity, language and account on one screen.|The regions of a programme, in a pop-up over the settings.|Filter by date: a calendar in a pop-up over the settings." caption="The engineers' version from **before**: the region and date filters sat in the settings screen next to map and app settings." /%}
-
-In the above design, both filters (date and region) were already there but mixed up with app and map settings such as language, account and location. Settings change how the app behaves, while filters change what the list shows.
-
-Country offices also flagged that users need to be able to easily find information in the alert list. There was **no search** field on the screen.
-
-**Here is what I did here:**
-
-1. Search finds alerts by text or place.
-2. Programme, region and date now live in one filter menu, opened from the icon next to search. People with access to several programmes get one expandable menu per programme, and inside each one the regions, with a toggle to switch them on and off.
-3. The date range comes with quick options for the last 3 days, week or month.
-4. A three-step tutorial introduces search, the filters and the map the first time.
-
-{% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/02-alerts_list_instruct_01.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/03-alerts_search_typing.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/04-alerts_search_results.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/05-alerts_list_instruct_02.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/06-alerts_filter_off.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/07-alerts_filter_region.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/08-alerts_filter_region_selected.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/09-alerts_filter_date_picker.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/10-alerts_filter_on.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/filtering/11-alerts_filtered.jpg" landscape=true frame="after" alts="The new alerts list: location first, then a short title, then time.|Tutorial, 1 of 3: search anything in alerts, by place or keyword.|Typing a place in the search bar.|Search results for Ukraine.|Tutorial, 2 of 3: filter alerts by date and region.|The filter: programmes and regions, and a date range.|A programme open: Ukraine, with one of its five regions switched on.|A second region switched on.|The date picker, with quick options like last week.|The filter on: two of five regions and a date range.|The list, filtered." caption="Search and filters on the alerts list: programmes and regions, a date range with quick options, and a sign when a filter is on." /%}
-
-{% block source="From usability testing sessions and surveys with country offices, using a design prototype" %}
-10 participants {% mark text="all filtered alerts by location" color="green" /%} in 22 seconds on average, and gave an average ease score of 9.3 out of 10.
-{% /block %}
-
-{% block source="From usability testing sessions and surveys with country offices, using a design prototype" %}
-In another test, 13 participants filtered by date in 19 seconds on average, and gave an average ease score of 8.2 out of 10.
-{% /block %}
-
-As new features, and considering the user groups, the filters tested well. {% .cs-verdict %}
+{% partial file="./inso-shared/filtering.mdoc" /%}
 
 ## Maps - Addressing problem 2
 
-**From large regions to precise geographic locations**
-
-The map is for people who need to see where an alert comes from, follow one area, or look around during a mission without another map tool.
-
-The engineers' version only had Proximity and Polygon (now called Geofence). To look anywhere else, you had to open a single alert from the list and jump to its location. My heuristic evaluation turned up three gaps:
-
-1. You couldn't explore freely: the map only opened as a tool for setting a radius or drawing an area.
-2. You couldn't select an alert on the map and read it there.
-3. You couldn't move around the map, then switch back to the list to see only the alerts from that place.
-
-{% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-1.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-2.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-3.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-4.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-5.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-6.jpg" landscape=true frame="before" alts="The old alerts list.|The old map, dark, before any alert is chosen.|The old map: Proximity, a radius around your location.|The old map settings.|A note on the old map: it had two tools, Proximity and Polygon, and to look anywhere else you had to open a single alert from the list.|The old map: Polygon." caption="The ==former== map: a tool for setting a radius or drawing an area, not for exploring." /%}
-
-The above 3 gaps resonated with what country offices expressed as user needs from a map in the app.
-
-{% ab v="a" %}
-With this in mind, a new mode called **Explore** was designed.
-{% /ab %}
-
-{% ab v="b" %}
-With this in mind, I designed a new mode called **Explore**.
-{% /ab %}
-
-### Explore: where is this happening, and what's around it?
-
-The work group and country office colleagues supported the importance of tackling the 3 above mentioned gaps and suggested that exploring should be the default map mode.
-
-**Why:** When an NGO worker sees an alert, their first reflex is to ask where it's happening, and what else is happening {% tip text="around it" note="Based on information shared by country offices." /%}.
-
-{% ab v="a" %}
-The focus here was on allowing the users to move around the map freely, tap an alert to read it there, and go to any place and switch back to the list to load the {% tip text="alerts from that area" note="Half of the work here was designing & prototyping and the other half focused on collaborating with engineers in finding the best map integration & settings possible for the job." /%}.
-{% /ab %}
-
-{% ab v="b" %}
-I focused here on allowing the users to move around the map freely, tap an alert to read it there, and go to any place and switch back to the list to load the {% tip text="alerts from that area" note="Half of my work here was designing & prototyping and the other half focused on collaborating with engineers in finding the best map integration & settings possible for the job." /%}.
-{% /ab %}
-
-{% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/map-explore/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/02-alerts_list_instruct_03.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/03-map_explore_loading.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/04-map_explore_loaded.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/05-map_explore_alert-selected.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/06-last-visual-alerts_list_view_explore-enabled.jpg" landscape=true frame="after" alts="The alerts list, with a Map button at the bottom.|The guide: explore alerts in a map view.|The map opens in Explore mode, loading.|The map with the alerts in the area.|An alert tapped on the map, its details in a card.|Back on the list, Explore is enabled: the list shows the alerts of the area chosen on the map." caption="Explore: move around the map freely, tap an alert to read it there, and switch back to the list for that area." /%}
-
-{% block source="From usability testing sessions and surveys with country offices, using a design prototype" %}
-8 participants {% mark text="successfully found and used" color="green" /%} the Explore mode to show alerts from a specific geographic location in 33 seconds on average, and gave an average ease score of 8.6 out of 10.
-{% /block %}
+{% partial file="./inso-shared/maps-explore.mdoc" /%}
 
 ### Proximity: how do I stay informed on anything happening around me while on the move and how do I monitor an area remotely?
 
@@ -206,17 +121,9 @@ About 1 in 6 people who used the app have opened a map, and Explore takes most o
 
 ## Outcome
 
-**App actively used, with a steady number of returning users**
+{% partial file="./inso-shared/outcome-core.mdoc" /%}
 
-After the launch peak of about 1,600 users, a steady base settled in: around 800 a month through 2024, and 450 to 630 through 2026. About **85%** of them are **returning users**, and alerts have been opened from notifications over **100,000 times in three years**.
-
-{% usagechart caption="Monthly active and returning users since launch, rounded. Test and visitor traffic left out." /%}
-
-{% block source="23 of 29 rated ease of use 4 or 5 (average 4.1/5) · post-launch survey of 31 partners" %}
-Partners found the app easy to use.
-{% /block %}
-
-**What I can't say.** Nothing could be measured before the app, since SMS and email can't be tracked, so I can't say {% mark text="how much impact it had on the safety and security of humanitarian workers" /%}, only that it's used and that people keep coming back. The partner survey above is the asking side, the support layer.
+{% partial file="./inso-shared/outcome-cant-say.mdoc" /%}
 
 {% cta href="https://app.ngosafety.org/" label="Take a look" /%}
 
