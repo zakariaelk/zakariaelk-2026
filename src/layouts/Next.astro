@@ -11,7 +11,7 @@ import NextHeader from '../components/next/NextHeader.astro';
 // intro: the home page's opening animation (version A) may play; decided here, before the first paint
 // look: a colour or type variation of version A (data-look on <html>); 'dmsans' also loads DM Sans
 // bodyClass: a class on <body> scoping one page's own styles (cs-simple: the Simple INSO case)
-// canonical: the page search engines should treat as the original (the INSO full case points to its 3-minute one)
+// canonical: the page search engines should treat as the original (the INSO full case points to its 7-minute one)
 interface Props { title?: string; description?: string; palette?: 'paper' | 'mono'; base?: string; variant?: string; logo?: boolean; work?: string; intro?: boolean; enter?: boolean; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; bodyClass?: string; canonical?: string }
 const { title = 'Zakaria El Khachia · Product designer', description = 'Product designer with a frontend development background.', palette = 'mono', base = '/next/', variant, logo = false, work, intro = false, enter = false, look, bodyClass, canonical } = Astro.props;
 ---

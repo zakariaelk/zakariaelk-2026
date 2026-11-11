@@ -30,7 +30,7 @@ import '../../../styles/case-simple.css'; // scoped to .cs-simple, so the classi
 // (remove with the older pages)
 // fullVideo: the case's full video as its cover (components/video/CaseStudyVideo.astro, #full-video)
 interface Props { project: CollectionEntry<'projects' | 'lab'>; next: CollectionEntry<'projects'>; base?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown'; format?: 'simple' | 'classic'; compare?: 'full' | 'short' | 'simple'; fullVideo?: { src: string; poster: string; length?: string; caption?: string }; canonical?: string; shortVersion?: string; reviewNote?: string }
-const { project, next, base = '/next/a/', look, format = 'simple', compare, fullVideo, canonical, shortVersion, reviewNote } = Astro.props; // shortVersion: the 3-minute case a long one links back to; reviewNote: a grey line on a frozen review copy
+const { project, next, base = '/next/a/', look, format = 'simple', compare, fullVideo, canonical, shortVersion, reviewNote } = Astro.props; // shortVersion: the 7-minute case a long one links back to; reviewNote: a grey line on a frozen review copy
 const simple = format === 'simple';
 // "Take a look": in the story ({% cta %}), or at its end when the text doesn't place it
 const ctaInText = (project.body ?? '').includes('{% cta');
@@ -48,8 +48,8 @@ const meta = [
 ].filter((m) => m.items.length);
 const rows = [meta.slice(0, 2), meta.slice(2)].filter((r) => r.length);
 // rail: the body's section names (its h2s)
-// the contents list names a section by its first part: "Filtering – Addressing problem 1" is "Filtering"
-const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug, label: h.text.split(' – ')[0] }));
+// the contents list names a section by its first part: "Filtering - Addressing problem 1" is "Filtering"
+const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug, label: h.text.split(/ [–-] /)[0] }));
 // the rail and the phone menu start with "Intro": the title and the cover
 const nav = [{ id: 'top', label: 'Intro' }, ...sections];
 ---
@@ -98,7 +98,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
           <div class="ab" data-version="b">{d.ledeB.map((p) => <p class="a-case__lede">{p}</p>)}</div>
         </Fragment>
       ) : d.lede.map((p) => <p class="a-case__lede">{p}</p>)}
-      {shortVersion && <p class="a-case__lede">This is the long version of the 3-minute case study. <a href={shortVersion}>Back to the short version</a>.</p>}
+      {shortVersion && <p class="a-case__lede">This is the long version of the 7-minute case study. <a href={shortVersion}>Back to the short version</a>.</p>}
       {rows.map((r, i) => (
         <Fragment>
           {i > 0 && <svg class="a-case__rule" viewBox="0 0 1000 24" preserveAspectRatio="none" aria-hidden="true"><path d={cutLine(37)} /></svg>}

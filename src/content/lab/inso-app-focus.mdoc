@@ -1,5 +1,5 @@
 ---
-# The INSO case in about 3 minutes, shown at /work/mitigating-risk-with-location-based-alerts/: proof up front, one
+# The INSO case in about 7 minutes, shown at /work/mitigating-risk-with-location-based-alerts/: proof up front, one
 # deep dive (Maps: Explore and Proximity), the rest of the app in one slideshow, the outcome. The full case
 # (inso-app-simple.mdoc) is at /work/mitigating-risk-with-location-based-alerts/full/. Wording reused from it.
 title: "Mitigating risk with location-based alerts"
@@ -43,7 +43,7 @@ featuredVideo: "/media/projects/mitigating-risk-with-location-based-alerts/inso-
 ---
 ---
 
-This is the 3-minute version. [The full case study](/work/mitigating-risk-with-location-based-alerts/full/) (13 min) also covers login and onboarding, the alert list, alert details, Geofence and other flows step by step.
+This is the 7-minute version. [The full case study](/work/mitigating-risk-with-location-based-alerts/full/) (14 min) also covers login and onboarding, the alert list, alert details, Geofence and other flows step by step.
 
 {% stats variant="strip" label="Key numbers" caption="From app usage data since launch, something SMS and email couldn't offer." %}
 {% stat value="100,000+" label="alerts opened from notifications in three years" /%}
@@ -56,7 +56,7 @@ This is the 3-minute version. [The full case study](/work/mitigating-risk-with-l
 INSO operates in 20+ countries, many with patchy or no internet coverage, so alerts go out by SMS, and by email for longer formats. The alerts themselves were clear. Around them, a few things were missing. This version follows these two.
 
 {% problem n="1" title="SMS and email gave people little way to filter by region or search for and inside the alerts most relevant to them" %}
-NGOs registered with INSO managed their account in the Partners Portal, where admins chose which regions their teams received {% tip text="services" note="Services include alerts, incident reports, safety and access reports, and invitations to trainings, among others." /%} from. For everyone else, filtering was out of reach, and there was no search for people who needed to find something inside a long list of alerts. {% sourceline text="Raised by partners, through the country offices." /%}
+NGOs registered with INSO managed their account in the Partners Portal, where admins chose which regions their teams received {% tip text="services" note="Services consist of alerts, incident reports, safety & access reports, invitation to trainings among others." /%} from. For everyone else, filtering was out of reach, and there was no search for people who needed to find something inside a long list of alerts. {% sourceline text="Raised by partners, through the country offices." /%}
 {% /problem %}
 
 {% problem n="2" title="SMS and email described where an alert was, but couldn't show it" %}
@@ -65,7 +65,7 @@ Knowing where an alert is, and what's happening around it, matters to the people
 
 ## Users
 
-**NGO field workers and security staff**
+**NGO field workers and Security staff**
 
 {% usertable photos="projects/mitigating-risk-with-location-based-alerts/users/01-user-ngo-field-worker.jpg|projects/mitigating-risk-with-location-based-alerts/users/02-user-security-ops-staff.jpg|" alts="An NGO field worker with a backpack walking across a car park|A security officer on a satellite phone next to a field vehicle|" %}
 | Who | Needs | Pains before the app |
@@ -81,11 +81,11 @@ Knowing where an alert is, and what's happening around it, matters to the people
 
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-former-version.jpg" frame="before" alt="The app when I joined: a dense dark list of alerts in capitals, an alert detail packed with text under a small map, and a map that shows a single alert pin." caption="The app demo built by the engineers ==before== I joined the project team." /%}
 
-**A working demo lacking a plan and structure.** When I joined, the engineers had a demo of the app running on TestFlight, built from conversations with {% tip text="country offices" note="INSO has 23 country offices. A team there is generally a director, a deputy, operations and finance staff, information management staff and field monitoring personnel. As of May 2026." /%}. Scope, requirements and data were still to be defined.
+**A working demo lacking a plan and structure.** When I joined, the engineers had a demo of the app running on TestFlight, built from conversations with {% tip text="country offices" note="INSO has 23 country offices where the team is generally composed of a director, deputy, operations and financial staff, information management staff & field monitoring personnel. (updated 05-2026)" /%}. Scope, requirements and data were still to be defined.
 
 **Designing without direct access to partners.** Partners are the main end users, but I didn't have permission to contact them directly. The country offices offered to act as proxies and supported our research and testing, although it wasn't always straightforward, and the extra layer between us and the users made the process harder and affected the quality of the work. Partners had their say in a survey after launch.
 
-## Filtering – Addressing problem 1
+## Filtering - Addressing problem 1
 
 **From all alerts to the ones that matter to you**
 
@@ -95,11 +95,11 @@ By default, the app does what SMS and email did: it sends you the alerts from th
 
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/former/former-filter-map-settings-01.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/former/former-filter-map-settings-02.jpg, projects/mitigating-risk-with-location-based-alerts/simple/alerts-and-filters/former/former-filter-map-settings-03.jpg" landscape=true frame="before" alts="The engineers' settings page: programmes, my location, proximity, language and account on one screen.|The regions of a programme, in a pop-up over the settings.|Filter by date: a calendar in a pop-up over the settings." caption="The engineers' version from **before**: the region and date filters sat in the settings screen next to map and app settings." /%}
 
-In the above design, both filters, region and date, were already there, but mixed up with app and map settings such as language, account and location. Settings change how the app behaves, while filters change what the list shows.
+In the above design, both filters (date and region) were already there but mixed up with app and map settings such as language, account and location. Settings change how the app behaves, while filters change what the list shows.
 
 Country offices also flagged that users need to be able to easily find information in the alert list. There was **no search** field on the screen.
 
-**Here is what I did:**
+**Here is what I did here:**
 
 1. Search finds alerts by text or place.
 2. Programme, region and date now live in one filter menu, opened from the icon next to search. People with access to several programmes get one expandable menu per programme, and inside each one the regions, with a toggle to switch them on and off.
@@ -118,7 +118,7 @@ In another test, 13 participants filtered by date in 19 seconds on average, and 
 
 As new features, and considering the user groups, the filters tested well. {% .cs-verdict %}
 
-## Maps – Addressing problem 2
+## Maps - Addressing problem 2
 
 **From large regions to precise geographic locations**
 
@@ -132,7 +132,7 @@ The engineers' version only had Proximity and Polygon (now called Geofence). To 
 
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-1.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-2.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-3.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-4.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-5.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/former-6.jpg" landscape=true frame="before" alts="The old alerts list.|The old map, dark, before any alert is chosen.|The old map: Proximity, a radius around your location.|The old map settings.|A note on the old map: it had two tools, Proximity and Polygon, and to look anywhere else you had to open a single alert from the list.|The old map: Polygon." caption="The ==former== map: a tool for setting a radius or drawing an area, not for exploring." /%}
 
-The three gaps above matched what country offices described as user needs from a map in the app.
+The above 3 gaps resonated with what country offices expressed as user needs from a map in the app.
 
 {% ab v="a" %}
 With this in mind, a new mode called **Explore** was designed.
@@ -144,16 +144,16 @@ With this in mind, I designed a new mode called **Explore**.
 
 ### Explore: where is this happening, and what's around it?
 
-The work group and country office colleagues supported the importance of tackling the three gaps above and suggested that exploring should be the default map mode.
+The work group and country office colleagues supported the importance of tackling the 3 above mentioned gaps and suggested that exploring should be the default map mode.
 
 **Why:** When an NGO worker sees an alert, their first reflex is to ask where it's happening, and what else is happening {% tip text="around it" note="Based on information shared by country offices." /%}.
 
 {% ab v="a" %}
-The focus here was on allowing users to move around the map freely, tap an alert to read it there, and go to any place and switch back to the list to load the {% tip text="alerts from that area" note="Half of the work here was designing and prototyping, and the other half was collaborating with engineers to find the best map integration and settings for the job." /%}.
+The focus here was on allowing the users to move around the map freely, tap an alert to read it there, and go to any place and switch back to the list to load the {% tip text="alerts from that area" note="Half of the work here was designing & prototyping and the other half focused on collaborating with engineers in finding the best map integration & settings possible for the job." /%}.
 {% /ab %}
 
 {% ab v="b" %}
-I focused here on allowing users to move around the map freely, tap an alert to read it there, and go to any place and switch back to the list to load the {% tip text="alerts from that area" note="Half of my work here was designing and prototyping, and the other half was collaborating with engineers to find the best map integration and settings for the job." /%}.
+I focused here on allowing the users to move around the map freely, tap an alert to read it there, and go to any place and switch back to the list to load the {% tip text="alerts from that area" note="Half of my work here was designing & prototyping and the other half focused on collaborating with engineers in finding the best map integration & settings possible for the job." /%}.
 {% /ab %}
 
 {% sequence images="projects/mitigating-risk-with-location-based-alerts/simple/map-explore/01-alerts_first_view.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/02-alerts_list_instruct_03.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/03-map_explore_loading.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/04-map_explore_loaded.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/05-map_explore_alert-selected.jpg, projects/mitigating-risk-with-location-based-alerts/simple/map-explore/06-last-visual-alerts_list_view_explore-enabled.jpg" landscape=true frame="after" alts="The alerts list, with a Map button at the bottom.|The guide: explore alerts in a map view.|The map opens in Explore mode, loading.|The map with the alerts in the area.|An alert tapped on the map, its details in a card.|Back on the list, Explore is enabled: the list shows the alerts of the area chosen on the map." caption="Explore: move around the map freely, tap an alert to read it there, and switch back to the list for that area." /%}
@@ -162,7 +162,7 @@ I focused here on allowing users to move around the map freely, tap an alert to 
 8 participants {% mark text="successfully found and used" color="green" /%} the Explore mode to show alerts from a specific geographic location in 33 seconds on average, and gave an average ease score of 8.6 out of 10.
 {% /block %}
 
-### Proximity: how do I stay informed about anything happening around me while on the move, and how do I monitor an area remotely?
+### Proximity: how do I stay informed on anything happening around me while on the move and how do I monitor an area remotely?
 
 Proximity shows alerts within a radius of your live location, or of a pin you drop somewhere else. In the engineers' version, it sat in a separate settings screen, with nothing to explain it. People expect to narrow down a list where the list is, with a filter or a button like Airbnb's Map button, not in settings.
 
@@ -178,9 +178,9 @@ So in the **first iteration** of the redesign, Proximity moved into the map as o
 
 #### Illusion of Explanatory Depth (IOED)
 
-The above fixed where to find Proximity and understand what the feature is meant to be used for, **but not how to use it**. Thinking aloud, most testers demonstrated a fair understanding of the feature's intro text, then struggled with a task that used its two settings, live and custom location.
+The above fixed where to find Proximity and understand what the feature is meant to be used for **but not how to use it**. Thinking aloud, most testers demonstrated a fair understanding of the feature's intro text, then struggled with a task that used its two settings, live and custom location.
 
-The tooltip said what Proximity does, which seemed clear to my biased thinking. The concept of **Illusion of Explanatory Depth** says it's one thing to understand something and another to explain it step by step and put it into practice.
+The tooltip said what Proximity does, which seemed clear to my biased thinking. The concept of **Illusion of Explanatory Depth** says it's one thing to understand something and another to explain the step by step and be able to put it to practice when applicable.
 
 In the second iteration, the single tooltip became a short three-step tutorial: nothing too long, to avoid killing engagement, but enough to show how to use the mode.
 
