@@ -1,6 +1,7 @@
 ---
-// One sentence in the site's orange marker highlight (CaseA draws it in when it comes into view)
-interface Props { text: string }
-const { text } = Astro.props;
+// One sentence in the site's orange marker highlight (CaseA draws it in when it comes into view); color="green" marks
+// the success expression of a usability-test callout (docs/claude-code-review-notes-5nov.md item 58)
+interface Props { text: string; color?: 'green' }
+const { text, color } = Astro.props;
 ---
-<mark class="cs-mark">{text}</mark>
+<mark class:list={['cs-mark', color === 'green' && 'cs-mark--green']}>{text}</mark>

@@ -94,8 +94,8 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
     <div class="a-col a-case__intro">
       {d.ledeB ? (
         <Fragment>
-          <div class="ab" data-version="a">{d.lede.map((p) => <p class="a-case__lede">{p}</p>)}</div>
-          <div class="ab" data-version="b" hidden>{d.ledeB.map((p) => <p class="a-case__lede">{p}</p>)}</div>
+          <div class="ab" data-version="a" hidden>{d.lede.map((p) => <p class="a-case__lede">{p}</p>)}</div>
+          <div class="ab" data-version="b">{d.ledeB.map((p) => <p class="a-case__lede">{p}</p>)}</div>
         </Fragment>
       ) : d.lede.map((p) => <p class="a-case__lede">{p}</p>)}
       {shortVersion && <p class="a-case__lede">This is the long version of the 3-minute case study. <a href={shortVersion}>Back to the short version</a>.</p>}

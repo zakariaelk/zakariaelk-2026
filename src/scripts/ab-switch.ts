@@ -1,5 +1,5 @@
 // A/B wording switch for reviewing the INSO case (docs/claude-code-instructions-version-switch.md, section 3).
-// Only with ?compare=1 on a page that has A/B blocks (components/story/Ab.astro); otherwise B stays hidden.
+// Only with ?compare=1 on a page that has A/B blocks (components/story/Ab.astro); otherwise A stays hidden (B is live).
 // The choice lives in ?v=a|b and localStorage; links between the two INSO pages carry compare=1 and v.
 const blocks = [...document.querySelectorAll<HTMLElement>('.ab[data-version]')];
 const params = new URLSearchParams(location.search);
@@ -7,7 +7,7 @@ const params = new URLSearchParams(location.search);
 if (blocks.length && params.get('compare') === '1') {
   const KEY = 'inso-ab';
   const stored = (() => { try { return localStorage.getItem(KEY); } catch { return null; } })();
-  let current = params.get('v') === 'b' || params.get('v') === 'a' ? params.get('v')! : stored === 'b' ? 'b' : 'a';
+  let current = params.get('v') === 'b' || params.get('v') === 'a' ? params.get('v')! : stored === 'a' ? 'a' : 'b';
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const bar = document.createElement('div');

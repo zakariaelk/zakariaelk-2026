@@ -64,7 +64,7 @@ export default defineMarkdocConfig({
     problem: { render: story('Problem'), attributes: { n: { type: String, required: true }, title: { type: String, required: true } } },
     // a small grey source line under a list item (review notes item 26): {% sourceline text="…" /%}
     sourceline: { render: story('SourceLine'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true } } },
-    mark: { render: story('Mark'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true } } },
+    mark: { render: story('Mark'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true }, color: { type: String, matches: ['green'] } } },
     // Simple INSO case: icon + narrative title + paragraph (results: + a source line)
     block: {
       render: story('Block'),

@@ -111,6 +111,9 @@
 /* one sentence in the site's orange marker, drawn from left to right when it comes into view */
 .v-a { --c-orange: #ffdeb9; }
 :root[data-theme='dark'].v-a { --c-orange: #6b4a2b; }
+.v-a { --c-green: #cdeccb; }
+:root[data-theme='dark'].v-a { --c-green: #2e5a34; }
+.a-story .cs-mark.cs-mark--green { --c-orange: var(--c-green); } /* item 58: the success expression of a test callout */
 .a-story .cs-mark { padding: 0 0.12em; background: linear-gradient(to bottom, transparent 22%, var(--c-orange) 22%, var(--c-orange) 94%, transparent 94%) no-repeat 0 0 / 0% 100%; color: inherit; box-decoration-break: clone; -webkit-box-decoration-break: clone; transition: background-size 1.1s cubic-bezier(0.5, 0.1, 0.4, 1); }
 .a-story .cs-mark.is-drawn { background-size: 100% 100%; }
 @media (prefers-reduced-motion: reduce) { .a-story .cs-mark { background-size: 100% 100%; transition: none; } }
