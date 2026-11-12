@@ -243,6 +243,11 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .lbz.has-cap .lbz__img { max-height: calc(95dvh - 72px); }
 .lbz.has-cap.has-thumbs .lbz__img { max-height: calc(95dvh - 164px); }
 .lbz.is-tall .lbz__cap { margin-top: 16px; }
+/* a video in the view: as large as fits, its caption under it */
+.lbz__vid { display: block; max-width: 95vw; max-height: 95dvh; width: auto; height: auto; background: #000; }
+.lbz__vid[hidden], .lbz__img[hidden] { display: none; }
+.lbz.has-cap .lbz__vid { max-height: calc(95dvh - 72px); }
+.lbz.is-video .lbz__stage { cursor: default; }
 .lbz.is-tall.has-thumbs .lbz__stage { padding-bottom: 104px; }
 .lbz.is-tall.has-thumbs .cs-zoom { bottom: 96px; }
 /* a long screen: a readable width, scrolled */
@@ -717,3 +722,14 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
   .cs-simple .a-story .dev--phone::before { top: 16px; }
   .cs-simple .a-story .dev--phone::after { bottom: 15px; }
 }
+
+/* A long page in a desktop monitor (story/Scrollshot.astro): the screen has the navigation video's shape and scrolls */
+.cs-simple .a-story .cs-scrollshot { max-width: var(--col); margin: 40px auto; }
+.cs-simple .a-story .cs-scrollshot__scroll { aspect-ratio: 1280 / 706; overflow-y: auto; overscroll-behavior: contain; background: #fff; scrollbar-width: thin; scrollbar-color: rgb(0 0 0 / 0.3) transparent; }
+.cs-simple .a-story .cs-scrollshot__scroll img { display: block; width: 100%; height: auto; max-width: none; border-radius: 0; }
+.cs-simple .a-story .cs-scrollshot__scroll:focus-visible { outline: 2px solid var(--cs-title); outline-offset: 2px; }
+.cs-simple .a-story .cs-scrollshot .dev__screen .cs-zoom { z-index: 2; }
+
+/* a video's own box (Video.astro): its buttons sit on the video */
+.media-video__box { position: relative; }
+.media-video__box > video { display: block; width: 100%; }

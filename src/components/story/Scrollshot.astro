@@ -1,0 +1,29 @@
+---
+// A long page (a full-page wireframe or screenshot) inside a drawn desktop monitor (the .dev frame of Video.astro),
+// at the screen shape of the navigation video (1280:706). It scrolls slowly on its own while on screen; with the mouse
+// over the screen, a finger on it, or focus in it, the reader scrolls it instead (scripts/scrollshot.ts). It doesn't
+// move with reduced motion. The enlarge button opens the whole page in the full-screen view (scripts/lightbox.ts).
+import { getImage } from 'astro:assets';
+import { assetImage } from '../../lib/media';
+
+interface Props { src: string; alt: string; caption?: string }
+const { src, alt, caption } = Astro.props;
+const img = assetImage(src);
+if (!img) throw new Error(`Scrollshot: image not found in src/assets: ${src}`);
+const shown = await getImage({ src: img, width: 1360, format: 'webp' });
+const full = await getImage({ src: img, width: Math.min(img.width, 2048), format: 'webp' });
+---
+<figure class="cs-scrollshot media-video--desktop">
+  <div class="dev dev--desktop">
+    <div class="dev__screen">
+      <div class="cs-scrollshot__scroll" tabindex="0" role="region" aria-label={`${alt} (scrollable)`} data-scrollshot>
+        <img src={shown.src} data-full={full.src} alt={alt} width={img.width} height={img.height} loading="lazy" decoding="async" />
+      </div>
+    </div>
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<script>
+  import '../../scripts/scrollshot';
+</script>

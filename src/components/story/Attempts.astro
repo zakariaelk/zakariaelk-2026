@@ -1,7 +1,7 @@
 ---
 // Usability results as a strip: one row per task group, one dot per attempt (green: completed at the first attempt,
 // orange: with difficulties, red: not completed), no names (docs/claude-code-notes-ngosafety.md item 6).
-// Each kind on its own line with its count (thread t-093, notes item 71), read by screen readers as "8 completed first time".
+// Each kind on its own line with its count (thread t-093, notes item 71), read by screen readers as "8 completed first time"; a state with none is left out (t-095).
 // rows: "Group|tasks|green|orange|red", ";"-separated. Red dots are rings, so the three read apart without colour.
 interface Props { rows: string; caption?: string }
 const { rows, caption } = Astro.props;
@@ -22,7 +22,7 @@ const total = { name: 'All tasks', tasks: list.reduce((a, r) => a + r.tasks, 0),
     <div class:list={['cs-att__row', n === list.length && 'cs-att__row--total']}>
       <p class="cs-att__name">{r.name}<span>{r.tasks} tasks · {sum(r)} attempts</span></p>
       <div class="cs-att__dots">
-        {r.counts.map((c, i) => (
+        {r.counts.map((c, i) => c > 0 && (
           <p class="cs-att__line"><span class="sr-only">{c} {words[i]}</span>{Array.from({ length: c }, () => <span class={`cs-att__dot cs-att__dot--${kinds[i]}`} aria-hidden="true" />)}<span class="cs-att__n" aria-hidden="true">{c}</span></p>
         ))}
       </div>

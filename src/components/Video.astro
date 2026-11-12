@@ -5,14 +5,14 @@
 // device: the video inside a drawn device, a desktop monitor or a phone (CSS only, styles/case-simple.css)
 interface Props { src: string; alt?: string; portrait?: boolean; webm?: string; poster?: string; device?: 'desktop' | 'phone' }
 const { src, alt, portrait, webm, poster, device } = Astro.props;
-// with a device, the video sits in its frame and screen; without one, nothing wraps it
+// with a device, the video sits in its frame and screen
 const Frame = device ? 'div' : Fragment;
-const Screen = device ? 'div' : Fragment;
 const frameProps = device ? { class: `dev dev--${device}` } : {};
-const screenProps = device ? { class: 'dev__screen' } : {};
+// the video's own box, so its play/pause and enlarge buttons sit on it, not on the caption
+const screenProps = { class: device ? 'dev__screen' : 'media-video__box' };
 ---
 <figure class:list={['media-video', portrait && 'media-video--portrait', device && `media-video--${device}`]}>
-  <Frame {...frameProps}><Screen {...screenProps}>
+  <Frame {...frameProps}><div {...screenProps}>
   {webm ? (
     <video autoplay muted loop playsinline preload="metadata" poster={poster} aria-label={alt}>
       <source src={webm} type="video/webm" />
@@ -21,6 +21,6 @@ const screenProps = device ? { class: 'dev__screen' } : {};
   ) : (
     <video src={src} autoplay muted loop playsinline preload="metadata" poster={poster} aria-label={alt}></video>
   )}
-  </Screen></Frame>
+  </div></Frame>
   {alt && <figcaption>{alt}</figcaption>}
 </figure>

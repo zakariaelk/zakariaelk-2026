@@ -5,7 +5,8 @@
 // the image itself zooms: pinch, or double-tap a spot (again to fit); one finger moves a zoomed image around; a tap
 // outside the image (or the button) closes. No animation. From a slideshow it has previous / next arrows (and the arrow
 // keys) and a strip of all its screens at the bottom, which move the slideshow too; a long screen is shown at a readable width and scrolls; numbered badges on an
-// image come along. The visual's caption shows under it, in light text on the dark backdrop.
+// image come along. The visual's caption shows under it, in light text on the dark backdrop. Videos enlarge too (the
+// same button, playing in the view, or with controls under reduced motion), and so do long pages scrolling in a screen.
 const PLUS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3 20 20M7.5 10.5h6M10.5 7.5v6"/></svg>';
 const MINUS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3 20 20M7.5 10.5h6"/></svg>';
 
@@ -14,7 +15,7 @@ dlg.className = 'lbz';
 dlg.setAttribute('aria-label', 'Enlarged image');
 const ARROW = (d: string) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
 dlg.setAttribute('aria-describedby', 'lbz-cap');
-dlg.innerHTML = `<div class="lbz__stage"><div class="lbz__frame"><img class="lbz__img" alt=""><button type="button" class="cs-zoom" aria-label="Close enlarged image">${MINUS}</button></div><p class="lbz__cap" id="lbz-cap" hidden></p></div>`
+dlg.innerHTML = `<div class="lbz__stage"><div class="lbz__frame"><img class="lbz__img" alt=""><video class="lbz__vid" muted loop playsinline preload="metadata" hidden></video><button type="button" class="cs-zoom" aria-label="Close enlarged image">${MINUS}</button></div><p class="lbz__cap" id="lbz-cap" hidden></p></div>`
   + `<button type="button" class="lbz__arrow lbz__arrow--prev" data-lbz-step="-1" aria-label="Previous screen" hidden>${ARROW('M14.5 6l-6 6 6 6')}</button>`
   + `<button type="button" class="lbz__arrow lbz__arrow--next" data-lbz-step="1" aria-label="Next screen" hidden>${ARROW('M9.5 6l6 6-6 6')}</button>`
   + '<div class="lbz__thumbs" hidden></div>';
@@ -34,7 +35,7 @@ const frameEl = dlg.querySelector<HTMLElement>('.lbz__frame')!;
 const capEl = dlg.querySelector<HTMLElement>('.lbz__cap')!;
 // the caption of the visual an image belongs to: a slideshow's current one, a figure's, or the caption line after a
 // Markdown image; without the "Before:" / "After:" label
-const captionOf = (img: HTMLImageElement) => {
+const captionOf = (img: Element) => {
   const fig = img.closest('figure');
   let cap: Element | null | undefined = fig?.querySelector(':scope > figcaption');
   if (!cap) { const media = img.closest('.is-media'); const next = media?.nextElementSibling; cap = next?.classList.contains('is-caption') ? next : null; }
@@ -43,7 +44,7 @@ const captionOf = (img: HTMLImageElement) => {
   copy.querySelectorAll('.cs-cap__frame').forEach((e) => e.remove());
   return (copy.textContent ?? '').replace(/\s+/g, ' ').trim();
 };
-const showCaption = (img: HTMLImageElement) => {
+const showCaption = (img: Element) => {
   const text = captionOf(img);
   capEl.textContent = text;
   capEl.hidden = !text;
@@ -66,6 +67,7 @@ const fill = (img: HTMLImageElement) => {
 const largest = (el: HTMLImageElement) => el.dataset.full || el.srcset.split(',').map((c) => c.trim().split(/\s+/)).sort((a, b) => parseInt(b[1] ?? '0') - parseInt(a[1] ?? '0'))[0]?.[0] || el.currentSrc || el.src;
 const open = (img: HTMLImageElement, from: HTMLElement) => {
   opener = from;
+  if (!vid.hidden) { vid.pause(); vid.hidden = true; vid.replaceChildren(); vid.removeAttribute('src'); big.hidden = false; dlg.classList.remove('is-video'); } // was showing a video
   seq = from.closest<HTMLElement>('.cs-simple [data-seq]'); // the Simple case's slideshows
   const many = seqSlides().length > 1;
   arrows.forEach((a) => (a.hidden = !many));
@@ -86,6 +88,37 @@ const open = (img: HTMLImageElement, from: HTMLElement) => {
   dlg.showModal();
   close.focus();
 };
+// a video: the same sources in the view, playing (with controls under reduced motion); the page's copy waits
+const vid = dlg.querySelector<HTMLVideoElement>('.lbz__vid')!;
+const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let pageVid: HTMLVideoElement | null = null, pageWasPlaying = false;
+const openVideo = (v: HTMLVideoElement, from: HTMLElement) => {
+  opener = from;
+  seq = null;
+  arrows.forEach((a) => (a.hidden = true));
+  strip.hidden = true;
+  dlg.classList.remove('has-thumbs', 'is-tall');
+  dlg.classList.add('is-video');
+  frameEl.querySelector('.cs-badges')?.remove();
+  big.hidden = true;
+  big.removeAttribute('src');
+  const sources = [...v.querySelectorAll('source')].map((x) => x.cloneNode() as HTMLSourceElement);
+  vid.replaceChildren(...sources);
+  if (sources.length) vid.removeAttribute('src'); else vid.src = v.currentSrc || v.src;
+  vid.poster = v.poster;
+  vid.setAttribute('aria-label', v.getAttribute('aria-label') ?? 'Video');
+  vid.controls = calm;
+  vid.hidden = false;
+  vid.load();
+  pageVid = v;
+  pageWasPlaying = !v.paused;
+  v.pause();
+  showCaption(v);
+  document.documentElement.classList.add('is-lbz-open');
+  dlg.showModal();
+  if (!calm) vid.play().catch(() => {});
+  close.focus();
+};
 // mouse: a click anywhere closes (the image and the button included); touch: a tap outside the image closes
 const step = (d: number) => {
   if (!seq) return;
@@ -99,6 +132,7 @@ dlg.addEventListener('keydown', (e) => {
   else if (e.key === 'ArrowLeft' && seq) { e.preventDefault(); step(-1); }
 });
 dlg.addEventListener('click', (e) => {
+  if (e.target === vid && vid.controls) return; // the video's own controls
   if ((touched || dlg.classList.contains('is-tall')) && e.target === big) return; // a long screen is scrolled, not closed
   dlg.close();
 });
@@ -167,7 +201,18 @@ const lift = (e: PointerEvent) => {
 big.addEventListener('pointerup', lift);
 big.addEventListener('pointercancel', lift);
 dlg.addEventListener('close', () => {
+  if (dlg.open) return; // the close event arrives late: already reopened
   document.documentElement.classList.remove('is-lbz-open');
+  if (!vid.hidden) {
+    vid.pause();
+    vid.hidden = true;
+    vid.replaceChildren();
+    vid.removeAttribute('src');
+    big.hidden = false;
+    dlg.classList.remove('is-video');
+    if (pageVid && pageWasPlaying) pageVid.play().catch(() => {});
+    pageVid = null;
+  }
   opener?.focus();
 });
 
@@ -184,3 +229,18 @@ const add = (box: HTMLElement, current: () => HTMLImageElement | null) => {
 };
 document.querySelectorAll<HTMLElement>('.a-story :is(.cs-media, .is-media):not(.carousel-stage *)').forEach((box) => { const img = box.querySelector('img'); if (img) add(box, () => img); }); // figures, and the other cases' markdown images
 document.querySelectorAll<HTMLElement>('.a-story .cs-seq__stage').forEach((stage) => add(stage, () => stage.querySelector<HTMLImageElement>('.cs-seq__slide:not([hidden]) img')));
+// long pages in a screen: the enlarge button sits on the screen, not in what scrolls
+document.querySelectorAll<HTMLElement>('.a-story .cs-scrollshot .dev__screen').forEach((screen) => { const img = screen.querySelector('img'); if (img) add(screen, () => img); });
+// videos: the button only (a click on the video plays or pauses it), next to its play/pause button
+document.querySelectorAll<HTMLVideoElement>('.a-story video').forEach((v) => {
+  const box = v.closest<HTMLElement>('.cs-media') ?? v.parentElement!;
+  if (box.classList.contains('has-zoom')) return;
+  box.classList.add('has-zoom');
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'cs-zoom';
+  btn.setAttribute('aria-label', 'Enlarge video');
+  btn.innerHTML = PLUS;
+  btn.addEventListener('click', (e) => { e.stopPropagation(); openVideo(v, btn); });
+  box.append(btn);
+});
