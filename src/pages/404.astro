@@ -1,9 +1,35 @@
 ---
-import Base from '../layouts/Base.astro';
-import PageHero from '../components/PageHero.astro';
+// The page for an address that doesn't exist (Netlify serves dist/404.html), in the current design: the About
+// page's statement on the paper, the paper button with an arrow, then the contact sheet and footer. The wording is
+// the earlier 404's. The older designs live on the dev server only (src/dev-pages/), so their addresses land here.
+import Next from '../layouts/Next.astro';
+import ContactA from '../components/next/va/ContactA.astro';
+import '../styles/next-a.css';
+import '../styles/next-a-looks.css';
+import '../styles/media-a.css';
 ---
-<Base title="Page not found">
-  <PageHero eyebrow="404" title="This path doesn't lead anywhere." intro="Let's get you back on track.">
-    <a href="/" class="btn" style="margin-top:2rem">Back home <span class="arrow" aria-hidden="true">→</span></a>
-  </PageHero>
-</Base>
+<Next base="/" variant="a" logo look="blue" title="Page not found · Zakaria El Khachia" description="This page doesn’t exist on zakariaelkhachia.com.">
+  <section class="a-hero a-wrap a-404" aria-labelledby="nf-title">
+    <p class="a-404__code">404</p>
+    <h1 class="a-statement" id="nf-title">This path doesn’t lead anywhere.</h1>
+    <p class="a-based">Let’s get you back on track.</p>
+    <p class="a-404__back">
+      <a class="a-cta" href="/">
+        <span class="a-cta__paper" data-ring="11" aria-hidden="true"></span>
+        Back home
+        <svg class="a-cta__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5" /></svg>
+      </a>
+    </p>
+  </section>
+  <ContactA />
+</Next>
+
+<style>
+  .a-404__code { margin: 0 0 20px; font-family: var(--sans); font-weight: 500; font-size: 13px; line-height: 18px; letter-spacing: 0.08em; color: var(--muted); }
+  .a-404 .a-based { margin-top: 20px; }
+  .a-404__back { margin: 36px 0 0; }
+</style>
+
+<script>
+  import '../scripts/paper-ring'; // the paper button
+</script>
