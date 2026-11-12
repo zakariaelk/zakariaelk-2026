@@ -1,8 +1,9 @@
 ---
-interface Props { src: string; alt?: string }
-const { src, alt } = Astro.props;
+// portrait: a phone recording, shown at about phone size instead of the full column width
+interface Props { src: string; alt?: string; portrait?: boolean }
+const { src, alt, portrait } = Astro.props;
 ---
-<figure class="media-video">
+<figure class:list={['media-video', portrait && 'media-video--portrait']}>
   <video src={src} autoplay muted loop playsinline preload="metadata" aria-label={alt}></video>
   {alt && <figcaption>{alt}</figcaption>}
 </figure>

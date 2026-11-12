@@ -670,7 +670,9 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story .cs-att__name { margin: 0; font-size: 16px; line-height: 22px; color: var(--cs-title); }
 .cs-simple .a-story .cs-att__row--total .cs-att__name { font-weight: 600; }
 .cs-simple .a-story .cs-att__name span { display: block; margin-top: 2px; font-size: 14px; line-height: 20px; color: var(--cs-muted); font-weight: 400; }
-.cs-simple .a-story .cs-att__dots { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+.cs-simple .a-story .cs-att__dots { display: grid; gap: 6px; }
+.cs-simple .a-story .cs-att__line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 14px; margin: 0; }
+.cs-simple .a-story .cs-att__n { margin-left: 4px; font-size: 13px; line-height: 14px; color: var(--cs-muted); font-variant-numeric: tabular-nums; }
 .cs-simple .a-story .cs-att__dot { flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--att-ok); }
 .cs-simple .a-story .cs-att__dot--hard { background: var(--att-hard); }
 .cs-simple .a-story .cs-att__dot--fail { background: none; box-shadow: inset 0 0 0 2.5px var(--att-fail); }
@@ -678,3 +680,6 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 @media (max-width: 699px) {
   .cs-simple .a-story .cs-att__row { grid-template-columns: 1fr; }
 }
+
+/* a phone recording: phone size, centred (Video.astro portrait) */
+.cs-simple .a-story .media-video.media-video--portrait { max-width: 340px; }

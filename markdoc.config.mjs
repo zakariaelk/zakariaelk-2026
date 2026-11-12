@@ -14,6 +14,7 @@ export default defineMarkdocConfig({
       attributes: {
         src: { type: String, required: true },
         alt: { type: String },
+        portrait: { type: Boolean },
       },
     },
 

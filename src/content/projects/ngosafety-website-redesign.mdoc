@@ -233,6 +233,8 @@ In the written feedback, 4 of 9 liked the modern look and 3 of 9 the top navigat
 
 In the second round, the two colleagues who had failed to find a report {% mark text="completed the task" color="green" /%}, after the changes below.
 
+{% sequence images="projects/ngosafety-website-redesign/inso-website-ut-record-blurred.jpg, projects/ngosafety-website-redesign/inso-website-ut-feedback-blurred.jpg" landscape=true alts="The task observations: one row per task, one column per colleague (names blurred), each attempt marked green, orange or red.|The open feedback: what worked well and what needs improvement, one column per colleague (names blurred)." captions="Usability testing report – Task based session|Usability testing – short interview + open feedback session" /%}
+
 ### Iterate with an action plan
 
 I organised the findings into an action plan, addressing some issues first and deprioritising others.
@@ -267,35 +269,27 @@ I organised the findings into an action plan, addressing some issues first and d
 * Big titles introduce each section
 {% /table %}
 
+![Post UT action plan](../../assets/projects/ngosafety-website-redesign/inso-website-ut-action-plan-cropped.jpg)
+
+*Post UT action plan*
+
 ## Build / Implementation
 
 ### Frontend: Building the custom theme
 
 I structured the website using a combination of reusable components and flexible templates, allowing different types of content to be built consistently across pages.
 
-![Example of editable components (Navigation, Hero section text, relative content navigation, 2 columns title/text)](../../assets/projects/ngosafety-website-redesign/inso-website-editable-layout-components-02.png)
-
-*Example of editable components (Navigation, Hero section text, relative content navigation, 2 columns title/text)*
-![Ordered blocks were used to communicate information in different formats (text, data figure, visual & statement) and in a specific order.](../../assets/projects/ngosafety-website-redesign/inso-website-component-layout-01.png)
-
-*Ordered blocks were used to communicate information in different formats (text, data figure, visual & statement) and in a specific order.*
+{% sequence images="projects/ngosafety-website-redesign/inso-website-editable-layout-components-02.png, projects/ngosafety-website-redesign/inso-website-component-layout-01.png" landscape=true alts="Example of editable components (Navigation, Hero section text, relative content navigation, 2 columns title/text)|Ordered blocks were used to communicate information in different formats (text, data figure, visual & statement) and in a specific order." captions="Example of editable components (Navigation, Hero section text, relative content navigation, 2 columns title/text)|Ordered blocks were used to communicate information in different formats (text, data figure, visual & statement) and in a specific order." /%}
 
 Once the structure was defined, I implemented the design in plain HTML, SCSS, and JavaScript, focusing on responsiveness, interaction, and long-term maintainability.
 
-{% video src="/media/projects/ngosafety-website-redesign/inso-nav-menu-desktop.mp4" alt="Desktop navigation with multi-level interactions and hover states" /%}{% video src="/media/projects/ngosafety-website-redesign/inso-nav-menu-mobile.mp4" alt="Mobile navigation with nested structure and touch interactions" /%}
+{% video src="/media/projects/ngosafety-website-redesign/inso-nav-menu-desktop.mp4" alt="Desktop navigation with multi-level interactions and hover states" /%}{% video src="/media/projects/ngosafety-website-redesign/inso-nav-menu-mobile-02.mp4" portrait=true alt="Mobile navigation with nested structure and touch interactions" /%}
+
 ### Customisation work in the content management system (CMS)
 
 Since I developed the website on a custom WordPress theme, I used ACF (Advanced Custom Fields) to build the content management layer. This way, non-technical teams can manage content independently, with different permissions per department.
 
-![Flexible page builder using ACF, allowing non-technical users to compose pages using predefined components.](../../assets/projects/ngosafety-website-redesign/inso-web-acf.png)
-
-*Flexible page builder using ACF, allowing non-technical users to compose pages using predefined components.*
-![Custom vacancies management system with status indicators and expiration logic, enabling HR to manage job listings directly.](../../assets/projects/ngosafety-website-redesign/inso-web-vacancies-management-wp.png)
-
-*Custom vacancies management system with status indicators and expiration logic, enabling HR to manage job listings directly.*
-![Example of reusable component structure in PHP, powering the modular page builder and dynamic layouts.](../../assets/projects/ngosafety-website-redesign/inso-web-reusable-components-structure-code.png)
-
-*Example of reusable component structure in PHP, powering the modular page builder and dynamic layouts.*
+{% sequence images="projects/ngosafety-website-redesign/inso-web-acf.png, projects/ngosafety-website-redesign/inso-web-vacancies-management-wp.png, projects/ngosafety-website-redesign/inso-web-reusable-components-structure-code.png" landscape=true alts="Flexible page builder using ACF, allowing non-technical users to compose pages using predefined components.|Custom vacancies management system with status indicators and expiration logic, enabling HR to manage job listings directly.|Example of reusable component structure in PHP, powering the modular page builder and dynamic layouts." captions="Flexible page builder using ACF, allowing non-technical users to compose pages using predefined components.|Custom vacancies management system with status indicators and expiration logic, enabling HR to manage job listings directly.|Example of reusable component structure in PHP, powering the modular page builder and dynamic layouts." /%}
 
 ## Outcomes
 

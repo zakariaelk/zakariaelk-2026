@@ -1,6 +1,7 @@
 ---
 // Usability results as a strip: one row per task group, one dot per attempt (green: completed at the first attempt,
 // orange: with difficulties, red: not completed), no names (docs/claude-code-notes-ngosafety.md item 6).
+// Each kind on its own line with its count (thread t-093), so they are easy to count.
 // rows: "Group|tasks|green|orange|red", ";"-separated. Red dots are rings, so the three read apart without colour.
 interface Props { rows: string; caption?: string }
 const { rows, caption } = Astro.props;
@@ -20,9 +21,11 @@ const total = { name: 'All tasks', tasks: list.reduce((a, r) => a + r.tasks, 0),
   {[...list, total].map((r, n) => (
     <div class:list={['cs-att__row', n === list.length && 'cs-att__row--total']}>
       <p class="cs-att__name">{r.name}<span>{r.tasks} tasks · {sum(r)} attempts</span></p>
-      <p class="cs-att__dots" role="img" aria-label={r.counts.map((c, i) => `${c} ${words[i]}`).join(', ')}>
-        {r.counts.map((c, i) => Array.from({ length: c }, () => <span class={`cs-att__dot cs-att__dot--${kinds[i]}`} />))}
-      </p>
+      <div class="cs-att__dots" role="img" aria-label={r.counts.map((c, i) => `${c} ${words[i]}`).join(', ')}>
+        {r.counts.map((c, i) => (
+          <p class="cs-att__line" aria-hidden="true">{Array.from({ length: c }, () => <span class={`cs-att__dot cs-att__dot--${kinds[i]}`} />)}<span class="cs-att__n">{c}</span></p>
+        ))}
+      </div>
     </div>
   ))}
   {caption && <p class="cs-att__cap">{caption}</p>}
