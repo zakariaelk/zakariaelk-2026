@@ -15,6 +15,8 @@ export default defineMarkdocConfig({
         src: { type: String, required: true },
         alt: { type: String },
         portrait: { type: Boolean },
+        webm: { type: String },
+        poster: { type: String },
       },
     },
 

@@ -1,7 +1,7 @@
 ---
 // Usability results as a strip: one row per task group, one dot per attempt (green: completed at the first attempt,
 // orange: with difficulties, red: not completed), no names (docs/claude-code-notes-ngosafety.md item 6).
-// Each kind on its own line with its count (thread t-093), so they are easy to count.
+// Each kind on its own line with its count (thread t-093, notes item 71), read by screen readers as "8 completed first time".
 // rows: "Group|tasks|green|orange|red", ";"-separated. Red dots are rings, so the three read apart without colour.
 interface Props { rows: string; caption?: string }
 const { rows, caption } = Astro.props;
@@ -10,7 +10,7 @@ const list = rows.split(';').map((r) => {
   return { name, tasks: Number(tasks), counts: [Number(g), Number(o), Number(r2)] };
 });
 const kinds = ['ok', 'hard', 'fail'] as const;
-const words = ['completed at the first attempt', 'completed with difficulties', 'not completed'];
+const words = ['completed first time', 'completed with difficulties', 'not completed'];
 const sum = (r: { counts: number[] }) => r.counts.reduce((a, b) => a + b, 0);
 const total = { name: 'All tasks', tasks: list.reduce((a, r) => a + r.tasks, 0), counts: [0, 1, 2].map((i) => list.reduce((a, r) => a + r.counts[i], 0)) };
 ---
@@ -21,9 +21,9 @@ const total = { name: 'All tasks', tasks: list.reduce((a, r) => a + r.tasks, 0),
   {[...list, total].map((r, n) => (
     <div class:list={['cs-att__row', n === list.length && 'cs-att__row--total']}>
       <p class="cs-att__name">{r.name}<span>{r.tasks} tasks · {sum(r)} attempts</span></p>
-      <div class="cs-att__dots" role="img" aria-label={r.counts.map((c, i) => `${c} ${words[i]}`).join(', ')}>
+      <div class="cs-att__dots">
         {r.counts.map((c, i) => (
-          <p class="cs-att__line" aria-hidden="true">{Array.from({ length: c }, () => <span class={`cs-att__dot cs-att__dot--${kinds[i]}`} />)}<span class="cs-att__n">{c}</span></p>
+          <p class="cs-att__line"><span class="sr-only">{c} {words[i]}</span>{Array.from({ length: c }, () => <span class={`cs-att__dot cs-att__dot--${kinds[i]}`} aria-hidden="true" />)}<span class="cs-att__n" aria-hidden="true">{c}</span></p>
         ))}
       </div>
     </div>

@@ -683,3 +683,4 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 
 /* a phone recording: phone size, centred (Video.astro portrait) */
 .cs-simple .a-story .media-video.media-video--portrait { max-width: 340px; }
+.cs-simple .a-story .media-video--portrait video { width: 100%; height: auto; aspect-ratio: 868 / 1440; } /* the box keeps its shape before the video loads */

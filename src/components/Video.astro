@@ -1,9 +1,18 @@
 ---
 // portrait: a phone recording, shown at about phone size instead of the full column width
-interface Props { src: string; alt?: string; portrait?: boolean }
-const { src, alt, portrait } = Astro.props;
+// webm/poster: a WebM source first (the src stays the MP4 fallback) and a still shown before it plays and with
+// reduced motion (scripts/case-enhance.ts plays story videos only while on screen, and gives them controls instead)
+interface Props { src: string; alt?: string; portrait?: boolean; webm?: string; poster?: string }
+const { src, alt, portrait, webm, poster } = Astro.props;
 ---
 <figure class:list={['media-video', portrait && 'media-video--portrait']}>
-  <video src={src} autoplay muted loop playsinline preload="metadata" aria-label={alt}></video>
+  {webm ? (
+    <video autoplay muted loop playsinline preload="metadata" poster={poster} aria-label={alt}>
+      <source src={webm} type="video/webm" />
+      <source src={src} type="video/mp4" />
+    </video>
+  ) : (
+    <video src={src} autoplay muted loop playsinline preload="metadata" poster={poster} aria-label={alt}></video>
+  )}
   {alt && <figcaption>{alt}</figcaption>}
 </figure>
