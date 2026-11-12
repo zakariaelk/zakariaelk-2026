@@ -5,7 +5,7 @@
 // the image itself zooms: pinch, or double-tap a spot (again to fit); one finger moves a zoomed image around; a tap
 // outside the image (or the button) closes. No animation. From a slideshow it has previous / next arrows (and the arrow
 // keys) and a strip of all its screens at the bottom, which move the slideshow too; a long screen is shown at a readable width and scrolls; numbered badges on an
-// image come along.
+// image come along. The visual's caption shows under it, in light text on the dark backdrop.
 const PLUS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3 20 20M7.5 10.5h6M10.5 7.5v6"/></svg>';
 const MINUS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3 20 20M7.5 10.5h6"/></svg>';
 
@@ -13,7 +13,8 @@ const dlg = document.createElement('dialog');
 dlg.className = 'lbz';
 dlg.setAttribute('aria-label', 'Enlarged image');
 const ARROW = (d: string) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
-dlg.innerHTML = `<div class="lbz__stage"><div class="lbz__frame"><img class="lbz__img" alt=""><button type="button" class="cs-zoom" aria-label="Close enlarged image">${MINUS}</button></div></div>`
+dlg.setAttribute('aria-describedby', 'lbz-cap');
+dlg.innerHTML = `<div class="lbz__stage"><div class="lbz__frame"><img class="lbz__img" alt=""><button type="button" class="cs-zoom" aria-label="Close enlarged image">${MINUS}</button></div><p class="lbz__cap" id="lbz-cap" hidden></p></div>`
   + `<button type="button" class="lbz__arrow lbz__arrow--prev" data-lbz-step="-1" aria-label="Previous screen" hidden>${ARROW('M14.5 6l-6 6 6 6')}</button>`
   + `<button type="button" class="lbz__arrow lbz__arrow--next" data-lbz-step="1" aria-label="Next screen" hidden>${ARROW('M9.5 6l6 6-6 6')}</button>`
   + '<div class="lbz__thumbs" hidden></div>';
@@ -30,10 +31,29 @@ const seqSlides = () => [...(seq?.querySelectorAll<HTMLElement>('.cs-seq__slide'
 const shown = () => seqSlides().findIndex((s) => !s.hidden);
 const markThumb = () => { const k = shown(); [...strip.children].forEach((b, j) => b.toggleAttribute('aria-current', j === k)); strip.children[k]?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); };
 const frameEl = dlg.querySelector<HTMLElement>('.lbz__frame')!;
+const capEl = dlg.querySelector<HTMLElement>('.lbz__cap')!;
+// the caption of the visual an image belongs to: a slideshow's current one, a figure's, or the caption line after a
+// Markdown image; without the "Before:" / "After:" label
+const captionOf = (img: HTMLImageElement) => {
+  const fig = img.closest('figure');
+  let cap: Element | null | undefined = fig?.querySelector(':scope > figcaption');
+  if (!cap) { const media = img.closest('.is-media'); const next = media?.nextElementSibling; cap = next?.classList.contains('is-caption') ? next : null; }
+  if (!cap) return '';
+  const copy = cap.cloneNode(true) as HTMLElement;
+  copy.querySelectorAll('.cs-cap__frame').forEach((e) => e.remove());
+  return (copy.textContent ?? '').replace(/\s+/g, ' ').trim();
+};
+const showCaption = (img: HTMLImageElement) => {
+  const text = captionOf(img);
+  capEl.textContent = text;
+  capEl.hidden = !text;
+  dlg.classList.toggle('has-cap', !!text);
+};
 // the image, its badges, and the long-screen view
 const fill = (img: HTMLImageElement) => {
   big.src = largest(img);
   big.alt = img.alt;
+  showCaption(img);
   frameEl.querySelector('.cs-badges')?.remove();
   const badges = img.closest('.cs-media')?.querySelector('.cs-badges');
   if (badges) frameEl.append(badges.cloneNode(true));

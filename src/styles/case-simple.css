@@ -236,12 +236,20 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .lbz__thumbs img { display: block; width: auto; height: 56px; border-radius: 4px; }
 .lbz.has-thumbs .lbz__img { max-height: calc(95dvh - 92px); }
 .lbz.has-thumbs .lbz__stage { padding-bottom: 80px; }
+/* the caption under the enlarged visual, light on the dark backdrop */
+.lbz__cap { max-width: min(680px, 92vw); margin: 12px auto 0; padding: 0 16px; font-family: var(--sans); font-size: 14px; line-height: 20px; text-align: center; color: rgb(255 255 255 / 0.82); text-wrap: pretty; }
+.lbz__cap[hidden] { display: none; }
+.lbz.has-cap .lbz__stage { align-content: center; }
+.lbz.has-cap .lbz__img { max-height: calc(95dvh - 72px); }
+.lbz.has-cap.has-thumbs .lbz__img { max-height: calc(95dvh - 164px); }
+.lbz.is-tall .lbz__cap { margin-top: 16px; }
 .lbz.is-tall.has-thumbs .lbz__stage { padding-bottom: 104px; }
 .lbz.is-tall.has-thumbs .cs-zoom { bottom: 96px; }
 /* a long screen: a readable width, scrolled */
 .lbz.is-tall .lbz__stage { display: block; overflow-y: auto; padding: 24px 0; cursor: default; }
 .lbz.is-tall .lbz__frame { width: min(84vw, 560px); margin: 0 auto; }
 .lbz.is-tall .lbz__img { width: 100%; max-width: none; max-height: none; }
+.lbz.is-tall.has-cap .lbz__img { max-height: none; } /* a long screen keeps scrolling, its caption under it */
 .lbz.is-tall .cs-zoom { position: fixed; right: 20px; bottom: 20px; top: auto; }
 
 /* ---------- Numbered badges: on a former visual and in its table's rows (the site's blue, black numbers) ---------- */
