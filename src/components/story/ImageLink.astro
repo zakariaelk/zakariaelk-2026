@@ -1,0 +1,11 @@
+---
+// A line with a text link to an image file in src/assets, opened in a new tab: {% imagelink src="projects/…" label="…" /%}
+import { getImage } from 'astro:assets';
+import { assetImage } from '../../lib/media';
+interface Props { src: string; label: string }
+const { src, label } = Astro.props;
+const img = assetImage(src);
+if (!img) throw new Error(`ImageLink: image not found in src/assets: ${src}`);
+const file = await getImage({ src: img, width: img.width, format: 'jpg' });
+---
+<p class="cs-imagelink"><a href={file.src} target="_blank" rel="noopener">{label}<span class="sr-only"> (image, opens in a new tab)</span></a></p>

@@ -1,0 +1,12 @@
+---
+// One version of a block on a case under a Current/Updated review (docs/claude-code-notes-chdc.md), dev server only:
+// {% ver v="current" %}…{% /ver %} right before {% ver v="updated" %}…{% /ver %}, or either alone. In the build
+// (markdoc.config.mjs) Updated is dropped and Current is plain content, so none of this reaches production.
+// tag: the section's label in the highlight view (New, Moved, Merged, Changed; "Moved to …" on Current).
+// gone: the whole block exists only in Current (pale red in the highlight view). goneItems / chgItems: list items
+// cut or added, by their place in the block ("3,5"), as a tag can't open a short list item (a Markdoc tokenizer bug
+// with Astro's blank frontmatter lines). scripts/version-review.ts runs it.
+interface Props { v: 'current' | 'updated'; tag?: string; gone?: boolean; goneItems?: string; chgItems?: string }
+const { v, tag, gone, goneItems, chgItems } = Astro.props;
+---
+<div class:list={['ab', gone && 'chg-gone-block']} data-version={v === 'current' ? 'a' : 'b'} hidden={v === 'updated'} data-gone-items={goneItems} data-chg-items={chgItems}>{tag && <span class="chg-tag">{tag}</span>}<slot /></div>

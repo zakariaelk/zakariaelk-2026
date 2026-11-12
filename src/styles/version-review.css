@@ -1,0 +1,33 @@
+/* Current/Updated review of a case (scripts/version-review.ts, docs/claude-code-notes-chdc.md), dev server only.
+   The switch is the A/B one (.ab-switch in case-simple.css); this adds the highlight toggle and the highlights:
+   added text in a pale violet marker (Updated), cut text on pale red (Current), a small label at the top left of a
+   changed section, and the "pending" chips. With the toggle off (no .ab-hl), only the chips show. */
+:root { --chg-add: #ebe4fb; --chg-gone: #fbe2df; --chg-tag-bg: #4b3a8c; --chg-tag-gone: #9b2c22; --chg-pend-bg: #fff1c7; --chg-pend-ink: #6b4b00; }
+:root[data-theme='dark'] { --chg-add: rgb(150 120 235 / 0.3); --chg-gone: rgb(230 90 75 / 0.24); --chg-tag-bg: #b9a8f0; --chg-tag-gone: #f0a49a; --chg-pend-bg: rgb(255 210 90 / 0.18); --chg-pend-ink: #f3d68a; }
+
+.ab-switch__sep { width: 1px; margin: 8px 4px; background: var(--line); }
+.ab-switch .ab-switch__hl[aria-pressed='true'] { background: var(--chg-add); color: var(--ink); }
+
+mark.chg-add { background: none; color: inherit; }
+.ab-hl mark.chg-add { background: var(--chg-add); border-radius: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 0 1px; }
+.ab-hl .chg-gone { background: var(--chg-gone); border-radius: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.ab-hl .chg-gone-block { background: var(--chg-gone); border-radius: 6px; box-shadow: 0 0 0 10px var(--chg-gone); }
+
+.chg-tag { display: none; }
+.ab-hl .chg-tag { display: block; width: fit-content; margin: 0 0 10px; padding: 3px 8px; border-radius: 4px; background: var(--chg-tag-bg); color: var(--bg); font: 500 12px/1.3 var(--sans); letter-spacing: 0.02em; }
+.ab-hl .ab[data-version='a'] > .chg-tag { background: var(--chg-tag-gone); }
+/* the label sits right above its heading: it takes the heading's top gap */
+.ab-hl .a-story .ab > .chg-tag:has(+ h2) { margin-top: var(--sec-gap); }
+.ab-hl .a-story .ab > .chg-tag + h2 { margin-top: 0; }
+.ab-hl .a-story .ab > .chg-tag:has(+ h3) { margin-top: 40px; }
+.ab-hl .a-story .ab > .chg-tag + h3 { margin-top: 6px; }
+/* a label on its own, over a section heading that both versions share */
+.ab-hl .a-story .ab:not([hidden]):has(> .chg-tag:only-child) { margin-top: var(--sec-gap); }
+.ab-hl .a-story .ab:not([hidden]):has(> .chg-tag:only-child) + h2 { margin-top: 0; }
+/* a version that ends on a section heading: what follows sits as it would right after the heading */
+.a-story .ab:not([hidden]):has(> h2:last-child) + h3 { margin-top: 0; }
+
+.chg-pending { font: 400 var(--small, 15px)/1.5 var(--sans); color: var(--cs-muted, #6b6b6b); }
+.chg-pending__chip { display: inline-block; margin-right: 6px; padding: 2px 8px; border: 1px dashed currentColor; border-radius: 999px; background: var(--chg-pend-bg); color: var(--chg-pend-ink); font-weight: 500; font-size: 13px; }
+.a-story .ab > .chg-pending { display: block; margin-bottom: 22px; } /* a chip on its own line (a numbers strip to come) */
+.ab-hl li.chg-add-li { background: var(--chg-add); border-radius: 2px; }

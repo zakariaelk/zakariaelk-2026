@@ -4,7 +4,7 @@
 const blocks = [...document.querySelectorAll<HTMLElement>('.ab[data-version]')];
 const params = new URLSearchParams(location.search);
 
-if (blocks.length && params.get('compare') === '1') {
+if (blocks.length && params.get('compare') === '1' && !(import.meta.env.DEV && document.querySelector('[data-version-review]'))) { // a Current/Updated review has its own switch (version-review.ts)
   const KEY = 'inso-ab';
   const stored = (() => { try { return localStorage.getItem(KEY); } catch { return null; } })();
   let current = params.get('v') === 'b' || params.get('v') === 'a' ? params.get('v')! : stored === 'a' ? 'a' : 'b';

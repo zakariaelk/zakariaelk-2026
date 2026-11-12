@@ -1,0 +1,6 @@
+---
+// A value the author hasn't sent yet ({{pending}} in the draft), as a review-only chip (dev server only)
+interface Props { text: string; note?: string }
+const { text, note } = Astro.props;
+---
+<span class="chg-pending"><span class="chg-pending__chip">{text}</span>{note && <span class="chg-pending__note">{note}</span>}</span>

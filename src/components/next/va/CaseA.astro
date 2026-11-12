@@ -47,6 +47,18 @@ const meta = [
   { label: 'Deliverables', items: list(d.deliverables) },
 ].filter((m) => m.items.length);
 const rows = [meta.slice(0, 2), meta.slice(2)].filter((r) => r.length);
+// Current/Updated review (docs/claude-code-notes-chdc.md), dev server only: the Updated one-liner and facts (new ones
+// marked), next to the Current ones; scripts/version-review.ts shows them with ?compare=1 and removes them otherwise
+const up = import.meta.env.DEV ? d.updated : undefined;
+const metaB = up && [
+  { label: 'Role', items: list(d.role) },
+  { label: 'Team', items: list(up.team ?? d.team), added: !!up.team },
+  { label: 'Timeline', items: list(d.duration) },
+  { label: 'Deliverables', items: list(up.deliverables ?? d.deliverables), added: !!up.deliverables },
+].filter((m) => m.items.length);
+const versions: { v?: 'a' | 'b'; rows: { label: string; items: Item[]; added?: boolean }[][] }[] = metaB
+  ? [{ v: 'a', rows }, { v: 'b', rows: [metaB.slice(0, 2), metaB.slice(2)].filter((r) => r.length) }]
+  : [{ rows }];
 // rail: the body's section names (its h2s)
 // the contents list names a section by its first part: "Filtering - Addressing problem 1" is "Filtering"
 const sections = headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug, label: h.text.split(/ [–-] /)[0] }));
@@ -99,12 +111,21 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
         </Fragment>
       ) : d.lede.map((p) => <p class="a-case__lede">{p}</p>)}
       {shortVersion && <p class="a-case__lede">This is the long version of the 7-minute case study. <a href={shortVersion}>Back to the short version</a>.</p>}
-      {rows.map((r, i) => (
-        <Fragment>
-          {i > 0 && <svg class="a-case__rule" viewBox="0 0 1000 24" preserveAspectRatio="none" aria-hidden="true"><path d={cutLine(37)} /></svg>}
-          <dl class="a-case__meta">{r.map((m) => <div><dt>{m.label}</dt>{m.items.map((it) => <dd>{typeof it === 'string' ? it : <Fragment>{it.url ? <a href={it.url} target="_blank" rel="noopener">{it.name}</a> : <span class="a-case__name">{it.name}</span>}{it.role && ` – ${it.role}`}</Fragment>}</dd>)}</div>)}</dl>
-        </Fragment>
-      ))}
+      {up && up.lede.length > 0 && <div class="ab" data-version="b" hidden><span class="chg-tag">New</span>{up.lede.map((p) => <p class="a-case__lede"><mark class="chg-add">{p}</mark></p>)}</div>}
+      {versions.map(({ v, rows }) => {
+        const Wrap = v ? 'div' : Fragment;
+        return (
+          <Wrap {...(v ? { class: 'ab', 'data-version': v, hidden: v === 'b' } : {})}>
+            {rows.map((r, i) => (
+              <Fragment>
+                {i > 0 && <svg class="a-case__rule" viewBox="0 0 1000 24" preserveAspectRatio="none" aria-hidden="true"><path d={cutLine(37)} /></svg>}
+                <dl class="a-case__meta">{r.map((m) => <div><dt>{m.added ? <mark class="chg-add">{m.label}</mark> : m.label}</dt>{m.items.map((it) => <dd>{typeof it === 'string' ? (m.added ? <mark class="chg-add">{it}</mark> : it) : <Fragment>{it.url ? <a href={it.url} target="_blank" rel="noopener">{it.name}</a> : <span class="a-case__name">{it.name}</span>}{it.role && ` – ${it.role}`}</Fragment>}</dd>)}</div>)}</dl>
+              </Fragment>
+            ))}
+          </Wrap>
+        );
+      })}
+      {up && <div hidden data-version-review="Current|Updated"></div>}
       {d.link && !simple && (
         <a class="a-cta a-case__cta" href={d.link} target="_blank" rel="noopener">
           <span class="a-cta__paper" data-ring="11" aria-hidden="true"></span>
@@ -165,6 +186,8 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
   import '../../../scripts/case-simple'; // the simple format's slideshows, enlarge view, icons, video buttons
   import '../../../scripts/paper-ring'; // the "Take a look" button
   import '../../../scripts/ab-switch'; // the A/B wording switch, only with ?compare=1 on a page that has A/B blocks
+  // the Current/Updated review of a case (dev server only, docs/claude-code-notes-chdc.md)
+  if (import.meta.env.DEV && document.querySelector('[data-version-review]')) import('../../../scripts/version-review');
   // highlighted sentences ({% mark %}) are drawn in once they are well into the screen
   const marks = document.querySelectorAll<HTMLElement>('.cs-mark');
   const seen = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-drawn'); seen.unobserve(e.target); } }), { rootMargin: '0px 0px -25% 0px' });
@@ -197,7 +220,7 @@ const nav = [{ id: 'top', label: 'Intro' }, ...sections];
       }
       const line = innerHeight * 0.33;
       let id = '';
-      targets.forEach((t) => { if (t.getBoundingClientRect().top < line) id = t.id; });
+      targets.forEach((t) => { if (t.getClientRects().length && t.getBoundingClientRect().top < line) id = t.id; }); // not a hidden heading (a version under review)
       if (id === active) return;
       active = id;
       links.forEach((a) => (a.dataset.section === id ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));

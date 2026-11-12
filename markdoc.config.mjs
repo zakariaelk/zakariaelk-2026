@@ -2,6 +2,14 @@ import { defineMarkdocConfig, component } from '@astrojs/markdoc/config';
 
 const story = (name) => component(`./src/components/story/${name}.astro`);
 
+// Current/Updated review of a case (docs/claude-code-notes-chdc.md): these tags exist on the dev server only. In the
+// build, Updated blocks and review chips are dropped and Current blocks and marked text become plain content, so the
+// production page is the Current page, with none of the review markup and no Updated text.
+const DEV = process.env.NODE_ENV !== 'production';
+const devOnly = (tag, prod) => (DEV ? tag : { ...tag, render: undefined, transform: prod });
+const keep = (node, config) => node.transformChildren(config);
+const drop = () => null;
+
 export default defineMarkdocConfig({
   tags: {
     carousel: {
@@ -95,6 +103,13 @@ export default defineMarkdocConfig({
     reactions: { render: story('Reactions'), selfClosing: true, attributes: { set: { type: String, required: true } } },
     // a part proposed for cutting, for review: a labelled start marker and an end marker (story/Cut.astro)
     ab: { render: story('Ab'), attributes: { v: { type: String, required: true, matches: ['a', 'b'] } } }, // A/B wording pair, for review
+    // Current/Updated review (dev only, see devOnly above): a version of a block, added text, cut text, a pending value
+    ver: devOnly({ render: story('Ver'), attributes: { v: { type: String, required: true, matches: ['current', 'updated'] }, tag: { type: String }, gone: { type: Boolean }, goneItems: { type: String }, chgItems: { type: String } } }, (node, config) => (node.attributes.v === 'updated' ? null : keep(node, config))),
+    chg: devOnly({ render: story('Chg'), inline: true }, keep),
+    gone: devOnly({ render: story('Gone'), inline: true }, keep),
+    pending: devOnly({ render: story('Pending'), selfClosing: true, attributes: { text: { type: String, required: true }, note: { type: String } } }, drop),
+    // a line with a text link to an image in src/assets, opened in a new tab
+    imagelink: { render: story('ImageLink'), selfClosing: true, attributes: { src: { type: String, required: true }, label: { type: String, required: true } } },
     cut: { render: story('Cut'), selfClosing: true, attributes: { note: { type: String }, end: { type: Boolean } } },
     // text kept for review, struck through
     del: { render: 'del', inline: true },

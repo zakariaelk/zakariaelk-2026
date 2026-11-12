@@ -6,6 +6,17 @@ sector: "Conflict trends & analysis, Aid worker safety"
 role: "UI/UX Designer"
 duration: "June 2023 – November 2024"
 link: ""
+# Updated version under review (docs/chdc-case-study-v2-draft.md): dev server only, with ?compare=1
+updated:
+  lede:
+    - "INSO’s incident database for humanitarian analysis, used across 22 countries. I redesigned it as its only designer, starting from a UI draft nobody had asked for."
+  team:
+    - "Ramin Daqiq – Software engineer"
+    - "Austin Weidler – Department lead"
+  deliverables:
+    - "UX/UI redesign"
+    - "Onboarding tutorials and documentation"
+    - "AI assistant concept"
 cover: "../../assets/projects/conflict-and-humanitarian-data-centre/chdc-cover-b.jpg"
 client: "CHDC"
 summary: "Improving how humanitarians analyse conflict data, across 22 countries."
@@ -47,19 +58,55 @@ menu:
         heading: "Reflection and takeaways"
 ---
 
+{% ver v="updated" %}
+{% pending text="Numbers pending" note="new users per month, monthly active users" /%}
+{% /ver %}
+
+{% ver v="updated" tag="Changed" %}
+{% /ver %}
+
 ## Background and context
 
 The Conflict & Humanitarian Data Centre (CHDC) is INSO’s incident database platform used across 22 countries. It helps humanitarian organisations and analysts monitor conflict trends, assess threats to aid workers, and produce timely, context-specific analysis.
 
-CHDC had grown in value and scale but had serious usability issues. The original design was created around 2016–2017. However due to different challenges, the first version wasn’t completed until five years later. By the time it launched, both the UI and UX were somewhat outdated, misaligned with modern expectations, and inconsistent with INSO’s updated brand style.
+{% ver v="current" %}
+CHDC had grown in value and scale but had serious usability issues. The original design was created around 2016–2017. {% gone %}However due to different challenges,{% /gone %} the first version wasn’t completed until five years later. By the time it launched, both the UI and UX were {% gone %}somewhat{% /gone %} outdated, {% gone %}misaligned with modern expectations,{% /gone %} and inconsistent with INSO’s updated brand style.
 
 I wasn’t officially tasked with a redesign. The initiative began when I created a UI draft inspired by INSO’s new brand guide (a separate project I led with the communications team). That draft gained traction, and the redesign quickly evolved into a broader UX improvement project involving:
+{% /ver %}
+
+{% ver v="updated" %}
+CHDC had grown in value and scale but had serious usability issues. {% chg %}The original design was created around 2016–2017, but the first version wasn’t completed until five years later.{% /chg %} By the time it launched, both the UI and UX were {% chg %}outdated{% /chg %} and inconsistent with INSO’s updated brand style.
+
+I wasn’t officially tasked with a redesign. The initiative began when I created a UI draft inspired by [{% chg %}INSO’s new brand guide{% /chg %}](/work/ngosafety-website-redesign/) (a separate project I led with the communications team). That draft gained traction, and the redesign quickly evolved into a broader UX improvement project involving:
+{% /ver %}
 
 - UI revamp using the new INSO brand style
 - Improved navigation and readability
 - Enhancements to critical flows like filtering and incident insertion
 - New onboarding via in-app video tutorials
 - Better visibility of incident data and more specifically impact data
+
+{% ver v="updated" tag="Moved · Changed" %}
+## User groups and needs
+
+{% chg %}Three groups use CHDC. I invited colleagues from the analysis and programme teams at HQ and information managers from the country offices to map their needs and pain points.{% /chg %}
+
+{% usertable %}
+| Group | Key needs | Pain points |
+|---|---|---|
+| **INSO field staff** · Safety advisors and their teams, information officers and managers, the analysis team, the grant team | Submit and manage incidents · Find and export data for analysis and reporting · Train partners | No way back to the full table after selecting an incident · No feedback on sorting · Data sync and view settings hidden or scattered · Crowded table, low contrast, hard horizontal navigation on desktop |
+| **NGO partners** · Management staff, analysts and security staff | Assess their programmes and associated risks · Create visualisations and track humanitarian impact data · Follow conflict developments and draw trends from the data table · Learn where to go, how to operate and how to minimise risk | Design that didn’t match INSO branding · Low contrast, dense rows and small fonts · Total number of incidents not prominent · The CHDC acronym is hard to remember, Help and About misplaced |
+| **Donors** | Evaluate INSO’s output through CHDC data · Evaluate the quality of the data being entered · Evaluate the impact of CHDC usage on partner NGO safety | No in-app onboarding or guidance · Interface too technical for non-tech-savvy donors · No other languages |
+{% /usertable %}
+
+{% chg %}{% sourceline text="Defined with INSO colleagues from HQ and country offices" /%}{% /chg %}
+
+{% imagelink src="projects/conflict-and-humanitarian-data-centre/chdc-user-groups-needs.jpg" label="See the original board" /%}
+{% /ver %}
+
+{% ver v="updated" tag="Merged" %}
+{% /ver %}
 
 ## Understanding the problem
 
@@ -78,7 +125,8 @@ Although we had limited analytics before the redesign, Microsoft Clarity gave us
 
 *Heatmap of frequently used/clicked features/areas. (tracked and generated using MS Clarity)*
 
-**Using MS Clarity session recordings, we could also observe users when facing challenges in accomplishing certain tasks and we could also list out a number of rarely used or confusing features. This included:**
+{% ver v="current" goneItems="3,5,6,7,8" %}
+**{% gone %}Using MS Clarity session recordings, we could also observe users when facing challenges in accomplishing certain tasks and we could also list out a number of rarely used or confusing features. This included:{% /gone %}**
 
 1. Overview sidebar took up too much space and wasn’t frequently consulted.
 2. Users would sometimes click by mistake on the wrong status indicator to change the status of an incident. This happened mostly when there was a stack of incidents with similar state colour.
@@ -88,6 +136,19 @@ Although we had limited analytics before the redesign, Microsoft Clarity gave us
 6. About CHDC available only through the user dropdown menu.
 7. Alert archive – Not relevant anymore since the release of the INSO Alert Mobile App (which is a separate project showcased here).
 8. Full screen toggle.
+
+{% /ver %}
+
+{% ver v="updated" chgItems="3,5" %}
+**{% chg %}Session recordings in MS Clarity also showed where users struggled, and which features were rarely used or confusing:{% /chg %}**
+
+- Overview sidebar took up too much space and wasn’t frequently consulted.
+- Users would sometimes click by mistake on the wrong status indicator to change the status of an incident. This happened mostly when there was a stack of incidents with similar state colour.
+- Syncing data, Help and About were only available through the user dropdown menu.
+- Wireless icon representing a mode called “offline” which wasn’t used as expected. The necessity of this feature wasn’t researched prior to its implementation.
+- Alert archive: not relevant anymore since the release of the [INSO Alert Mobile App](/work/mitigating-risk-with-location-based-alerts/), and the full screen toggle.
+
+{% /ver %}
 
 ![User challenges & rarely used features](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-former-improv-focus-points.jpg)
 
@@ -101,6 +162,7 @@ Although we had limited analytics before the redesign, Microsoft Clarity gave us
 
 These helped shape our UX direction.
 
+{% ver v="current" tag="Moved to before “Understanding the problem”" gone=true %}
 ## User groups and needs
 
 ![User groups, their key needs and pain points](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-user-groups-needs.jpg)
@@ -108,18 +170,45 @@ These helped shape our UX direction.
 *User groups, their key needs and pain points*
 
 [download](http://localhost/personal/portfolio/zakariaelk/wp-content/uploads/2026/03/chdc-user-groups-needs.jpg)
+{% /ver %}
+
+{% ver v="updated" tag="Changed" %}
+{% /ver %}
 
 ## UX challenges, ideation and direction
 
 
+{% ver v="current" %}
 I collaborated closely with INSO’s Information Team, see as the main admins and managers of CHDC, along with other colleagues who regularly engage with NGO partners and donors. Together, we transformed insights into actionable design questions and generated solutions to test (see visual).
+{% /ver %}
+
+{% ver v="updated" %}
+I collaborated closely with INSO’s Information Team, {% chg %}seen{% /chg %} as the main admins and managers of CHDC, along with other colleagues who regularly engage with NGO partners and donors. Together, we transformed insights into actionable design questions and generated solutions to test (see visual).
+{% /ver %}
 
 Some of the prominent challenges:
 
+{% ver v="current" %}
 - How might we improve first-time user understanding of CHDC?
 - How might we reorganise the interface around the most used actions?
 - How might we present the incidents overview in a more useful and scannable format?
 - How might we align the UI with INSO’s updated brand while maintaining usability in field contexts?
+
+{% /ver %}
+
+{% ver v="updated" %}
+{% problem n="1" title="How might we reorganise the interface around the most used actions?" %}
+{% /problem %}
+
+{% problem n="2" title="How might we present the incidents overview in a more useful and scannable format?" %}
+{% /problem %}
+
+{% problem n="3" title="How might we align the UI with INSO’s updated brand while maintaining usability in field contexts?" %}
+{% /problem %}
+
+{% problem n="4" title="How might we improve first-time user understanding of CHDC?" %}
+{% /problem %}
+{% /ver %}
 
 ![Challenges and their selected ideas by user group](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-challenges-ideation-direction.jpg)
 
@@ -127,9 +216,16 @@ Some of the prominent challenges:
 
 [download](http://localhost/personal/portfolio/zakariaelk/wp-content/uploads/2026/03/chdc-challenges-ideation-direction.jpg)
 
+{% ver v="updated" tag="Merged" %}
+{% /ver %}
+
 ## Walk-through the main design updates
 
 The updated UI focused on aligning CHDC with INSO’s brand system while making the interface cleaner, easier to scan, and more task-focused. Below are some of the key changes:
+
+{% ver v="updated" %}
+## Navigation, actions and programmes - Addressing question 1
+{% /ver %}
 
 **Navigation & Data table actions repositioned**  
 The top-level navigation was rarely used, so we moved it to a vertical menu on the left. This freed up horizontal space for the data table and gave the interface a more app-like structure. The menu is now collapsible, allowing users to focus more on the data.
@@ -148,6 +244,16 @@ Similarly core actions like “Add Incident,” “Export,” and “Reload” w
 ![](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-new-nav-03.jpg)
 {% /carousel %}
 
+{% ver v="updated" %}
+### Programme selection clarity
+
+In the old version, selected country programmes were shown in multiple tags, often taking up too much space. We simplified this by showing a single selected programme by name, or a count of selected programmes when multiple are chosen — using a standard dropdown menu for clarity.
+
+![](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-incident-country-indications-comparison.png)
+
+## Easier to read incidents - Addressing question 2
+{% /ver %}
+
 ### **Table layout improvements**
 
 The former table design focused on fitting more rows per screen to reduce vertical scrolling, but this made the interface feel dense and overwhelming — especially for less tech-savvy users. Many struggled with the unintuitive horizontal scrollbar and often preferred exporting the data to view it more comfortably.
@@ -156,7 +262,13 @@ The former table design focused on fitting more rows per screen to reduce vertic
 
 *Data table – former design*
 
-In **the redesigned version**, we introduced greater spacing between rows and columns, improved readability with clearer contrast and typography, and added a fixed horizontal scroll button to make navigation easier. These changes made the interface feel more approachable, helping users focus on digesting the content of each incident row.
+{% ver v="current" %}
+In **the redesigned version**, we introduced greater spacing between rows and columns, improved readability with clearer contrast and typography, and added a fixed horizontal scroll button to make navigation easier. {% gone %}These changes made the interface feel more approachable, helping users focus on digesting the content of each incident row.{% /gone %}
+{% /ver %}
+
+{% ver v="updated" %}
+In **the redesigned version**, we introduced greater spacing between rows and columns, improved readability with clearer contrast and typography, and added a fixed horizontal scroll button to make navigation easier.
+{% /ver %}
 
 ![Data table – updated design](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-new-incident-table-layout.jpg)
 
@@ -164,15 +276,23 @@ In **the redesigned version**, we introduced greater spacing between rows and co
 
 ### Incident status redesign
 
+{% ver v="current" %}
 Previously, statuses like “Incomplete” or “Verified” were shown in colored blocks that **felt too cramped** and **took more horizontal space** from the table than it needed. We switched to compact colored indicators with padding around them, which improved legibility and made it easier to visually group incidents by status.
+{% /ver %}
+
+{% ver v="updated" %}
+Previously, statuses like “Incomplete” or “Verified” were shown in {% chg %}coloured{% /chg %} blocks that **felt too cramped** and **took more horizontal space** from the table than it needed. We switched to compact {% chg %}coloured{% /chg %} indicators with padding around them, which improved legibility and made it easier to visually group incidents by status.
+{% /ver %}
 
 ![](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-incident-status-comparison.png)
 
+{% ver v="current" tag="Moved to “Navigation, actions and programmes”" %}
 ### Programme selection clarity
 
 In the old version, selected country programmes were shown in multiple tags, often taking up too much space. We simplified this by showing a single selected programme by name, or a count of selected programmes when multiple are chosen — using a standard dropdown menu for clarity.
 
 ![](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-incident-country-indications-comparison.png)
+{% /ver %}
 
 ### Reworking the incidents overview
 
@@ -186,6 +306,7 @@ The incidents overview used to be a fixed sidebar, which took up space even when
 
 **Redesign**
 
+{% ver v="current" %}
 ![Incidents Overview Redesign – Accessible through a button available on top of the incident table.](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-new-incident-overview-02.jpg)
 
 *Incidents Overview Redesign – Accessible through a button available on top of the incident table.*![](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-logo-section-comparison.png)
@@ -198,7 +319,20 @@ Instead of the acronym-only logo, we displayed the full name — “Conflict & H
 
 The entire interface was adapted to the new INSO brand system, using official colours, updated iconography, and the ASAP typeface. The goal was to not only unify CHDC with other INSO platforms but also improve overall readability and visual hierarchy.
 
-This wasn’t just a visual update and these changes were aimed at reducing cognitive load, improving information clarity, and supporting faster decision-making.
+{% gone %}This wasn’t just a visual update and these changes were aimed at reducing cognitive load, improving information clarity, and supporting faster decision-making.{% /gone %}
+{% /ver %}
+
+{% ver v="updated" %}
+![Incidents Overview Redesign – Accessible through a button available on top of the incident table.](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-new-incident-overview-02.jpg)
+
+*Incidents Overview Redesign – Accessible through a button available on top of the incident table.*
+
+## Brand and visual style - Addressing question 3
+
+### Brand style and typography
+
+The entire interface was adapted to the new INSO brand system, using official colours, updated iconography, and the ASAP typeface. The goal was to not only unify CHDC with other INSO platforms but also improve overall readability and visual hierarchy.
+{% /ver %}
 
 ### Redesigning the data visualisation section
 
@@ -206,8 +340,17 @@ The previous “Charts” section was restructured to enhance usability, improve
 
 Key changes:
 
+{% ver v="current" %}
 - Renamed “Charts” to “Data visualisations” for better reflect the broader scope including maps
 - Introduced a new “Visualisations by INSO” section with most-requested charts available by default.
+
+{% /ver %}
+
+{% ver v="updated" %}
+- Renamed “Charts” to “Data visualisations” {% chg %}to better reflect{% /chg %} the broader scope including maps
+- Introduced a new “Visualisations by INSO” section with most-requested charts available by default.
+
+{% /ver %}
 
 ![](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-visualisation-toolbar-comparison.png)
 
@@ -220,9 +363,25 @@ Key changes:
 
 *Pie chart design refresh*
 
+{% ver v="updated" %}
+## First-time understanding - Addressing question 4
+
+### **Clearer branding**
+
+Instead of the acronym-only logo, we displayed the full name — “Conflict & Humanitarian Data Centre” alongside the logo in the header section (as shown below). This made it easier for new users to recognise the platform and remember what it stands for.
+
+![](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-logo-section-comparison.png)
+{% /ver %}
+
 ### Documentation & Introductory tutorials
 
-To improve onboarding and reduce user friction, we introduced an online CHDC documentation along with short video tutorials. These walk users through key sections of the platform and explain how to use major features like filtering, data entry, and visualisations. Tutorials are suggested to new users upon login and always accessible via the Help section, making support available at any stage of the user journey.
+{% ver v="current" %}
+To improve onboarding and reduce user friction, we introduced an online CHDC documentation along with short video tutorials. These walk users through key sections of the platform and explain how to use major features like filtering, data entry, and visualisations. Tutorials are suggested to new users upon login and always accessible via the Help section{% gone %}, making support available at any stage of the user journey{% /gone %}.
+{% /ver %}
+
+{% ver v="updated" %}
+To improve onboarding and reduce user friction, we introduced an online CHDC documentation along with short video tutorials. These walk users through key sections of the platform and explain how to use major features like filtering, data entry, and visualisations. Tutorials are suggested to new users upon login and always accessible via the Help section.
+{% /ver %}
 
 ![](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-documentation.jpg)
 
@@ -234,22 +393,48 @@ To explore whether AI could reduce navigation friction, I prototyped a conversat
 
 *User generates a chart through a prompt(in Arabic): “Create a chart showing humanitarian workers affected by incidents in Iraq.”*
 
+{% ver v="current" %}
 ## Outcomes and impact
 
 Usage data from **March 2025** onward shows that CHDC moved beyond initial discovery and into sustained use. Adoption continued steadily over time, with a noticeable uplift following the **CHDC launch webinars** in **April 2025**.
 
 In parallel, the number of **monthly active users** also **increased**, indicating that users were not only discovering the platform but returning to it regularly.
 
-Together, these trends suggest that CHDC became progressively more embedded in users’ workflows, and that pairing product improvements with targeted onboarding and enablement had a positive impact on engagement.
+{% gone %}Together, these trends suggest that CHDC became progressively more embedded in users’ workflows, and that pairing product improvements with targeted onboarding and enablement had a positive impact on engagement.{% /gone %}
 
 ![User adoption continued steadily, with a clear uplift following the CHDC launch webinars in April 2025, suggesting enablement played a role in driving uptake.](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-user-adoption-march-2025.jpg)
 
-*User adoption continued steadily, with a clear uplift following the CHDC launch webinars in April 2025, suggesting enablement played a role in driving uptake.*
+*{% gone %}User adoption continued steadily, with a clear uplift following the CHDC launch webinars in April 2025, suggesting enablement played a role in driving uptake.{% /gone %}*
 ![Monthly active usage increased after April, indicating CHDC was not only discovered but increasingly returned to and used over time.](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-monthly-active-users.jpg)
 
-*Monthly active usage increased after April, indicating CHDC was not only discovered but increasingly returned to and used over time.*
+*{% gone %}Monthly active usage increased after April, indicating CHDC was not only discovered but increasingly returned to and used over time.{% /gone %}*
 
-In addition to insights gathered through surveys and webinars, users consistently highlighted the following improvements:
+{% gone %}In addition to insights gathered through surveys and webinars, users consistently highlighted the following improvements:{% /gone %}
+{% /ver %}
+
+{% ver v="updated" tag="Changed" %}
+## Outcomes and impact
+
+**{% chg %}CHDC moved from discovery to regular use{% /chg %}**
+
+{% pending text="Numbers pending" note="new users per month (from the chart: about 190 in March and April 2025, 250 in May, 345 in June), monthly active users" /%}
+
+Usage data from **March 2025** onward shows that CHDC moved beyond initial discovery and into sustained use. Adoption continued steadily over time, with a noticeable uplift following the **CHDC launch webinars** in **April 2025**.
+
+![New users per month. The webinar series launched in April 2025.](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-user-adoption-march-2025.jpg)
+
+*{% chg %}New users per month. The webinar series launched in April 2025.{% /chg %}*
+
+In parallel, the number of **monthly active users** also **increased**, indicating that users were not only discovering the platform but returning to it regularly.
+
+![Monthly active users.](../../assets/projects/conflict-and-humanitarian-data-centre/chdc-monthly-active-users.jpg)
+
+*{% chg %}Monthly active users.{% /chg %}*
+
+{% chg %}**What I can’t say.** Usage data starts in March 2025, so there is no baseline from the former interface, and I can’t separate the effect of the redesign from the webinars.{% /chg %}
+
+{% chg %}In surveys and webinars with users{% /chg %} {% pending text="Number pending" note="how many" /%}{% chg %}, the improvements mentioned most were:{% /chg %}
+{% /ver %}
 
 - Faster onboarding for new users
 - Less confusion around filtering and navigation
@@ -257,16 +442,28 @@ In addition to insights gathered through surveys and webinars, users consistentl
 - Improved visual clarity of incident status
 - Clearer distinction between humanitarian and property impact
 
-Some improvements are harder to quantify, but have enhanced the platform’s usability for both daily tasks and strategic reporting.
+{% ver v="current" goneItems="1,2,3" %}
+{% gone %}Some improvements are harder to quantify, but have enhanced the platform’s usability for both daily tasks and strategic reporting.{% /gone %}
 
 ## Reflection and takeaways
 
 The CHDC redesign wasn’t commissioned. It started as a UI draft that filled a real gap. That shaped how the project grew and what we were able to achieve within its constraints.
 
-**Key lessons**:
+**{% gone %}Key lessons{% /gone %}**{% gone %}:{% /gone %}
 
 - Even small interface tweaks (like colour contrast, spacing or filters) can radically improve comprehension
 - Working closely with analysts and field staff keeps designs grounded
 - Embedding brand identity in UI strengthens product trust
 
 In future iterations, I’d push for more user testing earlier in the process and ideally expand tutorials into contextual help elements.
+{% /ver %}
+
+{% ver v="updated" tag="Changed" %}
+## Takeaway
+
+**{% chg %}Start from a draft that shows the gap.{% /chg %}**
+
+{% chg %}The CHDC redesign wasn’t commissioned. A UI draft in INSO’s new brand showed what the platform could be, and the project grew from there.{% /chg %}
+
+{% chg %}What I’d do differently: I’d push for more user testing earlier in the process, and expand the tutorials into contextual help.{% /chg %} {% pending text="Pending" note="country office feedback before launch" /%}
+{% /ver %}
