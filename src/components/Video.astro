@@ -2,10 +2,17 @@
 // portrait: a phone recording, shown at about phone size instead of the full column width
 // webm/poster: a WebM source first (the src stays the MP4 fallback) and a still shown before it plays and with
 // reduced motion (scripts/case-enhance.ts plays story videos only while on screen, and gives them controls instead)
-interface Props { src: string; alt?: string; portrait?: boolean; webm?: string; poster?: string }
-const { src, alt, portrait, webm, poster } = Astro.props;
+// device: the video inside a drawn device, a desktop monitor or a phone (CSS only, styles/case-simple.css)
+interface Props { src: string; alt?: string; portrait?: boolean; webm?: string; poster?: string; device?: 'desktop' | 'phone' }
+const { src, alt, portrait, webm, poster, device } = Astro.props;
+// with a device, the video sits in its frame and screen; without one, nothing wraps it
+const Frame = device ? 'div' : Fragment;
+const Screen = device ? 'div' : Fragment;
+const frameProps = device ? { class: `dev dev--${device}` } : {};
+const screenProps = device ? { class: 'dev__screen' } : {};
 ---
-<figure class:list={['media-video', portrait && 'media-video--portrait']}>
+<figure class:list={['media-video', portrait && 'media-video--portrait', device && `media-video--${device}`]}>
+  <Frame {...frameProps}><Screen {...screenProps}>
   {webm ? (
     <video autoplay muted loop playsinline preload="metadata" poster={poster} aria-label={alt}>
       <source src={webm} type="video/webm" />
@@ -14,5 +21,6 @@ const { src, alt, portrait, webm, poster } = Astro.props;
   ) : (
     <video src={src} autoplay muted loop playsinline preload="metadata" poster={poster} aria-label={alt}></video>
   )}
+  </Screen></Frame>
   {alt && <figcaption>{alt}</figcaption>}
 </figure>

@@ -17,6 +17,7 @@ export default defineMarkdocConfig({
         portrait: { type: Boolean },
         webm: { type: String },
         poster: { type: String },
+        device: { type: String, matches: ['desktop', 'phone'] },
       },
     },
 

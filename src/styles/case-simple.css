@@ -684,3 +684,28 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 /* a phone recording: phone size, centred (Video.astro portrait) */
 .cs-simple .a-story .media-video.media-video--portrait { max-width: 340px; }
 .cs-simple .a-story .media-video--portrait video { width: 100%; height: auto; aspect-ratio: 868 / 1440; } /* the box keeps its shape before the video loads */
+
+/* Device frames around a video (Video.astro device): drawn in CSS, dark in both themes, with a faint edge in dark mode.
+   desktop: a monitor with a chin and a stand; phone: a body with a speaker above the screen and a bar below it. */
+.cs-simple .a-story .dev { --bz: #1c1c1e; --bz-edge: #3a3a3c; position: relative; }
+.cs-simple .a-story .dev__screen { position: relative; overflow: hidden; background: #000; }
+.cs-simple .a-story .dev__screen video { display: block; width: 100%; height: auto; border-radius: 0; }
+.cs-simple .a-story .dev--desktop { --stand: 52px; padding-bottom: var(--stand); }
+.cs-simple .a-story .dev--desktop .dev__screen { border: 12px solid var(--bz); border-bottom-width: 28px; border-radius: 14px; box-shadow: 0 0 0 1px var(--bz-edge), 0 18px 40px rgb(0 0 0 / 0.16); }
+.cs-simple .a-story .dev--desktop::before { content: ''; position: absolute; left: 50%; bottom: 8px; width: 15%; height: calc(var(--stand) - 8px); transform: translateX(-50%); background: linear-gradient(90deg, #a7a7ab, #d2d2d6 50%, #a7a7ab); clip-path: polygon(14% 0, 86% 0, 100% 100%, 0 100%); }
+.cs-simple .a-story .dev--desktop::after { content: ''; position: absolute; left: 50%; bottom: 0; width: 32%; height: 8px; transform: translateX(-50%); border-radius: 4px 4px 2px 2px; background: linear-gradient(#c9c9cd, #a2a2a6); }
+.cs-simple .a-story .media-video--phone { max-width: 340px; }
+.cs-simple .a-story .dev--phone { padding: 46px 12px; border-radius: 46px; background: var(--bz); box-shadow: inset 0 0 0 2px var(--bz-edge), 0 18px 40px rgb(0 0 0 / 0.18); }
+.cs-simple .a-story .dev--phone .dev__screen { border-radius: 6px; }
+.cs-simple .a-story .dev--phone::before { content: ''; position: absolute; top: 20px; left: 50%; width: 52px; height: 6px; transform: translateX(-50%); border-radius: 3px; background: var(--bz-edge); }
+.cs-simple .a-story .dev--phone::after { content: ''; position: absolute; bottom: 19px; left: 50%; width: 36%; height: 5px; transform: translateX(-50%); border-radius: 3px; background: var(--bz-edge); }
+:root[data-theme='dark'] .cs-simple .a-story .dev { --bz: #111; --bz-edge: #4a4a4c; }
+@media (max-width: 699px) {
+  .cs-simple .a-story .media-video--desktop { padding-inline: var(--side, 16px); }
+  .cs-simple .a-story .dev--desktop { --stand: 36px; }
+  .cs-simple .a-story .dev--desktop .dev__screen { border-width: 7px 7px 16px; border-radius: 9px; }
+  .cs-simple .a-story figure.media-video.media-video--phone { max-width: 280px; margin-inline: auto; }
+  .cs-simple .a-story .dev--phone { padding: 38px 10px; border-radius: 38px; }
+  .cs-simple .a-story .dev--phone::before { top: 16px; }
+  .cs-simple .a-story .dev--phone::after { bottom: 15px; }
+}
