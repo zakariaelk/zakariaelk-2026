@@ -1,6 +1,6 @@
 ---
 // Case studies (/work/<slug>/), on the case template (components/next/va/CaseA.astro) in the Simple reading format,
-// in the blue colours. "Next project" follows the home page order and wraps around.
+// in the blue colours. "Next project" follows the home page order (featured, then Other work) and wraps around.
 // The INSO case shows its 7-minute version, src/content/lab/inso-app-focus.mdoc, with its full video as the cover
 // (#full-video, which the home page's "Full video" link opens and plays). The full case is at
 // /work/mitigating-risk-with-location-based-alerts/full/; the earlier versions are still at
@@ -8,9 +8,12 @@
 import { getEntry } from 'astro:content';
 import CaseA from '../../components/next/va/CaseA.astro';
 import { getProjects } from '../../lib/data';
+import { FEATURED } from '../../lib/versions';
 
 export async function getStaticPaths() {
-  const projects = await getProjects();
+  // the home page's order: its featured cases, then "Other work" (lib/versions.ts workList)
+  const all = await getProjects();
+  const projects = [...FEATURED.map((id) => all.find((p) => p.id === id)!), ...all.filter((p) => !FEATURED.includes(p.id))];
   return projects.map((project, i) => ({ params: { slug: project.id }, props: { project, next: projects[(i + 1) % projects.length] } }));
 }
 
