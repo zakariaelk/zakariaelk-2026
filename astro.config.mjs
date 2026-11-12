@@ -6,11 +6,12 @@ import markdoc from '@astrojs/markdoc';
 import netlify from '@astrojs/netlify';
 import keystatic from '@keystatic/astro';
 import reviewThreads from './integrations/review-threads.mjs'; // dev only: review threads (?review), never in the build
+import devPages from './integrations/dev-pages.mjs'; // dev only: the older designs and versions (src/dev-pages/)
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://zakariaelkhachia.com',
-  integrations: [react(), markdoc(), keystatic(), reviewThreads()],
+  integrations: [react(), markdoc(), keystatic(), reviewThreads(), devPages()],
   adapter: netlify({ imageCDN: false, devFeatures: { images: false, edgeFunctions: false, environmentVariables: false } }),
   // Pages from the earlier agency version.
   redirects: {
