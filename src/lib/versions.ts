@@ -7,7 +7,7 @@ import { posterFor } from './media';
 
 export { settings };
 
-/** The CV (PDF to be added by Zakaria at public/cv/Zakaria-El-Khachia-CV.pdf). */
+/** The CV: public/cv/Zakaria-El-Khachia-CV.pdf (from TC_Zakaria_Elkhachia-2026_NL_np.pdf, 12 Nov 2026; replace the file to update it). */
 export const CV = '/cv/Zakaria-El-Khachia-CV.pdf';
 
 export const CASE = 'mitigating-risk-with-location-based-alerts'; // the case built in both versions
