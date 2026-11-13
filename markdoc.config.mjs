@@ -11,6 +11,8 @@ const keep = (node, config) => node.transformChildren(config);
 const drop = () => null;
 
 export default defineMarkdocConfig({
+  // No tag says inline: true. Markdoc only uses it to check placement, and the CMS writes a paragraph that holds
+  // nothing but an inline tag (a source line, a tip) as a line of its own, which that check would reject.
   tags: {
     carousel: {
       render: component('./src/components/Carousel.astro'),
@@ -65,18 +67,17 @@ export default defineMarkdocConfig({
     reflection: { render: story('Reflection') },
     confirm: {
       render: story('Confirm'),
-      inline: true,
       selfClosing: true,
       attributes: { note: { type: String, required: true }, label: { type: String } },
     },
     // one sentence in the site's orange marker highlight, drawn in when it reaches the middle of the screen
     // a term with a short note on hover, focus or tap (dotted underline)
-    tip: { render: story('Tip'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true }, note: { type: String, required: true } } },
+    tip: { render: story('Tip'), selfClosing: true, attributes: { text: { type: String, required: true }, note: { type: String, required: true } } },
     // a numbered problem: title in the headline style, number in a paper-cut circle (review notes item 33)
     problem: { render: story('Problem'), attributes: { n: { type: String, required: true }, title: { type: String, required: true } } },
     // a small grey source line under a list item (review notes item 26): {% sourceline text="…" /%}
-    sourceline: { render: story('SourceLine'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true } } },
-    mark: { render: story('Mark'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true }, color: { type: String, matches: ['', 'green'] } } },
+    sourceline: { render: story('SourceLine'), selfClosing: true, attributes: { text: { type: String, required: true } } },
+    mark: { render: story('Mark'), selfClosing: true, attributes: { text: { type: String, required: true }, color: { type: String, matches: ['', 'green'] } } },
     // Simple INSO case: icon + narrative title + paragraph (results: + a source line). Not called "block": that name
     // clashes with the CMS editor's own and stops it opening any case
     iconblock: {
@@ -98,7 +99,7 @@ export default defineMarkdocConfig({
     scrollshot: { render: story('Scrollshot'), selfClosing: true, attributes: { src: { type: String, required: true }, alt: { type: String, required: true }, caption: { type: String } } },
     usertable: { render: story('UserTable'), attributes: { label: { type: String }, photos: { type: String }, alts: { type: String } } }, // Users: Who · Needs · Pains, with photos
     // a numbered badge in the text, matching one on a visual
-    n: { render: story('Num'), inline: true, selfClosing: true, attributes: { v: { type: String, required: true } } },
+    n: { render: story('Num'), selfClosing: true, attributes: { v: { type: String, required: true } } },
     sequence: { render: story('Sequence'), selfClosing: true, attributes: { thumbs: { type: Boolean }, fulls: { type: String }, images: { type: String, required: true }, alts: { type: String }, caption: { type: String }, captions: { type: String }, frame: { type: String, matches: ['', 'before', 'after', 'compare'] }, landscape: { type: Boolean } } },
     // the character reacting to old screens, one problem highlighted per slide (slides in lib/reactions.ts)
     reactions: { render: story('Reactions'), selfClosing: true, attributes: { set: { type: String, required: true } } },
@@ -106,8 +107,8 @@ export default defineMarkdocConfig({
     ab: { render: story('Ab'), attributes: { v: { type: String, required: true, matches: ['a', 'b'] } } }, // A/B wording pair, for review
     // Current/Updated review (dev only, see devOnly above): a version of a block, added text, cut text, a pending value
     ver: devOnly({ render: story('Ver'), attributes: { v: { type: String, required: true, matches: ['current', 'updated'] }, tag: { type: String }, gone: { type: Boolean }, goneItems: { type: String }, chgItems: { type: String } } }, (node, config) => (node.attributes.v === 'updated' ? null : keep(node, config))),
-    chg: devOnly({ render: story('Chg'), inline: true }, keep),
-    gone: devOnly({ render: story('Gone'), inline: true }, keep),
+    chg: devOnly({ render: story('Chg') }, keep),
+    gone: devOnly({ render: story('Gone') }, keep),
     pending: devOnly({ render: story('Pending'), selfClosing: true, attributes: { text: { type: String, required: true }, note: { type: String } } }, drop),
     // a line with a text link to an image in src/assets, opened in a new tab
     imagelink: { render: story('ImageLink'), selfClosing: true, attributes: { src: { type: String, required: true }, label: { type: String, required: true } } },
@@ -115,13 +116,13 @@ export default defineMarkdocConfig({
     // a verdict after results: its paragraph gets the class cs-verdict (a tag rather than {% .cs-verdict %}, which the CMS drops)
     verdict: { transform: (node, config) => node.transformChildren(config).map((c) => (c?.name === 'p' ? Object.assign(c, { attributes: { ...c.attributes, class: 'cs-verdict' } }) : c)) },
     // text kept for review, struck through
-    del: { render: 'del', inline: true },
+    del: { render: 'del' },
     // the "Take a look" button, wherever the case places it
     cta: { render: story('CaseCta'), selfClosing: true, attributes: { href: { type: String, required: true }, label: { type: String } } },
     // a line break inside a heading or title
-    br: { render: 'br', inline: true, selfClosing: true },
+    br: { render: 'br', selfClosing: true },
     // "Pros:" (green) / "Cons:" (red) at the start of a line about an idea
-    pc: { render: story('ProsCons'), inline: true, selfClosing: true, attributes: { kind: { type: String, required: true, matches: ['pros', 'cons'] } } },
+    pc: { render: story('ProsCons'), selfClosing: true, attributes: { kind: { type: String, required: true, matches: ['pros', 'cons'] } } },
     // two or more options weighed against each other: cards side by side on wide screens
     options: { render: story('Options') },
     option: { render: story('Option'), attributes: { title: { type: String, required: true } } },
