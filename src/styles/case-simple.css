@@ -161,6 +161,7 @@ svg[data-frame="28"] > [data-f="28"], svg[data-frame="29"] > [data-f="29"], svg[
 /* the chart and its table: always the column; the table with hairlines only */
 .cs-simple .a-story .cs-chart__table { margin-top: 16px; }
 .cs-simple .a-story .cs-chart__table table, .cs-simple .a-story :is(article, .cs-fold__body) > table { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 15px; line-height: 22px; color: var(--cs-text); }
+.cs-simple .a-story :is(article, .cs-fold__body) > table { font-size: 17px; line-height: 25px; } /* the story's tables (usability findings…): 2px over the chart's data table (13 Nov) */
 .cs-simple .a-story :is(.cs-chart__table, article) :is(th, td) { padding: 14px 16px 14px 0; border: 0; border-bottom: 1px solid var(--cs-rule); text-align: left; }
 .cs-simple .a-story :is(.cs-chart__table, article) thead th { font-weight: 600; color: var(--cs-title); border-bottom-color: var(--cs-rule-strong); }
 
@@ -272,7 +273,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 
 /* ---------- A table that can be folded away (components/story/TableBox.astro): open, its toggle under it ---------- */
 .cs-simple .a-story .cs-tbl { max-width: var(--col); margin: 32px auto 40px; }
-.cs-simple .a-story .cs-tbl > table { width: 100%; margin: 0; border-collapse: collapse; font-family: var(--sans); font-size: 15px; line-height: 22px; color: var(--cs-text); }
+.cs-simple .a-story .cs-tbl > table { width: 100%; margin: 0; border-collapse: collapse; font-family: var(--sans); font-size: 17px; line-height: 25px; color: var(--cs-text); }
 .cs-simple .a-story .cs-tbl :is(th, td) { padding: 14px 16px 14px 0; border: 0; border-bottom: 1px solid var(--cs-rule); text-align: left; vertical-align: top; }
 .cs-simple .a-story .cs-tbl thead th { font-weight: 600; color: var(--cs-title); border-bottom-color: var(--cs-rule-strong); }
 .cs-tbl > summary { display: inline-flex; margin-top: 12px; font-family: var(--sans); font-size: var(--small); color: var(--cs-caption); cursor: pointer; list-style: none; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
@@ -566,7 +567,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story .cs-ut__scroll::-webkit-scrollbar-track { background: var(--cs-rule); border-radius: 4px; }
 .cs-simple .a-story .cs-ut__scroll::-webkit-scrollbar-thumb { background: var(--ut-bar); border-radius: 4px; }
 @supports not selector(::-webkit-scrollbar) { .cs-simple .a-story .cs-ut__scroll { scrollbar-width: thin; scrollbar-color: var(--ut-bar) var(--cs-rule); } }
-.cs-simple .a-story .cs-ut table { width: 860px; margin: 0; border-collapse: collapse; table-layout: fixed; font-size: 15px; line-height: 22px; color: var(--cs-text); }
+.cs-simple .a-story .cs-ut table { width: 860px; margin: 0; border-collapse: collapse; table-layout: fixed; font-size: 17px; line-height: 25px; color: var(--cs-text); } /* +2px (13 Nov) */
 .cs-simple .a-story .cs-ut :is(th, td) { padding: 16px 24px 16px 0; vertical-align: top; }
 .cs-simple .a-story .cs-ut :is(th, td):last-child { padding-right: 0; }
 .cs-simple .a-story .cs-ut th:first-child { width: 36%; }
@@ -578,7 +579,7 @@ html.is-lbz-open { overflow: hidden; } /* the page doesn't scroll behind it */
 .cs-simple .a-story .cs-ut:not(:has(.cs-ut__who img)) .cs-ut__who--bare p { padding-left: 0; } /* a table without photos: no indent */
 .cs-simple .a-story .cs-ut__name { display: block; color: var(--cs-title); }
 .cs-simple .a-story .cs-ut__name strong { font-weight: 600; }
-.cs-simple .a-story .cs-ut__ctx { display: block; margin-top: 4px; font-size: 14px; line-height: 20px; color: var(--cs-muted); }
+.cs-simple .a-story .cs-ut__ctx { display: block; margin-top: 4px; font-size: 16px; line-height: 23px; color: var(--cs-muted); }
 .cs-simple .a-story .cs-ut__item { display: block; }
 .cs-simple .a-story .cs-ut__item + .cs-ut__item { margin-top: 8px; }
 .cs-simple .a-story .cs-ut + .cs-ut { margin-top: 8px; }
