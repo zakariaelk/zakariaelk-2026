@@ -30,11 +30,15 @@ const projectSchema = ({ image }: SchemaContext) =>
       sector: z.string().optional(),
       role: facts,
       duration: facts,
-      team: z.union([z.string(), z.array(z.union([z.string(), z.object({ name: z.string(), role: z.string().optional(), url: z.string().optional() })]))]).optional(),
+      team: z.union([z.string(), z.array(z.union([z.string(), z.object({ name: z.string(), role: z.string().nullish(), url: z.string().nullish() })]))]).optional(),
       // the Updated intro of a Current/Updated review (docs/claude-code-notes-chdc.md): shown on the dev server only, with ?compare=1
       updated: z.object({ lede: z.array(z.string()).default([]), team: z.array(z.string()).optional(), deliverables: z.array(z.string()).optional() }).optional(),
       year: z.string(),
-      link: z.string().optional(),
+      link: z.string().nullish(),
+      // the home page (CMS): the featured card's title and reading time, the line in the "Other work" list
+      shortTitle: z.string().optional(),
+      readTime: z.string().optional(),
+      listLine: z.string().optional(),
       cover: image(),
       order: z.number().default(99),
       featured: z.boolean().default(false),

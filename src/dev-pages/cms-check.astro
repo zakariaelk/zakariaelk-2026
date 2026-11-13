@@ -1,0 +1,74 @@
+---
+// Dev server only (/cms-check): checks that every case and page opens and saves in the CMS (Keystatic) without
+// changing it. Each file's content is read and written back the way the CMS editor does it, then compared with the
+// file. Run it after adding a block to a case or a tag to markdoc.config.mjs: a new tag must also go into
+// keystatic.config.ts, or the CMS can't open that case.
+---
+<html lang="en">
+<head><meta charset="utf-8" /><title>CMS check</title>
+<style>
+  body { font: 15px/1.5 system-ui, sans-serif; margin: 32px; max-width: 1100px; }
+  .ok { color: #1a7f37; } .bad { color: #b42318; }
+  pre { white-space: pre-wrap; background: #f6f6f6; padding: 8px 12px; border-radius: 6px; font-size: 13px; }
+</style>
+</head>
+<body>
+  <h1>CMS check</h1>
+  <p id="sum">Checking…</p>
+  <div id="out"></div>
+  <script>
+    import Markdoc from '@markdoc/markdoc';
+    import config from '../../keystatic.config';
+    // the meaning of a document, without its formatting: node types, tags, attributes (an empty one is the same as
+    // none) and text, so a table, list or tag written another way counts as the same
+    // values the CMS writes out that the components already use when there's none
+    const DEFAULTS: Record<string, Record<string, unknown>> = { figure: { size: 'wide' }, stats: { variant: 'panel' } };
+    const canon = (src: string) => {
+      const walk = (n: any): any => {
+        const attrs = Object.fromEntries(Object.entries(n.attributes ?? {}).filter(([k, v]) => v !== '' && v !== false && v !== undefined && !(n.type === 'list' && k === 'marker') && DEFAULTS[n.tag]?.[k] !== v).sort(([a], [b]) => a.localeCompare(b)));
+        const kids = (n.children ?? []).map(walk).filter((c: any) => c !== null);
+        if (n.type === 'text') return String(n.attributes.content).replace(/\s+/g, ' ');
+        if (n.type === 'softbreak') return ' ';
+        if (n.type === 'inline') return kids;
+        const c = kids.flat();
+        // a {% table %} tag holds the table itself; a Markdown table is the table
+        if (n.tag === 'table' && c.length === 1 && c[0].t === 'table') return c[0];
+        return { t: n.tag ?? n.type, a: attrs, c };
+      };
+      // the leading newline: a case that starts with a rule (---) isn't read as frontmatter
+      return JSON.stringify(walk(Markdoc.parse('\n' + src)));
+    };
+    const files = import.meta.glob(['/src/content/projects/*.mdoc', '/src/content/lab/*.mdoc', '/src/content/lab/inso-shared/*.mdoc'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+    const enc = new TextEncoder();
+    const dec = new TextDecoder();
+    const out = document.getElementById('out')!;
+    const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    let bad = 0;
+    const results: { path: string; ok: boolean }[] = [];
+    for (const [path, text] of Object.entries(files)) {
+      const body = text.replace(/^---\n[\s\S]*?\n---\n?/, '');
+      const field = (config.collections as any).projects.schema.content; // every case body has the same blocks
+      let html = '';
+      try {
+        const state = field.parse(undefined, { content: enc.encode(body), other: new Map(), external: new Map(), slug: 'x' });
+        const saved = dec.decode(field.serialize(state, { slug: 'x' }).content).trim();
+        const [ca, cb] = [canon(body), canon(saved)];
+        if (ca === cb) html = `<p class="ok">✓ ${path}${saved === body.trim() ? '' : ' (same content; the CMS formats it its own way on save)'}</p>`;
+        else {
+          bad++;
+          const i = [...ca].findIndex((ch, k) => ch !== cb[k]);
+          html = `<p class="bad">✗ ${path}: the content changes on save</p><pre>file: …${esc(ca.slice(Math.max(0, i - 200), i + 300))}\n\ncms:  …${esc(cb.slice(Math.max(0, i - 200), i + 300))}</pre><details><summary>What the CMS would save</summary><pre>${esc(saved)}</pre></details>`;
+        }
+      } catch (e: any) {
+        bad++;
+        html = `<p class="bad">✗ ${path}: can't open</p><pre>${esc(String(e?.message ?? e)).slice(0, 1500)}</pre>`;
+      }
+      results.push({ path, ok: !html.includes('class="bad"') });
+      out.insertAdjacentHTML('beforeend', html);
+    }
+    document.getElementById('sum')!.textContent = bad ? `${bad} of ${results.length} files need work` : `All ${results.length} files open and save unchanged`;
+    // for trying a snippet in the console: cmsCheck.save('text') returns what the CMS would write
+    (window as any).cmsCheck = { bad, results, save: (text: string) => { const f = (config.collections as any).projects.schema.content; return dec.decode(f.serialize(f.parse(undefined, { content: enc.encode(text), other: new Map(), external: new Map(), slug: 'x' }), { slug: 'x' }).content); } };
+  </script>
+</body>
+</html>

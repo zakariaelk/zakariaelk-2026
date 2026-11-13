@@ -4,6 +4,7 @@
 // the earlier 404's. The older designs live on the dev server only (src/dev-pages/), so their addresses land here.
 import Next from '../layouts/Next.astro';
 import ContactA from '../components/next/va/ContactA.astro';
+import text from '../content/site/notfound.json'; // CMS: 404 page
 import '../styles/next-a.css';
 import '../styles/next-a-looks.css';
 import '../styles/media-a.css';
@@ -11,12 +12,12 @@ import '../styles/media-a.css';
 <Next base="/" variant="a" logo look="blue" title="Page not found · Zakaria El Khachia" description="This page doesn’t exist on zakariaelkhachia.com.">
   <section class="a-hero a-wrap a-404" aria-labelledby="nf-title">
     <p class="a-404__code">404</p>
-    <h1 class="a-statement" id="nf-title">This path doesn’t lead anywhere.</h1>
-    <p class="a-based">Let’s get you back on track.</p>
+    <h1 class="a-statement" id="nf-title">{text.statement}</h1>
+    <p class="a-based">{text.line}</p>
     <p class="a-404__back">
       <a class="a-cta" href="/">
         <span class="a-cta__paper" data-ring="11" aria-hidden="true"></span>
-        Back home
+        {text.button}
         <svg class="a-cta__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5" /></svg>
       </a>
     </p>

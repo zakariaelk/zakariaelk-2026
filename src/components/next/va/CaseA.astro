@@ -39,7 +39,8 @@ const { Content, headings } = await render(project);
 const labelOf = (p: CollectionEntry<'projects' | 'lab'>['data']) => p.org ?? p.client; // the client's name
 // the facts: each one line or a list; team members as "name – role", the name a link when a URL is given
 type Item = string | { name: string; role?: string; url?: string };
-const list = (v?: Item | Item[]) => (v === undefined ? [] : Array.isArray(v) ? v : [v]);
+// a team member with only a name (no role or link) is a plain line, as the CMS stores every member as { name, role, url }
+const list = (v?: Item | Item[]) => (v === undefined || v === '' ? [] : Array.isArray(v) ? v : [v]).map((it) => (typeof it === 'object' && !it.url && !it.role ? it.name : it)).filter(Boolean);
 const meta = [
   { label: 'Role', items: list(d.role) },
   { label: 'Team', items: list(d.team) },
@@ -49,7 +50,7 @@ const meta = [
 const rows = [meta.slice(0, 2), meta.slice(2)].filter((r) => r.length);
 // Current/Updated review (docs/claude-code-notes-chdc.md), dev server only: the Updated one-liner and facts (new ones
 // marked), next to the Current ones; scripts/version-review.ts shows them with ?compare=1 and removes them otherwise
-const up = import.meta.env.DEV ? d.updated : undefined;
+const up = import.meta.env.DEV && d.updated?.lede?.length ? d.updated : undefined; // the CMS saves an empty one on every case
 const metaB = up && [
   { label: 'Role', items: list(d.role) },
   { label: 'Team', items: list(up.team ?? d.team), added: !!up.team },

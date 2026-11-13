@@ -1,0 +1,28 @@
+{
+  "title": "About · Zakaria El Khachia",
+  "description": "Product designer and creative builder: twelve years across Casablanca, Beijing and The Hague.",
+  "statement": "Hi, I'm Zakaria. I design and build web and mobile products, and I like them calm, clear and useful, especially when the stakes are high.",
+  "based": "Based near Rotterdam, the Netherlands",
+  "story": [
+    "I've been designing and building for the web and mobile for over twelve years, from agency work in Beijing to safety tools for humanitarian workers at INSO in The Hague.",
+    "My path runs through three cities. I studied computer science in Casablanca, then moved to China to learn Mandarin at Nankai University and stayed in Beijing for eight years, where I grew from web designer and developer into leading a web team. Since 2021 I've lived in the Netherlands, where I spent five years at INSO designing tools that help humanitarian workers stay safe.",
+    "Because I started out writing code, I still build a lot of what I design. That means fewer surprises between the mockup and the live product, and decisions made with real constraints in mind.",
+    "The work I'm proudest of happened when I stopped acting like a supplier and became part of the team, starting with users and data rather than opinions, keeping the loops short and shipping early so we could learn."
+  ],
+  "experience": [
+    { "years": "2023–2026", "role": "UX Designer", "org": "INSO", "place": "The Hague", "note": "A safety alerts app used in 20+ countries, a chat-based learning game for NGO workers and the CHDC redesign across 22 countries." },
+    { "years": "2021–2023", "role": "Web Designer & Frontend Developer", "org": "INSO", "place": "The Hague", "note": "Redesigned and built ngosafety.org, plus the INSO brand guide." },
+    { "years": "2016–2021", "role": "Web Designer, Frontend Developer & Team Lead", "org": "PBB Creative", "place": "Beijing", "note": "20+ web projects, from design to build, and leading the web team." },
+    { "years": "2014–2016", "role": "Web Designer & Developer", "org": "Pinyin Studio", "place": "Beijing", "note": "E-commerce sites and interfaces for mobile campaigns." },
+    { "years": "2013–2014", "role": "UI Designer (internship)", "org": "Akryl Digital", "place": "Beijing", "note": "" }
+  ],
+  "education": [
+    { "years": "2011–2012", "role": "Mandarin studies, HSK 4", "org": "Nankai University", "place": "Tianjin" },
+    { "years": "2008–2013", "role": "Bachelor in Computer Science", "org": "SUPINFO", "place": "Casablanca" }
+  ],
+  "expertise": ["Product and UX design", "Research and synthesis", "Usability testing", "Rapid prototyping", "Interface design, end to end", "Frontend development", "Experience strategy", "AI-assisted workflows"],
+  "languages": ["English", "Arabic", "French", "Dutch (B2)", "Mandarin (HSK 4)"],
+  "tools": ["Figma", "Maze", "GA4, Hotjar, Clarity", "HTML, SCSS, JavaScript, React", "Photoshop, Illustrator", "Azure DevOps, Git"],
+  "awayTitle": "Away from the screen",
+  "away": "Music is never far away. It's what's playing while I sketch, and often what I'm listening to when an idea finally clicks."
+}

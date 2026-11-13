@@ -5,6 +5,12 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# The CV's address: the file is public/cv/cv.pdf (the name the CMS gives it on upload)
+[[redirects]]
+  from = "/cv/Zakaria-El-Khachia-CV.pdf"
+  to = "/cv/cv.pdf"
+  status = 200
+
 # Old case-study URLs from the yellow version
 [[redirects]]
   from = "/projects/*"
