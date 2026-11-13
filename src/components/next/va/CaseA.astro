@@ -39,7 +39,8 @@ const { Content, headings } = await render(project);
 const labelOf = (p: CollectionEntry<'projects' | 'lab'>['data']) => p.org ?? p.client; // the client's name
 // the facts: each one line or a list; team members as "name – role", the name a link when a URL is given
 type Item = string | { name: string; role?: string; url?: string };
-const list = (v?: Item | Item[]) => (v === undefined ? [] : Array.isArray(v) ? v : [v]);
+// a team member with only a name (no role or link) is a plain line, as the CMS stores every member as { name, role, url }
+const list = (v?: Item | Item[]) => (v === undefined || v === '' ? [] : Array.isArray(v) ? v : [v]).map((it) => (typeof it === 'object' && !it.url && !it.role ? it.name : it)).filter(Boolean);
 const meta = [
   { label: 'Role', items: list(d.role) },
   { label: 'Team', items: list(d.team) },

@@ -17,7 +17,7 @@ export default defineMarkdocConfig({
         portrait: { type: Boolean },
         webm: { type: String },
         poster: { type: String },
-        device: { type: String, matches: ['desktop', 'phone'] },
+        device: { type: String, matches: ['', 'desktop', 'phone'] },
       },
     },
 
@@ -68,12 +68,13 @@ export default defineMarkdocConfig({
     problem: { render: story('Problem'), attributes: { n: { type: String, required: true }, title: { type: String, required: true } } },
     // a small grey source line under a list item (review notes item 26): {% sourceline text="…" /%}
     sourceline: { render: story('SourceLine'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true } } },
-    mark: { render: story('Mark'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true }, color: { type: String, matches: ['green'] } } },
-    // Simple INSO case: icon + narrative title + paragraph (results: + a source line)
-    block: {
+    mark: { render: story('Mark'), inline: true, selfClosing: true, attributes: { text: { type: String, required: true }, color: { type: String, matches: ['', 'green'] } } },
+    // Simple INSO case: icon + narrative title + paragraph (results: + a source line). Not called "block": that name
+    // clashes with the CMS editor's own and stops it opening any case
+    iconblock: {
       render: story('Block'),
       attributes: {
-        icon: { type: String, matches: ['eye', 'friction', 'did', 'testing', 'interviews', 'partners', 'pushback', 'bricks', 'face-confused', 'face-bulb', 'face-smiling', 'face-introspect', 'face-happy', 'face-satisfied', 'face-sad', 'face-doubtful'] }, // optional: each icon is used once
+        icon: { type: String, matches: ['', 'eye', 'friction', 'did', 'testing', 'interviews', 'partners', 'pushback', 'bricks', 'face-confused', 'face-bulb', 'face-smiling', 'face-introspect', 'face-happy', 'face-satisfied', 'face-sad', 'face-doubtful'] }, // optional: each icon is used once
         title: { type: String }, // optional: an icon can sit beside a plain paragraph
         source: { type: String },
         result: { type: Boolean }, // a finding with no source line
@@ -96,6 +97,8 @@ export default defineMarkdocConfig({
     // a part proposed for cutting, for review: a labelled start marker and an end marker (story/Cut.astro)
     ab: { render: story('Ab'), attributes: { v: { type: String, required: true, matches: ['a', 'b'] } } }, // A/B wording pair, for review
     cut: { render: story('Cut'), selfClosing: true, attributes: { note: { type: String }, end: { type: Boolean } } },
+    // a verdict after results: its paragraph gets the class cs-verdict (a tag rather than {% .cs-verdict %}, which the CMS drops)
+    verdict: { transform: (node, config) => node.transformChildren(config).map((c) => (c?.name === 'p' ? Object.assign(c, { attributes: { ...c.attributes, class: 'cs-verdict' } }) : c)) },
     // text kept for review, struck through
     del: { render: 'del', inline: true },
     // the "Take a look" button, wherever the case places it

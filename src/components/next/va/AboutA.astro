@@ -6,7 +6,7 @@ import Next from '../../../layouts/Next.astro';
 import PhotoSlot from '../PhotoSlot.astro';
 import ContactA from './ContactA.astro';
 import { cutMask, tabCut } from '../../../lib/papercut';
-import { EXPERIENCE, EDUCATION, EXPERTISE, LANGUAGES, TOOLS, settings } from '../../../lib/versions';
+import { EXPERIENCE, EDUCATION, EXPERTISE, LANGUAGES, TOOLS, settings, about } from '../../../lib/versions'; // texts: CMS, About page
 import '../../../styles/next-a.css';
 import '../../../styles/next-a-looks.css';
 
@@ -14,10 +14,10 @@ interface Props { base?: string; look?: 'orange' | 'dmsans' | 'blue' | 'brown' }
 const { base = '/next/a/', look } = Astro.props;
 
 ---
-<Next base={base} variant="a" logo look={look} title="About · Zakaria El Khachia" description="Product designer and creative builder: twelve years across Casablanca, Beijing and The Hague.">
+<Next base={base} variant="a" logo look={look} title={about.title} description={about.description}>
   <section class="a-hero a-wrap">
-    <h1 class="a-statement a-statement--about">Hi, I'm Zakaria. I design and build web and mobile products, and I like them calm, clear and useful, especially when the stakes are high.</h1>
-    <p class="a-based">Based near Rotterdam, the Netherlands · {settings.availability}</p>
+    <h1 class="a-statement a-statement--about">{about.statement}</h1>
+    <p class="a-based">{about.based} · {settings.availability}</p>
   </section>
 
   <div class="n-band n-band--light a-sheet">
@@ -27,10 +27,7 @@ const { base = '/next/a/', look } = Astro.props;
     <section class="a-intro a-wrap" aria-labelledby="story-title">
       <PhotoSlot class="a-intro__photo" />
       <div class="a-intro__text">
-        <p>I've been designing and building for the web and mobile for over twelve years, from agency work in Beijing to safety tools for humanitarian workers at INSO in The Hague.</p>
-        <p>My path runs through three cities. I studied computer science in Casablanca, then moved to China to learn Mandarin at Nankai University and stayed in Beijing for eight years, where I grew from web designer and developer into leading a web team. Since 2021 I've lived in the Netherlands, where I spent five years at INSO designing tools that help humanitarian workers stay safe.</p>
-        <p>Because I started out writing code, I still build a lot of what I design. That means fewer surprises between the mockup and the live product, and decisions made with real constraints in mind.</p>
-        <p>The work I'm proudest of happened when I stopped acting like a supplier and became part of the team, starting with users and data rather than opinions, keeping the loops short and shipping early so we could learn.</p>
+        {about.story.map((t) => <p>{t}</p>)}
       </div>
     </section>
 
@@ -67,8 +64,8 @@ const { base = '/next/a/', look } = Astro.props;
     </section>
 
     <section class="a-block a-wrap a-away" aria-labelledby="away-title">
-      <h2 class="a-label" id="away-title">Away from the screen</h2>
-      <p>Music is never far away. It's what's playing while I sketch, and often what I'm listening to when an idea finally clicks.</p>
+      <h2 class="a-label" id="away-title">{about.awayTitle}</h2>
+      <p>{about.away}</p>
     </section>
     <div class="n-cut n-cut--bottom" style={cutMask(91)} aria-hidden="true"></div>
   </div>

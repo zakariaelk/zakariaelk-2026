@@ -2,35 +2,22 @@
 // list, the About facts (from the 2026 CV), contact details and the case study's headline results.
 import { getImage } from 'astro:assets';
 import settings from '../content/pages/settings.json';
+// the page texts, edited in the CMS (keystatic.config.ts: Home page, About page, Contact and footer)
+import home from '../content/site/home.json';
+import about from '../content/site/about.json';
+import contact from '../content/site/contact.json';
 import { getProjects } from './data';
 import { posterFor } from './media';
 
-export { settings };
+export { settings, home, about, contact };
 
-/** The CV: public/cv/Zakaria-El-Khachia-CV.pdf (from TC_Zakaria_Elkhachia-2026_NL_np.pdf, 12 Nov 2026; replace the file to update it). */
-export const CV = '/cv/Zakaria-El-Khachia-CV.pdf';
+/** The CV: public/cv/cv.pdf, uploaded in the CMS (Contact and footer), which always saves it under that name. The live
+ *  site serves it at this address too (netlify.toml), the one already shared; the dev server links the file itself. */
+export const CV = import.meta.env.DEV ? contact.cv : '/cv/Zakaria-El-Khachia-CV.pdf';
 
 export const CASE = 'mitigating-risk-with-location-based-alerts'; // the case built in both versions
-export const FEATURED = [CASE, 'ngosafety-website-redesign', '3e-international'];
-
-/** Short card titles for the featured work in version A (approved 2026-10-08); the CMS statement
- *  stays as it is for /next/ and version B. */
-export const SHORT_TITLES: Record<string, string> = {
-  [CASE]: 'Helping humanitarian workers stay informed on the move through safety alerts.',
-  'ngosafety-website-redesign': 'Making NGO safety products and services visible and accessible.',
-  '3e-international': "Bringing learning through play to a bilingual school's website.",
-};
-
-/** Output-focused one-liners for the Selected Work list in version A (proposed 2026-10-10, facts
- *  from each case only); the CMS intros stay as they are for the other pages. */
-export const LIST_LINES: Record<string, string> = {
-  'conflict-and-humanitarian-data-centre': 'Improving how humanitarians analyse conflict data, across 22 countries.',
-  'daga-architects': "A website that carries an architecture firm's bold identity into its international expansion.",
-  triotech: 'A lighter, faster website bringing an immersive-attractions company to Chinese audiences.',
-  canlife: 'A modern, mobile-ready website helping a winter sports agency reach clients across China.',
-  'alwin-capital': "A corporate website that makes a life-science investor's portfolio easy to explore by sector.",
-  grace: "An experimental portfolio where web animation becomes part of an artist's storytelling.",
-};
+/** The featured cases, in order (CMS: Home page); the rest of the work follows by each project's order. */
+export const FEATURED: string[] = home.featured;
 
 /** Where a project's case study lives from inside a version: the INSO case has its own page in
  *  each version, the others use the shared /next/work/ template. */
@@ -65,30 +52,5 @@ export const RESULTS = [
   { value: '~13s', label: 'faster to understand an alert', note: 'after reordering the alert detail screen' },
 ];
 
-export const EXPERIENCE = [
-  { years: '2023–2026', role: 'UX Designer', org: 'INSO', place: 'The Hague', note: 'A safety alerts app used in 20+ countries, a chat-based learning game for NGO workers and the CHDC redesign across 22 countries.' },
-  { years: '2021–2023', role: 'Web Designer & Frontend Developer', org: 'INSO', place: 'The Hague', note: 'Redesigned and built ngosafety.org, plus the INSO brand guide.' },
-  { years: '2016–2021', role: 'Web Designer, Frontend Developer & Team Lead', org: 'PBB Creative', place: 'Beijing', note: '20+ web projects, from design to build, and leading the web team.' },
-  { years: '2014–2016', role: 'Web Designer & Developer', org: 'Pinyin Studio', place: 'Beijing', note: 'E-commerce sites and interfaces for mobile campaigns.' },
-  { years: '2013–2014', role: 'UI Designer (internship)', org: 'Akryl Digital', place: 'Beijing', note: '' },
-];
-
-export const EDUCATION = [
-  { years: '2011–2012', role: 'Mandarin studies, HSK 4', org: 'Nankai University', place: 'Tianjin' },
-  { years: '2008–2013', role: 'Bachelor in Computer Science', org: 'SUPINFO', place: 'Casablanca' },
-];
-
-export const EXPERTISE = [
-  'Product and UX design',
-  'Research and synthesis',
-  'Usability testing',
-  'Rapid prototyping',
-  'Interface design, end to end',
-  'Frontend development',
-  'Experience strategy',
-  'AI-assisted workflows',
-];
-
-export const LANGUAGES = ['English', 'Arabic', 'French', 'Dutch (B2)', 'Mandarin (HSK 4)'];
-
-export const TOOLS = ['Figma', 'Maze', 'GA4, Hotjar, Clarity', 'HTML, SCSS, JavaScript, React', 'Photoshop, Illustrator', 'Azure DevOps, Git'];
+// the About page's lists (CMS: About page)
+export const { experience: EXPERIENCE, education: EDUCATION, expertise: EXPERTISE, languages: LANGUAGES, tools: TOOLS } = about;

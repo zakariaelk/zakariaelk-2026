@@ -5,8 +5,7 @@
 import ArabicNameAmiri from './ArabicNameAmiri.astro';
 import NextLogo from './NextLogo.astro';
 import settings from '../../content/pages/settings.json';
-
-const CV = '/cv/Zakaria-El-Khachia-CV.pdf';
+import { CV, contact as contactText } from '../../lib/versions'; // contact: a prop here
 
 // logo: the round Z / ز instead of the name and speaker (version A); work / contact: where those links point
 interface Props { base?: string; contact?: string; work?: string; logo?: boolean }
@@ -55,7 +54,7 @@ const { base = '/next/', contact = `${base}#contact`, work = `${base}#work`, log
     {logo && (
       <div class="n-nav__foot">
         <a href={settings.linkedin} target="_blank" rel="noopener"><span class="n-nav__paper" data-paper data-seed="7" aria-hidden="true"></span>LinkedIn</a>
-        <a href={CV} target="_blank" rel="noopener"><span class="n-nav__paper" data-paper data-seed="23" data-anchor="right" aria-hidden="true"></span>Download CV</a>
+        <a href={CV} target="_blank" rel="noopener"><span class="n-nav__paper" data-paper data-seed="23" data-anchor="right" aria-hidden="true"></span>{contactText.cvLabel}</a>
       </div>
     )}
   </nav>

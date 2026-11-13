@@ -136,9 +136,9 @@ I ran a quick heuristic evaluation of the startup and login screen, and it turne
 
 {% reactions set="inso-login" /%}
 
-{% block icon="did" title="Explain first, ask for location later" %}
+{% iconblock icon="did" title="Explain first, ask for location later" %}
 Here is how I approached each of the main problems from my heuristic evaluation of the startup and login screen.
-{% /block %}
+{% /iconblock %}
 
 | Problem | Solution |
 |---|---|
@@ -151,9 +151,9 @@ Here is how I approached each of the main problems from my heuristic evaluation 
 
 {% reactions set="inso-login-result" /%}
 
-{% block source="24 of 31 rated installation and onboarding 4 or 5 out of 5 (average 4.1/5) · post-launch partner survey · no earlier version to compare with" %}
+{% iconblock source="24 of 31 rated installation and onboarding 4 or 5 out of 5 (average 4.1/5) · post-launch partner survey · no earlier version to compare with" %}
 Most partners found getting started easy.
-{% /block %}
+{% /iconblock %}
 
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-flow-1-result.png" related=true size="text" alt="Survey bar chart for installation and onboarding: 39% gave 5, 39% gave 4, 16% gave 3, 3% gave 2 and 3% gave 1. 31 responses, average 4.1." caption="Onboarding satisfaction after the new design (31 responses, avg 4.1/5)" /%}
 
@@ -161,9 +161,9 @@ Most partners found getting started easy.
 
 **The main screen had all the information, but it was hard to read and scan**
 
-{% block title="Eight alerts shared one screen" %}
+{% iconblock title="Eight alerts shared one screen" %}
 Eight alerts shared one screen, with titles of 12 to 16 words in a tiny column and small dates and distances competing for attention. The engineers' idea was to show as much as possible without scrolling, so the question became: see everything at once, or read each alert easily? My first thought was "where should I be looking?" There was no way to search by place either, and no profile or way to reach terms, FAQs or info about the app, just a settings icon at the top right.
-{% /block %}
+{% /iconblock %}
 
 {% figure src="projects/mitigating-risk-with-location-based-alerts/inso-app-old-alerts-screen.jpg" frame="before" size="text" alt="The old alerts list, annotated: inconsistent typography, low spacing between items, and location, distance and time not prioritised." caption="Alerts screen ==before== redesign, showing density and unclear hierarchy" /%}
 
@@ -234,9 +234,9 @@ The first version had two ways to set that radius: on the map, and with a slider
 
 {% reactions set="inso-proximity-unsure" /%}
 
-{% block source="From usability testing sessions and surveys with country offices, using a design prototype" %}
+{% iconblock source="From usability testing sessions and surveys with country offices, using a design prototype" %}
 6 participants set a radius around a place they weren't in in 53 seconds on average, with an average ease score of 6.8 out of 10. It was slow, and some couldn't tell live location from custom location.
-{% /block %}
+{% /iconblock %}
 
 #### Illusion of Explanatory Depth (IOED)
 
@@ -250,9 +250,9 @@ In the second iteration, the single tooltip became a short three-step tutorial: 
 
 {% reactions set="inso-proximity-maybe" /%}
 
-{% block source="Interviews with 5 country office colleagues who hadn't seen the app before · updated design and prototype" %}
+{% iconblock source="Interviews with 5 country office colleagues who hadn't seen the app before · updated design and prototype" %}
 The tutorial cleared up the difference between live and custom location, and colleagues were more satisfied with the feature.
-{% /block %}
+{% /iconblock %}
 
 ### Geofence: how do I follow one specific area, like the compound where staff live?
 
@@ -282,15 +282,15 @@ It was also the hardest to learn: 5 of 8 testers finished the task but none of t
 It was also the hardest to learn: 5 of 8 testers finished the task but none of them took the intended path. Two asked for a video, which is heavy on weak connections, so I gave Geofence the same kind of three-step animated tutorial instead.
 {% /ab %}
 
-{% block source="From the same 5 interviews with country office colleagues" %}
+{% iconblock source="From the same 5 interviews with country office colleagues" %}
 Colleagues understood Geofence, but saw it as relevant only to those who work actively with maps.
-{% /block %}
+{% /iconblock %}
 
 ### What people actually use
 
-{% block source="Usage tracking since launch · partners ranked them in the same order in the post-launch survey, with Geofence last (9 of 30)" %}
+{% iconblock source="Usage tracking since launch · partners ranked them in the same order in the post-launch survey, with Geofence last (9 of 30)" %}
 About 1 in 6 people who used the app have opened a map, and Explore takes most of that traffic, with Proximity and Geofence well behind.
-{% /block %}
+{% /iconblock %}
 
 ## After the first release
 
@@ -319,9 +319,9 @@ This was part of the problem from the start, but we agreed to focus on the NGO s
 
 {% partial file="./inso-shared/outcome-core.mdoc" /%}
 
-{% block source="Post-launch survey of 31 partners" %}
+{% iconblock source="Post-launch survey of 31 partners" %}
 The weakest score was whether the app helped them reach their goal: 21 of 31 gave it a 4 or 5 (average 3.7), and a few said they hadn't really used it yet.
-{% /block %}
+{% /iconblock %}
 
 {% partial file="./inso-shared/outcome-cant-say.mdoc" /%}
 
