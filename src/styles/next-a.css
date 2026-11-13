@@ -76,6 +76,7 @@
 @media (min-width: 701px) and (max-width: 1023px) { .a-hero:has(.a-more) { min-height: min(54.17vw, calc(84svh - var(--head-h))); } }
 /* home: the first sentence ~1.28× the featured titles (36 / 46 / 54px); the second at the case
    studies' body size on large screens, never below the phone's 28px */
+.a-statement--about { font-weight: 600; } /* the same title weight as the home hero */
 .a-statement.a-lead { font-size: calc(var(--a-title) * 1.28); font-weight: 600; line-height: 1.2; } /* the case pages' title weight */
 /* laptops and up: the featured titles 32px at 1024, 36px at ~1260, 40px at most */
 @media (min-width: 1024px) {
@@ -135,7 +136,7 @@
 .a-about p { margin: 0 0 1em; font-family: var(--serif); font-weight: 470; font-size: var(--t-body); line-height: 1.5; }
 
 .a-contact { padding-top: var(--a-pad-top-l); padding-bottom: calc(var(--a-pad-bottom) + 20px); }
-.a-contact__title { margin: 0; font-family: var(--serif); font-weight: 500; font-size: var(--a-title); line-height: 1.15; text-wrap: balance; } /* the featured titles' size */
+.a-contact__title { margin: 0; font-family: var(--serif); font-weight: 600; font-size: var(--a-title); line-height: 1.15; text-wrap: balance; } /* the featured titles' size */
 @media (max-width: 700px) { .a-contact__title { text-wrap: wrap; font-size: min(var(--a-title), calc((100vw - 2 * var(--pad)) / 13.2)); } } /* phones: the first sentence (13em) always fits the full width on one line */
 .a-contact a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
 .a-contact__links { margin: 50px 0 0; padding: 0; list-style: none; font-family: var(--serif); font-weight: 470; font-size: var(--t-body); line-height: 1.5; }
@@ -196,7 +197,7 @@
 .a-screen__head { margin-bottom: clamp(20px, 2.5vw, 36px); }
 .a-screen__head--meta { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 24px clamp(32px, 4vw, 64px); align-items: end; }
 .a-screen__head--meta .a-meta { gap: 16px; }
-.a-screen__title { max-width: 22em; margin: 0; font-family: var(--serif); font-weight: 500; font-size: var(--t-title); line-height: 1.12; letter-spacing: -0.015em; text-wrap: balance; }
+.a-screen__title { max-width: 22em; margin: 0; font-family: var(--serif); font-weight: 600; font-size: var(--t-title); line-height: 1.12; letter-spacing: -0.015em; text-wrap: balance; }
 .a-screen__visual { position: relative; }
 .a-screen .v-frame img, .a-screen .v-frame video { aspect-ratio: auto; height: min(56.25vw, calc(100svh - 280px)); min-height: 220px; object-fit: cover; }
 .a-screen__client { position: absolute; z-index: 2; top: 0; left: 24px; padding-bottom: 9px; }
