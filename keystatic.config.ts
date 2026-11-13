@@ -126,7 +126,7 @@ const storyBlocks = {
     label: 'Review: Current / Updated version',
     schema: { v: pick('Version', [['current', 'Current'], ['updated', 'Updated']]), tag: t('Label'), gone: yes('Cut in Updated'), goneItems: t('Cut list items (1,2…)'), chgItems: t('Changed list items (1,2…)') },
   }),
-  pending: block({ label: 'Review: pending value', schema: { text: t('Text'), note: t('Note') } }),
+  pending: inline({ label: 'Review: pending value', schema: { text: t('Text'), note: t('Note') } }),
   cut: block({ label: 'Review: cut marker', schema: { note: t('Note'), end: yes('End marker') } }),
   chg: mark({ label: 'Review: added text', icon: icon('+'), schema: {}, tag: 'mark' }),
   gone: mark({ label: 'Review: cut text', icon: icon('−'), schema: {}, tag: 's' }),
